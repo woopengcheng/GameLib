@@ -1,0 +1,11 @@
+*.user
+*.ncb
+*.suo
+ipch
+*.sdf
+autom4te.cache
+objdir*
+Win32
+x64
+docs/webpage_docs-1.1.0
+docs/log4cplus-1.1.0/docs

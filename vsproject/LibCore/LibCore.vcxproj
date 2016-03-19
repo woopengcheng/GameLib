@@ -1,0 +1,607 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL_Debug_x64|Win32">
+      <Configuration>DLL_Debug_x64</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL_Debug_x64|x64">
+      <Configuration>DLL_Debug_x64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="LibDebug|Win32">
+      <Configuration>LibDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="LibDebug|x64">
+      <Configuration>LibDebug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib_Debug_x64|Win32">
+      <Configuration>Lib_Debug_x64</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib_Debug_x64|x64">
+      <Configuration>Lib_Debug_x64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1C23993E-2F33-4E3F-B81A-F07FA561AB77}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>LibCore</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='LibDebug|x64'">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='LibDebug|x64'">
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'" Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'" Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='LibDebug|Win32'">
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|Win32'">
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|Win32'" Label="Configuration">
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)_vs$(VisualStudioVersion)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)_vs$(VisualStudioVersion)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LibDebug|x64'">
+    <OutDir>$(SolutionDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)_vs$(VisualStudioVersion)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">
+    <OutDir>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <IgnoreImportLibrary>false</IgnoreImportLibrary>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
+    <OutDir>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <IgnoreImportLibrary>false</IgnoreImportLibrary>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBCORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)../Common/;$(SolutionDir)../LogLib/inc;$(SolutionDir)../NetLib/inc;$(SolutionDir)../TimerLib/inc;$(SolutionDir)../InnerMsgLib/inc;$(SolutionDir)../ThreadPoolLib/inc;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/pthread/include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\raknet\lib;$(SolutionDir)..\deps\tbb\lib\intel64\vc10;$(SolutionDir)..\deps\pthread\lib\x64;$(SolutionDir)..\deps\gperftools-2.1\debug;$(SolutionDir)..\deps\log4cpp\msvc10\log4cpp\Debug\x64;$(SolutionDir)..\deps\log4cplus\msvc10\Win32\bin.Debug_Unicode\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>tbb_debug.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBCORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)../Common/;$(SolutionDir)../LogLib/inc;$(SolutionDir)../NetLib/inc;$(SolutionDir)../TimerLib/inc;$(SolutionDir)../InnerMsgLib/inc;$(SolutionDir)../ThreadPoolLib/inc;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/pthread/include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\raknet\lib;$(SolutionDir)..\deps\tbb\lib\intel64\vc10;$(SolutionDir)..\deps\pthread\lib\x64;$(SolutionDir)..\deps\gperftools-2.1\debug;$(SolutionDir)..\deps\log4cpp\msvc10\log4cpp\Debug\x64;$(SolutionDir)..\deps\log4cplus\msvc10\Win32\bin.Debug_Unicode\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>tbb_debug.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='LibDebug|x64'">
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\deps\tbb\lib\intel64\vc10;$(SolutionDir)..\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\boost\lib;$(SolutionDir)..\deps\raknet\lib\x64;$(SolutionDir)..\deps\pthread\lib\x64;$(SolutionDir)..\deps\expat\win32\bin\Debug;$(SolutionDir)..\deps\gperftools-2.1\debug;$(SolutionDir)..\deps\glog\Debug;$(SolutionDir)..\deps\log4cpp\msvc10\log4cpp\Debug\x64;$(SolutionDir)..\deps\log4cplus\msvc10\x64\bin.Debug_Unicode</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;tbb_debug.lib;libboost_system-vc100-mt-sgd-1_56.lib;pthreadVC2.lib;Log4Cpp.lib;log4cplusUD.lib;RakNet_VS2010_LibStatic_Debug_x64.lib;libglog.lib;libexpat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../InnerMsgLib/inc;$(SolutionDir)LibCore;$(SolutionDir)../Common;$(SolutionDir)../NetLib/inc;$(SolutionDir)../ThreadPoolLib/inc;$(SolutionDir)../TimerLib/inc;$(SolutionDir)../LogLib/inc;$(SolutionDir)../XMLLib/inc;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/glog/src/windows;$(SolutionDir)../deps/log4cpp/include;$(SolutionDir)../deps/log4cplus/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DLL_EXPORTS;USE_RAKNET;WIN32;_DEBUG;USE_LOG4CPLUS;_CONSOLE;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <CallingConvention>StdCall</CallingConvention>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\tbb\lib\intel64\vc10;$(SolutionDir)..\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\boost\lib;$(SolutionDir)..\deps\pthread\lib\x64;$(SolutionDir)..\deps\gperftools-2.1\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>gtestd.lib;Rpcrt4.lib;leveldb.lib;libtcmalloc_minimal.lib;libiconv_static.lib;lib_json.lib;lua.lib;libzmq_d.lib;ws2_32.lib;tbb_debug.lib;pthreadVC2.lib;log4cplusSUD.lib;LibStatic.lib;expat.lib;Snappy.lib;Ws2_32.lib;openssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD;MSVCRT;</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <HeapReserveSize>104857600</HeapReserveSize>
+      <HeapCommitSize>104857600</HeapCommitSize>
+      <StackReserveSize>104857600</StackReserveSize>
+      <StackCommitSize>104857600</StackCommitSize>
+      <AssemblyDebug>false</AssemblyDebug>
+      <ForceSymbolReferences>
+      </ForceSymbolReferences>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)LibCore;$(SolutionDir)../LibCore/;$(SolutionDir)../LibCore/MongoBson;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/;$(SolutionDir)../deps/gtest/googletest/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;_CRT_SECURE_NO_WARNINGS;_AFXEXT;CLOSE_RPC_TIMEOUT;NOMINMAX;BSON_COMPILATION;LEVELDB_PLATFORM_WINDOWS;OS_WIN;HYCOMMONWINAPI_EXPORTS;DLL_EXPORTS;USE_RAKNET;WIN32;_DEBUG;USE_LOG4CPLUS;_CONSOLE;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <CallingConvention>StdCall</CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\tbb\lib\intel64\vc10;$(SolutionDir)..\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\boost\lib;$(SolutionDir)..\deps\pthread\lib\x64;$(SolutionDir)..\deps\gperftools-2.1\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Rpcrt4.lib;leveldb.lib;libtcmalloc_minimal.lib;libiconv_static.lib;lib_json.lib;lua.lib;libzmq_d.lib;ws2_32.lib;tbb_debug.lib;pthreadVC2.lib;log4cplusSUD.lib;LibStatic.lib;expat.lib;UnitTest.lib;Snappy.lib;Ws2_32.lib;openssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD;MSVCRT;</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <HeapReserveSize>104857600</HeapReserveSize>
+      <HeapCommitSize>104857600</HeapCommitSize>
+      <StackReserveSize>104857600</StackReserveSize>
+      <StackCommitSize>104857600</StackCommitSize>
+      <AssemblyDebug>false</AssemblyDebug>
+      <ForceSymbolReferences>
+      </ForceSymbolReferences>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)LibCore;$(SolutionDir)../LibCore/;$(SolutionDir)../LibCore/MongoBson;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/gtest/googletest/include;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;_CRT_SECURE_NO_WARNINGS;_AFXEXT;CLOSE_RPC_TIMEOUT;NOMINMAX;BSON_COMPILATION;LEVELDB_PLATFORM_WINDOWS;OS_WIN;HYCOMMONWINAPI_EXPORTS;DLL_EXPORTS;USE_RAKNET;WIN32;USE_LOG4CPLUS;_CONSOLE;_WINDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <CallingConvention>StdCall</CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\..\LibCore\MongoBson\bson\README" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\LibCore\CityHash\city.h" />
+    <ClInclude Include="..\..\LibCore\CityHash\citycrc.h" />
+    <ClInclude Include="..\..\LibCore\Coroutine\Coroutine.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\arg_parser.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\AutomicUInt.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\BoostHelper.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\BsonToCpp.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ByteOrder.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\carg_parser.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Chunk.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CircleBuffer.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ClassTypeID.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ClassTypeInterface.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CObject.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CommandHandler.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Common.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CRTTI.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CSVReader.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CUtil.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\DeelxRegexp.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CErrno.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\GenParamHelper.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Heap.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Iconv.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\intrusive_ptr.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\LinkedPtr.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\MinHeap.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\MsgAssert.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Node.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Parameter.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ParameterHelper.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Parameters.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Platform.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Random.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Refcounted.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ReferCount.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\SafeVariable.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\StringEx.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ThreadSpecific.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\UnitTest.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\BackupEnvironment.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Comparator.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\CustomDefinedCacheHandler.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Database.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBCommon.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBClientInterface.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBMasterInterface.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBServerInterface.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBSlaveInterface.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\db_port.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\LevelDB.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OperateReturns.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Environment.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\HashTable.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Operate.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OperateRecord.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Orm.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OrmCollection.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OrmVector.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\RemoteNodeDefine.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\RocksDB.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\SortedSet.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\User.h" />
+    <ClInclude Include="..\..\LibCore\GameDB\inc\UserAuth.h" />
+    <ClInclude Include="..\..\LibCore\LogLib\inc\GLogAdaptee.h" />
+    <ClInclude Include="..\..\LibCore\LogLib\inc\Log.h" />
+    <ClInclude Include="..\..\LibCore\LogLib\inc\Log4CPlusAdaptee.h" />
+    <ClInclude Include="..\..\LibCore\LogLib\inc\Log4CppAdaptee.h" />
+    <ClInclude Include="..\..\LibCore\LogLib\inc\LogAdapter.h" />
+    <ClInclude Include="..\..\LibCore\LogLib\inc\LogCommon.h" />
+    <ClInclude Include="..\..\LibCore\LogLib\inc\LogInterface.h" />
+    <ClInclude Include="..\..\LibCore\Marshal\inc\CommonMarshal.h" />
+    <ClInclude Include="..\..\LibCore\Marshal\inc\CStream.h" />
+    <ClInclude Include="..\..\LibCore\Marshal\inc\Marshal.h" />
+    <ClInclude Include="..\..\LibCore\Marshal\inc\MashalTest.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson-inl.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonelement.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonmisc.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonobj.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonobjbuilder.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonobjiterator.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsontypes.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson_builder_base.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson_field.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\inline_decls.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\ordering.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\util\atomic_int.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\util\builder.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\util\misc.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\assert_util.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_intrinsics.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_intrinsics_gcc.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_intrinsics_win32.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_word.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\compiler.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\compiler_gcc.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\compiler_msvc.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\exit_code.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\float_utils.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\hex.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\redef_macros.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\string_data.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\targetver.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\undef_macros.h" />
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\windows_basic.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\GenParamHelper.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\GenMsgParams.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ICallableObject.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\IMsgCallableObject.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\InnerMsg.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\InternalMsgTask.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\IRpcListener.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\IRpcMsgCallableObject.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MethodImpl.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgCommon.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgDispatcher.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgQueue.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgTimerNode.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\NetNode.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\Object.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ObjectMethodImplHelper.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ObjectMsgCall.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ParaseMsgCall.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\Ping.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcBase.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcCheckParams.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcInterface.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcManager.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RPCMsgCall.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgHelper.h" />
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\StaticMethodImplHelper.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ByteOrder.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ClientSession.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\HttpProtocol.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\INetHandler.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\INetReactor.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ISession.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\MsgHandler.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\MsgProcess.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\MsgWrapper.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetCommon.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerClient.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerPing.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerServer.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerListener.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerTransit.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHelper.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetInterface.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetLib.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetMsgQueue.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorEpoll.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerHttpServer.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorIOCP.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorRakNet.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorSelect.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorUDP.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorWES.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorZMQ.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetThread.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\Ping.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\RakNetUDPManager.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ServerSession.h" />
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadCommon.h" />
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadContext.h" />
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadLock.h" />
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadPool.h" />
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadPoolInterface.h" />
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadState.h" />
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadTask.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\GlobalTimer.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\GlobalTimerTask.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\InternalTimerTask.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\IStrategy.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\MinHeapTimer.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimeCount.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerCommon.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerHelp.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerInterface.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerNode.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerTask.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimingWheel.h" />
+    <ClInclude Include="..\..\LibCore\XMLLib\inc\XML.h" />
+    <ClInclude Include="..\..\LibCore\XMLLib\inc\XMLValue.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\LibCore\CityHash\city.cc" />
+    <ClCompile Include="..\..\LibCore\Coroutine\Coroutine.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\arg_parser.cc" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\AutomicUInt.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\BsonToCpp.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\carg_parser.c" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\Chunk.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\CircleBuffer.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\Common.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\CRTTI.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\CSVReader.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\CUtil.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\GenParamHelper.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\Iconv.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\Parameter.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\Parameters.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\Random.cpp" />
+    <ClCompile Include="..\..\LibCore\CUtil\src\UnitTest.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\BackupEnvironment.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\Comparator.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\CustomDefinedCacheHandler.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\Database.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBClientInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBMasterInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBServerInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBSlaveInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\Environment.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\HashTable.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\LevelDB.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\OperateRecord.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\RocksDB.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\SortedSet.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\User.cpp" />
+    <ClCompile Include="..\..\LibCore\GameDB\src\UserAuth.cpp" />
+    <ClCompile Include="..\..\LibCore\LogLib\src\GLogAdaptee.cpp" />
+    <ClCompile Include="..\..\LibCore\LogLib\src\Log4CPlusAdaptee.cpp" />
+    <ClCompile Include="..\..\LibCore\LogLib\src\Log4CppAdaptee.cpp" />
+    <ClCompile Include="..\..\LibCore\LogLib\src\LogInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\Marshal\inc\CStream.cpp" />
+    <ClCompile Include="..\..\LibCore\Marshal\src\CommonMarshal.cpp" />
+    <ClCompile Include="..\..\LibCore\MongoBson\bson\bson.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\InnerMsg.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\InternalMsgTask.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\MsgDispatcher.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\MsgQueue.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\NetNode.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\ObjectMsgCall.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcBase.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\Src\RpcCheckParams.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcManager.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcMsgCall.cpp" />
+    <ClCompile Include="..\..\LibCore\MsgLib\src\MsgHelper.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\HttpProtocol.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\INetReactor.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\ISession.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\MsgHandler.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerClient.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerListener.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerPing.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerServer.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerTransit.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHelper.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetMsgQueue.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorEpoll.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerHttpServer.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorIOCP.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorRakNet.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorSelect.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorUDP.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorWES.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorZMQ.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetThread.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\RakNetUDPManager.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\Chunk_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\CityHash_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\Coroutine_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\CStream_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\CSVReader_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\HttpProtocol_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\LibCore_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\MongoBson_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\Paramter_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\ReferCount_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\RPC_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\RTTI_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\Timer_test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\XML_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\ThreadPool\src\ThreadPool.cpp" />
+    <ClCompile Include="..\..\LibCore\ThreadPool\src\ThreadTask.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\GlobalTimer.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\GlobalTimerTask.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\InternalTimerTask.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\MinHeapTimer.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\TimeCount.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerHelp.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerInterface.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerNode.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerTask.cpp" />
+    <ClCompile Include="..\..\LibCore\Timer\src\TimingWheel.cpp" />
+    <ClCompile Include="..\..\LibCore\XMLLib\src\XML.cpp" />
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

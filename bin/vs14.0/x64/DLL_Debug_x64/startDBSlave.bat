@@ -1,0 +1,1 @@
+GameDBServer.exe ./gdbSlave.conf

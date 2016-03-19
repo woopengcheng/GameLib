@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "elements", "examples\elements.vcproj", "{32E1C3BC-8355-48A8-8397-D4C5B06EBAAB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63C6AE2D-A937-492A-B127-F0966131DA3F} = {63C6AE2D-A937-492A-B127-F0966131DA3F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expat", "lib\expat.vcproj", "{3403DF0D-6B72-48DE-980C-A0FAB5EEC42B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expat_static", "lib\expat_static.vcproj", "{63C6AE2D-A937-492A-B127-F0966131DA3F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expatw", "lib\expatw.vcproj", "{48C10DD9-B78B-4D8E-8A17-FBA1FAF08145}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expatw_static", "lib\expatw_static.vcproj", "{ED550119-999E-45B6-B787-BB9373728DED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "outline", "examples\outline.vcproj", "{249E4426-0D64-4073-9112-D2752CF8010A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3403DF0D-6B72-48DE-980C-A0FAB5EEC42B} = {3403DF0D-6B72-48DE-980C-A0FAB5EEC42B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xmlwf", "xmlwf\xmlwf.vcproj", "{36D33893-9E59-4E89-AA83-63F23F127BAB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3403DF0D-6B72-48DE-980C-A0FAB5EEC42B} = {3403DF0D-6B72-48DE-980C-A0FAB5EEC42B}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32E1C3BC-8355-48A8-8397-D4C5B06EBAAB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{32E1C3BC-8355-48A8-8397-D4C5B06EBAAB}.Debug|Win32.Build.0 = Debug|Win32
+		{32E1C3BC-8355-48A8-8397-D4C5B06EBAAB}.Release|Win32.ActiveCfg = Release|Win32
+		{32E1C3BC-8355-48A8-8397-D4C5B06EBAAB}.Release|Win32.Build.0 = Release|Win32
+		{3403DF0D-6B72-48DE-980C-A0FAB5EEC42B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3403DF0D-6B72-48DE-980C-A0FAB5EEC42B}.Debug|Win32.Build.0 = Debug|Win32
+		{3403DF0D-6B72-48DE-980C-A0FAB5EEC42B}.Release|Win32.ActiveCfg = Release|Win32
+		{3403DF0D-6B72-48DE-980C-A0FAB5EEC42B}.Release|Win32.Build.0 = Release|Win32
+		{63C6AE2D-A937-492A-B127-F0966131DA3F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{63C6AE2D-A937-492A-B127-F0966131DA3F}.Debug|Win32.Build.0 = Debug|Win32
+		{63C6AE2D-A937-492A-B127-F0966131DA3F}.Release|Win32.ActiveCfg = Release|Win32
+		{63C6AE2D-A937-492A-B127-F0966131DA3F}.Release|Win32.Build.0 = Release|Win32
+		{48C10DD9-B78B-4D8E-8A17-FBA1FAF08145}.Debug|Win32.ActiveCfg = Debug|Win32
+		{48C10DD9-B78B-4D8E-8A17-FBA1FAF08145}.Debug|Win32.Build.0 = Debug|Win32
+		{48C10DD9-B78B-4D8E-8A17-FBA1FAF08145}.Release|Win32.ActiveCfg = Release|Win32
+		{48C10DD9-B78B-4D8E-8A17-FBA1FAF08145}.Release|Win32.Build.0 = Release|Win32
+		{ED550119-999E-45B6-B787-BB9373728DED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ED550119-999E-45B6-B787-BB9373728DED}.Debug|Win32.Build.0 = Debug|Win32
+		{ED550119-999E-45B6-B787-BB9373728DED}.Release|Win32.ActiveCfg = Release|Win32
+		{ED550119-999E-45B6-B787-BB9373728DED}.Release|Win32.Build.0 = Release|Win32
+		{249E4426-0D64-4073-9112-D2752CF8010A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{249E4426-0D64-4073-9112-D2752CF8010A}.Debug|Win32.Build.0 = Debug|Win32
+		{249E4426-0D64-4073-9112-D2752CF8010A}.Release|Win32.ActiveCfg = Release|Win32
+		{249E4426-0D64-4073-9112-D2752CF8010A}.Release|Win32.Build.0 = Release|Win32
+		{36D33893-9E59-4E89-AA83-63F23F127BAB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{36D33893-9E59-4E89-AA83-63F23F127BAB}.Debug|Win32.Build.0 = Debug|Win32
+		{36D33893-9E59-4E89-AA83-63F23F127BAB}.Release|Win32.ActiveCfg = Release|Win32
+		{36D33893-9E59-4E89-AA83-63F23F127BAB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

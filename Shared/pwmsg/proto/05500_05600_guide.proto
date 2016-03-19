@@ -1,0 +1,22 @@
+message SCGuideActive
+{
+	option (msgid) = 5500;
+	required int32 id = 1;
+}
+
+message SCGuideDeactive
+{
+	option (msgid) = 5501;
+	required int32 id = 1;
+}
+
+message CSGuideDeactive
+{
+	option (msgid) = 5502;
+	required int32 id = 1;
+}
+
+message CSGuideLogin
+{
+	option (msgid) = 5503;
+}

@@ -1,0 +1,95 @@
+// -----------------------------------------
+// 移动信息
+
+message SMotion
+{
+	required int32 motion_type = 1;
+	optional int64 motion_target = 2;
+	optional int32 motion_mode = 3;
+	optional SVector3 motion_orientation = 4;
+	optional SVector3 motion_position = 5;
+	repeated SVector3 motion_path = 6;
+	optional float param = 7; // 自定参数 (追击中,为接近距离)
+	optional SVector3 motion_faceorientation = 8; 
+}
+// -----------------------------------------
+
+message CSStartForward
+{
+	option (msgid) = 1201;
+	required SVector3 orientation = 1;
+	required SVector3 position = 2;
+	required SMotion motion = 3;
+	optional int64 caster = 4;
+}
+
+message SCStartForward
+{
+	option (msgid) = 1202;
+	required int64 id = 1;
+	required SVector3 position = 2;
+	required SMotion motion = 3;
+}
+
+message CSCleanForward
+{
+	option (msgid) = 1203;
+	required SVector3 orientation = 1;
+	required SVector3 position = 2;
+	optional int32 bigWorldAreaID = 3;
+	optional int64 caster = 4;
+}
+
+message SCCleanForward
+{
+	option (msgid) = 1204;
+	required int64 id = 1;
+	required SVector3 orientation = 2;
+	required SVector3 position = 3;
+}
+
+message CSUpdateMoving
+{
+	option (msgid) = 1205;
+	required SVector3 position = 1;
+}
+
+message CSChangeOrientation
+{
+	option (msgid) = 1206;
+	required SVector3 position = 1;
+	required SVector3 orientation = 2;
+	optional SMotion motion = 3;
+	optional int64 caster = 4;
+}
+
+message SCChangeOrientation
+{
+	option (msgid) = 1207;
+	required int64 id = 1;
+	required SVector3 position = 2;
+	required SVector3 orientation = 3;
+	optional SMotion motion = 4;
+}
+
+message SCTeleport 
+{
+	option (msgid) = 1208;
+	required int64 id = 1;
+	required SVector3 position = 2;
+	optional SVector3 orientation = 3;
+}
+
+message CSSyncOrientation
+{
+	option (msgid) = 1209;
+	required int64 id = 1;
+	required SVector3 orientation = 2;
+}
+
+message SCSyncOrientation
+{
+	option (msgid) = 1210;
+	required int64 id = 1;
+	required SVector3 orientation = 2;
+}

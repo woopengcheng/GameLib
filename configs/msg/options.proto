@@ -1,0 +1,7 @@
+import "google/protobuf/descriptor.proto";
+package Net;
+
+extend google.protobuf.MessageOptions {
+  optional int32 nMsgID = 54321;
+}
+

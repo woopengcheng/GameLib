@@ -1,0 +1,147 @@
+// -----------------------------------------
+//占星相关 
+message SAstrologyResult
+{
+	required int32 level = 1;				//占星级别
+	required int32 exp = 2;					//占星经验
+	required int32 count_scrit = 3;			//小暴击次数
+	required int32 count_bcrit = 4;			//大暴击次数
+}
+
+message CSAstrologyQuery
+{
+	option (msgid) = 10100;
+}
+
+message SCAstrologyQueryResult
+{
+	option (msgid) = 10101;
+	required int32 level = 1;
+	required int32 exp = 2;
+}
+
+message CSAstrology
+{
+	option (msgid) = 10102;
+	required int32 flags = 1;
+}
+
+message SCAstrologyResult
+{
+	option (msgid) = 10103;
+	required int32 flags = 1;
+	required int32 result = 2;
+	optional SAstrologyResult astroResult = 3;
+}
+
+message SCOnekeyAstrologyResult
+{
+	option (msgid) = 10104;
+	required int32 flags = 1;
+	required int32 result = 2;
+	required SAstrologyResult astroResult = 3;
+}
+
+message CSRunePickup
+{
+	option (msgid) = 10105;
+	required int32 bag = 1;
+	required int32 index = 2;
+}
+
+message SCRunePickupResult
+{
+	option (msgid) = 10106;
+	required int32 result = 1;
+}
+
+message CSRuneOnekeyPickup
+{
+	option (msgid) = 10107;
+}
+
+message SCRuneOnekeyPickupResult
+{
+	option (msgid) = 10108;
+	required int32 result = 1;
+}
+
+message CSRuneDevour
+{
+	option (msgid) = 10109;
+	required int32 bag = 1;
+	required int32 srcIdx = 2;
+	required int32 dstIdx = 3;
+}
+
+message SCRuneDevourResult
+{
+	option (msgid) = 10110;
+	required int32 result = 1;
+}
+
+message CSRuneOnekeyDevour
+{
+	option (msgid) = 10111;
+}
+
+message SCRuneOnekeyDevourResult
+{
+	option (msgid) = 10112;
+	required int32 result = 1;
+}
+
+message CSRuneInlay
+{
+	option (msgid) = 10113;
+	required int32 srcBag = 1;
+	required int32 srcIdx = 2;
+	required int32 dstBag = 3;
+	required int32 dstIdx = 4;
+}
+
+message SCRuneInlayResult
+{
+	option (msgid) = 10114;
+	required int32 result = 1;
+}
+
+message CSRuneRemove
+{
+	option (msgid) = 10115;
+	required int32 srcBag = 1;
+	required int32 srcIdx = 2;
+	required int32 dstBag = 3;
+}
+
+message SCRuneRemoveResult
+{
+	option (msgid) = 10116;
+	required int32 result = 1;
+}
+
+message CSRuneLock
+{
+	option (msgid) = 10117;
+	required int32 bag = 1;
+	required int32 index = 2;
+}
+
+message SCRuneLockResult
+{
+	option (msgid) = 10118;
+	required int32 result = 1;
+}
+
+message CSRuneUnLock
+{
+	option (msgid) = 10119;
+	required int32 bag = 1;
+	required int32 index = 2;
+}
+
+message SCRuneUnLockResult
+{
+	option (msgid) = 10120;
+	required int32 result = 1;
+}

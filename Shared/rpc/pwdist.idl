@@ -1,0 +1,292 @@
+// int32 int64 char bool const char*,const std::string&,pwdist::Chunk
+
+[file_initial = "./../../server/pwworldsrv/dist_impl/pw_rpcs_impl_{objname}.cpp"]
+namespace worldsrv
+{
+    object Base
+    {
+        method _rpc_call_Null()()
+    }
+    
+    [file_initial_include = "pw_service_login.h"]
+    object SImplLogin : Base
+    {
+        method _rpc_call_MsgIncoming(int64 connid,pwdist::Chunk status,pwdist::Chunk buf)()
+        method _rpc_call_ConnectionClosed(int64 connid,int64 id)()
+    }
+    
+    [file_initial_include = "pw_service_thread.h"]
+    object SImplStage : Base
+    {
+        method _rpc_call_CreateStage(int64 basemapid,int64 gamemapid,int32 flags,int32 initCode,pwdist::Chunk initChunk)()
+        method _rpc_call_DestroyStage(int64 gamemapid)()
+    }
+    
+    [file_initial_include = "pw_stage.h"]
+    object Stage : Base
+    {
+        // 登录 && 广播管理
+        method _rpc_call_EnterWorld(int64 id)()
+        method _rpc_call_Login(int64 id,pwdist::Chunk recordbuf,pwdist::Chunk recordVarsBuf,pwdist::Chunk loginInfo)()
+        method _rpc_call_Broadcast(int32 msgid,pwdist::Chunk buf,int64 exceptid1,int64 exceptid2)()
+
+        // 活动相关接口rpc
+        method _rpc_call_ActivityStartup(int64 activityId)()
+		method _rpc_call_ActivityCall(const char* func,pwdist::Chunk chunk)(int32 code,optional pwdist::Chunk chunk)
+        method _rpc_call_ActivityCleanup()()
+        method _rpc_call_CleanBanner(int64 id)()
+    }
+    
+    [file_initial_include = "pw_human.h"]
+    object Human : Base
+    {
+        method _rpc_call_ConnectionClosed(int64 connid,int64 id)()
+        method _rpc_call_MsgIncoming(int64 connid,pwdist::Chunk buffer)()
+        method _rpc_call_SendMsg(int32 msgid,pwdist::Chunk buffer,int32 count)()
+        method _rpc_call_Kick(int64 id,int32 reason,int32 count)()
+        method _rpc_call_Invoke(int64 id,pwdist::Chunk rpc,int32 count)()
+        method _rpc_call_UpdateTeam(int64 id)()
+        method _rpc_call_UpdateGuild(int64 id)()
+		method _rpc_call_SwitchStage(int64 basemap,int64 gamemap,int32 type,pwdist::Chunk customParams)(int64 result)
+        method _rpc_call_Spend(int64 gold,int64 silver,int32 spend_type,const char* desc)(int32 code)
+        method _rpc_call_Grant(int64 gold,int64 gold_gift,int64 silver,int32 grant_type,const char* desc)(int32 code)
+        method _rpc_call_LeaveSLG(int32 result)()
+        method _rpc_call_CastleLevelup(int32 level)()
+    }
+    
+    [file_initial_include = "pw_service_support.h"]
+    object SImplSupport : Base
+    {
+        method _rpc_call_Load(int64 humanId)(int64 result)
+        method _rpc_call_Unload(int64 humanId)(int64 result)        
+    }
+	
+	[file_initial_include = "pw_service_slg.h"]
+    object SImplSLG : Base
+    {
+         method _rpc_call_EnableSLG(int64 humanId)(int32 code,int32 level)
+         method _rpc_call_EnterSLG(pwdist::Chunk buffer)(int32 code)
+         method _rpc_call_LeaveSLG(int64 humanId)()
+         method _rpc_call_MsgIncoming(int64 humanId,pwdist::Chunk buffer)()
+    }
+	
+}
+
+[file_initial = "./../../server/pwctrlsrv/dist_impl/pw_rpcs_impl_{objname}.cpp"]
+namespace ctrlsrv
+{
+    object Base
+    {
+        method _rpc_call_Null()()
+    }
+    
+    [file_initial_include = "pw_service_base.h"]
+    object SImplBase : Base
+    {
+        method _rpc_call_Broadcast(bool reliable,int32 msgid,pwdist::Chunk buffer)()
+        method _rpc_call_HumanEnterWorld(pwdist::Chunk buffer)()
+        method _rpc_call_HumanLeaveWorld(int64 id)()
+        method _rpc_call_HumanUpdate(pwdist::Chunk buffer,int64 flags)()
+        method _rpc_call_SendMsg(int64 id,int32 msgid,pwdist::Chunk buffer)()
+        method _rpc_call_SendMsgReliable(int64 id,int32 msgid,pwdist::Chunk buffer,int32 count)()
+    }
+    
+    [file_initial_include = "pw_service_common.h"]
+    object SImplCommon : SImplBase
+    {
+        method _rpc_call_HumanQuery(int64 id)()
+        method _rpc_call_HumanKick(int64 id,int32 reason,int32 count)()
+        method _rpc_call_HumanInvoke(int64 id,pwdist::Chunk rpc,int32 count)()
+    }
+    
+    [file_initial_include = "pw_service_guild.h"]
+    object SImplGuild : SImplBase
+    {
+        method _rpc_call_CreateGuild(const char* gname,int64 uid,const char* uname)()
+        method _rpc_call_DeleteGuild(int64 gid,int64 uid)()
+        method _rpc_call_ApplyGuild(int64 gid,int64 uid,const char* uname)()
+        method _rpc_call_AddGuildMember(int64 gid,int64 uid,const char* uname,int64 operid)()
+        method _rpc_call_DelGuildMember(int64 gid,int64 uid,int64 operid)(int64 gid)
+        method _rpc_call_QueryGuildInfo(int64 gid,int64 uid)()
+    }
+    
+    [file_initial_include = "pw_guild.h"]
+    object Guild : Base
+    {
+        method _rpc_call_Broadcast(bool reliable,int32 msgid,pwdist::Chunk buffer,int64 exceptid1,int64 exceptid2)()
+    }
+
+    [file_initial_include = "pw_service_team.h"]
+    object SImplTeam : SImplBase
+    {
+        method _rpc_call_CreateTeam(const char* tname,int64 uid,const char* uname)()
+        method _rpc_call_DeleteTeam(int64 tid,int64 uid)()
+        method _rpc_call_InviteTeam(int64 tid,int64 uid,int64 operid,const char* opername)()
+        method _rpc_call_ApplyTeam(int64 tid,int64 uid,const char* uname)()
+        method _rpc_call_AddTeamMember(int64 tid,int64 uid,const char* uname,int64 operid)()
+        method _rpc_call_DelTeamMember(int64 tid,int64 uid,int64 operid)()
+        method _rpc_call_QueryTeamInfo(int64 tid,int64 uid)()
+    }
+    
+    [file_initial_include = "pw_team.h"]
+    object Team : Base
+    {
+        method _rpc_call_Broadcast(bool reliable,int32 msgid,pwdist::Chunk buffer,int64 exceptid1,int64 exceptid2)()
+    }
+    
+    [file_initial_include = "pw_service_relation.h"]
+    object SImplRelation : SImplBase
+    {
+        method _rpc_call_AddRelationObject(int64 id,int64 rid,const char* name,int32 type)(int32 result,int64 rid,int32 sex,bool isonline)
+        method _rpc_call_DelRelationObject(int64 id,int64 rid,int32 type)(int32 result)
+	method _rpc_call_QueryRelationList(int64 id,int32 type)(int32 result)
+    }
+    
+    [file_initial_include = "pw_service_stage.h"]
+    object SImplStageMgr : SImplBase
+    {
+        method _rpc_call_StageThreadReport(pwdist::Chunk buf)()
+        method _rpc_call_StageCreated(int64 stage,int64 basemap, int32 stagetype, int32 mapType, int32 runningEnter)()
+        method _rpc_call_StageDestructed(int64 stage,int32 reason)()
+        
+        method _rpc_call_CreateStage(int32 flags,int64 basemap,int32 initCode, int32 mapType, int32 runningEnter, pwdist::Chunk initChunk)()
+        method _rpc_call_DestroyStage(int64 mapid)()
+        method _rpc_call_QueryStage(int64 stage)()
+        method _rpc_call_LoginToStage(int64 targetMap,pwdist::Chunk loginbuf, pwdist::Chunk recordbuf, pwdist::Chunk varsbuf)()
+        method _rpc_call_CloseStage(int64 mapid)()
+    }
+    
+    [file_initial_include = "pw_service_activity.h"]
+    object SImplActivity : SImplBase
+    {
+        method _rpc_call_Signup(int64 activity, int64 uid)(int32 code)
+        method _rpc_call_CancelSignup(int64 activity,int64 uid)(int32 code)
+        method _rpc_call_CallScript(int64 activity,const char* func,pwdist::Chunk chunk)(int32 code,optional pwdist::Chunk chunk)
+        method _rpc_call_Enter(int64 activity,int64 humanid)(int32 code)
+        method _rpc_call_SendActivityStatus(int64 uid)()
+        
+        method _rpc_call_GMStart(int64 id)()
+        method _rpc_call_GMClean(int64 id)()
+    }
+	
+    [file_initial_include = "pw_shop_mgr.h"]
+    object ShopMgr : Base
+    {
+        method _rpc_call_ShopQuery(int32 shopid,int64 uid)(pwdist::Chunk chunk)
+        method _rpc_call_ShopBuy(int32 shopid,int32 itemType,int32 itemCount,int64 uid)(int32 code,int32 itemType, int32 boughtCount, int32 leftCount)
+    }
+
+    [file_initial_include = "pw_chat_mgr.h"]
+    object ChatMgr : Base
+    {
+        method _rpc_call_QueryChatMsgList(int64 id)()
+        method _rpc_call_SendChatMsg(int64 from,int64 to,const char* to_name,int32 to_sex,const char* content)()
+        method _rpc_call_AckChatMsgRecved(int64 from,int64 to,int64 timestamp)()
+        method _rpc_call_QueryChatContactList(int64 id)()
+    }
+
+    [file_initial_include = "pw_mail_mgr.h"]
+    object MailMgr : Base
+    {
+        method _rpc_call_QueryMailList(int64 uid)()
+	method _rpc_call_SendMail(pwdist::Chunk mailbuf,pwdist::Chunk items)()
+	method _rpc_call_AckMailRecved(int64 mid)()
+    }
+}
+
+
+[file_initial = "./../../server/pwdbsrv/dist_impl/pw_rpcs_impl_{objname}.cpp"]
+namespace dbsrv
+{
+    object Base
+    {
+        method _rpc_call_Null()()
+    }
+    
+    [ns = pwdbsrv]
+    [file_initial_include = "pw_dbsrv_service_sql.h"]
+    object SImplSqlExecutor : Base
+    {
+        method _rpc_call_ExecuteSql(const char* sql)()
+    }
+    
+    [ns = pwdbsrv]
+    [file_initial_include = "pw_dbsrv_service.h"]
+    object SImplDB : Base
+    {
+        method _rpc_call_PullFieldDefsAll()()
+        method _rpc_call_PullPrimaryKeys()()
+        
+        method _rpc_call_Pull(const char* table,const char* sql,bool add2table)()
+        method _rpc_call_PullRecordsetEx(const char* sql)()
+
+        method _rpc_call_Load(const char* table,int64 recordid)()
+        method _rpc_call_Unload(const char* table,int64 recordid)()
+        method _rpc_call_Select(const char* table,int64 recordid)()
+        method _rpc_call_Delete(const char* table,int64 recordid)()
+        method _rpc_call_Update(const char* table,int64 recordid,pwdist::Chunk patch,bool updateImmediately)()
+        method _rpc_call_Insert(const char* table,pwdist::Chunk recordbuf,bool add2table)()
+
+		method _rpc_call_HumanQuery(const char* name)(pwdist::Chunk info)
+		method _rpc_call_HumanCreated(pwdist::Chunk info)()
+    }
+}
+
+[file_initial = "./../../server/pwaccsrv/dist_impl/pw_rpcs_impl_{objname}.cpp"]
+namespace accsrv
+{
+    object Base
+    {
+        method _rpc_call_Null()()
+    }
+    
+    [ns = pwaccsrv]
+    [file_initial_include = "pw_accsrv_service_port.h"]
+    object SImplAcc : Base
+    {
+        method _rpc_call_MsgIncoming(int64 connid,pwdist::Chunk status,pwdist::Chunk buf)()
+    }
+    
+    [ns = pwaccsrv]
+    [file_initial_include = "pw_service_wallow.h"]
+    object SImplWallow : Base
+    {
+        method _rpc_call_WallowLogin(const char* account,int64 roleID)()
+        method _rpc_call_WallowLogout(const char* account,int64 roleID)()
+    }
+}
+
+[file_initial = "./../../server/pwconnsrv/dist_impl/pw_rpcs_impl_{objname}.cpp"]
+namespace connsrv
+{
+    object Base
+    {
+        method _rpc_call_Null()()
+    }
+    
+    [ns = pwconnsrv]
+    [file_initial_include = "pw_connsrv_service_port.h"]
+    object SImplSend : Base
+    {
+        method _rpc_call_Broadcast(int32 mid,pwdist::Chunk buf)()
+        method _rpc_call_BroadcastEx(pwdist::Chunk buf)()
+    }
+    
+    [ns = pwconnsrv]
+    [file_initial_include = "pw_connsrv_connection.h"]
+    object Connection : Base
+    {
+        method _rpc_call_CloseTcp()()
+        method _rpc_call_SendMsg(int32 mid,pwdist::Chunk buf)()
+        method _rpc_call_SendMsgEx(pwdist::Chunk buf)()
+        method _rpc_call_MsgIncomingResult(pwdist::Chunk buf)()
+        method _rpc_call_UpdateStatus(const char* node,const char* port,int64 stage,int64 objid)()
+    }
+    
+    [ns = pwconnsrv]
+		[file_initial_include = "pw_connsrv_listener.h"]
+		object SImplListener : Base
+		{ 
+		    method _rpc_call_Enable(bool value)() 
+		}
+}

@@ -1,0 +1,137 @@
+
+// -----------------------------------------
+
+message SInterpolationObject
+{
+    required int32 type = 1;
+    required float elapsed_second = 2;
+    repeated SVector3 bezier_points = 3;
+}
+
+// -----------------------------------------
+
+message SCollisionObject
+{
+	required int32 collision_id = 1;
+	required int64 owner = 2;
+	required float radius = 3;
+	required SVector3 position = 4;
+	required SVector3 orientation = 5;
+    required SInterpolationObject interpolation = 6;
+    required float survive_second = 7;
+    optional int32 client_id = 8;
+
+}
+
+// -----------------------------------------
+
+message SActionObject
+{
+	required int32 actionNameId = 1;
+	required float curActionTime = 2;
+}
+
+message SEquipObject
+{
+	required int32 tid = 1;
+}
+message SHumanObject
+{
+	required int32 pro = 1;
+	required int32 sex = 2;
+	repeated SEquipObject equipObject = 3;
+	optional int32 temp_weapon_id = 4;
+}
+
+message SCharmObject
+{
+	required int64 owner = 1;
+	required int32 magic_type = 2;
+}	
+
+message SBreakableObject
+{
+	required int32 type = 1;
+}
+
+message SStaticObject
+{
+	required float min_trigger_dist = 1;
+}
+
+message SDragonObject
+{
+	required int64 ownerID = 1;
+	required bytes name = 2;
+}
+
+message SBannerObject
+{
+	required int64 basemapid = 1;
+	required int64 gamemapid = 2;
+}
+
+message SUnitObject
+{
+	required int32 type = 1;
+	required float life = 2;
+	required float mana = 3;
+	required float max_life = 4;
+	required float speed = 5;
+	required int32 level = 6;
+	repeated SAura auras = 7;
+	optional int32 ctrl_type = 8;
+	optional int64 ctrl_id = 9;
+	optional int64 ctrl_owner_id = 10;
+	optional SActionObject actionObject = 11;
+	optional SHumanObject humanObject = 12;
+	optional SBreakableObject breakableObject = 13;
+	optional SCharmObject charmObject = 14;
+	optional SStaticObject staticObject = 15;
+	optional SDragonObject dragonObject = 16;
+	optional SBannerObject bannerObject = 17;
+	optional int32 camp = 18;
+}
+
+// ----------------------------------------
+
+message SItemObject
+{
+	required int32 type = 1;
+	required int32 count = 2;
+	required int64 dropper_id = 3;
+	required bool dropping = 4;
+	required int64 owner = 5;
+}
+
+// -----------------------------------------
+
+
+// -----------------------------------------
+
+message SGameEntity
+{
+	required int64 id = 1;
+	required int32 type = 2;
+	required bytes name = 3;
+	optional SUnitObject unit = 4;
+	optional SCollisionObject collision = 5;
+	optional SItemObject sitem = 6;
+};
+
+// -----------------------------------------
+
+message SCGameObjectEnter
+{
+	option (msgid) = 1300;
+	required SGameEntity obj = 1;
+	required SVector3 position = 2;
+	required SVector3 orientation = 3;
+	optional SMotion motion = 4;
+}
+
+message SCGameObjectLeave
+{
+	option (msgid) = 1301;
+	required int64 id = 1;
+}

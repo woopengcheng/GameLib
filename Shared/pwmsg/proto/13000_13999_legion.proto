@@ -1,0 +1,34 @@
+// -----------------------------------------
+
+// 军团相关的消息
+
+message CSCreateLegion
+{
+	option (msgid) = 13000;
+	required int32 legionid = 1;
+	required SVector3 start_pos = 2;
+	required SVector3 orientation = 3;
+}
+
+message Soldier
+{
+	required int32 soldier_type = 1;
+	required int64 soldier_id = 2;
+	required int32 pos = 3;
+}
+
+message SCSyncLegion
+{
+	option (msgid) = 13001;
+	required int32 legionid = 1;
+	required int64 ownerid = 2;
+	repeated Soldier soliders = 3;
+	optional int64 leader_id = 4;
+	optional int32 leader_type = 5;
+}
+
+message SCClearLegion
+{
+	option (msgid) = 13002;
+	required int32 legionid = 1;
+}

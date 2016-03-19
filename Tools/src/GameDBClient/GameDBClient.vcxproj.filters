@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\ClientCommands.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DBClientHttpServer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DBClient.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleCreateDatabase_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleCreateUser_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleDeleteDatabase_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleDeleteUser_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleDump_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHCount_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHDel_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHDrop_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHGet_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHGetKeys_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHGetKeyVals_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHGetVals_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHList_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHMultiDel_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHMultiGet_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHMultiSet_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHScan_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHSet_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHSetIncr_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHSetIncrFloat_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHSetNX_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleHSetOW_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleModifyUser_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleSelectDatabase_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleShowDatabases_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleShowUsers_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleUserAuth_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZCount_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZDel_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZDrop_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZGet_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZList_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZRTop_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZSet_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_HandleZTop_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_SyncServerHandler_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Client_GRpc_testMulitServerNode_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RpcRegister.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{0af7dc79-afc5-4ee2-a892-815d69a7d76e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\rpc">
+      <UniqueIdentifier>{e62d973b-0a0a-4018-919e-63cc923b4762}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ClientCommands.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DBClientHttpServer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\GRpc.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\MsgNameDefine.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RPCCallFuncs.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RpcDatas.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RPCDefines.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DBClient.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

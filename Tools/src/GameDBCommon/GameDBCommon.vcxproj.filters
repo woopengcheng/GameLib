@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{0af7dc79-afc5-4ee2-a892-815d69a7d76e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\OrmTest">
+      <UniqueIdentifier>{88ad02f9-2a3c-4dca-b55d-f192b7640a21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\OrmHelper.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Role.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RoleCollection.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RoleItems.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_Reflection.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_Test_Oldname.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_Test_PrimaryKey.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_TestSlave.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_TestSlave1.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_TestSlave2.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_TestSlaveCollection.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrmTest\Orm_OrmStructs.h">
+      <Filter>src\OrmTest</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\OrmHelper.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Role.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="RoleCollection.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RoleItems.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrmTest\Orm_Reflection.cpp">
+      <Filter>src\OrmTest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrmTest\Orm_Test_Oldname.cpp">
+      <Filter>src\OrmTest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrmTest\Orm_Test_PrimaryKey.cpp">
+      <Filter>src\OrmTest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrmTest\Orm_TestSlave.cpp">
+      <Filter>src\OrmTest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrmTest\Orm_TestSlave1.cpp">
+      <Filter>src\OrmTest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrmTest\Orm_TestSlave2.cpp">
+      <Filter>src\OrmTest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrmTest\Orm_TestSlaveCollection.cpp">
+      <Filter>src\OrmTest</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

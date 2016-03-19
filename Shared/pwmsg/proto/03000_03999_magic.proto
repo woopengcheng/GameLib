@@ -1,0 +1,409 @@
+
+message SCastTarget
+{
+	required int32 target_type = 1;
+	optional int64 target_id = 2;
+	optional SVector3 target_position = 3;
+	optional int64 target_item = 4;
+}
+
+// 开始施法 c=>s
+message CSCastMagic
+{
+	option (msgid) = 3000;
+	required int32 magic_type = 1;
+	required SCastTarget cast_target = 2;
+	optional float param1 = 3;
+	optional float param2 = 4;
+	optional int64 caster = 5;
+	optional float param3 = 6;
+	optional int32 param4 = 7;
+}
+
+// 施法开始通知 s=>c
+message SCCastBegan
+{
+	option (msgid) = 3001;
+	required int64 caster = 1;
+	required SVector3 caster_position = 2;
+	required int32 magic_type = 3;
+	required int32 magic_type_root = 4;
+	required SCastTarget cast_target = 5;
+	required int32 magic_flags = 6;
+	required int64 random_seed = 7;
+	optional float param1 = 8;
+	optional float param2 = 9;
+	required int32 trigger_flags = 10; //
+}
+
+// 施法结束通知 s=>c
+message SCCastEnded
+{
+	option (msgid) = 3002;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+	required int32 magic_type_root = 3;
+}
+
+
+// 引导开始通知 s=>c
+message SCChannelBegan
+{
+	option (msgid) = 3004;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+}
+
+// 引导结束通知s=>c
+message SCChannelEnded
+{
+	option (msgid) = 3005;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+}
+
+// 施法中断 c=>s
+message CSInterruptCast
+{
+	option (msgid) = 3006;
+	required int64 caster = 1;
+}
+
+// 施法中断通知 s=>c
+message SCMagicInterruped
+{
+	option (msgid) = 3007;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+	optional int32 error_code = 3;
+	optional int64 id = 4;
+}
+
+message SMagicEffect
+{
+	required int32 effect_type = 1;
+	required int32 effect_id = 2;
+	required int64 targetId = 3;
+	required float targetDamage = 4;
+	required float targetHeal = 5;
+	required int64 targetFlags = 6;
+	optional int32 stiffTime = 7;
+	optional int32 hitType = 8;
+	optional int32 sunderStiffTime = 9;
+	optional int32 sunderStopFrameTime = 10;
+	optional float bounceDamage = 11;
+}
+
+message SCMagicEffect
+{
+	option (msgid) = 3008;
+	required int64 caster = 1;
+	required int32 magicType = 2;
+	repeated SMagicEffect effect = 3;
+	optional SHitInfo sblood = 4;
+	optional SHitInfo dblood = 5;
+}
+
+// 客户端开为(蓄力技能)
+message CSCastFire
+{
+	option (msgid) = 3009;
+	required int32 magic_type = 1;
+}
+
+// 蓄力开始
+message SCCastPrepareBegan
+{
+	option (msgid) = 3010;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+	required int32 magic_type_root = 3;
+	required int32 max_time = 4;
+}
+
+// 蓄力结束
+message SCCastPrepareEnded
+{
+	option (msgid) = 3011;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+	required int32 magic_type_root = 3;
+}
+
+message SHitInfo
+{
+	required int32 mesh_id = 1;
+	required SVector3 pos = 2;
+	required SVector3 dir = 3;
+}
+
+message CSMagicTrigger
+{
+		option (msgid) = 3012;
+		required int64 sid = 1;
+		required int64 did = 2;
+		required int64 magicid = 3;
+		required bool vaild = 4;
+		optional SHitInfo sblood = 5;
+		optional SHitInfo dblood = 6;
+		
+}
+
+message SCInterruptFailed
+{
+		option (msgid) = 3013;
+		required int64 caster = 1;
+}
+
+message SCMagicCooldown
+{
+	option (msgid) = 3020;
+	required int64 id = 1;
+	required int32 magic_type = 2;
+	required int64 cooldown_ms = 3;
+	required int32 cooldown_share_type = 4;
+	required int64 cooldown_share_time = 5;
+}
+
+// 光环指令(部份状态可以接受指令)
+message CSAuraInstruction
+{
+	option (msgid) = 3025;
+	required int32 type = 1;
+	optional float param1 = 2;
+	optional float param2 = 3;
+	optional float param3 = 4;
+	optional float param4 = 5;
+	
+}
+
+message SCAuraInstruction
+{
+	option (msgid) = 3026;
+	required int64 id = 1;
+    required int32 type = 2;
+	required int64 aura_app_id = 3;
+	optional float param1 = 4;
+	optional float param2 = 5;
+	optional float param3 = 6;
+	optional float param4 = 7;
+	optional float result1 = 8;
+	optional float result2 = 9;
+	optional float result3 = 10;
+}
+
+// -----------------------------------------
+
+message SPhysicsForce
+{
+	required int32 type = 1;
+	required float force = 2;
+	optional float force_adjust_y = 4;
+	optional float force_adjust_angle = 5;
+	optional int32 force_height = 6;
+	optional float force_if_top = 7;
+	optional float force_if_middle = 8;
+	optional float force_if_bottom = 9;
+}
+
+message SPhysicsTarget
+{
+	optional int32 region_type = 1;
+	optional float region_param1 = 2;
+	optional float region_param2 = 3;
+	optional float region_param3 = 4;
+	optional float region_param4 = 5;
+	optional int64 single_target = 6;
+}
+
+message SCPhysicsForce
+{
+	option (msgid) = 3050;
+	required SPhysicsForce def = 1;
+	required SPhysicsTarget target = 2;
+	optional SVector3 src_position = 3;
+	optional SVector3 dst_position = 4;
+}
+// -----------------------------------------
+
+
+// 新获得一个光环/效果
+message SCAuraBegan
+{
+	option (msgid) = 3100;
+	required SAura aura = 1;
+}
+
+// 一个光环/效果结束
+message SCAuraEnded
+{
+	option (msgid) = 3101;
+	required int64 owner = 1;
+	required int64 id = 2;
+	required int32 end_way = 3;
+}
+
+// -----------------------------------------
+
+message SCAuraUpdate
+{
+	option (msgid) = 3102;
+	required SAura aura = 1;
+	required int32 update_way = 2;
+	required int64 update_caster = 3;
+}
+
+// -----------------------------------------
+// 子弹
+// -----------------------------------------
+
+message SCCollisionCrash
+{
+	option (msgid) = 3150;
+	required int64 owner = 1;
+	required int64 id = 2;
+}
+
+message SCCollisionStopped
+{
+	option (msgid) = 3151;
+	required int64 id = 1;
+}
+
+// -----------------------------------------
+
+// 击退消息
+message SCKnockback
+{
+	option (msgid) = 3200;
+	required int64 caster = 1;
+	required int64 target = 2;
+	required int32 magic_type = 3;
+	required SVector3 target_position = 4;
+	required float speed = 5;
+	required int32 magic_flags = 6;
+}
+
+// 跳斩消息
+message SCJumpAndChop
+{
+	option (msgid) = 3205;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+	required SVector3 target_point = 3;
+	required SVector3 jump_point = 4;
+	required float speed = 5; //run speed
+	required int64 time_run = 6; //ms
+	required int64 time_jump = 7; //ms
+}
+
+// 冲锋
+message SCCharge
+{
+	option (msgid) = 3210;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+	required int32 effect_type = 3;
+	required int32 effect_id = 4;
+	required int32 effect_time = 5;
+	required SVector3 target_point = 6;
+};
+
+// 连锁技能跳跃
+message SCChainMagicJump
+{
+	option (msgid) = 3215;
+	required int64 caster = 1;
+	required int32 magic_type = 2; 
+	required int64 jump_from = 3; 
+	required int64 jump_to = 4;
+	required int32 effect_type = 5;
+	required int32 effect_id = 6;
+};
+
+// 黑龙之怒 -- 飙升
+message SC_WOTBD_Soaring1
+{
+	option (msgid) = 3220;
+	required int64 caster = 1;
+	required int64 target = 2;
+	required float time_ms = 3;
+	required int32 magic_type = 4;
+	required int32 effect_type = 5;
+	required int32 effect_id = 6;
+	required SVector3 soaring_pos = 7;
+	required SVector3 start_pos = 8;
+};
+
+
+
+// 黑龙之怒 -- 俯冲
+message SC_WOTBD_Subduction
+{
+	option (msgid) = 3221;
+	required int64 caster = 1;
+	required int64 target = 2;
+	required float speed = 3; // 单位为每秒
+	required int32 magic_type = 4;
+	required int32 effect_type = 5;
+	required int32 effect_id = 6;
+	required SVector3 start_pos = 7;
+}
+
+// 黑龙之怒 -- 捕获
+message SC_WOTBD_Capture
+{
+	option (msgid) = 3222;
+	required int64 caster = 1;
+	repeated int64 target = 2;
+	required int32 magic_type = 3;
+	required int32 effect_type = 4;
+	required int32 effect_id = 5;
+	required SVector3 start_pos = 6;
+}
+
+// 黑龙之怒 -- 捕获后飙升
+message SC_WOTBD_Soaring2
+{
+	option (msgid) = 3223;
+	required int64 caster = 1;
+	required SVector3 soaring_pos = 2;
+	required float time_ms = 3;
+	required int32 magic_type = 4;
+	required int32 effect_type = 5;
+	required int32 effect_id = 6;
+	required SVector3 start_pos = 7;
+}
+
+// 黑龙之怒 -- 捕获后返回
+message SC_WOTBD_Return
+{
+	option (msgid) = 3224;
+	required int64 caster = 1;
+	required SVector3 position = 2;
+	required float time_ms = 3;
+	required int32 magic_type = 4;
+	required int32 effect_type = 5;
+	required int32 effect_id = 6;
+	required SVector3 start_pos = 7;
+}
+
+// 黑龙之怒 -- 结束
+message SC_WOTBD_Ended
+{
+	option (msgid) = 3225;
+	required int64 caster = 1;
+	required int32 magic_type = 2;
+	required int32 effect_type = 3;
+	required int32 effect_id = 4;
+	required SVector3 start_pos = 5;
+}
+
+// 射线目标更新 target = 0表示无目标
+
+message SCUpdateRayTarget
+{
+    option (msgid) = 3300;
+    required int64 id = 1;
+    required int64 target = 2;
+}

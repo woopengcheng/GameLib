@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Mongo">
+      <UniqueIdentifier>{2578a575-1a06-44f0-866f-0d78025c17a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bson">
+      <UniqueIdentifier>{36be9895-ded6-4dae-9712-39e6c82a7e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bson\util">
+      <UniqueIdentifier>{9f04ed5a-34a9-48a3-8fa1-ebacc6d3cc68}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\mongo\assert_util.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\atomic_intrinsics.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\atomic_intrinsics_gcc.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\atomic_intrinsics_win32.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\atomic_word.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\compiler.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\compiler_gcc.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\compiler_msvc.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\exit_code.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\float_utils.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\hex.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\redef_macros.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\string_data.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\targetver.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\undef_macros.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\mongo\windows_basic.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bson.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bson_builder_base.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bson_field.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bsonelement.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bson-inl.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bsonmisc.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bsonobj.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bsonobjbuilder.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bsonobjiterator.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\bsontypes.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\inline_decls.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\ordering.h">
+      <Filter>bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\util\atomic_int.h">
+      <Filter>bson\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\util\builder.h">
+      <Filter>bson\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bson\util\misc.h">
+      <Filter>bson\util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\bson\bson.cpp">
+      <Filter>bson</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bson\README">
+      <Filter>bson</Filter>
+    </None>
+  </ItemGroup>
+</Project>

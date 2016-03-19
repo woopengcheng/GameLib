@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib_Debug_x64|x64">
+      <Configuration>Lib_Debug_x64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{471AF0BF-D1AF-3AA2-8E04-633A433EAFFC}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">Building Custom Rule E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/LibCore/deps/RocksDB -BE:/GitHub/LibCore/deps/RocksDB/build --check-stamp-file E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/LibCore/deps/RocksDB -BE:/GitHub/LibCore/deps/RocksDB/build --check-stamp-file E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInitialize.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCCompiler.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCXXCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeGenericSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\WindowsPaths.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-C.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeRCCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeRCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCXXInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;E:\GitHub\LibCore\deps\RocksDB\thirdparty.inc;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindGit.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageMessage.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeParseArguments.cmake;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInitialize.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCCompiler.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCXXCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeGenericSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\WindowsPaths.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-C.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeRCCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeRCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCXXInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;E:\GitHub\LibCore\deps\RocksDB\thirdparty.inc;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindGit.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageMessage.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeParseArguments.cmake;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/LibCore/deps/RocksDB -BE:/GitHub/LibCore/deps/RocksDB/build --check-stamp-file E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInitialize.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCCompiler.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCXXCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeGenericSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\WindowsPaths.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-C.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeRCCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeRCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCXXInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;E:\GitHub\LibCore\deps\RocksDB\thirdparty.inc;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindGit.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageMessage.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeParseArguments.cmake;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/ZERO_CHECK.vcxproj">
+      <Project>F6983246-F08B-33E0-AC91-DAA68E80444F</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/arena_test.vcxproj">
+      <Project>6F547F57-6999-3D07-BBF9-B3B2712971E3</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/auto_roll_logger_test.vcxproj">
+      <Project>CE21A82B-D8F9-3A96-9394-4BD2AA71E3BF</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/autovector_test.vcxproj">
+      <Project>4E41D45C-FC7D-30C2-92B6-4B0E250E5A10</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/backupable_db_test.vcxproj">
+      <Project>3BFD47B9-8093-3513-8851-C00FD4E3DA0B</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/block_based_filter_block_test.vcxproj">
+      <Project>93C32B0B-E79C-31C1-856E-06BF5E416FFF</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/block_hash_index_test.vcxproj">
+      <Project>B75859FE-5968-36A2-A44D-8BD77EE7E076</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/block_test.vcxproj">
+      <Project>2B070DBA-082D-33B4-8348-291260058D9E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/bloom_test.vcxproj">
+      <Project>10A48B90-EDF4-34B2-A5BE-ACBF37C8A96E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/c_test.vcxproj">
+      <Project>4189BF73-93B7-3C15-B0FF-F27903EB1E61</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/cache_bench.vcxproj">
+      <Project>DF85CCC4-74D0-386E-B21F-7D1E9CA481B2</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/cache_test.vcxproj">
+      <Project>0FF50002-2AF1-31F2-90FB-A83D79DDE870</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/checkpoint_test.vcxproj">
+      <Project>B7BB7DF0-1654-32C3-8CC8-D2D0E36D6A16</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/coding_test.vcxproj">
+      <Project>AAB6364F-DEF9-34E0-8337-E4547851B616</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/column_family_test.vcxproj">
+      <Project>045E1A2D-46B8-36FB-9374-8A0598395224</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/compact_files_test.vcxproj">
+      <Project>222F6036-039D-3450-AA75-C757235135CE</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/compact_on_deletion_collector_test.vcxproj">
+      <Project>8E2A8797-4C6C-3B04-B5E4-F2DEA02DFC3F</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/compaction_iterator_test.vcxproj">
+      <Project>B9865C34-9029-340B-80DB-822CE14C30E2</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/compaction_job_stats_test.vcxproj">
+      <Project>67B05EF9-14F5-3468-AE58-6918FD71CE3E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/compaction_job_test.vcxproj">
+      <Project>41AA213F-8D02-313D-BC87-3E6D4FFD73C3</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/compaction_picker_test.vcxproj">
+      <Project>39FBA054-3608-3332-A107-7200D7B90203</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/comparator_db_test.vcxproj">
+      <Project>D5BEDAA2-771F-374A-9823-92B1E521706C</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/corruption_test.vcxproj">
+      <Project>E7D84193-9E81-3025-81BF-32B09FCB3219</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/crc32c_test.vcxproj">
+      <Project>6FC32E7B-DC9A-3718-976B-115033FCC523</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/cuckoo_table_builder_test.vcxproj">
+      <Project>5C602B6E-8FC2-3C30-B0AE-4787A8B57BAE</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/cuckoo_table_db_test.vcxproj">
+      <Project>D49FA202-D17A-3903-A5D4-8E24CF66D585</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/cuckoo_table_reader_test.vcxproj">
+      <Project>E525BAE9-7CEF-3582-A9D1-A93A7C00A310</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_bench.vcxproj">
+      <Project>5AAFA4C5-340A-3060-8E7D-774A1DFAF28A</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_compaction_filter_test.vcxproj">
+      <Project>5F161583-FF47-3A6C-B1B5-23A1CD6C6F5F</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_compaction_test.vcxproj">
+      <Project>84820DEC-AF99-3532-BFB0-A3ABB75AE7FD</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_dynamic_level_test.vcxproj">
+      <Project>026B08DE-165F-3275-AB01-0BB454395FD5</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_inplace_update_test.vcxproj">
+      <Project>27892F99-5911-30EA-9B52-CF6F41D96B0E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_iter_test.vcxproj">
+      <Project>B84D91D8-59A8-374F-B322-D1C9384F96BA</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_log_iter_test.vcxproj">
+      <Project>9E7A7F5A-271E-3019-A2D0-42BB88826359</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_properties_test.vcxproj">
+      <Project>76BE1555-12F7-3878-A112-BC25A83E3DAF</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_repl_stress.vcxproj">
+      <Project>6B2F78FE-73A0-360F-A313-0AAD97C7C069</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_sanity_test.vcxproj">
+      <Project>EBDAE3A0-8810-344A-A9FE-9C099F778766</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_stress.vcxproj">
+      <Project>1B2990A9-0E06-384C-8D2C-26237A7DD2ED</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_table_properties_test.vcxproj">
+      <Project>73E3DEF8-BF39-32BE-8912-616589FE6222</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_tailing_iter_test.vcxproj">
+      <Project>FAC842A2-1FB6-3205-9612-53A35AE4C647</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_test.vcxproj">
+      <Project>F4E78B83-9DDC-313A-AD90-376C55B60757</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_universal_compaction_test.vcxproj">
+      <Project>456DEAE5-8354-3900-9B76-D03D785B166A</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/db_wal_test.vcxproj">
+      <Project>591FB44D-642B-3FD3-9EEB-3B5CE8BEC0CC</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/dbformat_test.vcxproj">
+      <Project>A6BF44C9-D490-3479-BCB8-D415221A6C31</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/delete_scheduler_test.vcxproj">
+      <Project>FC81947E-16C5-38B2-BC95-F4700348A08F</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/deletefile_test.vcxproj">
+      <Project>ABAEAF00-0E64-3A7E-880B-60393732D1F8</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/document_db_test.vcxproj">
+      <Project>BE27F83B-978D-3DD6-A0A3-73E545F39DED</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/dynamic_bloom_test.vcxproj">
+      <Project>AD096B81-0429-3ADF-BFE7-E7CCEBF009CE</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/env_test.vcxproj">
+      <Project>2BC7C6B2-3C26-3D45-B77C-B2178A1A1C78</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/event_logger_test.vcxproj">
+      <Project>BFA7163D-62A7-3C95-82CB-AD28C965720E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/fault_injection_test.vcxproj">
+      <Project>76011FA2-91B8-3B82-A565-B157DC5EB4AF</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/file_indexer_test.vcxproj">
+      <Project>F5CE7BFD-B74B-3B5E-97A0-08DF52CFAC3A</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/file_reader_writer_test.vcxproj">
+      <Project>4AB8840F-3E8F-3246-A4FA-6389FDEF4482</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/filelock_test.vcxproj">
+      <Project>93FAD9F1-4038-366D-9D7B-838035E616AA</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/filename_test.vcxproj">
+      <Project>24A661CD-E9DE-395A-A4F2-F43EA83B4F6C</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/flush_job_test.vcxproj">
+      <Project>EB86D498-905E-383C-B0A1-1DAD6F883B1E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/full_filter_block_test.vcxproj">
+      <Project>6BA23691-3A73-3D1C-B829-920DA1D2BAEE</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/geodb_test.vcxproj">
+      <Project>051B5EE1-2262-3856-BD44-A8C6B55C5D7D</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/third-party/gtest-1.7.0/fused-src/gtest/gtest.vcxproj">
+      <Project>4C596900-31C7-3711-BC41-8D25D87FED25</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/heap_test.vcxproj">
+      <Project>D6E9ED2D-8EAD-3D41-8B60-929B2D3A2536</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/histogram_test.vcxproj">
+      <Project>935F368C-FA53-3B08-8D2F-4E311F85C965</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/inlineskiplist_test.vcxproj">
+      <Project>EE5CF17A-A62E-3D1B-9163-AC954A6625AA</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/json_document_test.vcxproj">
+      <Project>E9CD2844-7896-363D-B700-F000556EBED6</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/ldb_cmd_test.vcxproj">
+      <Project>B6B0A3B2-16A7-3B29-B4E8-71A7CAF4EE31</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/listener_test.vcxproj">
+      <Project>39A3272C-FED5-32D3-AAE3-5AA2BC53832E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/log_test.vcxproj">
+      <Project>ADBB892B-5447-3B8F-8F1E-2B69C9FDA58A</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/manual_compaction_test.vcxproj">
+      <Project>C8F91932-F0FB-3413-A2E1-B8FA33D5D11D</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/memenv_test.vcxproj">
+      <Project>FBE80445-30DD-3FC7-A202-E34E26598693</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/memory_test.vcxproj">
+      <Project>545C4A2B-46A9-3F29-87DA-81DD9F5BA312</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/memtable_list_test.vcxproj">
+      <Project>3EA06FA3-8632-35F0-8444-C48567C5692B</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/memtablerep_bench.vcxproj">
+      <Project>9FED4080-4861-3A0B-A7B3-8D0437DD4BF4</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/merge_helper_test.vcxproj">
+      <Project>17355313-CD57-33E8-8685-32B231CCBF44</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/merge_test.vcxproj">
+      <Project>33122BFE-3164-3554-B90D-218A6BAB00E1</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/merger_test.vcxproj">
+      <Project>DA9FDE4B-F1B7-3D78-9154-30653A49B081</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/mock_env_test.vcxproj">
+      <Project>1A5BE397-6D31-324D-8533-689AD65B1FCF</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/optimistic_transaction_test.vcxproj">
+      <Project>84D29367-42F6-378B-82E3-ED28FF10141A</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/options_file_test.vcxproj">
+      <Project>09F16471-10FD-36BD-B953-3B0613758F3C</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/options_test.vcxproj">
+      <Project>2CC67B28-B2D7-3CBF-8B0D-BDD2BAA3DC74</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/options_util_test.vcxproj">
+      <Project>935DCCE4-0DEA-38B7-A566-9919606808B7</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/perf_context_test.vcxproj">
+      <Project>B105B78D-8EAC-3017-B595-7DA123E807BD</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/plain_table_db_test.vcxproj">
+      <Project>7DD5A6BA-0FAE-3347-A98C-B1D0BF8982DD</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/prefix_test.vcxproj">
+      <Project>C0244E07-739E-3725-AC43-8DFB68EA97A0</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/rate_limiter_test.vcxproj">
+      <Project>1AC44116-8E7B-39FC-AD87-3630D14AB079</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/redis_lists_test.vcxproj">
+      <Project>1CA21DC2-61F8-35CB-A681-BF4AFDE3A5BD</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/reduce_levels_test.vcxproj">
+      <Project>ABBE84DE-F75B-3308-8AD4-A9D877089AE9</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/rocksdb.vcxproj">
+      <Project>23E0D239-0969-3646-8455-6175E47BC296</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/rocksdb_dump.vcxproj">
+      <Project>905D5462-A7DF-3674-B3C2-E6C95B658E3A</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/rocksdb_undump.vcxproj">
+      <Project>7CB90463-8827-3ED2-91D6-91813FFC80A0</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/rocksdblib.vcxproj">
+      <Project>7DFDB944-58C6-3CDC-9661-E1B226249C13</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/skiplist_test.vcxproj">
+      <Project>A37F5C56-6EBB-3648-9AEA-1CCE0A420903</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/slice_transform_test.vcxproj">
+      <Project>61607EC0-4506-3605-94D6-A637BC5B1270</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/spatial_db_test.vcxproj">
+      <Project>7AF400C2-20EC-3DF4-A86B-4AC1D03A9DB2</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/sst_dump.vcxproj">
+      <Project>48C410DA-94FD-35C5-8A40-2C9AFDCFE39F</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/sst_dump_test.vcxproj">
+      <Project>CA9A1D31-45C9-3B1D-8224-F57353DDCAC4</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/stringappend_test.vcxproj">
+      <Project>98199C65-1674-39C6-9878-4CB747EAEC8D</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/table_properties_collector_test.vcxproj">
+      <Project>727D5E3B-0266-3F1B-8CB5-017FD2C22ED0</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/table_reader_bench.vcxproj">
+      <Project>A47D7BC1-7D57-3560-B030-03AD1B5937DF</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/table_test.vcxproj">
+      <Project>5891386F-A9B2-3790-9E2A-13CBDA80E4A6</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/testutillib.vcxproj">
+      <Project>6D487125-F3FD-388F-8D81-958F1F888F28</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/thread_list_test.vcxproj">
+      <Project>9C2B367E-F46F-3038-99B4-85D5E9AB4F81</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/thread_local_test.vcxproj">
+      <Project>2E312A6C-3C65-3F2A-AC76-F6DC8ABA10A8</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/transaction_test.vcxproj">
+      <Project>FE17A3AA-383C-3583-9F43-C5EED313727C</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/ttl_test.vcxproj">
+      <Project>F2E7E8C2-712B-3FD0-AAA6-778D88828BBC</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/version_builder_test.vcxproj">
+      <Project>185F2DC0-CF22-3EB0-85FB-D415C42E4796</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/version_edit_test.vcxproj">
+      <Project>05326198-7448-34B0-9EF1-A9695E4D4328</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/version_set_test.vcxproj">
+      <Project>48254B7E-0CAB-39F0-B43B-989E256C0D4F</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/wal_manager_test.vcxproj">
+      <Project>905E8395-3BEF-371D-8FB5-02E95AAE3EC3</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/write_batch_test.vcxproj">
+      <Project>A3949001-2B73-3E15-888C-EA7DC939244D</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/write_batch_with_index_test.vcxproj">
+      <Project>AD6C62EF-DF16-3CB5-9F6D-6B1012A49A4E</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/write_callback_test.vcxproj">
+      <Project>CB602FEA-7143-3734-B813-C6CBB74DF3EE</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/write_controller_test.vcxproj">
+      <Project>52763019-4CB2-342F-B71D-11A5E3D9D6D2</Project>
+    </ProjectReference>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/write_stress.vcxproj">
+      <Project>E91802E8-969E-389C-8638-B1B7CE12FEDC</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

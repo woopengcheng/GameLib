@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="google-glog">
+</Property><Property Name="解决方案文件" Value="D:\Subversion\netlib\deps\glog\google-glog.sln">
+</Property><Property Name="Date" Value="2014年8月26日">
+</Property><Property Name="Time" Value="23:09">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="google-glog.sln" Description="文件已成功备份为 D:\Subversion\netlib\deps\glog\google-glog.sln.old">
+</Event><Event ErrorLevel="0" Project="libglog" Source="vsprojects\libglog\libglog.vcproj" Description="Converting project file 'D:\Subversion\netlib\deps\glog\vsprojects\libglog\libglog.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libglog" Source="vsprojects\libglog\libglog.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libglog" Source="vsprojects\libglog\libglog.vcproj" Description="Done converting to new project file 'D:\Subversion\netlib\deps\glog\vsprojects\libglog\libglog.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libglog" Source="vsprojects\libglog\libglog.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="logging_unittest" Source="vsprojects\logging_unittest\logging_unittest.vcproj" Description="Converting project file 'D:\Subversion\netlib\deps\glog\vsprojects\logging_unittest\logging_unittest.vcproj'.">
+</Event><Event ErrorLevel="1" Project="logging_unittest" Source="vsprojects\logging_unittest\logging_unittest.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="logging_unittest" Source="vsprojects\logging_unittest\logging_unittest.vcproj" Description="Done converting to new project file 'D:\Subversion\netlib\deps\glog\vsprojects\logging_unittest\logging_unittest.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="logging_unittest" Source="vsprojects\logging_unittest\logging_unittest.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libglog_static" Source="vsprojects\libglog_static\libglog_static.vcproj" Description="Converting project file 'D:\Subversion\netlib\deps\glog\vsprojects\libglog_static\libglog_static.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libglog_static" Source="vsprojects\libglog_static\libglog_static.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libglog_static" Source="vsprojects\libglog_static\libglog_static.vcproj" Description="Done converting to new project file 'D:\Subversion\netlib\deps\glog\vsprojects\libglog_static\libglog_static.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libglog_static" Source="vsprojects\libglog_static\libglog_static.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="logging_unittest_static" Source="vsprojects\logging_unittest_static\logging_unittest_static.vcproj" Description="Converting project file 'D:\Subversion\netlib\deps\glog\vsprojects\logging_unittest_static\logging_unittest_static.vcproj'.">
+</Event><Event ErrorLevel="1" Project="logging_unittest_static" Source="vsprojects\logging_unittest_static\logging_unittest_static.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="logging_unittest_static" Source="vsprojects\logging_unittest_static\logging_unittest_static.vcproj" Description="Done converting to new project file 'D:\Subversion\netlib\deps\glog\vsprojects\logging_unittest_static\logging_unittest_static.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="logging_unittest_static" Source="vsprojects\logging_unittest_static\logging_unittest_static.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="google-glog.sln" Description="成功转换解决方案">
+</Event><Event ErrorLevel="3" Project="" Source="google-glog.sln" Description="Converted">
+</Event></UpgradeLog>

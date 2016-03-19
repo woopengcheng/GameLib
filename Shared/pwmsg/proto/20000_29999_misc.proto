@@ -1,0 +1,153 @@
+
+// -----------------------------------------
+
+message SCCharacterKick
+{
+	option (msgid) = 20000;
+	required int32 reason = 1;
+}
+
+// -----------------------------------------
+
+message SCLevelup
+{
+	option (msgid) = 20001;
+	required int64 id = 1;
+	required int32 level = 2;
+}
+
+// PING消息
+message CSPing
+{
+	option (msgid) = 20010;
+	required float time = 1;
+}
+
+// PING的响应消息
+message SCPong
+{
+	option (msgid) = 20011;
+	required float time = 2;
+}
+
+// -----------------------------------------
+
+// 传送
+message SCTransport
+{
+	option (msgid) = 20100;
+	required int32 idScene = 1;
+	required int64 idDungeon = 2;
+	required SVector3 pos = 3;
+	required SVector3 ori = 4;
+}
+
+
+// -----------------------------------------
+
+message SCDungeonFinished 
+{
+	option (msgid) = 22000;
+	required int32 mapID = 1;
+}
+
+// -----------------------------------------
+
+message SCActionGroup
+{
+	option (msgid) = 22100;
+	required int64 actionID = 1;
+	required int32 section = 2;
+	required int32 status	= 3;
+	required int64 guid	= 4;
+}
+
+message SCEnvironmentalAnimation
+{
+	option (msgid) = 22200;
+}
+
+message SCRoleAction
+{
+	option (msgid) = 22300;
+	required int32 roleID = 1;
+	required SActionObject actionObject = 2;
+}
+
+message CSRoleAction
+{
+	option (msgid) = 22301;
+	required bytes actionName = 1;
+}
+
+message SCPlayAction
+{
+	option (msgid) = 22400;
+	required int64 id = 1;
+	required int64 actionID = 2;
+	required int64 random_seed = 3;
+}
+
+// -----------------------------------------
+
+// 开始控制
+message SCControllBegan
+{
+	option (msgid) = 22500;
+	required int64 id = 1;
+	required int64 target = 2;
+    required int32 type = 3;
+}
+
+// 结束控制
+message SCControllEnded
+{
+	option (msgid) = 22501;
+	required int64 id = 1;
+	required int64 target = 2;
+	required SVector3 position = 3;
+    required int32 type = 4;
+    required int32 reason = 5;
+}
+
+//控制失败
+message SCControllFailed
+{
+	option (msgid) = 22502;
+	required int64 id = 1;
+	required int64 target = 2;
+	required int32 type = 3;
+	required int32 reason = 4;
+}
+
+
+// -----------------------------------------
+
+message CSEnterDungeon
+{
+    option (msgid) = 23000;
+    required int64 basemap = 1;
+    required int64 gamemap = 2; // ==0表示创新副本
+    optional int64 monsterid = 3;
+}
+
+message SCEnterDungeon
+{
+    option (msgid) = 23001;
+    required int64 basemap = 1;
+    required int32 error_code = 2;
+}
+
+message CSLeaveDungeon
+{
+	option (msgid) = 23002;
+	required int64 self = 1;
+}
+
+// ----------------------------
+
+message CSGameObjectTrigger
+{
+	option (msgid) = 24000;
+	required int64 id = 1;	
+}

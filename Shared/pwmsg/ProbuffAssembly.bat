@@ -1,0 +1,2 @@
+"./ProbuffAssembly.exe"  ./proto
+pause

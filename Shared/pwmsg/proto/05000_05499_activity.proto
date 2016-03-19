@@ -1,0 +1,101 @@
+// 加入活动
+message CSActivityJoin
+{
+	option (msgid) = 5000;
+	required int32 activityID = 1;
+}
+
+// 加入活动返回消息
+message SCActivityJoinResult
+{
+	option (msgid) = 5001;
+	required int32 flag = 1;
+}
+
+message CSActivityRewardQuery
+{
+	option (msgid) = 5002;
+}
+message SCActivityRewardResult
+{
+	option (msgid) = 5003;
+	required int32 activitys = 1;
+	repeated SUnitAttrValue attrs = 2;
+}
+message CSActivityReward
+{
+	option (msgid) = 5004;
+	required int32 activityID = 1;
+}
+message SCActivityDelete
+{
+	option (msgid) = 5005;
+	required int32 activityID = 1;	
+}
+message SCActivityStatus
+{
+	option (msgid) = 5006;
+	required int32 activityID = 1;	
+	required int32 status = 2;
+}
+
+message CSActivityAuction
+{
+	option (msgid) = 5007;
+	required int32 activityID = 1;	
+	required int32 money = 2;
+}
+
+message SCActivityAuction
+{
+	option (msgid) = 5008;
+	required int32 activityID = 1;	
+	required int32 status = 2;
+}
+
+message CSActivityGetBuff
+{
+	option (msgid) = 5009;
+	required int32 activityID = 1;
+	required int32 buffID = 2;	
+}
+
+
+message SCActivityDamage
+{
+	option (msgid) = 5102;
+	required int64 id = 1;
+	required float damage = 2;
+	required bytes name = 3;
+	required int32 num = 4;
+}
+
+message SCActivityBoss
+{
+	option (msgid) = 5103;
+	required int64 id = 1;
+	required bytes name = 2;
+}
+
+message CSActivityBoss
+{
+	option (msgid) = 5104;
+	required int64 id = 1;
+}
+
+message SCActivityNpcID
+{
+	option (msgid) = 5105;
+	required int64 id = 1;
+}
+
+message CSActivityStartCtrl
+{
+	option (msgid) = 5106;
+	required int64 id = 1;
+}
+
+message CSActivityStopCtrl
+{
+	option (msgid) = 5107;
+}

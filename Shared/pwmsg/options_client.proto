@@ -1,0 +1,8 @@
+import "google/protobuf/descriptor.proto";
+
+// package pwngs;
+
+extend google.protobuf.MessageOptions {
+  optional int32 msgid = 54321;
+}
+

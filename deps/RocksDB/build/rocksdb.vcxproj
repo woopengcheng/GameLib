@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib_Debug_x64|x64">
+      <Configuration>Lib_Debug_x64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{23E0D239-0969-3646-8455-6175E47BC296}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>rocksdb</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\GitHub\LibCore\deps\RocksDB\build\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:\GitHub\LibCore\deps\RocksDB\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rocksdb.dir\Debug\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">rocksdb.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rocksdb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">rocksdb</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\LibCore\deps\RocksDB\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rocksdb.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rocksdb</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions> /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CallingConvention>Cdecl</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4127;4800;4996;4351</DisableSpecificWarnings>
+      <ErrorReporting>Queue</ErrorReporting>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild>false</MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProgramDataBaseFileName>$(Configuration)/rocksdb.pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;ROCKSDB_DLL;ROCKSDB_LIBRARY_EXPORTS;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR="Debug";rocksdb_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;ROCKSDB_DLL;ROCKSDB_LIBRARY_EXPORTS;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR=\"Debug\";rocksdb_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;Debug\rocksdblib.lib;third-party\gtest-1.7.0\fused-src\gtest\Debug\gtest.lib;Shlwapi.lib;Rpcrt4.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>E:/GitHub/LibCore/deps/RocksDB/build/Debug/rocksdb.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/GitHub/LibCore/deps/RocksDB/build/Debug/rocksdb.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
+    <ClCompile>
+      <AdditionalOptions> /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CallingConvention>Cdecl</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4127;4800;4996;4351</DisableSpecificWarnings>
+      <ErrorReporting>Queue</ErrorReporting>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild>false</MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProgramDataBaseFileName>$(Configuration)/rocksdb.pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;ROCKSDB_DLL;ROCKSDB_LIBRARY_EXPORTS;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR="Debug";rocksdb_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;ROCKSDB_DLL;ROCKSDB_LIBRARY_EXPORTS;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR=\"Debug\";rocksdb_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;Debug\rocksdblib.lib;third-party\gtest-1.7.0\fused-src\gtest\Debug\gtest.lib;Shlwapi.lib;Rpcrt4.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>E:/GitHub/LibCore/deps/RocksDB/build/Debug/rocksdb.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/GitHub/LibCore/deps/RocksDB/build/Debug/rocksdb.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions> /d2Zi+ /Oxt %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CallingConvention>Cdecl</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4127;4800;4996;4351</DisableSpecificWarnings>
+      <ErrorReporting>Queue</ErrorReporting>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild>false</MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProgramDataBaseFileName>$(Configuration)/rocksdb.pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;ROCKSDB_DLL;ROCKSDB_LIBRARY_EXPORTS;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR="Release";rocksdb_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;ROCKSDB_DLL;ROCKSDB_LIBRARY_EXPORTS;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR=\"Release\";rocksdb_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;Release\rocksdblib.lib;third-party\gtest-1.7.0\fused-src\gtest\Release\gtest.lib;Shlwapi.lib;Rpcrt4.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>E:/GitHub/LibCore/deps/RocksDB/build/Release/rocksdb.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/GitHub/LibCore/deps/RocksDB/build/Release/rocksdb.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">Building Custom Rule E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/LibCore/deps/RocksDB -BE:/GitHub/LibCore/deps/RocksDB/build --check-stamp-file E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/LibCore/deps/RocksDB -BE:/GitHub/LibCore/deps/RocksDB/build --check-stamp-file E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInitialize.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCCompiler.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCXXCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeGenericSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\WindowsPaths.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-C.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeRCCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeRCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCXXInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;E:\GitHub\LibCore\deps\RocksDB\thirdparty.inc;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindGit.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageMessage.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeParseArguments.cmake;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInitialize.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCCompiler.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCXXCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeGenericSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\WindowsPaths.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-C.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeRCCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeRCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCXXInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;E:\GitHub\LibCore\deps\RocksDB\thirdparty.inc;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindGit.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageMessage.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeParseArguments.cmake;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/LibCore/deps/RocksDB -BE:/GitHub/LibCore/deps/RocksDB/build --check-stamp-file E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:/GitHub/LibCore/deps/RocksDB/CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInitialize.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCCompiler.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeCXXCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeGenericSystem.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\WindowsPaths.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-C.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\3.4.1\CMakeRCCompiler.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeRCInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCXXInformation.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\Platform\Windows-MSVC.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeCommonLanguageInclude.cmake;E:\GitHub\LibCore\deps\RocksDB\thirdparty.inc;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindGit.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\FindPackageMessage.cmake;D:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CMakeParseArguments.cmake;E:\GitHub\LibCore\deps\RocksDB\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\ba3645945d46268b487fcdc0e1c513cf\build_version.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ../util/build_version.cc</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">Generating ../util/build_version.cc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+echo #include "build_version.h" &gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_git_sha = "rocksdb_build_git_sha:0"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_git_datetime = "rocksdb_build_git_datetime:02/23/16 10:35:25"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_compile_date = __DATE__; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">setlocal
+echo #include "build_version.h" &gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_git_sha = "rocksdb_build_git_sha:0"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_git_datetime = "rocksdb_build_git_datetime:02/23/16 10:35:25"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_compile_date = __DATE__; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:/GitHub/LibCore/deps/RocksDB/build/CMakeFiles/ba3645945d46268b487fcdc0e1c513cf/build_version.cc.rule;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:/GitHub/LibCore/deps/RocksDB/build/CMakeFiles/ba3645945d46268b487fcdc0e1c513cf/build_version.cc.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ../util/build_version.cc</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+echo #include "build_version.h" &gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_git_sha = "rocksdb_build_git_sha:0"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_git_datetime = "rocksdb_build_git_datetime:02/23/16 10:35:25"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+echo const char* rocksdb_build_compile_date = __DATE__; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:/GitHub/LibCore/deps/RocksDB/build/CMakeFiles/ba3645945d46268b487fcdc0e1c513cf/build_version.cc.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\auto_roll_logger.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\c.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\column_family.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compacted_db_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction_iterator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction_job.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction_picker.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\convenience.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\dbformat.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_filesnapshot.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl_debug.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl_experimental.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl_readonly.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_info_dumper.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_iter.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\event_helpers.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\experimental.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\filename.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\file_indexer.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\flush_job.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\flush_scheduler.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\forward_iterator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\internal_stats.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\log_reader.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\log_writer.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\managed_iterator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\memtable.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\memtable_allocator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\memtable_list.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\merge_helper.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\merge_operator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\repair.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\slice.cc">
+      <ObjectFileName>$(IntDir)/db/slice.cc.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\snapshot_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\table_cache.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\table_properties_collector.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\transaction_log_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\version_builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\version_edit.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\version_set.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\wal_manager.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_batch.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_batch_base.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_controller.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_thread.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\xfunc_test_points.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\hash_cuckoo_rep.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\hash_linklist_rep.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\hash_skiplist_rep.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\skiplistrep.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\vectorrep.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\stack_trace.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\win\env_win.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\win\port_win.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\win\win_logger.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\adaptive_table_factory.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_filter_block.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_table_builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_table_factory.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_table_reader.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_hash_index.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_prefix_index.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\bloom_block.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\cuckoo_table_builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\cuckoo_table_factory.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\cuckoo_table_reader.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\flush_block_policy.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\format.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\full_filter_block.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\get_context.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\iterator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\merger.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\sst_file_writer.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\meta_blocks.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_factory.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_index.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_key_coding.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_reader.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\table_properties.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\two_level_iterator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\sst_dump_tool.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\db_bench_tool.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\dump\db_dump_tool.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\arena.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\bloom.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\cache.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\coding.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\compaction_job_stats_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\comparator.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\concurrent_arena.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\crc32c.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\delete_scheduler.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\dynamic_bloom.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\env.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\env_hdfs.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\event_logger.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\file_util.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\file_reader_writer.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\sst_file_manager_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\filter_policy.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\hash.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\histogram.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\instrumented_mutex.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\iostats_context.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\ldb_cmd.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\ldb_tool.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\logging.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\log_buffer.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\memenv.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\murmurhash.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\mutable_cf_options.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_helper.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_parser.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_sanity_check.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\perf_context.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\perf_level.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\random.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\rate_limiter.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\slice.cc">
+      <ObjectFileName>$(IntDir)/util/slice.cc.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\statistics.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\status.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\status_message.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\string_util.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\sync_point.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\testharness.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\testutil.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_local.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_updater.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_util.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_util_debug.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\xfunc.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\xxhash.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\backupable\backupable_db.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\checkpoint\checkpoint.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\compaction_filters\remove_emptyvalue_compactionfilter.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\document\document_db.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\document\json_document.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\document\json_document_builder.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\env_mirror.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\flashcache\flashcache.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\geodb\geodb_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\leveldb_options\leveldb_options.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\memory\memory_util.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\string_append\stringappend.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\string_append\stringappend2.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\put.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\uint64add.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\options\options_util.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\redis\redis_lists.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\spatialdb\spatial_db.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\table_properties_collectors\compact_on_deletion_collector.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\optimistic_transaction_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\optimistic_transaction_db_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_base.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_db_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_db_mutex_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_lock_mgr.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_util.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\ttl\db_ttl_impl.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\write_batch_with_index\write_batch_with_index.cc" />
+    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\write_batch_with_index\write_batch_with_index_internal.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:/GitHub/LibCore/deps/RocksDB/build/rocksdblib.vcxproj">
+      <Project>7DFDB944-58C6-3CDC-9661-E1B226249C13</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

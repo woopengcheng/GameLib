@@ -1,0 +1,99 @@
+
+// --------------副本主玩法 cbh -----------------------------------------------------
+message SC_DMA_PoltStart
+{
+	option(msgid) = 11000;
+	optional int32 flags = 1;
+}
+
+message SC_DMA_PoltClean
+{
+	option(msgid) = 11001;
+	required int32 flags = 1;
+}
+
+message SC_DMA_PoltCameraStart
+{
+	option(msgid) = 11010;
+	required int32 flags = 1;
+	required int32 type = 2; //1为npctype 2为actionId
+	required int32 arg = 3;
+}
+
+message SC_DMA_PoltCameraClean
+{
+	option(msgid) = 11011;
+	required int32 flags = 1;
+}
+
+message SC_DMA_PoltSpeak
+{
+	option(msgid) = 11030;
+	required int32 flags = 1;
+	required int64 refid = 2;
+	required int32 npc_type = 3;
+	required int32 npc_talk_id = 4;
+	required int32 npc_talk_time = 5;
+	required int32 player_talk_id = 6;
+	required int32 speak_type = 7; //1:黑屏2：对话 3：冒泡对话 4: 出按钮对话
+}
+
+message CS_DMA_SpeakSkip
+{
+	option(msgid) = 11031;
+	required int64 refid = 1;
+}
+
+message CS_DMA_SpeakAllSkip
+{
+	option(msgid) = 11032;
+	required int64 refid = 1;
+}
+
+message SC_DMA_CountDown
+{
+	option(msgid) = 11040;
+	required int32 flags = 1;
+	required int32 countdown_time_ms = 2;
+}
+
+message SC_DMA_WaveStart
+{
+	option(msgid) = 11050;
+	required int32 flags = 1;
+	required int32 wave = 2;
+}
+
+message SC_DMA_WaveClean
+{
+	option(msgid) = 11051;
+	required int32 flags = 1;
+	required int32 wave = 2;
+}
+
+message SC_DMA_Score
+{
+	option(msgid) = 11060;
+	required int32 star_finish_time = 1;
+	required int32 star_damage_maked = 2;
+	required int32 star_damage_injured = 3;
+	required int32 star_overall = 4;
+}
+
+//当前连接数
+message	SC_DMA_BatterCount
+{
+	option (msgid) = 11061;
+	required int32 batterCount = 1;
+}
+
+//播放离子特性
+message	SC_DMA_ParticleStart
+{
+	option (msgid) = 11062;
+	required int32 particleId = 1;
+}
+
+
+
+

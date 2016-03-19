@@ -1,0 +1,18 @@
+import "options.proto";
+package Net.accsrv;
+
+// -----------------------------------------
+// 以下为acc消息(msgid为1-999)
+// -----------------------------------------
+
+message CSLogin {
+	option (nMsgID) = 1;
+	required string name = 1;
+	required string pswd = 2;
+}
+
+message SCLoginResult {
+	option (nMsgID) = 2;
+	required int32 result = 1;
+	optional string error = 2;
+}

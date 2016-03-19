@@ -1,0 +1,261 @@
+// -----------------------------------------
+
+message STeamMember
+{
+	required int64 uid = 1;
+	required bytes uname = 2;
+}
+
+message CSCreateTeam
+{
+	option (msgid) = 2500;
+	required bytes tname = 1;
+}
+
+message SCCreateTeam
+{
+	option (msgid) = 2501;
+	required int64 result = 1;
+}
+
+message CSDeleteTeam
+{
+	option (msgid) = 2502;
+}
+
+message SCDeleteTeam
+{
+	option (msgid) = 2503;
+	required int64 result = 1;
+}
+
+message CSInviteTeam
+{
+	option (msgid) = 2504;
+	required int64 uid = 1;
+}
+
+message SCInviteTeam
+{
+	option (msgid) = 2505;
+	required int64 result = 1;
+	required int64 uid = 2;
+	required bytes uname = 3;
+}
+
+message CSApplyTeam
+{
+	option (msgid) = 2506;
+	required int64 tid = 1;
+}
+
+message SCApplyTeam
+{
+	option (msgid) = 2507;
+	required int64 result = 1;
+	required int64 uid = 2;
+	required bytes uname = 3;
+}
+
+message CSEnterTeam
+{
+	option (msgid) = 2508;
+	required int64 tid = 1;
+	required int64 uid = 2;
+	required bytes uname = 3;
+}
+
+message SCEnterTeam
+{
+	option (msgid) = 2509;
+	required int64 result = 1;
+	required STeamMember member = 2;
+}
+
+message CSLeaveTeam
+{
+	option (msgid) = 2510;
+	required int64 uid = 1;
+}
+
+message SCLeaveTeam
+{
+	option (msgid) = 2511;
+	required int64 result = 1;
+	required int64 uid = 2;
+}
+
+message SCDiscoTeam
+{
+	option (msgid) = 2512;
+	required int64 uid = 1;
+}
+
+message SCReconTeam
+{
+	option (msgid) = 2513;
+	required int64 uid = 1;
+}
+
+message CSTeamInfo
+{
+	option (msgid) = 2514;
+}
+
+message SCTeamInfo
+{
+	option (msgid) = 2515;
+	required int64 result = 1;
+	repeated STeamMember member = 2;
+}
+
+// -----------------------------------------
+
+
+
+// -----------------------------------------
+
+message SGuildMember
+{
+	required int64 uid = 1;
+	required bytes uname = 2;
+}
+
+message CSCreateGuild
+{
+	option (msgid) = 2700;
+	required bytes gname = 1;
+}
+
+message SCCreateGuild
+{
+	option (msgid) = 2701;
+	required int64 result = 1;
+}
+
+message CSDeleteGuild
+{
+	option (msgid) = 2702;
+}
+
+message SCDeleteGuild
+{
+	option (msgid) = 2703;
+	required int64 result = 1;
+}
+
+message CSApplyGuild
+{
+	option (msgid) = 2704;
+	required int64 gid = 1;
+}
+
+message SCApplyGuild
+{
+	option (msgid) = 2705;
+	required int64 result = 1;
+	required int64 uid = 2;
+	required bytes uname = 3;
+}
+
+message CSEnterGuild
+{
+	option (msgid) = 2706;
+	required int64 gid = 1;
+	required int64 uid = 2;
+	required bytes uname = 3;
+}
+
+message SCEnterGuild
+{
+	option (msgid) = 2707;
+	required int64 result = 1;
+	required SGuildMember member = 2;
+}
+
+message CSLeaveGuild
+{
+	option (msgid) = 2708;
+	required int64 uid = 1;
+}
+
+message SCLeaveGuild
+{
+	option (msgid) = 2709;
+	required int64 result = 1;
+	required int64 uid = 2;
+}
+
+message CSGuildInfo
+{
+	option (msgid) = 2710;
+}
+
+message SCGuildInfo
+{
+	option (msgid) = 2711;
+	required int64 result = 1;
+	repeated SGuildMember member = 2;
+}
+
+
+
+// -----------------------------------------
+
+// 客户端请求: 增加关系成员
+message CSAddRelationMember
+{
+	option (msgid) = 2800;
+	required int64 rid = 1;
+	required bytes name = 2;
+	required int32 type = 3;
+}
+
+// 服务端通知: 增加成员反馈
+message SCAddRelationMemberResult
+{
+	option (msgid) = 2801;
+	required int32 type = 1;
+	required int32 result = 2;
+	optional SRelationMember member = 3;
+}
+
+// 客户端请求: 删除关系成员
+message CSDelRelationMember
+{
+	option (msgid) = 2802;
+	required int64 rid = 1;
+	required int32 type = 2;
+}
+
+// 服务端通知: 删除成员反馈
+message SCDelRelationMemberResult
+{
+	option (msgid) = 2803;
+	required int32 type = 1;
+	required int64 rid = 2;
+	required int32 result = 3;
+}
+
+// 客户端请求: 获取关系列表
+message CSQueryRelation
+{
+	option (msgid) = 2804;
+	required int32 type = 1;
+}
+
+// 服务端通知: 下发关系列表
+message SCQueryRelationResult
+{
+	option (msgid) = 2805;
+	required int32 type = 1;
+	repeated SRelationMember members = 2;
+}
+
+// 服务端通知: 更新单一关系成员状态
+message SCUpdateRelationMember
+{
+	option (msgid) = 2808;
+	required int32 type = 1;
+	required SRelationMemberStatus status = 2;
+}

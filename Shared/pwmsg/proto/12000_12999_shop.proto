@@ -1,0 +1,62 @@
+// -----------------------------------------
+
+// 商店相关的消息
+
+message CSShopOpen
+{
+	option (msgid) = 12000;
+	required int32 shopid = 1;
+}
+
+message SCShopOpen
+{
+	option (msgid) = 12001;
+	required int32 result = 1;
+	required int32 shopid = 2;
+	repeated SShopItem shop_items = 3;
+	repeated SItem recycle_items = 4;
+}
+
+message CSShopBuy
+{
+	option (msgid) = 12004;
+	required int32 shopid = 1;
+	required int32 item_type = 2;
+	required int32 item_count = 3;
+}
+
+message SCShopBuyResult
+{
+	option (msgid) = 12005;
+	required int32 result = 1;
+	required int32 shopid = 2;
+	required int32 item_type = 3;
+	required int32 item_count = 4;
+}
+
+message CSShopBuyRecycleBin
+{
+	option (msgid) = 12006;
+	required int32 item_index = 1;
+}
+
+message SCShopBuyRecycleBinResult
+{
+	option (msgid) = 12007;
+	required int32 result = 1;
+	required int32 item_index = 2;
+}
+
+message CSShopSell
+{
+	option (msgid) = 12008;
+	required int32 item_bag = 1;
+	required int32 item_position = 2;
+}
+
+message SCShopSellResult
+{
+	option (msgid) = 12009;
+	required int32 result = 1;
+	optional SItem item_sold = 2;
+}

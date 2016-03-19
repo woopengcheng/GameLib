@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\DBMaster.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DBServer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DBSlave.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MasterHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SlaveHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Master_GRpc_SyncDataToSlave_Proxy.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Master_GRpc_SyncServerHandler_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\MasterHandler_MasterStartSync_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\MasterHandler_SlaveRequestSync_Proxy.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\MasterHandler_SlaveSelectDB_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\MasterHandler_SlaveStartAuth_Proxy.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\MasterHandler_SyncMasterHandler_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\MasterHandler_testMulitServerNode_Proxy.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\MasterHandler_testParamsAndRpcDatas_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RpcRegister.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleCreateDatabase_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleCreateUser_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleDeleteDatabase_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleDeleteUser_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleDump_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHCount_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHDel_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHDrop_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGet_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGetKeys_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGetKeyVals_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGetVals_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHList_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHMultiDel_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHMultiGet_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHMultiSet_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHScan_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSet_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetIncr_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetIncrFloat_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetNX_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetOW_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleModifyUser_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleSelectDatabase_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleShowDatabases_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleShowUsers_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleUserAuth_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZCount_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZDel_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZDrop_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZGet_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZList_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZRTop_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZSet_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_HandleZTop_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_SlaveRequestSync_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_SlaveStartAuth_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_SyncDataToSlave_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_SyncServerHandler_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_testMulitServerNode_Proxy.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\ServerHandler_testParamsAndRpcDatas_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\Slave_GRpc_testMulitServerNode_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\SlaveHandler_MasterStartSync_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\SlaveHandler_SlaveRequestSync_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\SlaveHandler_SlaveSelectDB_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\SlaveHandler_SlaveStartAuth_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\SlaveHandler_SyncDataToSlave_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\SlaveHandler_SyncMasterHandler_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\SlaveHandler_testMulitServerNode_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{0af7dc79-afc5-4ee2-a892-815d69a7d76e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\rpc">
+      <UniqueIdentifier>{4ea6a22b-ac20-4aca-8b0e-68162513b759}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\DBServer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ServerHandler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DBMaster.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DBSlave.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MasterHandler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SlaveHandler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SlaveRecord.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\GRpc.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\MsgNameDefine.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RPCCallFuncs.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RpcDatas.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RPCDefines.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

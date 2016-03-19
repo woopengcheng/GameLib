@@ -1,0 +1,154 @@
+message SUnitAttrValue
+{
+	required int32 attr = 1;
+	required int64 value = 2;
+}
+
+message CSUnitAttrQuery
+{
+	option (msgid) = 1500;
+	required int64 id = 1;
+	required int64 context = 2;
+	repeated int32 attrs = 3;
+}
+
+message SCUnitAttrQuery
+{
+	option (msgid) = 1501;
+	required int64 id = 1;
+	required int64 context = 2;
+	repeated SUnitAttrValue attrs = 3;
+}
+
+message SCUnitAttrUpdate
+{
+	option (msgid) = 1503;
+	required int64 id = 1;
+	repeated SUnitAttrValue attrs = 2;
+}
+
+
+// --------------------------------------------------------------------------
+
+message SCMotionFlags
+{
+    option (msgid) = 1510;
+    required int64 id = 1;
+    required int32 motion_flags = 2;
+}
+// --------------------------------------------------------------------------
+
+
+// 技能强化信息
+message SMagicIntensify
+{
+    required int32 LevelPencent = 1; // 百分比提升等级
+    required int32 LevelValue = 2;  // 固定伤害提升等级
+    required int32 LevelAddition = 3; // 附加属性伤害提升等级
+}
+
+message SMagicType
+{
+    required int32 id = 1;
+	required int32 loc = 2;
+    required SMagicIntensify intensify = 3;
+};
+
+enum EMagicTypeOper
+{
+    MAGIC_TYPE_OPER_QUERY = 0;
+    MAGIC_TYPE_OPER_NEW  = 1;
+    MAGIC_TYPE_OPER_DEL = 2;
+};
+
+message CSMagicTypeOper
+{
+	option (msgid) = 1550;
+	required EMagicTypeOper oper = 1;
+	optional int32 data = 2;
+};
+
+message SCMagicTypeOper
+{
+	option (msgid) = 1551;
+	required int64 id = 1;
+	required EMagicTypeOper oper = 2;
+	repeated SMagicType magics = 3;
+	optional int32 data = 4;
+}
+
+// -----------------------------------------
+
+message SStatisticObject
+{
+	required int32 id = 1;
+	required float value = 2;
+}
+
+message CSAskHumanStatistic
+{
+	option (msgid) = 1601;
+}
+
+message SCRefreshStatistic
+{
+	option (msgid) 	= 1602;
+	required int64 id = 1;
+	required float HP = 2;
+	required float MP = 3;
+	repeated SStatisticObject obj = 4;
+}
+
+message SCUpdateStatistic
+{
+	option (msgid) = 1603;
+	required int64 id = 1;
+	required float HP = 2;
+	required float MP = 3;
+	repeated SStatisticObject obj = 4;
+}
+
+message SCUpdateMP
+{
+	option (msgid) = 1604;
+	required int64 id = 1;
+	required int32 type = 2;
+	required int32 flag = 3; //0表示加  1表示减
+	required float value = 4;
+}
+
+message SCUpdateHP
+{
+	option (msgid) = 1605;
+	required int64 id = 1;
+	required int32 type = 2;
+	required int32 flag = 3; //0表示加  1表示减
+	required float value = 4;
+	
+}
+
+message SCUpdateDurability
+{
+	option (msgid) = 1606;
+	required int64 id = 1;
+	required int32 value = 2;
+}
+
+// 下发给客户端的更新bitsetEx数据的消息
+message SCBitsetEx
+{
+	option (msgid) = 1700;
+	required int64 target = 1;
+	repeated int32 set_bits = 2;
+	repeated int32 rst_bits = 3; 
+	repeated int32 set_bitexs = 4;
+	repeated int32 rst_bitexs = 5;
+}
+
+// 战斗状态
+message SCCombatStatus
+{
+	option (msgid) = 1705;
+	required int64 owner = 1;
+	required bool incombat = 2;
+}

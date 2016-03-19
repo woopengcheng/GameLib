@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL_Debug_x64|Win32">
+      <Configuration>DLL_Debug_x64</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DLL_Debug_x64|x64">
+      <Configuration>DLL_Debug_x64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib_Debug_x64|Win32">
+      <Configuration>Lib_Debug_x64</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib_Debug_x64|x64">
+      <Configuration>Lib_Debug_x64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EEBBDC56-A9B8-408C-9524-41A4F1D00C99}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <LinkIncremental>
+    </LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <LinkIncremental />
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)src/rpc;$(SolutionDir)LibCore;$(SolutionDir)../LibCore/;$(ProjectDir)../GameDBCommon/src;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/;$(SolutionDir)../deps/gtest/googletest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)src/rpc;$(SolutionDir)LibCore;$(SolutionDir)../LibCore/;$(ProjectDir)../GameDBCommon/src;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/UnitTest++/;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/glog/src/windows;$(SolutionDir)../deps/log4cpp/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/;$(SolutionDir)../deps/gtest/googletest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>LEVELDB_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_CONSOLE;DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\tbb\lib\intel64\vc10;$(SolutionDir)..\deps\vld\lib\Win64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Rpcrt4.lib;leveldb.lib;lib_json.lib;LibCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>LEVELDB_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_CONSOLE;DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\;$(SolutionDir)..\deps\tbb\lib\intel64\vc10;$(SolutionDir)..\deps\vld\lib\Win64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>gtestd.lib;Rpcrt4.lib;leveldb.lib;libtcmalloc_minimal.lib;libiconv_static.lib;lib_json.lib;lua.lib;libzmq_d.lib;ws2_32.lib;gtestd.lib;tbb_debug.lib;pthreadVC2.lib;log4cplusSUD.lib;LibStatic.lib;expat.lib;Snappy.lib;Ws2_32.lib;openssl.lib;LibCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\DBMaster.cpp" />
+    <ClCompile Include="src\DBServer.cpp" />
+    <ClCompile Include="src\DBSlave.cpp" />
+    <ClCompile Include="src\MasterHandler.cpp" />
+    <ClCompile Include="src\rpc\MasterHandler_MasterStartSync_Client.cpp" />
+    <ClCompile Include="src\rpc\MasterHandler_SlaveRequestSync_Proxy.cpp" />
+    <ClCompile Include="src\rpc\MasterHandler_SlaveSelectDB_Server.cpp" />
+    <ClCompile Include="src\rpc\MasterHandler_SlaveStartAuth_Proxy.cpp" />
+    <ClCompile Include="src\rpc\MasterHandler_SyncMasterHandler_Client.cpp" />
+    <ClCompile Include="src\rpc\MasterHandler_testMulitServerNode_Proxy.cpp" />
+    <ClCompile Include="src\rpc\MasterHandler_testParamsAndRpcDatas_Client.cpp" />
+    <ClCompile Include="src\rpc\Master_GRpc_SyncDataToSlave_Proxy.cpp" />
+    <ClCompile Include="src\rpc\Master_GRpc_SyncServerHandler_Server.cpp" />
+    <ClCompile Include="src\rpc\RpcRegister.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleCreateDatabase_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleCreateUser_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleDeleteDatabase_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleDeleteUser_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleDump_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHCount_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHDel_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHDrop_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGetKeys_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGetKeyVals_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGetVals_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHGet_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHList_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHMultiDel_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHMultiGet_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHMultiSet_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHScan_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetIncrFloat_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetIncr_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetNX_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSetOW_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleHSet_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleModifyUser_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleSelectDatabase_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleShowDatabases_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleShowUsers_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleUserAuth_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZCount_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZDel_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZDrop_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZGet_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZList_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZRTop_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZSet_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_HandleZTop_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_SlaveRequestSync_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_SlaveStartAuth_Server.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_SyncDataToSlave_Client.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_SyncServerHandler_Client.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_testMulitServerNode_Proxy.cpp" />
+    <ClCompile Include="src\rpc\ServerHandler_testParamsAndRpcDatas_Server.cpp" />
+    <ClCompile Include="src\rpc\SlaveHandler_MasterStartSync_Server.cpp" />
+    <ClCompile Include="src\rpc\SlaveHandler_SlaveRequestSync_Client.cpp" />
+    <ClCompile Include="src\rpc\SlaveHandler_SlaveSelectDB_Client.cpp" />
+    <ClCompile Include="src\rpc\SlaveHandler_SlaveStartAuth_Client.cpp" />
+    <ClCompile Include="src\rpc\SlaveHandler_SyncDataToSlave_Server.cpp" />
+    <ClCompile Include="src\rpc\SlaveHandler_SyncMasterHandler_Server.cpp" />
+    <ClCompile Include="src\rpc\SlaveHandler_testMulitServerNode_Server.cpp" />
+    <ClCompile Include="src\rpc\Slave_GRpc_testMulitServerNode_Client.cpp" />
+    <ClCompile Include="src\SlaveHandler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\DBMaster.h" />
+    <ClInclude Include="src\DBServer.h" />
+    <ClInclude Include="src\DBSlave.h" />
+    <ClInclude Include="src\MasterHandler.h" />
+    <ClInclude Include="src\rpc\GRpc.h" />
+    <ClInclude Include="src\rpc\MsgNameDefine.h" />
+    <ClInclude Include="src\rpc\RPCCallFuncs.h" />
+    <ClInclude Include="src\rpc\RpcDatas.h" />
+    <ClInclude Include="src\rpc\RPCDefines.h" />
+    <ClInclude Include="src\ServerHandler.h" />
+    <ClInclude Include="src\SlaveHandler.h" />
+    <ClInclude Include="src\SlaveRecord.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

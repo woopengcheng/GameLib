@@ -1,0 +1,999 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{06635136-a747-41e4-8494-2ac43a3fd11f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log\inc">
+      <UniqueIdentifier>{781a76c3-d438-489f-852a-473b890e6aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log\src">
+      <UniqueIdentifier>{407a7e4d-f300-43ba-a707-24413d6b1805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MsgLib">
+      <UniqueIdentifier>{b92e6d2e-e201-4ca3-821c-95a3079ffb51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MsgLib\inc">
+      <UniqueIdentifier>{5087c7df-4187-4db9-9765-ad8f3b5e8f45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MsgLib\src">
+      <UniqueIdentifier>{7c164ec2-f97b-4705-8875-f93cbca3421d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NetLib">
+      <UniqueIdentifier>{df44ca66-4187-477c-80a0-4cb5442e83ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NetLib\inc">
+      <UniqueIdentifier>{27419441-2c66-4b0a-b476-5d4fc7624834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NetLib\src">
+      <UniqueIdentifier>{13a29ec1-57cc-49b6-91e6-541d67c880cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XMLLib">
+      <UniqueIdentifier>{2cb40869-3c38-4c3f-8c60-9c6c26e3b7a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XMLLib\inc">
+      <UniqueIdentifier>{cb2946fe-e1e8-4e95-8dfc-66b831ec4829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XMLLib\src">
+      <UniqueIdentifier>{3a9f1f07-7193-4c72-baad-97bb14de3ccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Marshal">
+      <UniqueIdentifier>{e0646cad-03ea-4768-8a4d-51bb140d3fa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{b0c0b0a0-f8e1-46f8-a209-790d8f997701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameDB">
+      <UniqueIdentifier>{0d12fcea-054c-47a7-ae0f-120bcf8189f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameDB\inc">
+      <UniqueIdentifier>{c947d939-45c6-4337-9d13-ea6e21df61f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameDB\src">
+      <UniqueIdentifier>{4bad0acd-eca5-4d87-a4ef-1dbef43d0a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Marshal\inc">
+      <UniqueIdentifier>{b2df1b43-0120-4675-83f1-3d3c5eea3b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Marshal\src">
+      <UniqueIdentifier>{83d44835-8cdb-491d-93ba-5159fc7d29d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CUtil">
+      <UniqueIdentifier>{494b0b41-fd40-49ee-a185-ceb2ca09d941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CUtil\inc">
+      <UniqueIdentifier>{f719500b-564d-4cb8-8f75-4140b76b4b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CUtil\src">
+      <UniqueIdentifier>{30d08656-1f0c-4c38-b85c-86daea142b00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThreadPool">
+      <UniqueIdentifier>{bd723b83-c67d-4964-a809-1abc3b92304a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThreadPool\inc">
+      <UniqueIdentifier>{cd135997-43f6-48ba-8cee-aeda2d249cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThreadPool\src">
+      <UniqueIdentifier>{9a2db0b0-bfdc-4e47-9edb-f8c75793227b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{ff1f8679-c4d0-446d-8010-388dc5ff75fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer\inc">
+      <UniqueIdentifier>{75a5da81-e7ec-4b8c-a2ff-fb2da7af55c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer\src">
+      <UniqueIdentifier>{cc00d386-6638-4b74-aec4-58ba5d8432c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coroutine">
+      <UniqueIdentifier>{f65d27df-a94d-41f7-9eed-34cb4d2b6cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CityHash">
+      <UniqueIdentifier>{058be6be-9e6b-4c67-9d92-ad12ecc012c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MongoBson">
+      <UniqueIdentifier>{dc124a9f-8a5b-4686-a65f-888977711f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MongoBson\bson">
+      <UniqueIdentifier>{bd2058e1-d652-4e87-8bc1-65b4aa3f425e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MongoBson\bson\util">
+      <UniqueIdentifier>{32a327c2-a2de-4d6c-ba5c-eac92c9cbf55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MongoBson\Mongo">
+      <UniqueIdentifier>{7a900a46-1059-42bb-8920-55d30e70f472}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="..\..\LibCore\MongoBson\bson\README">
+      <Filter>MongoBson\bson</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\LogLib\inc\GLogAdaptee.h">
+      <Filter>Log\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\LogLib\inc\Log.h">
+      <Filter>Log\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\LogLib\inc\Log4CPlusAdaptee.h">
+      <Filter>Log\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\LogLib\inc\Log4CppAdaptee.h">
+      <Filter>Log\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\LogLib\inc\LogAdapter.h">
+      <Filter>Log\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\LogLib\inc\LogCommon.h">
+      <Filter>Log\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\LogLib\inc\LogInterface.h">
+      <Filter>Log\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ICallableObject.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\InnerMsg.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\InternalMsgTask.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\IRpcMsgCallableObject.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MethodImpl.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgCommon.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgDispatcher.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgQueue.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgTimerNode.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\Object.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ObjectMethodImplHelper.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ObjectMsgCall.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\ParaseMsgCall.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\Ping.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcBase.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcInterface.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcManager.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RPCMsgCall.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\StaticMethodImplHelper.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ClientSession.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\INetHandler.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\INetReactor.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ISession.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\MsgHandler.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerListener.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerTransit.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHelper.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetInterface.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorEpoll.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorRakNet.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorSelect.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorZMQ.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\RakNetUDPManager.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ServerSession.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\ByteOrder.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\XMLLib\inc\XMLValue.h">
+      <Filter>XMLLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\XMLLib\inc\XML.h">
+      <Filter>XMLLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\RpcCheckParams.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\MsgHelper.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\IMsgCallableObject.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\MsgProcess.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\MsgWrapper.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetCommon.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Database.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\CustomDefinedCacheHandler.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Environment.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Comparator.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\BackupEnvironment.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Orm.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\User.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\HashTable.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\Operate.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OperateRecord.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OperateReturns.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBCommon.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OrmCollection.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\OrmVector.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\SortedSet.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\UserAuth.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\GenMsgParams.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\LevelDB.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Marshal\inc\CommonMarshal.h">
+      <Filter>Marshal\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Marshal\inc\CStream.h">
+      <Filter>Marshal\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Marshal\inc\Marshal.h">
+      <Filter>Marshal\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Marshal\inc\MashalTest.h">
+      <Filter>Marshal\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\arg_parser.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\BoostHelper.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\BsonToCpp.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\carg_parser.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Chunk.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CircleBuffer.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ClassTypeID.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ClassTypeInterface.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CommandHandler.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Common.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CUtil.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\DeelxRegexp.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Heap.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\intrusive_ptr.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\LinkedPtr.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\MinHeap.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\MsgAssert.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Node.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Parameter.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ParameterHelper.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Parameters.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Platform.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Random.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Refcounted.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\SafeVariable.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\StringEx.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\UnitTest.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadCommon.h">
+      <Filter>ThreadPool\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadContext.h">
+      <Filter>ThreadPool\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadLock.h">
+      <Filter>ThreadPool\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadPool.h">
+      <Filter>ThreadPool\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadPoolInterface.h">
+      <Filter>ThreadPool\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadState.h">
+      <Filter>ThreadPool\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadTask.h">
+      <Filter>ThreadPool\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\GlobalTimer.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\GlobalTimerTask.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\InternalTimerTask.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\IStrategy.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\MinHeapTimer.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimeCount.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerCommon.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerHelp.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerInterface.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerNode.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimerTask.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\TimingWheel.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ByteOrder.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CErrno.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ReferCount.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\AutomicUInt.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CObject.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CRTTI.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerHttpServer.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\HttpProtocol.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\Iconv.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\ThreadSpecific.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorWES.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorIOCP.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorUDP.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerServer.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerClient.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetThread.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetLib.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetMsgQueue.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerPing.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\Ping.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBSlaveInterface.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBServerInterface.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBMasterInterface.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\DBClientInterface.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\db_port.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\RemoteNodeDefine.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\NetNode.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Coroutine\Coroutine.h">
+      <Filter>Coroutine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\GenParamHelper.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\GenParamHelper.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\GameDB\inc\RocksDB.h">
+      <Filter>GameDB\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CSVReader.h">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MsgLib\inc\IRpcListener.h">
+      <Filter>MsgLib\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CityHash\city.h">
+      <Filter>CityHash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\CityHash\citycrc.h">
+      <Filter>CityHash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\util\atomic_int.h">
+      <Filter>MongoBson\bson\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\util\builder.h">
+      <Filter>MongoBson\bson\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\util\misc.h">
+      <Filter>MongoBson\bson\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson_builder_base.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson_field.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonelement.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bson-inl.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonmisc.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonobj.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonobjbuilder.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsonobjiterator.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\bsontypes.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\inline_decls.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\bson\ordering.h">
+      <Filter>MongoBson\bson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\assert_util.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_intrinsics.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_intrinsics_gcc.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_intrinsics_win32.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\atomic_word.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\compiler.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\compiler_gcc.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\compiler_msvc.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\exit_code.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\float_utils.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\hex.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\redef_macros.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\string_data.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\targetver.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\undef_macros.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\MongoBson\mongo\windows_basic.h">
+      <Filter>MongoBson\Mongo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\LogLib\src\GLogAdaptee.cpp">
+      <Filter>Log\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\LogLib\src\Log4CPlusAdaptee.cpp">
+      <Filter>Log\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\LogLib\src\Log4CppAdaptee.cpp">
+      <Filter>Log\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\LogLib\src\LogInterface.cpp">
+      <Filter>Log\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\InnerMsg.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\InternalMsgTask.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\MsgDispatcher.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\MsgQueue.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\ObjectMsgCall.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcBase.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcInterface.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcManager.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\RpcMsgCall.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\MsgHandler.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerListener.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerTransit.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHelper.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetInterface.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorEpoll.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorSelect.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorZMQ.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\RakNetUDPManager.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\ISession.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\XMLLib\src\XML.cpp">
+      <Filter>XMLLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\Src\RpcCheckParams.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LibCore_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\Database.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\CustomDefinedCacheHandler.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\Environment.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\Comparator.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\BackupEnvironment.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\User.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\HashTable.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\OperateRecord.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBClientInterface.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBServerInterface.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBMasterInterface.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\DBSlaveInterface.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\UserAuth.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\SortedSet.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\MsgHelper.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Marshal\src\CommonMarshal.cpp">
+      <Filter>Marshal\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\arg_parser.cc">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\BsonToCpp.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\carg_parser.c">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\Chunk.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\CircleBuffer.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\Common.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\CUtil.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\Parameter.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\Parameters.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\Random.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\UnitTest.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\ThreadPool\src\ThreadPool.cpp">
+      <Filter>ThreadPool\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\ThreadPool\src\ThreadTask.cpp">
+      <Filter>ThreadPool\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\GlobalTimer.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\GlobalTimerTask.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\InternalTimerTask.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\TimeCount.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerHelp.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerInterface.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerNode.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\TimerTask.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\CStream_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\AutomicUInt.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\ReferCount_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\Chunk_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\Paramter_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Marshal\inc\CStream.cpp">
+      <Filter>Marshal\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\CRTTI.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\RTTI_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerHttpServer.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\HttpProtocol.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\Iconv.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorWES.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorIOCP.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorUDP.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerClient.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerServer.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorRakNet.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetThread.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetMsgQueue.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\INetReactor.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerPing.cpp">
+      <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\LevelDB.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MsgLib\src\NetNode.cpp">
+      <Filter>MsgLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\Coroutine_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Coroutine\Coroutine.cpp">
+      <Filter>Coroutine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\GenParamHelper.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\RPC_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\GameDB\src\RocksDB.cpp">
+      <Filter>GameDB\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CUtil\src\CSVReader.cpp">
+      <Filter>CUtil\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\CSVReader_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\Timer_test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\MinHeapTimer.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\XML_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Timer\src\TimingWheel.cpp">
+      <Filter>Timer\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\CityHash\city.cc">
+      <Filter>CityHash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\CityHash_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\MongoBson\bson\bson.cpp">
+      <Filter>MongoBson\bson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\MongoBson_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\HttpProtocol_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

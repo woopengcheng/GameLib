@@ -1,0 +1,575 @@
+
+// 装备相关
+
+// 客户端请求: 装备一件物品
+message CSEquip
+{
+	option (msgid) = 6005;
+	required int32 src_bag = 1;
+	required int32 dst_bag = 2;
+	required int32 src_idx = 3;
+	required int32 dst_idx = 4;
+}
+
+// 服务器通知: 装备物品反馈
+message SCEquipResult
+{
+	option (msgid) = 6006;
+	required int32 result = 1;
+	required int64 id = 2;
+	required int32 src_bag = 3;
+	required int32 dst_bag = 4;
+	required int32 src_idx = 5;
+	required int32 dst_idx = 6;
+	optional SEquipObject equipObject = 7;
+}
+
+// 客户端请求: 卸载一件物品
+message CSUnEquip
+{
+	option (msgid) = 6010;
+	required int32 src_bag = 1;
+	required int32 dst_bag = 2;
+	required int32 src_idx = 3;
+	required int32 dst_idx = 4;
+}
+
+// 服务器通知: 卸载物品反馈
+message SCUnEquipResult
+{
+	option (msgid) = 6011;
+	required int32 result = 1;
+	required int64 id = 2;
+	required int32 src_bag = 3;
+	required int32 dst_bag = 4;
+	required int32 src_idx = 5;
+	required int32 dst_idx = 6;
+	optional SEquipObject equipObject = 7;
+}
+
+// 客户端请求: 丢弃一件装备
+message CSEquipDiscard
+{
+	option (msgid) = 6020;
+	required int32 src_idx = 1;
+}
+
+// 服务器通知: 丢弃装备反馈
+message SCEquipDiscardResult
+{
+	option (msgid) = 6021;
+	required int32 result = 1;
+	required int32 src_idx = 2;
+}
+
+
+
+// 物品相关
+
+// 客户端请求: 获取物品列表
+message CSItemQuery
+{
+	option (msgid) = 7010;
+	required int32 item_bag = 1;
+}
+
+// 服务端通知: 下发物品列表
+message SCItemQuery
+{
+	option (msgid) = 7011;
+	required int32 item_bag = 1;
+	required int32 bag_size = 2;
+	repeated SItem items = 3;
+}
+
+// 服务端通知: 增加一个物品
+message SCItemAdd
+{
+	option (msgid) = 7020;
+	required SItem items = 1;
+}
+
+// 服务端通知: 删除一个物品
+message SCItemDel
+{
+	option (msgid) = 7031;
+	required int64 item_id = 1;
+	required int32 item_bag = 2;
+}
+
+// 客户端请求: 丢弃一件物品
+message CSItemDiscard
+{
+	option (msgid) = 7032;
+	required int32 item_bag = 1;
+	required int32 item_idx = 2;
+}
+
+// 服务器通知: 丢弃物品反馈
+message SCItemDiscard
+{
+	option (msgid) = 7033;
+	required int32 result = 1;
+	required int32 item_bag = 2;
+	required int32 item_idx = 3;
+}
+
+// 服务端通知: 更新物品信息
+message SCItemUpdate
+{
+	option (msgid) = 7040;
+	required SItem items = 1;
+}
+
+// 客户端请求: 交换两个物品
+message CSItemSwap
+{
+	option (msgid) = 7050;
+	required int32 src_bag = 1;
+	required int32 dst_bag = 2;
+	required int32 src_idx = 3;
+	required int32 dst_idx = 4;
+}
+
+// 服务端通知: 交换物品反馈
+message SCItemSwap
+{
+	option (msgid) = 7051;
+	required int32 result = 1;
+	required int32 src_bag = 2;
+	required int32 dst_bag = 3;
+	required int32 src_idx = 4;
+	required int32 dst_idx = 5;
+}
+
+// 客户端请求: 使用一个物品
+message CSItemUse
+{
+	option (msgid) = 7060;
+	required int64 item_id = 1;
+	required int32 item_bag = 2;
+}
+
+// 客户端请求: 出售背包物品
+message CSItemSell
+{
+	option (msgid) = 7070;
+	required int32 item_bag = 1;
+	repeated int64 item_ids = 2;
+}
+
+// 服务端通知: 出售物品反馈
+message SCItemSell
+{
+	option (msgid) = 7071;
+	required int32 result = 1;
+	required int32 silver = 2;
+}
+
+// 客户端请求: 整理背包物品
+message CSItemPack
+{
+	option (msgid) = 7080;
+	required int32 item_bag = 1;
+}
+
+// 服务端通知: 整理背包反馈
+message SCItemPack
+{
+	option (msgid) = 7081;
+	required int32 result = 1;
+	required int32 item_bag = 2;
+}
+
+// 客户端请求: 背包容量扩充
+message CSBagExpand
+{
+	option (msgid) = 7090;
+	required int32 item_bag = 1;
+	required int32 inc_size = 2;
+}
+
+// 服务端通知: 背包扩充反馈
+message SCBagExpand
+{
+	option (msgid) = 7091;
+	required int32 result = 1;
+	required int32 item_bag = 2;
+	required int32 new_size = 3;
+}
+
+
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+
+// 服务端通知: 合成物品准备
+message SCItemSynthesisStart
+{
+	option (msgid) = 7200;
+	required int32 item_bag = 1;
+	required int32 item_idx = 2;
+}
+
+// 客户端请求: 配方合成物品
+message CSItemSynthesis
+{
+	option (msgid) = 7201;
+	required int64 item_id = 1;
+	required bool do_cost_gold = 2;
+}
+
+// 服务端通知: 合成物品反馈
+message SCItemSynthesis
+{
+	option (msgid) = 7202;
+	required int32 result = 1;
+}
+
+
+// -----------------------------------------
+
+// 客户端请求: 启动装备升阶
+message CSEquipUpgradeStart
+{
+	option (msgid) = 7230;
+	required int32 item_bag = 1;
+	required int32 item_idx = 2;
+}
+
+// 服务端通知: 装备升阶启动
+message SCEquipUpgradeStart
+{
+	option (msgid) = 7231;
+	required int32 item_bag = 1;
+	required int32 item_idx = 2;
+}
+
+// 客户端请求: 请求装备升阶
+message CSEquipUpgrade
+{
+	option (msgid) = 7232;
+	required int64 item_id = 1;
+	required bool do_cost_gold = 2;
+	required bool keep_enchant_lvl = 3;
+}
+
+// 服务端通知: 升阶结果反馈
+message SCEquipUpgrade
+{
+	option (msgid) = 7233;
+	required int32 result = 1;
+}
+
+
+// -----------------------------------------
+
+// 客户端请求: 查询强化冷却
+message CSEquipEnchantCDQuery
+{
+	option (msgid) = 7240;
+}
+
+// 服务端通知: 查询冷却反馈
+message SCEquipEnchantCDQuery
+{
+	option (msgid) = 7241;
+	required int64 time = 1;
+	required int32 flag = 2;
+}
+
+// 服务端通知: 强化冷却更新
+message SCEquipEnchantCDUpdate
+{
+	option (msgid) = 7242;
+	required int64 time = 1;
+	required int32 flag = 2;
+}
+
+// 客户端请求: 清除强化冷却
+message CSEquipEnchantCDClear
+{
+	option (msgid) = 7243;
+}
+
+// 服务端通知: 清除冷却反馈
+message SCEquipEnchantCDClear
+{
+	option (msgid) = 7244;
+	required int32 result = 1;
+	required int32 gold_cost = 2;
+}
+
+// 客户端请求: 装备强化启动
+message CSEquipEnchantStart
+{
+	option (msgid) = 7250;
+}
+
+// 服务端通知: 启动装备强化
+message SCEquipEnchantStart
+{
+	option (msgid) = 7251;
+	required int32 result = 1;
+}
+
+// 客户端请求: 请求装备强化
+message CSEquipEnchant
+{
+	option (msgid) = 7252;
+	required int32 item_bag = 1;
+	required int32 item_idx = 2;
+	required bool keep_enchant_double = 3;
+}
+
+// 服务端通知: 强化结果反馈
+message SCEquipEnchant
+{
+	option (msgid) = 7253;
+	required int32 result = 1;
+}
+
+
+// -----------------------------------------
+
+// 客户端请求: 灵石祝福启动
+message CSItemBlessStart
+{
+	option (msgid) = 7260;
+}
+
+// 服务端通知: 启动灵石祝福
+message SCItemBlessStart
+{
+	option (msgid) = 7261;
+	required int32 result = 1;
+}
+
+// 客户端请求: 激活祝福属性
+message CSItemBlessActive
+{
+	option (msgid) = 7262;
+	required int32 item_bag = 1;
+	required int32 item_idx = 2;
+	required int32 attr_idx = 3;
+}
+
+// 服务端通知: 激活结果反馈
+message SCItemBlessActive
+{
+	option (msgid) = 7263;
+	required int32 result = 1;
+}
+
+// 客户端请求: 请求灵石祝福
+message CSItemBless
+{
+	option (msgid) = 7264;
+	required int32 item_bag = 1;
+	required int32 item_idx = 2;
+	repeated int32 attr_lock_idxs = 3;
+	required bool random_or_target = 4;
+	optional int32 target_attr_id = 5;
+	optional int32 target_attr_range = 6;
+	optional int32 target_count = 7;
+}
+
+// 服务端通知: 祝福结果反馈
+message SCItemBless
+{
+	option (msgid) = 7265;
+	required int32 result = 1;
+	required bool random_or_target = 2;
+	optional int32 target_count = 3;
+}
+
+//------------------------------------------
+// 装备精炼
+message CSEquipRefine
+{
+	option (msgid) = 7280;
+	required int32 bag = 1;
+	required int32 index = 2;
+}
+
+// 装备精炼反馈
+message SCEquipRefineResult
+{
+	option (msgid) = 7281;
+	required int32 result = 1;
+}
+
+// -----------------------------------------
+// 拾取物品
+message CSPickupItem
+{
+	option (msgid) = 7300;
+	required int64 id = 1;
+}
+
+message SCPickupItemResult
+{
+	option (msgid) = 7301;
+	required int64 id = 1;
+	required int32 result = 2;
+}
+
+// ------------------------------------------
+// 龙相关
+// ------------------------------------------
+
+// -----------------------------------------
+// 使用龙蛋
+message SCUseDragonEggResult
+{
+	option (msgid) = 7500;
+	required int32 result = 1;
+}
+
+message CSDragonQuery
+{
+	option (msgid) = 7510;
+	required int32 dragon_bag = 1;
+}
+
+message SCDragonQuery
+{
+	option (msgid) = 7511;
+	required int32 dragon_bag = 1;
+	required int32 bag_size = 2;
+	repeated SDragon dragons = 3;
+}
+
+message SCDragonAdd
+{
+	option (msgid) = 7512;
+	required SDragon dragon = 1;
+}
+
+message CSDragonDiscard
+{
+	option (msgid) = 7513;
+	required int32 dragon_bag = 1;
+	required int32 dragon_idx = 2;
+}
+
+message SCDragonDiscard
+{
+	option (msgid) = 7514;
+	required int32 result = 1;
+	required int32 dragon_bag = 2;
+	required int32 dragon_idx = 3;
+}
+
+message CSDragonRename
+{
+	option (msgid) = 7515;
+	required int32 dragon_bag = 1;
+	required int32 dragon_idx = 2;
+	required bytes dragon_name = 3;
+}
+
+message SCDragonRename
+{
+	option (msgid) = 7516;
+	required int32 result = 1;
+	required int32 dragon_bag = 2;
+	required int32 dragon_idx = 3;
+	required bytes dragon_name = 4;
+}
+
+message CSDragonEquip
+{
+	option (msgid) = 7517;
+	required int32 src_bag = 1;
+	required int32 dst_bag = 2;
+	required int32 src_idx = 3;
+	required int32 dst_idx = 4;
+}
+
+message SCDragonEquip
+{
+	option (msgid) = 7518;
+	required int32 result = 1;
+	required int32 src_bag = 2;
+	required int32 dst_bag = 3;
+	required int32 src_idx = 4;
+	required int32 dst_idx = 5;
+}
+
+message CSDragonUnEquip
+{
+	option (msgid) = 7519;
+	required int32 src_bag = 1;
+	required int32 dst_bag = 2;
+	required int32 src_idx = 3;
+	required int32 dst_idx = 4;
+}
+
+message SCDragonUnEquip
+{
+	option (msgid) = 7520;
+	required int32 result = 1;
+	required int32 src_bag = 2;
+	required int32 dst_bag = 3;
+	required int32 src_idx = 4;
+	required int32 dst_idx = 5;
+}
+
+message CSDragonSummon
+{
+	option (msgid) = 7521;
+	required int32 dragon_bag = 1;
+	required int32 dragon_idx = 2;
+}
+
+message SCDragonSummon
+{
+	option (msgid) = 7522;
+	required int32 result = 1;
+	required int32 dragon_bag = 2;
+	required int32 dragon_idx = 3;
+}
+
+message SDragonCooldown
+{
+	required int32 bag = 1;
+	required int32 index = 2;
+	required int64 cooldown_ms = 3;
+}
+
+message SCDragonCooldown
+{
+	option (msgid) = 7523;
+	repeated SDragonCooldown object = 1;
+}
+
+message CSDragonSwap
+{
+	option (msgid) = 7524;
+	required int32 bag = 1;
+	required int32 src_idx = 2;
+	required int32 dst_idx = 3;
+}
+
+message SCDragonSwap
+{
+	option (msgid) = 7525;
+	required int32 result = 1;
+	required int32 bag = 2;
+	required int32 src_idx = 3;
+	required int32 dst_idx = 4;
+}
+// --------------------------------------
+//临时武器换装消息
+message CSEquipTempWeapon
+{
+	option (msgid) = 7526;
+	required int32 temp_weapon_id = 1;
+}
+
+message SCEquipTempWeapon
+{
+	option (msgid) = 7527;
+	required int32 temp_weapon_id = 1;
+	required int64 human_id = 2;
+}

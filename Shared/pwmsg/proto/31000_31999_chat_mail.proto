@@ -1,0 +1,107 @@
+
+// 广播相关
+message CSChat
+{
+	option (msgid) = 31000;
+	required int32 mode = 1;
+	required bytes text = 2;
+	required int32 text_type = 3;
+	optional int64 to = 4;
+	optional bytes to_name = 5;
+}
+
+message SCChat
+{
+	option (msgid) = 31001;
+	required int32 mode = 1;
+	required int64 from = 2;
+	required bytes from_name = 3;
+	required bytes text = 4;
+	required int32 text_type = 5;
+}
+
+message SCNotify
+{
+	option (msgid) = 31004;
+	required int32 mode = 1;
+	required int32 text_id = 2;
+	repeated bytes text_args = 3;
+	required int32 text_type = 4;
+}
+
+// 邮件相关
+message CSQueryMailList
+{
+	option (msgid) = 31010;
+	required int64 id = 1;
+}
+
+message SCQueryMailListResult
+{
+	option (msgid) = 31011;
+	repeated SMail mails = 1;
+}
+
+message SCMailNotify
+{
+	option (msgid) = 31012;
+	required SMail mail = 1;
+}
+
+message CSMailRecved
+{
+	option (msgid) = 31013;
+	required int64 id = 1;
+	required int64 mail_id = 2;
+}
+
+message CSQueryChatMsgList
+{
+	option (msgid) = 31020;
+}
+
+message SCQueryChatMsgListResult
+{
+	option (msgid) = 31021;
+	repeated SChatMsg msgs = 1;
+}
+
+// 聊天相关
+message CSChatMsgSend
+{
+	option (msgid) = 31022;
+	required int64 to = 1;
+	required int32 to_sex = 2;
+	required bytes to_name = 3;
+	required bytes content = 4;
+}
+
+message SCChatMsgNotify
+{
+	option (msgid) = 31023;
+	required SChatMsg msg = 1;
+}
+
+message CSChatMsgRecved
+{
+	option (msgid) = 31024;
+	required int64 from = 1;
+	required int64 timestamp = 2;
+}
+
+message CSQueryChatContactList
+{
+	option (msgid) = 31030;
+}
+
+message SCQueryChatContactListResult
+{
+	option (msgid) = 31031;
+	repeated SChatContact contacts = 1;
+}
+
+message SCUpdateChatContact
+{
+	option (msgid) = 31032;
+	required SChatContactStatus status = 1;
+}

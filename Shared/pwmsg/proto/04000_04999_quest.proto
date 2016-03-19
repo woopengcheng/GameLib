@@ -1,0 +1,135 @@
+
+// 已接受的任务信息
+message SQuestAccepted
+{
+	required int32 quest_type 		= 1; // 主任务任务ID
+	repeated int32 quest_tasks 		= 2; // 任务目标（杀怪，对话，强化等）
+	required int32 quest_state 		= 3; //	1: 可接受 2: 已接受 3: 已完成,未提交 4: 已完成,已提交
+	required int32 child_quest_type = 4; //	当前节点任务ID
+}
+
+// 查询任务数据 登陆时
+message CSQuestQuery
+{
+	option (msgid) = 4000;
+}
+
+// 查询任务数据 服务端返回
+message SCQuestQuery
+{
+	option (msgid) = 4001;
+	repeated SQuestAccepted accepted_quests	= 1; // 已接受的任务列表，节点任务包含在内
+	repeated int32 acceptable_quests 		= 2; // 可接任务列表，不包括节点任务
+}
+
+// 查询Npc任务状态
+message CSQuestQueryNpcState
+{
+	option (msgid) = 4002;
+}
+
+// 客户端请求: 接受任务
+message CSQuestAccept
+{
+	option (msgid) = 4003;
+	required int32 quest_type = 1;
+}
+
+// 服务端通知: 任务已接受
+message SCQuestAccepted
+{
+	option (msgid) = 4004;
+	required SQuestAccepted quest 		= 1; // 已接主任务
+	optional SQuestAccepted child_quest	= 2; // 已接节点任务
+}
+
+// 客户端请求: 放弃任务
+message CSQuestDrop
+{
+	option (msgid) = 4005;
+	required int32 quest_type = 1;
+}
+
+// 服务端通知: 任务已放弃
+message SCQuestDropped
+{
+	option (msgid) = 4006;
+	required int32 quest_type 		= 1; // 已放弃主任务ID
+	optional int32 child_quest_type = 2; // 已放弃节点任务ID
+}
+
+// 客户端请求: 完成任务
+message CSQuestDone
+{
+	option (msgid) = 4007;
+	required int32 quest_type = 1;
+}
+
+// 服务端通知: 完成已任务
+message SCQuestDoned
+{
+	option (msgid) = 4008;
+	required int32 quest_type = 1;
+}
+
+// 服务端通知: 任务状态更新
+message SCQuestUpdate
+{
+	option (msgid) = 4009;
+	required int32 tag						= 1; // 更新标记，0：更新已接任务状态；1：更新全部可接任务；2：更新全部Npc状态
+	repeated SQuestAccepted accepted_quests = 2; // 需要更新状态的已接任务(包括节点)
+	repeated int32 acceptable_quests 		= 3; // 全部可接任务
+	repeated SNpcQuestState npc_states	 	= 4; // 全部NPC状态
+}
+
+// ---------------------------------------------------------------------------------------
+
+message CSDialogNpc
+{
+	option (msgid) 			= 4200;
+	required int64 npcId 	= 1;
+}
+
+message CSDialogTalk
+{
+	option (msgid) = 4201;
+	required int64 npcId 	= 1;
+	required int32 state 	= 2;	//state = 0下一步，1， 点击功能选项，2，可完成 3，可接， 4,未完成
+	required int32 context 	= 3;	//上下文参数，任务相关存的是任务id
+}
+
+message SCDialogNpc
+{
+	option (msgid) 					= 4202;
+	required int32 talkId 			= 1;	//默认对话
+	repeated int32 functions	 	= 2;	//功能选项
+	repeated int32 acceptableQuests 	= 3;	//可接受任务选项（可接任务ID）
+	repeated int32 completeQuests 	= 4;	//可完成任务选项（可完成任务ID）
+	repeated int32 underwayQuests 		= 5;	//进行中任务选项（进行中任务ID）
+}
+
+message SCDialogTalk
+{
+	option (msgid) = 4203;
+	required int32 talkId = 1;
+}
+
+message SCQuestResult
+{
+	option (msgid) = 4204;
+	required int32 resultId = 1;
+}
+
+// 开启副本信息
+message SDungeonRecord
+{
+	required int32 dungeonId 		= 1; // 副本id
+	required int32 score			= 2;
+
+}
+message SCUpdateDungeonRecord //副本数据
+{
+	option (msgid) = 4205;
+	repeated SDungeonRecord info = 1;
+		
+}

@@ -1,0 +1,260 @@
+//----------------------------------------------------------------------
+//slg相关
+
+message CSEnableCastle
+{
+	option (msgid) = 32000;
+	required int64 id = 1;
+}
+
+message SCEnableCastleResult
+{
+	option (msgid) = 32001;
+	required int32 result = 1;
+}
+
+message CSEnterCastle
+{
+	option (msgid) = 32002;
+	required int64	id = 1;
+}
+
+message SCEnterCastleResult
+{
+	option (msgid) = 32003;
+	required int32	result = 1;
+}
+
+message CSLeaveCastle
+{
+	option (msgid) = 32004;
+	required int64	id = 1;
+}
+
+message SCLeaveCastleResult
+{
+	option (msgid) = 32005;
+	required int32	result = 1;
+}
+
+//-----------------------------------------------------------------
+message SCastleObject
+{
+	required int32 level = 1;
+	repeated SHarbourObject harbour = 2;
+	repeated SDragonFieldObject dragonField = 3;
+}
+
+message SHarbourObject
+{
+	required int32 index = 1;
+	optional int32 level = 2;
+	optional int32 flushLv = 3;
+	optional int64 income = 4;
+	optional int64 timer = 5;
+}
+
+message SDragonFieldObject
+{
+	required int32 index = 1;
+	optional int32 level = 2;
+	optional int32 flushLv = 3;
+	optional int64 income = 4;
+	optional int64 timer = 5;
+}
+
+//-------------------------------------------------------------------
+//城堡相关
+
+message CSQueryCastleInfo
+{
+	option (msgid) = 32010;
+	required int64	id = 1;
+}
+
+message SCQueryCastleInfoResult
+{
+	option (msgid) = 32011;
+	required int64 id = 1;
+	required int32 result = 2;
+	optional SCastleObject castle = 3;
+}
+
+message CSCastleLevelUp
+{
+	option (msgid) = 32012;
+	required int64	id = 1;
+}
+
+message SCCastleLevelUpResult
+{
+	option (msgid) = 32013;
+	required int32 result = 1;
+	optional int32 level = 2;
+}
+
+//-------------------------------------------------------------------
+//港口相关
+message CSQueryHarbourInfo
+{
+	option (msgid) = 32030;
+	required int64	id = 1;
+	required int32 index = 2;
+}
+
+message SCQueryHarbourInfoResult
+{
+	option (msgid) = 32031;
+	required int64 id = 1;
+	required int32 index = 2;
+	required int32 result = 3;
+	optional int32 flushCount = 4;
+}
+
+message CSHarbourLevelup
+{
+	option (msgid) = 32034;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCHarbourLevelupResult
+{
+	option (msgid) = 32035;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message CSHarbourFlush
+{
+	option (msgid) = 32036;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCHarbourFlushResult
+{
+	option (msgid) = 32037;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message CSHarbourTrade
+{
+	option (msgid) = 32038;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCHarbourTradeResult
+{
+	option (msgid) = 32039;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message CSHarbourHarvest
+{
+	option (msgid) = 32040;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCHarbourHarvestResult
+{
+	option (msgid) = 32041;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message SCHarbourRefresh
+{
+	option (msgid) = 32042;
+	required int64 id = 1;
+	optional int32 flushCount = 2;
+	repeated SHarbourObject harbour = 3;
+}
+
+//-------------------------------------------------------------------
+//龙苑相关
+message CSQueryDragonFieldInfo
+{
+	option (msgid) = 32050;
+	required int64	id = 1;
+	required int32 index = 2;
+}
+
+message SCQueryDragonFieldInfoResult
+{
+	option (msgid) = 32051;
+	required int64 id = 1;
+	required int32 index = 2;
+	required int32 result = 3;
+	optional int32 flushCount = 4;
+}
+
+message CSDragonFieldLevelup
+{
+	option (msgid) = 32054;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCDragonFieldLevelupResult
+{
+	option (msgid) = 32055;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message CSDragonFieldFlush
+{
+	option (msgid) = 32056;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCDragonFieldFlushResult
+{
+	option (msgid) = 32057;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message CSDragonFieldTrain
+{
+	option (msgid) = 32058;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCDragonFieldTrainResult
+{
+	option (msgid) = 32059;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message CSDragonFieldHarvest
+{
+	option (msgid) = 32060;
+	required int64 id = 1;
+	required int32 index = 2;
+}
+
+message SCDragonFieldHarvestResult
+{
+	option (msgid) = 32061;
+	required int32 index = 1;
+	required int32 result = 2;
+}
+
+message SCDragonFieldRefresh
+{
+	option (msgid) = 32062;
+	required int64 id = 1;
+	optional int32 flushCount = 2;
+	repeated SDragonFieldObject dragonField = 3;
+}
+
+//-----------------------------------------------------

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+protoc --cpp_out=../../server/pwaccsrv/msg ./accsrv.proto
+protoc --cpp_out=../../server/pwworldsrv/msg ./worldsrv.proto
+

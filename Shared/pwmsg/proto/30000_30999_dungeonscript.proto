@@ -1,0 +1,21 @@
+
+message SCLaunchPolt
+{
+	option (msgid) = 30000;
+	required int32 id = 1;
+	required int64 context = 2;
+}
+
+message CSPoltCompleted
+{
+	option (msgid) = 30001;
+	required int32 id = 1;
+	required int64 context = 2;
+}
+
+message SCSyncCamp
+{
+	option (msgid) = 30002;
+	required int64 id = 1;
+	required int32 camp = 2;
+}
