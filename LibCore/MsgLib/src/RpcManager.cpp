@@ -521,6 +521,10 @@ namespace Msg
 		{
 			m_mapSendRpcs.insert(std::make_pair(ullRpcMsgID , pRpc));
 		} 
+		else
+		{
+			gErrorStream("InsertSendRpc error. same rpc." << pRpc->GetRpcMsgCall()->m_szMsgMethod << ":msgID=" << pRpc->GetRpcMsgCall()->m_ullMsgID);
+		}
 	}
 
 	void RpcManager::InsertSendRpc( RPCMsgCall * pMsg )
@@ -567,7 +571,7 @@ namespace Msg
 				objStream.Insert((char *)objStream.Begin() + sizeof(nMsgLength), &nMsgID, sizeof(nMsgID));
 
 				INT32 nResult = pNetThread->SendMsg(nSessionID, (const char *)objStream.Begin(), nMsgLength);
-				if (nResult != -1 && bAddRpc)
+				if (bAddRpc)
 				{
 					InsertSendRpc(pRpcMsg);
 				}
@@ -601,15 +605,17 @@ namespace Msg
 			if (pInterface != NULL)
 			{
 				strName = MsgHelper::ExchangeNodeName(strNodeName);
-				if (pInterface->GetRpcManager()->PostMsg(strName, pMsg).IsFailure())
-				{
-					return -1;
-				}
+				CErrno err = pInterface->GetRpcManager()->PostMsg(strName, pMsg);
 
 				if (bAddRpc)
 				{
 					InsertSendRpc(pMsg);
 				}
+				if (err.IsFailure())
+				{
+					return -1;
+				}
+
 				CUtil::CStream cs;
 				pMsg->marshal(cs);
 				return cs.GetDataLen();
