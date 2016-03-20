@@ -177,16 +177,22 @@ namespace GameDB
 #endif
 		if (!objStatus.ok())
 		{
+#ifdef USE_LEVELDB
+			SAFE_DELETE(pReadFile);
+#endif
 			return objStatus;
 		} 
 
 #ifdef USE_ROCKDB
-		objStatus = target()->NewWritableFile(strSrc, &pWriteFile, options);
+		objStatus = target()->NewWritableFile(strDst, &pWriteFile, options);
 #else
-		objStatus = target()->NewWritableFile(strSrc, &pWriteFile);
+		objStatus = target()->NewWritableFile(strDst, &pWriteFile);
 #endif
 		if (!objStatus.ok())
 		{
+#ifdef USE_LEVELDB
+			SAFE_DELETE(pWriteFile);
+#endif
 			return objStatus;
 		} 
 
@@ -223,6 +229,10 @@ namespace GameDB
 			}
 		}
 
+#ifdef USE_LEVELDB
+		SAFE_DELETE(pWriteFile);
+		SAFE_DELETE(pReadFile);
+#endif
 		return objStatus;
 	}
 
@@ -240,6 +250,9 @@ namespace GameDB
 		if(!objStatus.ok())
 			return objStatus;
 
+#ifdef USE_LEVELDB
+		delete pWritableFile;
+#endif
 		return objStatus;
 	} 
 
