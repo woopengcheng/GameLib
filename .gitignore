@@ -19,3 +19,11 @@
 *.exe
 *.out
 *.app
+/vsproject/x64
+/vsproject/BasicLib.opensdf
+/vsproject/BasicLib.sdf
+/bin/vs14.0/x64/Lib_Debug_x64/*.ilk
+/bin/vs14.0/x64/Lib_Debug_x64/*.exp
+/deps/expat/win32/tmp/Debug_static/*.pdb
+*.pdb
+/bin/vs14.0/x64/Lib_Debug_x64/*.idb

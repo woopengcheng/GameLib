@@ -1,0 +1,5 @@
+/*.lib
+/slave_db_backups
+/db
+/logs
+/slave_db
