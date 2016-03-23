@@ -7,9 +7,9 @@ namespace Net
 {  
 	enum ENetState
 	{ 
-		NET_STATE_LOSTED = 0 ,   //5 连接丢失
-		NET_STATE_CONNECTING ,     
-		NET_STATE_CONNECTED ,     
+		NET_STATE_LOSTED = 0 ,		//5 连接丢失
+		NET_STATE_CONNECTING ,		//5 正在连接中.
+		NET_STATE_CONNECTED ,		//5 连接成功
 	};
 
 	class DLL_EXPORT ISession

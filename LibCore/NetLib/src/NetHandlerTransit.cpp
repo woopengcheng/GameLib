@@ -74,6 +74,7 @@ namespace Net
 					}
 				}break;
 				case REACTOR_TYPE_UDS:
+				case REACTOR_TYPE_UDSEX:
 				{
 					UDSContext * pContext = (UDSContext *)m_pSession->GetContext();
 					if (pContext)
@@ -247,6 +248,11 @@ namespace Net
 
 	INT32 NetHandlerTransit::SendMsg(const char * pBuf, UINT32 unSize)
 	{ 
+		if (!m_pSession || m_pSession->GetNetState() != NET_STATE_CONNECTED)
+		{
+			return -1;
+		}
+
 		if(m_objSendBuf.IsVaild() && m_objSendBuf.GetDataLength() >= 0)
 		{
 			if(m_objSendBuf.GetSpace() > unSize)
@@ -393,6 +399,7 @@ namespace Net
 					return SendTo(pBuf , unSize);
 				}break;
 				case REACTOR_TYPE_UDS:
+				case REACTOR_TYPE_UDSEX:
 				{
 					return SendUDS(pBuf, unSize);
 				}break;
@@ -509,6 +516,9 @@ namespace Net
 		{
 			m_pSession->OnClose();
 		} 
+
+		m_pSession->SetClosed(TRUE);
+		m_pSession->SetNetState(NET_STATE_LOSTED);
 		return CErrno::Success();
 	}
 	  

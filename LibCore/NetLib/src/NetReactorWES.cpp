@@ -80,7 +80,6 @@ namespace Net
 		if (index == -1)
 			return CErrno::Failure();
 
-
 		std::swap(m_pConnections[index], m_pConnections[m_nNumConnection - 1]);
 		std::swap(m_pEvents[index], m_pEvents[m_nNumConnection - 1]);
 		CloseHandle(m_pEvents[m_nNumConnection - 1]);

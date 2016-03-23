@@ -12,6 +12,10 @@ extern "C"
 #include "CUtil/inc/CUtil.h"
 #include "NetLib/inc/NetReactorUDP.h"
 #include "NetLib/inc/NetReactorRakNet.h"
+#include "NetLib/inc/NetReactorEpollEx.h"
+#ifdef _LINUX
+#include <errno.h>
+#endif
 
 namespace Net
 {
@@ -27,6 +31,7 @@ namespace Net
 				InitZMQ();
 			}break;
 			case REACTOR_TYPE_UDS:
+			case REACTOR_TYPE_UDSEX:
 			{
 				InitUDS();
 			}break;
@@ -67,7 +72,7 @@ namespace Net
 
 		return CErrno::Success();
 	}
-
+	
 	CErrno NetHandlerClient::Init(void)
 	{
 		if (m_pSession)
@@ -83,19 +88,12 @@ namespace Net
 		m_pSession->SetAddress(ip);
 		m_pSession->SetSocktPort(port);
 
-		if (m_pSession->IsClosed() && !Connect(ip.c_str(), port))
+		if (m_pSession->IsClosed() && !Connect(ip.c_str(), port) && m_pSession->GetNetState() == NET_STATE_CONNECTED)
 		{
 			gDebugStream("Connect success:nodeName=" << m_pSession->GetCurNodeName() << ":ip=" << ip << ":port=" << port);
-			m_pSession->SetClosed(FALSE);
-			m_pSession->SetNetState(NET_STATE_CONNECTED);
-
 			return NetHandlerPing::Init();
 		}
-		else
-		{
-			m_pSession->SetClosed(TRUE);
-			m_pSession->SetNetState(Net::NET_STATE_LOSTED);
-		}
+
 		return CErrno::Failure();
 	}
 
@@ -115,12 +113,17 @@ namespace Net
 			nResult = ConnectZMQ(ip, port);
 		}break;
 		case REACTOR_TYPE_UDS:
+		case REACTOR_TYPE_UDSEX:
 		{
 			nResult = ConnectUDS(ip, port);
 		}break;
 		case REACTOR_TYPE_RAKNET:
 		{
 			nResult = ConnectRakNet(ip, port);
+		}break;
+		case REACTOR_TYPE_EPOLLEX:
+		{
+			nResult = ConnectEpollEx(ip, port);
 		}break;
 		default:
 		{
@@ -159,10 +162,9 @@ namespace Net
 			 
 			NetHelper::SetDefaultSocket(socket, m_pSession->GetSendBufSize(), m_pSession->GetRecvBufSize());
 		}
-
-		return 0;
+		m_pSession->SetNetState(NET_STATE_CONNECTED);
 #endif
-		return -1;
+		return 0;
 	}
 
 	INT32 NetHandlerClient::ConnectUDP(const char* ip, int port)
@@ -171,7 +173,11 @@ namespace Net
 
 		memset(&address, 0, sizeof(address));
 		address.sin_family = AF_INET;
+#ifdef WIN32
+		inet_pton(AF_INET, ip, (PVOID*)(&address.sin_addr.s_addr));
+#else
 		address.sin_addr.s_addr = inet_addr(ip);
+#endif
 		address.sin_port = htons(port);
 
 		Net::UDPContext * pContext = new Net::UDPContext;
@@ -192,6 +198,8 @@ namespace Net
 			}
 			NetHelper::SetDefaultSocket(socket, m_pSession->GetSendBufSize(), m_pSession->GetRecvBufSize());
 		}
+		m_pSession->SetClosed(FALSE);
+		m_pSession->SetNetState(NET_STATE_CONNECTED);
 		
 		return 0;
 	}
@@ -206,9 +214,12 @@ namespace Net
 		INT32 nResult = zmq_connect(m_pZmqSocket, str.c_str());
 		if (nResult != 0)
 		{
+			m_pSession->SetNetState(NET_STATE_LOSTED);
 			gErrorStream("error in zmq_connect: %s\n" << zmq_strerror(errno));
 			return -1;
 		}
+		m_pSession->SetClosed(FALSE);
+		m_pSession->SetNetState(NET_STATE_CONNECTED);
 
 		return  nResult;
 	}
@@ -222,6 +233,10 @@ namespace Net
 			m_pSession->SetSocket(socket);
 		}
 		int aio = 0;
+		if (m_pSession->GetReactorType() == REACTOR_TYPE_SELECT)
+		{
+			aio = 1;
+		}
 		NetHelper::SetIOCtrl(socket, FIONBIO, &aio);
 		NetHelper::SetDefaultSocket(socket, m_pSession->GetSendBufSize(), m_pSession->GetRecvBufSize());
 
@@ -229,24 +244,130 @@ namespace Net
 		addr.sin_family = AF_INET;
 		addr.sin_port = htons(port);
 		NetHelper::NetToN(ip, &addr.sin_addr);
-
+		
 		int nResult = ::connect(socket, (sockaddr*)&addr, sizeof(addr));
-		if (nResult != 0)
+		if (nResult < 0)
 		{
-			NetHelper::CloseSocket(socket);
-			m_pSession->SetSocket(-1);
+			if (m_pSession->GetReactorType() == REACTOR_TYPE_SELECT)
+			{
+				nResult = 0;
+				m_pSession->SetClosed(FALSE);
+				m_pSession->SetNetState(NET_STATE_CONNECTING);
+			}
+			else
+			{
+				NetHelper::CloseSocket(socket);
+				m_pSession->SetClosed(TRUE);
+				m_pSession->SetSocket(INVALID_NET_SOCKET);
+				m_pSession->SetNetState(NET_STATE_LOSTED);
 
-			gErrorStream("Connect failure :nodeName=" << m_pSession->GetCurNodeName() << ":socket=" << socket);
+				gErrorStream("Connect failure :nodeName=" << m_pSession->GetCurNodeName() << ":socket=" << socket);
+				return nResult;
+			}
 		}
 		else
 		{
 			aio = 1;
 			NetHelper::SetIOCtrl(socket, FIONBIO, &aio);
+			m_pSession->SetClosed(FALSE);
+			m_pSession->SetNetState(NET_STATE_CONNECTED);
 		}
 
 		return  nResult;
 	}
 
+	void * NetHandlerClient::ConnectCoEpollEx(void * pArg)
+	{
+		NetHandlerClient * pHandler = (NetHandlerClient*)pArg;
+		MsgAssert_Re0(pHandler, "error ConnectCoEpollEx");
+		ISession * pSession = pHandler->GetSession();
+		MsgAssert_Re0(pSession, "error ConnectCoEpollEx");
+#ifdef _LINUX
+		EpollexCoTask * pTask = (EpollexCoTask*)(pSession->GetContext());
+		if (pTask)
+		{
+			if (pTask->fd == kInvalidFD)
+			{
+				NetSocket socket = pSession->GetSocket();
+				if (socket == -1)
+				{
+					socket = NetHelper::CreateSocket(AF_INET, SOCK_STREAM, 0);
+					pSession->SetSocket(socket);
+					pSession->SetNetState(Net::NET_STATE_CONNECTING);
+				}
+				int aio = 1;
+				NetHelper::SetIOCtrl(socket, FIONBIO, &aio);
+				NetHelper::SetDefaultSocket(socket, pSession->GetSendBufSize(), pSession->GetRecvBufSize());
+
+				sockaddr_in addr = { 0 };
+				addr.sin_family = AF_INET;
+				addr.sin_port = htons(port);
+				NetHelper::NetToN(ip, &addr.sin_addr);
+
+				int nResult = ::connect(socket, (sockaddr*)&addr, sizeof(addr));
+				if (errno == EALREADY || errno == EINPROGRESS)
+				{
+					struct pollfd pf = { 0 };
+					pf.fd = socket;
+					pf.events = (POLLOUT | POLLERR | POLLHUP);
+					co_poll(co_get_epoll_ct(), &pf, 1, kMAX_EPOOL_WAIT_TIME_OUT);
+					INT32 nError = 0;
+					INT32 unErrorLen = sizeof(nError);
+					errno = 0;
+					nResult = getsockopt(socket, SOL_SOCKET, SO_ERROR, (void*)&nError, &unErrorLen);
+					if (nResult == -1 || nError)
+					{
+						NetHelper::CloseSocket(socket);
+						pSession->SetClosed(TRUE);
+						pSession->SetSocket(INVALID_NET_SOCKET);
+						pSession->SetNetState(Net::NET_STATE_LOSTED);
+
+						gErrorStream("Connect failure :nodeName=" << pSession->GetCurNodeName() << ":socket=" << socket);
+					}
+					else
+					{
+						EpollexCoTask * pCoTask = m_pNetReactor->GetEpollExTasks().top();
+						if (pCoTask)
+						{
+							pCoTask->fd = pTask->fd;
+							pCoTask->pNetHandler = pTask->pNetHandler;
+							pCoTask->pReactor = pTask->pReactor;
+							pCoTask->events = pTask->events;
+							co_resume(pCoTask->co);
+						}
+						pSession->SetSocket(socket);
+						pSession->SetClosed(FALSE);
+						pSession->SetNetState(Net::NET_STATE_CONNECTED);
+					}
+					if (nError)
+					{
+						errno = nError;
+					}
+				}
+			}
+		}
+#endif
+
+		return NULL;
+	}
+	INT32 NetHandlerClient::ConnectEpollEx(const char* ip, int port)
+	{
+		if (m_pNetReactor->GetReactorType() == REACTOR_TYPE_EPOLLEX)  //5 异步协程处理直到成功.
+		{
+#ifdef _LINUX
+			if (m_pSession->GetNetState() < Net::NET_STATE_LOSTED)
+			{
+				Net::EpollexCoTask * pContext = new EpollexCoTask;
+				pContext->pReactor = m_pNetReactor;
+				pContext->fd = kInvalidFD;
+				m_pSession->SetContext(pContext);
+				co_create(&pContext->co, ConnectCoEpollEx, this);
+				co_resume(pContext->co);
+			}
+#endif
+		}
+		return  0;
+	}
 	BOOL NetHandlerClient::Reconnect(void)
 	{
 		if (m_pSession && ((Net::ClientSession *)m_pSession)->IsReconnect() &&
@@ -266,7 +387,6 @@ namespace Net
 			nResult = Connect(m_pSession->GetAddress().c_str(), m_pSession->GetPort());
 			if (!nResult)
 			{
-				m_pSession->SetNetState(Net::NET_STATE_CONNECTED);
 				m_pSession->SetClosed(FALSE);
 
 				INetHandlerPtr pHandler = m_pNetReactor->GetNetHandlerByID(m_pSession->GetSessionID());

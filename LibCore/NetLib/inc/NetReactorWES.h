@@ -11,8 +11,6 @@ namespace Net
 #define WSAEVENT                HANDLE
 #endif
 
-	const INT32 kMAX_EPOOL_WAIT_TIME_OUT = 25;
-
 	class DLL_EXPORT NetReactorWES :public INetReactor
 	{
 	public:

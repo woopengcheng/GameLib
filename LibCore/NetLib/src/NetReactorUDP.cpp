@@ -95,7 +95,7 @@ namespace Net
 						int nRecLen = sizeof(addr);
 						char recv_buf[1024];
 						int nRecEcho = recvfrom(socket, recv_buf, sizeof(recv_buf), 0, (sockaddr*)&addr, &nRecLen);
-						if (nRecEcho == INVALID_SOCKET)
+						if (nRecEcho == INVALID_NET_SOCKET)
 						{
 							bClosed = true;
 							break;

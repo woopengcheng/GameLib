@@ -77,6 +77,7 @@ namespace Net
 		const std::string	GetServerType()		const { return m_strRpcType; }
 		UINT16				GetServerPort() { return m_usServerPort; }
 		INetReactor		*	GetNetReactor() { return m_pNetReactor; }
+		static INT32		InternalUpdate(void * pArg);
 
 	public:
 		CErrno				UpdateHandlers(void);
@@ -88,7 +89,7 @@ namespace Net
 		CErrno				AddPeerSession(const SPeerKeey & objKey, const SPeerInfo & objPeerInfo);
 		CErrno				InsertClientsQueue(const std::string & strNodeName , const std::string & strAddress, UINT16 usPort);
 
-	private:
+	protected:
 		CErrno				DeliverMsg();
 		CErrno				FetchClientsQueue();
 

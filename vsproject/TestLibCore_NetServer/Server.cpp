@@ -38,8 +38,7 @@ INT32 Server::InitZMQ()
 	}
 	m_pNetReactor->Init();
 
-	Net::ServerSession * pServerSession = new Net::ServerSession("127.0.0.1", 5555, "", -1, 0);
-	pServerSession->SetNetState(Net::NET_STATE_CONNECTED);
+	Net::ServerSession * pServerSession = new Net::ServerSession("127.0.0.1", 5555, "", "" ,-1);
 
 	Net::NetHandlerServerPtr pNetHandlerListener(new Net::NetHandlerServer(m_pNetReactor, pServerSession));
 	m_pNetReactor->AddNetHandler(pNetHandlerListener, Net::NET_FUNC_ACCEPT_DEFAULT);
@@ -55,7 +54,7 @@ INT32 Server::InitRakNet()
 	}
 	m_pNetReactor->Init();
 
-	Net::ServerSession * pServerSession = new Net::ServerSession("127.0.0.1", 5555, "", -1, 0);
+	Net::ServerSession * pServerSession = new Net::ServerSession("127.0.0.1", 5555, "", "", -1);
 	Net::NetHandlerServerPtr pNetHandlerListener(new Net::NetHandlerServer(m_pNetReactor, pServerSession));
 	m_pNetReactor->AddNetHandler(pNetHandlerListener, Net::NET_FUNC_ACCEPT_DEFAULT);
 
@@ -84,47 +83,60 @@ INT32 Server::Cleanup()
 	return TRUE;
 }
 
+INT32 Server::UpdateThread()
+{
+// 	char pBuf[1024];
+// 	const char * kSendMsg = "send from server.\n";
+// 	std::vector<INT32> vecSessions;
+// 	std::vector<INT32> vecSessionsTmp;
+// 	while(1)
+// 	{
+// 		if (m_pNetReactor)
+// 		{
+// 			m_pNetReactor->Update();
+// 		}
+// 		Net::NetThread::GetInstance().FetchSession(vecSessionsTmp);
+// 		if (vecSessionsTmp.size())
+// 		{
+// 			vecSessions.insert(vecSessions.end(), vecSessionsTmp.begin(), vecSessionsTmp.end());
+// 			vecSessionsTmp.clear();
+// 		}
+// 		std::vector<INT32>::iterator iter = vecSessions.begin();
+// 		for (;iter != vecSessions.end();++iter)
+// 		{
+// 			Net::CollectMsgChunksT  queMsgs;
+// 			Net::NetThread::GetInstance().FetchMsgs(*iter, queMsgs);
+// 
+// 			CUtil::Chunk objChunk;
+// 			while (queMsgs.try_pop(objChunk))
+// 			{
+// 				char * pRecvBuf = (char *)(objChunk.Begin());
+// 
+// 				gDebugStream("msg:" << pRecvBuf + sizeof(Net::MsgHeader));
+// 			}
+// 
+// 			UINT32 unLen = strlen(kSendMsg) + 1;
+// 			((Net::MsgHeader*)pBuf)->unMsgID = 0;
+// 			((Net::MsgHeader*)pBuf)->unMsgLength = unLen + sizeof(Net::MsgHeader);
+// 			memcpy(pBuf + sizeof(Net::MsgHeader), kSendMsg, unLen);
+// 			INT32 nLength = sizeof(Net::MsgHeader) + unLen;
+// 
+// 			Net::NetThread::GetInstance().SendMsg(*iter, pBuf, nLength);
+// 		}
+// 		Timer::sleep(1); 
+// 	}
+	return TRUE;
+}
 INT32 Server::Update()
 {
-	char pBuf[1024];
-	const char * kSendMsg = "send from server.\n";
-	std::vector<INT32> vecSessions;
-	std::vector<INT32> vecSessionsTmp;
 	while(1)
 	{
 		if (m_pNetReactor)
 		{
 			m_pNetReactor->Update();
 		}
-		Net::NetThread::GetInstance().FetchSession(vecSessionsTmp);
-		if (vecSessionsTmp.size())
-		{
-			vecSessions.insert(vecSessions.end(), vecSessionsTmp.begin(), vecSessionsTmp.end());
-			vecSessionsTmp.clear();
-		}
-		std::vector<INT32>::iterator iter = vecSessions.begin();
-		for (;iter != vecSessions.end();++iter)
-		{
-			Net::CollectMsgChunksT  queMsgs;
-			Net::NetThread::GetInstance().FetchMsgs(*iter, queMsgs);
-
-			CUtil::Chunk objChunk;
-			while (queMsgs.try_pop(objChunk))
-			{
-				char * pRecvBuf = (char *)(objChunk.Begin());
-
-				gDebugStream("msg:" << pRecvBuf + sizeof(Net::MsgHeader));
-			}
-
-			UINT32 unLen = strlen(kSendMsg) + 1;
-			((Net::MsgHeader*)pBuf)->unMsgID = 0;
-			((Net::MsgHeader*)pBuf)->unMsgLength = unLen + sizeof(Net::MsgHeader);
-			memcpy(pBuf + sizeof(Net::MsgHeader), kSendMsg, unLen);
-			INT32 nLength = sizeof(Net::MsgHeader) + unLen;
-
-			Net::NetThread::GetInstance().SendMsg(*iter, pBuf, nLength);
-		}
 		Timer::sleep(1); 
 	}
 	return TRUE;
 }
+

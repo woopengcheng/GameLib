@@ -8,7 +8,6 @@
 
 namespace Net 
 {   
-	const INT32 kMAX_EPOOL_WAIT_TIME_OUT = 25;
 
 	class DLL_EXPORT NetReactorEpoll :public INetReactor
 	{
@@ -37,7 +36,7 @@ namespace Net
 	class DLL_EXPORT NetReactorUDS :public NetReactorEpoll
 	{
 	public:
-		NetReactorUDS(UINT32 unMaxConnectionCount);
+		NetReactorUDS(UINT32 unMaxConnectionCount = DEFAULT_MAX_CONNECTION_COUNT, NetThread * pThread = NULL);
 		virtual ~NetReactorUDS(void);
 	};
 }

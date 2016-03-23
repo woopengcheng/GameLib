@@ -30,6 +30,7 @@ namespace Net
 				InitUDP();
 			}break;
 			case REACTOR_TYPE_UDS:
+			case REACTOR_TYPE_UDSEX:
 			{
 				InitUDS();
 			}break;

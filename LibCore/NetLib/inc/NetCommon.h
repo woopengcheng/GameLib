@@ -21,7 +21,7 @@ namespace Net
 #define DEFAULT_THREAD_PRIORITY_COUNT	1
 #define MAX_CLIENT_NUMBER				0xfffffff
 #define MAX_RECURSION_TIMERS			1000
-#define MAX_MESSAGE_LENGTH				(4 * 1024) 
+#define MAX_MESSAGE_LENGTH				(14 * 1024) 
 
 #define DEFAULT_SESSION_TIME_OUT		5 * 1000   //5 session的超时时间最大为5秒.
 #define DEFAULT_MAX_CONNECTION_COUNT	20000      //5 定义最大连接客户端的数量
@@ -31,6 +31,13 @@ namespace Net
 
 #define DEFAULT_MSG_PING_ID				1
 #define DEFAULT_PING_TIME_OUT			5000
+
+#ifndef INVALID_NET_SOCKET
+#define INVALID_NET_SOCKET -1
+#endif
+
+const INT32 kMAX_EPOOL_WAIT_TIME_OUT = 25;
+
 
 #define tbb_unordered_map tbb::concurrent_unordered_map 
 #define tbb_hash_map      tbb::concurrent_hash_map  
@@ -48,11 +55,13 @@ namespace Net
 		REACTOR_TYPE_VAILID,
 		REACTOR_TYPE_SELECT,
 		REACTOR_TYPE_EPOLL,
+		REACTOR_TYPE_EPOLLEX,
 		REACTOR_TYPE_WES,
 		REACTOR_TYPE_IOCP,
 		REACTOR_TYPE_ZMQ,
 		REACTOR_TYPE_UDP,
 		REACTOR_TYPE_UDS,
+		REACTOR_TYPE_UDSEX,
 		REACTOR_TYPE_RAKNET,
 	};
 

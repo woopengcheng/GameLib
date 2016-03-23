@@ -106,7 +106,25 @@ namespace Net
 
 					if (FD_ISSET(socket , pFdSetWrites))
 					{
-						bClosed = !pNetHandler->OnMsgSending().IsSuccess() || bClosed;
+						if (pNetHandler->GetSession()->GetNetState() == NET_STATE_CONNECTING)
+						{
+							INT32 nError = 0;
+							INT32 unErrorLen = sizeof(nError);
+							nResult = getsockopt(socket, SOL_SOCKET, SO_ERROR, (char*)&nError, &unErrorLen);
+							if (nResult == -1 || nError)
+							{
+								bClosed = TRUE;
+							}
+							else
+							{
+								pNetHandler->GetSession()->SetClosed(FALSE);
+								pNetHandler->GetSession()->SetNetState(Net::NET_STATE_CONNECTED);
+							}
+						}
+						else
+						{
+							bClosed = !pNetHandler->OnMsgSending().IsSuccess() || bClosed;
+						}
 					}
 
 					if (FD_ISSET(socket , pFdSetExcepts))

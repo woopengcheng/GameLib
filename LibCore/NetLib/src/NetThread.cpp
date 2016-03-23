@@ -86,21 +86,41 @@ namespace Net
 			Init(m_objInitConf);
 		}
 
-		FetchClientsQueue();
-
-		UpdateHandlers();
-
-		CErrno err = DeliverMsg();
-
-		if(m_pNetReactor)
+		if (m_pNetReactor && m_pNetReactor->GetReactorType() == REACTOR_TYPE_EPOLLEX)
 		{
-			if (m_pNetReactor->Update().IsSuccess() && err.IsSuccess())
-			{
-				err = CErrno::Failure();
-			}
+#ifdef _LINUX
+			co_eventloop(co_get_epoll_ct(), InternalUpdate, this);
+#endif
+		}
+		else
+		{
+			InternalUpdate(this);
 		}
 
-		return err;
+		return CErrno::Success();
+	}
+
+	INT32 NetThread::InternalUpdate(void * pArg)
+	{
+		CErrno err;
+		NetThread * pThread = (NetThread *)pArg;
+		if (pThread)
+		{
+			pThread->FetchClientsQueue();
+
+			pThread->UpdateHandlers();
+
+			err = pThread->DeliverMsg();
+
+			if (pThread->GetNetReactor())
+			{
+				if (pThread->GetNetReactor()->Update().IsSuccess() && err.IsSuccess())
+				{
+					err = CErrno::Failure();
+				}
+			}
+		}
+		return err.IsSuccess();
 	}
 
 	CErrno NetThread::UpdateHandlers(void)
@@ -166,10 +186,29 @@ namespace Net
 			return CErrno::Failure();
 		}
 
-		if (!(m_pNetReactor->AddNetHandler(pListener, Net::NET_FUNC_ACCEPT_DEFAULT)).IsSuccess())
+		if (m_pNetReactor->GetReactorType() == REACTOR_TYPE_EPOLLEX)
 		{
-			gErrorStream("StartupRPCServer AddNetHandler failure:" << strNetNodeName << ":address=" << strAddress << ":port=" << m_usServerPort);
-			return CErrno::Failure();
+			if (!(m_pNetReactor->AddNetHandler(pListener, (ENetHandlerFuncMask)(NET_FUNC_EXCEPT | NET_FUNC_ACCEPT | NET_FUNC_TIMEOUT)).IsSuccess()))
+			{
+				gErrorStream("StartupRPCServer AddNetHandler failure:" << strNetNodeName << ":address=" << strAddress << ":port=" << m_usServerPort);
+				return CErrno::Failure();
+			}
+#ifdef _LINUX
+			EpollexCoTask * pTask = (EpollexCoTask*)(pSeesion->GetContext());
+			if (pTask)
+			{
+				pTask->pNetHandler = pListener;
+				pTask->fd = pSeesion->GetSocket();
+			}
+#endif
+		}
+		else
+		{
+			if (!(m_pNetReactor->AddNetHandler(pListener, Net::NET_FUNC_ACCEPT_DEFAULT)).IsSuccess())
+			{
+				gErrorStream("StartupRPCServer AddNetHandler failure:" << strNetNodeName << ":address=" << strAddress << ":port=" << m_usServerPort);
+				return CErrno::Failure();
+			}
 		}
 
 		gDebugStream("StartupRPCServer success:" << strNetNodeName << ":address=" << strAddress << ":port=" << m_usServerPort);

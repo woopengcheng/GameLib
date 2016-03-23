@@ -21,6 +21,7 @@ namespace Net
 
 	public: 
 		BOOL			Reconnect(void);
+		static void	*	ConnectCoEpollEx(void * pArg);
 	
 	protected:
 		CErrno			InitZMQ();
@@ -32,8 +33,10 @@ namespace Net
 		INT32			ConnectZMQ(const char* ip, int port);
 		INT32			ConnectRakNet(const char* ip, int port);
 		INT32			ConnectCommon(const char* ip, int port);
+		INT32			ConnectEpollEx(const char* ip, int port);
 
-	protected: 
+		
+	protected:
 		MsgProcess	*	m_pMsgProcess;
 	}; 
 

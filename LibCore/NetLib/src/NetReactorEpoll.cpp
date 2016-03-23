@@ -142,10 +142,10 @@ namespace Net
 
 	//////////////////////////////////////////////////////////////////////////UDS///
 
-	NetReactorUDS::NetReactorUDS(UINT32 unMaxConnectionCount)
-		: m_unMaxConnectionCount(unMaxConnectionCount)
-		, INetReactor(REACTOR_TYPE_UDS)
+	NetReactorUDS::NetReactorUDS(UINT32 unMaxConnectionCount/* = DEFAULT_MAX_CONNECTION_COUNT*/, NetThread * pThread/* = NULL*/)
+		: NetReactorEpoll(unMaxConnectionCount, pThread)
 	{
+		SetReactorType(REACTOR_TYPE_UDS);
 	}
 
 	NetReactorUDS::~NetReactorUDS(void)

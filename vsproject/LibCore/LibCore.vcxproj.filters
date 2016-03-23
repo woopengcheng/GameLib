@@ -681,6 +681,9 @@
     <ClInclude Include="..\..\LibCore\MongoBson\mongo\windows_basic.h">
       <Filter>MongoBson\Mongo</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorEpollEx.h">
+      <Filter>NetLib\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -994,6 +997,9 @@
     </ClCompile>
     <ClCompile Include="..\..\LibCore\Test\HttpProtocol_Test.cpp">
       <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorEpollEx.cpp">
+      <Filter>NetLib\src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

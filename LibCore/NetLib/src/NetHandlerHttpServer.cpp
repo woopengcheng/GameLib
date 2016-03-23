@@ -152,7 +152,7 @@ namespace Net
 			}
 			
 			char  szNamePwdTime[3][256];
-			if (sscanf_s((const char *)szBuf , "%[^:]:%[^:]:%s" , szNamePwdTime[0] , szNamePwdTime[1] , szNamePwdTime[2]) != 3)
+			if (sscanf((const char *)szBuf , "%[^:]:%[^:]:%s" , szNamePwdTime[0] , szNamePwdTime[1] , szNamePwdTime[2]) != 3)
 			{
 				return false;
 			}
@@ -194,7 +194,7 @@ namespace Net
 			return false;
 		}
 		char  szNamePwd[3][256];
-		if (sscanf_s(strHeadAuth.c_str(), "%s%s" , szNamePwd[0] , szNamePwd[1]) != 2 ||
+		if (sscanf(strHeadAuth.c_str(), "%s%s" , szNamePwd[0] , szNamePwd[1]) != 2 ||
 			CUtil::stricmp(szNamePwd[0] , "basic"))
 		{
 			return false;
@@ -205,7 +205,7 @@ namespace Net
 		CUtil::strncpy(szNamePwd[1], strDecode.size(), strDecode.data());
 		szNamePwd[1][strDecode.length()] = 0;
 
-		if (sscanf_s(szNamePwd[1] , "%[^:]:%s" , szNamePwd[0] , szNamePwd[2])!= 2)
+		if (sscanf(szNamePwd[1] , "%[^:]:%s" , szNamePwd[0] , szNamePwd[2])!= 2)
 		{
 			return false;
 		}

@@ -443,6 +443,7 @@
     <ClInclude Include="..\..\LibCore\NetLib\inc\NetMsgQueue.h" />
     <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorEpoll.h" />
     <ClInclude Include="..\..\LibCore\NetLib\inc\NetHandlerHttpServer.h" />
+    <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorEpollEx.h" />
     <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorIOCP.h" />
     <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorRakNet.h" />
     <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorSelect.h" />
@@ -545,6 +546,7 @@
     <ClCompile Include="..\..\LibCore\NetLib\src\NetMsgQueue.cpp" />
     <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorEpoll.cpp" />
     <ClCompile Include="..\..\LibCore\NetLib\src\NetHandlerHttpServer.cpp" />
+    <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorEpollEx.cpp" />
     <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorIOCP.cpp" />
     <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorRakNet.cpp" />
     <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorSelect.cpp" />

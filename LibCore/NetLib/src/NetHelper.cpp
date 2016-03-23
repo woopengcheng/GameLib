@@ -122,7 +122,7 @@ namespace Net
 
 	INT32 NetHelper::RecvMsg(NetSocket socket, char * pBuf, UINT32 unSize, struct sockaddr * from , int  * fromlen)
 	{
-#ifdef __linux
+#ifdef _LINUX
 		return ::recv(socket, pBuf, unSize, MSG_DONTWAIT, from, fromlen);
 #else
 		return ::recvfrom(socket, pBuf, unSize , 0 , from, fromlen);
@@ -132,7 +132,7 @@ namespace Net
 	INT32 NetHelper::RecvMsg(NetSocket socket, char * pBuf, UINT32 unSize , INT32 & recv_fd)
 	{
 		INT32  ret = 0; 
-#ifdef __linux
+#ifdef _LINUX
 		struct  msghdr msg;
 		char  recvchar;
 		struct  iovec vec;
@@ -212,7 +212,7 @@ namespace Net
 
 	BOOL NetHelper::IsSocketEagain()
 	{ 
-#ifdef __linux
+#ifdef _LINUX
 		int e = errno;
 		return (e == EAGAIN || e == EINTR);
 #else
@@ -224,7 +224,7 @@ namespace Net
 
 	INT32 NetHelper::SetIOCtrl( int s,long cmd,int *argp )
 	{
-#ifdef __linux
+#ifdef _LINUX
 		return ::ioctl(s,cmd,argp);
 #else
 		return ioctlsocket(s,cmd,(u_long*)argp);
@@ -234,11 +234,10 @@ namespace Net
 
 	INT32 NetHelper::NetToN( const char *ip, struct in_addr *addr )
 	{
-#ifdef __linux
+#ifdef _LINUX
 		return ::inet_aton(ip,addr);
 #else
-		addr->S_un.S_addr = ::inet_addr(ip);
-		return 0;
+		return inet_pton(AF_INET, ip, (PVOID*)(&addr->S_un.S_addr)); 
 #endif
 	}
 
@@ -286,7 +285,12 @@ namespace Net
 		answer = gethostbyname(host);
 		if (answer == NULL)
 			return false;
+#ifdef _LINUX
 		char* ipstr = inet_ntoa(*(in_addr*)(answer->h_addr_list)[0]);
+#else
+		char ipstr[MAX_ADDRESS_LENGTH];
+		inet_ntop(AF_INET, (answer->h_addr_list)[0], ipstr, MAX_ADDRESS_LENGTH);
+#endif
 		if(ipstr == NULL)
 			return false;
 		CUtil::strncpy(ip, strlen(ipstr) + 1 , ipstr);
@@ -296,7 +300,13 @@ namespace Net
 	BOOL NetHelper::GetAddressAndPortByAddrIn( sockaddr_in * pAddrIn , char * pAddress , UINT16 & usPort )
 	{
 		Assert_Re0(pAddrIn);
-		sprintf(pAddress, inet_ntoa(pAddrIn->sin_addr));
+#ifdef _LINUX
+		char* ipstr = inet_ntoa(*(in_addr*)(answer->h_addr_list)[0]);
+#else
+		char ipstr[MAX_ADDRESS_LENGTH];
+		inet_ntop(AF_INET, pAddrIn, ipstr, MAX_ADDRESS_LENGTH);
+#endif
+		sprintf(pAddress, ipstr);
 		usPort = pAddrIn->sin_port;
 
 		return TRUE;

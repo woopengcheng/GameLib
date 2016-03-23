@@ -4,7 +4,8 @@ CErrno Client::Init()
 {
 	if (!m_pNetReactor)
 	{
-		m_pNetReactor = new Net::NetReactorDefault;
+// 		m_pNetReactor = new Net::NetReactorDefault;
+		m_pNetReactor = new Net::NetReactorWES;
 	}
 	m_pNetReactor->Init();
 
@@ -15,7 +16,7 @@ CErrno Client::Init()
 
 	if (!m_pNetHandlerClient)
 	{
-		m_pNetHandlerClient = Net::NetHandlerClientPtr(new Net::NetHandlerClient(m_pNetReactor , new Net::ClientSession("127.0.0.1" , 5555 , "") , m_pMsgProcess));
+		m_pNetHandlerClient = Net::NetHandlerClientPtr(new Net::NetHandlerClient(m_pNetReactor , new Net::ClientSession("127.0.0.1" , 5555 , "" , "" , -1 , 0 , -1 , 0 , 1) , m_pMsgProcess));
 	}
 
 	m_pNetHandlerClient->Init("127.0.0.1" , 5555);
@@ -108,6 +109,7 @@ CErrno Client::Update()
 {
 	while(1)
 	{
+		m_pNetHandlerClient->Update();
 		m_pNetReactor->Update();
 
 		const char * kSendMsg = "client sendmsg.\n";

@@ -13,11 +13,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	CUtil::Init("server"); 
 	int nCount = ThreadPool::ThreadPoolInterface::GetInstance().GetThreadsCount(); 
 	Server server;
-//	server.Init();
+	server.Init();
 //	server.InitUDP();
 //	server.InitZMQ();
 //	server.InitRakNet();
-	server.InitNetThread();
+//	server.InitNetThread();
 	server.Update();
 
 	CUtil::Cleanup(); 

@@ -2,6 +2,7 @@
 #define __net_i_net_net_lib_h__ 
 
 #include "NetLib/inc/NetReactorEpoll.h"
+#include "NetLib/inc/NetReactorEpollEx.h"
 #include "NetLib/inc/NetReactorIOCP.h"
 #include "NetLib/inc/NetReactorSelect.h"
 #include "NetLib/inc/NetReactorRakNet.h"
