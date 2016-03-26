@@ -17,6 +17,34 @@ from xml.etree.ElementTree import SubElement as SE
 #sys.setdefaultencoding("utf-8") 
 #sys.setdefaultencoding("cp936") 
  
+#g_platform = "LINUX"
+g_platform = "WIN64"
+if g_platform == "WIN64":
+	import ctypes
+	
+g_yellow = ""
+g_yellow_h = ""
+g_green = ""
+g_green_h = ""
+g_red = ""
+g_original = ""
+g_cyan = ""
+g_stdInputHandle = -10
+g_stdOutputHandle = -11
+g_stdErrorHandle = -12
+
+#windows下的颜色.
+FOREGROUND_BLACK = 0x0
+FOREGROUND_BLUE = 0x01
+FOREGROUND_GREEN = 0x02
+FOREGROUND_RED = 0x04
+FOREGROUND_INTENSTITY = 0x08
+
+BACKGROUND_BLUE = 0x20
+BACKGROUND_GREEN = 0x30
+BACKGROUND_RED = 0x40
+BACKGROUND_INTENSTITY = 0x80
+
 g_gameDBPath = "DBDIDL.xml"
 
 #rpc的类型
@@ -1581,28 +1609,79 @@ def Version():
 	print('GenerateGameDB.py 1.0.0.0.1')
 
 def LogOutDebug(*string):
-	longStr = "debug: "
+	cp = GetColor("debug")
+	longStr = cp + "[ DEBUG ]"
 	for item in range(len(string)):  
 		longStr += str(string[item])
 
 	print(longStr)
-	pass
+	GetColor("reset")
 
 def LogOutInfo(*string):
-	longStr = "info: "
+	cp = GetColor("info")
+	longStr = cp + "[ INFO ] "
 	for item in range(len(string)):  
 		longStr += str(string[item])
 	
 	print(longStr)
+	GetColor("reset")
 	
 def LogOutError(*string):
-	longStr = "error: "
+	cp = GetColor("error")
+	longStr = cp + "[ ERR ] "
 	for item in range(len(string)):  
 		longStr += str(string[item])
 	
 	print(longStr)
+	GetColor("reset")
 	sys.exit()
 	
+def InitColor():
+	if g_platform == "LINUX":
+		cp = '\033['
+		g_yellow = cp + '33m'
+		g_yellow_h = cp + '1;33m'
+		g_green = cp + '32m'
+		g_green_h = cp + '1;32m'
+		g_red = cp + '31m'
+		g_cyan = cp + '36m'
+		g_original = cp + '0m'
+	else:
+		g_yellow = ""
+		g_yellow_h = ""
+		g_green = ""
+		g_green_h = ""
+		g_red = ""
+		g_original = ""
+		g_cyan = ""
+
+def GetColor(type):
+	stdOutHandle = ctypes.windll.kernel32.GetStdHandle(g_stdOutputHandle)
+	if type == "error":
+		if g_platform == "LINUX":
+			return g_red
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_RED | FOREGROUND_INTENSTITY)
+			return ""
+	elif type == "info":
+		if g_platform == "LINUX":
+			return g_green
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_GREEN | FOREGROUND_INTENSTITY)
+			return ""
+	elif type == "debug" or type == "reset":
+		if g_platform == "LINUX":
+			return g_original
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN)
+			return ""
+	elif type == "warning" :
+		if g_platform == "LINUX":
+			return g_yellow
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_BLUE | FOREGROUND_INTENSTITY)
+			return ""
+			
 def GetBKDRHash(name):
 	sum = 0
 	seed = 131 #31 131 1313 13131 131313 etc
@@ -2064,6 +2143,7 @@ def handleArgs(argv):
 			sys.exit(3) 
 			
 def main(argv):
+	InitColor()
 	handleArgs(argv)
 	LogOutInfo("start generate rpc from path:" + g_gameDBPath) 
 	start()  

@@ -1,4 +1,4 @@
-﻿#-*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 #coding:utf-8
 import sys , getopt
 import os , re , string
@@ -10,6 +10,11 @@ import time,datetime
 import socket
 import csv
 
+#g_platform = "LINUX"
+g_platform = "WIN64"
+if g_platform == "WIN64":
+	import ctypes
+	
 from openpyxl import Workbook
 from openpyxl.compat import range
 from openpyxl.cell import get_column_letter
@@ -24,6 +29,29 @@ from xml.etree.ElementTree import SubElement as SE
 #sys.setdefaultencoding("utf-8") 
 #sys.setdefaultencoding("cp936") 
 
+g_yellow = ""
+g_yellow_h = ""
+g_green = ""
+g_green_h = ""
+g_red = ""
+g_original = ""
+g_cyan = ""
+g_stdInputHandle = -10
+g_stdOutputHandle = -11
+g_stdErrorHandle = -12
+
+#windows下的颜色.
+FOREGROUND_BLACK = 0x0
+FOREGROUND_BLUE = 0x01
+FOREGROUND_GREEN = 0x02
+FOREGROUND_RED = 0x04
+FOREGROUND_INTENSTITY = 0x08
+
+BACKGROUND_BLUE = 0x20
+BACKGROUND_GREEN = 0x30
+BACKGROUND_RED = 0x40
+BACKGROUND_INTENSTITY = 0x80
+			
 g_xlsImportPath = ""
 g_xlsExportCSVPath = ""
 g_xlsExportCPPPath = ""
@@ -44,6 +72,7 @@ g_int64ArrayType = "std::vector<INT64>"
 g_boolArrayType = "std::vector<bool>"
 g_doubleArrayType = "std::vector<double>"
 g_stringArrayType = "std::vector<std::string>"
+g_conditionType = "Condition"
 g_structType = 1
 g_structArrayType = 2
 	
@@ -779,6 +808,8 @@ def GetType(item):
 	elif item.lower() == "bool[]".lower() or\
 		item.lower() == "[]bool".lower():
 		return g_boolArrayType
+	elif item.lower() == "Condition".lower():
+		return g_boolArrayType
 	elif item.lower().find(',') >= 0 and \
 		item.lower()[0] != "[" and\
 		item.lower()[len(item.lower()) - 1] != "]":
@@ -960,6 +991,15 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_stringArrayType:
 		pass
+	elif item_type == g_conditionType:
+		item = RemoveSpecialWord(colItem)
+		if item.index("(") >= 0 or item.index(")") >= 0 or item.index("|") >= 0:	
+			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item="  , " Condition  type error.")							
+
+		if row != -1:
+			g_xlsRecords[sheet][row][col] = item
+		else:
+			return item
 	elif item_type == g_structType:			
 		childItems = colItem.split(',')		
 		itemContent = ""
@@ -1071,27 +1111,79 @@ def Version():
 	print('GenerateCSV.py 1.0.0.0.1')
 
 def LogOutDebug(*string):
-	longStr = "debug: "
+	cp = GetColor("debug")
+	longStr = cp + "[ DEBUG ]"
 	for item in range(len(string)):  
 		longStr += str(string[item])
 
 	print(longStr)
+	GetColor("reset")
 
 def LogOutInfo(*string):
-	longStr = "info: "
+	cp = GetColor("info")
+	longStr = cp + "[ INFO ] "
 	for item in range(len(string)):  
 		longStr += str(string[item])
 	
 	print(longStr)
+	GetColor("reset")
 	
 def LogOutError(*string):
-	longStr = "error: "
+	cp = GetColor("error")
+	longStr = cp + "[ ERR ] "
 	for item in range(len(string)):  
 		longStr += str(string[item])
 	
 	print(longStr)
-	sys.exit(3)
+	GetColor("reset")
+	sys.exit()
 	
+def InitColor():
+	if g_platform == "LINUX":
+		cp = '\033['
+		g_yellow = cp + '33m'
+		g_yellow_h = cp + '1;33m'
+		g_green = cp + '32m'
+		g_green_h = cp + '1;32m'
+		g_red = cp + '31m'
+		g_cyan = cp + '36m'
+		g_original = cp + '0m'
+	else:
+		g_yellow = ""
+		g_yellow_h = ""
+		g_green = ""
+		g_green_h = ""
+		g_red = ""
+		g_original = ""
+		g_cyan = ""
+
+def GetColor(type):
+	stdOutHandle = ctypes.windll.kernel32.GetStdHandle(g_stdOutputHandle)
+	if type == "error":
+		if g_platform == "LINUX":
+			return g_red
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_RED | FOREGROUND_INTENSTITY)
+			return ""
+	elif type == "info":
+		if g_platform == "LINUX":
+			return g_green
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_GREEN | FOREGROUND_INTENSTITY)
+			return ""
+	elif type == "debug" or type == "reset":
+		if g_platform == "LINUX":
+			return g_original
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN)
+			return ""
+	elif type == "warning" :
+		if g_platform == "LINUX":
+			return g_yellow
+		else:
+			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_BLUE | FOREGROUND_INTENSTITY)
+			return ""
+				
 def WriteFileDescription(fileWrite , sfile , desc):
 	fileWrite.write("/************************************" + "\n")
 	fileWrite.write("FileName	:	" + sfile + "\n")
@@ -1169,6 +1261,7 @@ def main(argv):
 	global g_xlsImportPath 
 	global g_xlsExportCSVPath
 	global g_xlsExportCPPPath
+	InitColor()
 	#handleArgs(argv)
 	g_xlsImportPath = "./xls_config"
 	g_xlsExportCSVPath = "../../../bin/vs14.0/x64/DLL_Debug_x64/csv_config"
