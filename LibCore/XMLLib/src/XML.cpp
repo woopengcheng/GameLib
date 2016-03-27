@@ -7,7 +7,9 @@ extern "C"
 };
 
 namespace XML
-{  
+{
+	INT32	g_nStartLoadXMLStaticLib = 0;
+	INT32	g_nEndLoadXMLStaticLib = g_nStartLoadXMLStaticLib;
 	void XMLCALL XML::StartElement( void * pUserData , const char * pName , const char ** pAttr )
 	{
 		MsgAssert(pUserData && pName, "StartElement error" << pName);

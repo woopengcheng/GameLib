@@ -1,5 +1,6 @@
 #include "CUtil\inc\CUtil.h" 
 #include "CUtil\inc\CSVReader.h"
+#include "Timer\inc\TimerHelp.h"
 #include <fstream>
 
 namespace CUtil
@@ -31,6 +32,7 @@ namespace CUtil
 		m_vecRows.clear();
 		m_vecNames.clear();
 
+		int nCurLine = 0;
 		while (!stream.eof())
 		{
 			char buf[10240] = "";
@@ -47,10 +49,10 @@ namespace CUtil
 			if (values.size() == 0)
 				continue;
 
-			if (m_vecNames.size() == 0)
+			if (nCurLine++ == 2) //5 第2行是名字行.
 				m_vecNames = values;
-			else
-				m_vecRows.push_back(values);
+
+			m_vecRows.push_back(values);
 		}
 		return 0;
 	}
@@ -65,6 +67,7 @@ namespace CUtil
 		
 		std::stringstream stream;
 		stream << pContent;
+		int nCurLine = 0;
 		while (!stream.eof())
 		{
 			char buf[10240] = "";
@@ -80,11 +83,11 @@ namespace CUtil
 
 			if (values.size() == 0)
 				continue;
-
-			if (m_vecNames.size() == 0)
+			
+			if (nCurLine++ == 2) //5 第2行是名字行.
 				m_vecNames = values;
-			else
-				m_vecRows.push_back(values);
+						
+			m_vecRows.push_back(values);
 		}
 		return 0;
 	}
@@ -159,6 +162,12 @@ namespace CUtil
 		return CUtil::strtobool(name.c_str()) >= 1;
 	}
 
+	Timer::Date CSVReader::GetDate(size_t row, size_t col, Timer::EDateType type/* = Timer::DATE_TYPE_INVALID*/)
+	{
+		std::string strDate = GetString(row, col);
+		return Timer::Date(strDate, type);
+	}
+
 	size_t CSVReader::GetIndex(const char* name)
 	{
 		for (size_t i = 0; i < m_vecNames.size(); ++i)
@@ -172,10 +181,10 @@ namespace CUtil
 
 	size_t CSVReader::GetIndex(const char* name, size_t row)
 	{
-		if (row == 0)
+		if (row == -1)
 			return GetIndex(name);
 
-		VecValuesT& values = m_vecRows[row - 1];
+		VecValuesT& values = m_vecRows[row];
 
 		for (size_t i = 0; i < values.size(); ++i)
 		{

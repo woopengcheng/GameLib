@@ -1,6 +1,7 @@
 #ifndef __cutil_csvreader_h__
 #define __cutil_csvreader_h__ 
 #include "CUtil/inc/Common.h" 
+#include "Timer/inc/Date.h"
 
 namespace CUtil
 {
@@ -23,6 +24,8 @@ namespace CUtil
 		double			GetDouble(size_t row, size_t col);
 		INT32			GetInt32ByIndex(size_t row, size_t col, const char** names, size_t count);
 		bool			GetBool(size_t row, size_t col);
+		Timer::Date		GetDate(size_t row, size_t col , Timer::EDateType type = Timer::DATE_TYPE_INVALID);
+
 	public:
 		std::string		GetColName(size_t col, size_t row = 0);
 

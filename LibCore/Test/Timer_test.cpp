@@ -1,6 +1,7 @@
 #include "Timer/inc/GlobalTimer.h"
 #include "Timer/inc/GlobalTimerTask.h"
 #include "Timer/inc/TimerHelp.h"
+#include "Timer/inc/Date.h"
 #include "CUtil/inc/CUtil.h"
 #include "gtest/gtest.h"
 
@@ -118,4 +119,85 @@ TEST(Timer , Timer_Test)
 	}
 
 	Timer::GlobalTimer::GetInstance().Cleanup();
+}
+
+TEST(Timer, Date)
+{
+	Timer::Date date("2016-3-26-19:08:11");
+	INT64 nDate = date.GetDateInt();
+	struct tm t = { 0 }, t1 = {0};
+	time_t ti = time(NULL); 
+	t1 = *localtime(&ti);
+	t1.tm_isdst = false;
+	t1.tm_yday = 0;
+	t1.tm_wday = 0;
+	t = t1;
+
+	time_t time = 0;
+	{
+		t = t1;
+		t.tm_year = 116;
+		t.tm_mon = 2;
+		t.tm_mday = 26;
+		t.tm_hour = 19;
+		t.tm_min = 8;
+		t.tm_sec = 11;
+		time = mktime(&t);
+		EXPECT_EQ(nDate, time);
+	}
+	{
+		t = t1; 
+		t.tm_mon = 2;
+		t.tm_mday = 26;
+		t.tm_hour = 19;
+		t.tm_min = 8;
+		t.tm_sec = 11;
+		time = mktime(&t);
+		date = Timer::Date("3-26-19:08:11" , Timer::DATE_TYPE_MON);
+		nDate = date.GetDateInt();
+
+		EXPECT_EQ(nDate, time);
+	}
+	{
+		t = t1; 
+		t.tm_mday = 26;
+		t.tm_hour = 19;
+		t.tm_min = 8;
+		t.tm_sec = 11;
+		time = mktime(&t);
+		date = Timer::Date("26-19:08:11", Timer::DATE_TYPE_DAY);
+		nDate = date.GetDateInt();
+
+		EXPECT_EQ(nDate, time);
+	}
+	{
+		t = t1; 
+		t.tm_hour = 19;
+		t.tm_min = 8;
+		t.tm_sec = 11;
+		time = mktime(&t);
+		date = Timer::Date("19:08:11", Timer::DATE_TYPE_HOUR);
+		nDate = date.GetDateInt();
+
+		EXPECT_EQ(nDate, time);
+	}
+	{
+		t = t1;  
+		t.tm_min = 8;
+		t.tm_sec = 11;
+		time = mktime(&t);
+		date = Timer::Date("08:11", Timer::DATE_TYPE_MIN);
+		nDate = date.GetDateInt();
+
+		EXPECT_EQ(nDate, time);
+	}
+	{
+		t = t1; 
+		t.tm_sec = 11;
+		time = mktime(&t);
+		date = Timer::Date("11", Timer::DATE_TYPE_SEC);
+		nDate = date.GetDateInt();
+
+		EXPECT_EQ(nDate, time);
+	}
 }

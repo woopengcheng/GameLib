@@ -1,6 +1,7 @@
 #include "CUtil/inc/CUtil.h"
 #include "CUtil/inc/Random.h"
 #include "CUtil/inc/UnitTest.h"
+#include "XMLLib/inc/xml.h"
 #include "LogLib/inc/Log.h"
 #include "NetLib/inc/NetCommon.h" 
 #include "Timer/inc/TimerHelp.h"

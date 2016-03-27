@@ -351,6 +351,17 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\LibCore\Test\Chunk_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\CityHash_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\Coroutine_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\CStream_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\CSVReader_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\HttpProtocol_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\LibCore_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\MongoBson_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\Paramter_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\ReferCount_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\RTTI_Test.cpp" />
     <ClCompile Include="CSVConfigs\ActionConfig.cpp" />
     <ClCompile Include="CSVConfigs\ActionConfigLoad.cpp" />
     <ClCompile Include="CSVConfigs\ActivityConfig.cpp" />

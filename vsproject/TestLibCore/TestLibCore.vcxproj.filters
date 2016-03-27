@@ -16,6 +16,9 @@
     <Filter Include="CSVConfigs">
       <UniqueIdentifier>{ddf248d0-fc3a-46f3-8279-99f87757e138}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{84e9249b-1fca-4ff5-abd4-f4baff644c38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -64,6 +67,39 @@
     </ClCompile>
     <ClCompile Include="CSVConfigs\ConfigManager.cpp">
       <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\Chunk_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\CityHash_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\Coroutine_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\CStream_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\CSVReader_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\HttpProtocol_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LibCore_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\MongoBson_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\Paramter_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\ReferCount_Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\RTTI_Test.cpp">
+      <Filter>Test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

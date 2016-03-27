@@ -4,7 +4,6 @@
 #include "CUtil/inc/CUtil.h"
 #include "CUtil/inc/DeelxRegexp.h"
 #include "CSVConfigs/ConfigManager.h"
-#include "XMLLib/inc/XML.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {   

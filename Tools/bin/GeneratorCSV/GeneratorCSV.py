@@ -58,20 +58,25 @@ g_xlsExportCPPPath = ""
 
 g_xlsDeleteRecord = []
 g_xlsRecords = collections.OrderedDict()
+g_xlsConditionRecords = collections.OrderedDict()
 g_configPrefix = "S"
 g_loadConfigSuffix = "Load"
 g_xlsNamespace = "Config"
+g_conditionTag = "condition"
+g_actionTag = "action"
 
 g_int32Type = "INT32"
 g_int64Type = "INT64"
 g_boolType = "bool"
 g_doubleType = "double"
 g_stringType = "std::string"
+g_dateType = "Timer::Date"
 g_int32ArrayType = "std::vector<INT32>" 
 g_int64ArrayType = "std::vector<INT64>"
 g_boolArrayType = "std::vector<bool>"
 g_doubleArrayType = "std::vector<double>"
 g_stringArrayType = "std::vector<std::string>"
+g_dateArrayType = "std::vector<Timer::Date>"
 g_conditionType = "Condition"
 g_structType = 1
 g_structArrayType = 2
@@ -81,6 +86,7 @@ g_int64Func = "GetInt64"
 g_boolFunc = "GetBool"
 g_doubleFunc = "GetDouble"
 g_stringFunc = "GetString"
+g_dateFunc = "GetDate"
 g_int32ArrayFunc = 6
 g_int64ArrayFunc = 7
 g_boolArrayFunc = 8
@@ -88,6 +94,7 @@ g_doubleArrayFunc = 9
 g_stringArrayFunc = 10
 g_structFunc = 11
 g_structArrayFunc = 12
+g_dateArrayFunc = 13
 
 oneTab = "\t"
 twoTab = oneTab + "\t"
@@ -95,11 +102,17 @@ threeTab = twoTab + "\t"
 fourTab = threeTab + "\t"
 fiveTab = fourTab + "\t"
 sixTab = fiveTab + "\t"
+sevenTab = sixTab + "\t"
+eightTab = sevenTab + "\t"
 
-g_rowComent = 0
-g_rowName = 1
-g_rowType = 2
-g_rowCS = 3
+g_rowComent = 0 # 注释行
+g_rowType = 1	# 类型行
+g_rowName = 2 	# 为类型名字行
+g_rowCS = 3   	# 第三行为是否是服务器还是客户端代码
+g_cellID = 0  	# 第一列为ID列
+g_cellName = 0 	# 条件列的   条件名字
+g_cellCS = 1 	# 条件列的   服务器还是客户端代码.
+g_rowDataStart=4# 从这行开始就是数据了.
 
 def start(): 
 	LogOutInfo("start generate csv.\n")   
@@ -131,7 +144,7 @@ def Xlsx2CSV(filepath):
 		filename = os.path.splitext(filename.replace(' ', '_'))[0]
 		if filename.find('#') >= 0:
 			filename = filename.replace('#' , '')
-			LogOutInfo("delete filename" , filename )
+			LogOutInfo("delete filename.filename=" , filename )
 			g_xlsDeleteRecord.append(filename)
 
 		#csv_filename = '{xlsx}.tabcsv'.format(xlsx=filename)		
@@ -146,21 +159,21 @@ def Xlsx2CSV(filepath):
 		cur_sheet_index = 0
 		xlsx_file_reader = load_workbook(filepath)
 		g_xlsRecords[filename] = collections.OrderedDict()
+		conditionContainer = collections.OrderedDict() #这个专门处理条件表达式的.
 		for sheet in xlsx_file_reader.get_sheet_names():			
 			cur_rows_index = 0
 			sheet_ranges = xlsx_file_reader[sheet]
 			for row in sheet_ranges.rows:
-				if cur_sheet_index >= 1 and cur_rows_index < 4:
+				if cur_sheet_index >= 1 and cur_rows_index < g_rowDataStart + 1: #当第二个sheet的时候前4行是不读取的.
 					cur_rows_index = cur_rows_index + 1
 					continue
 				
-				row_container = []
+				row_container = [] 
 				cur_cell_index = 0
 				for cell in row:		
 					Str = ""	
-					cur_cell_index = cur_cell_index + 1
 					if type(cell.value) == type(None):
-						if cur_cell_index == 1:
+						if cur_cell_index == g_cellID:
 							break		
 						Str = ""	
 #						LogOutError("error parase filepath" , filepath , "  cur_sheet " , sheet , "  cur_rows_index " , cur_rows_index ,"  cur_cell_index " , cur_cell_index , "  type(cell.value) " , type(cell.value))
@@ -171,32 +184,44 @@ def Xlsx2CSV(filepath):
 						else:
 							Str = Str.encode('gbk').decode('gbk')
 
-					if len(Str) >= 0:						
+					if len(Str) >= 0:			#有些策划没填的数据为空.也需要记录.
 						if cur_rows_index < 4:
 							Str = ''.join([x for x in Str if x != " "]) 
-						if cur_cell_index == 1:		# 插入ID
+						if cur_cell_index == g_cellID:		# 第一列是ID.需要判定是否有重复的ID
 							if Str in id_list:
 								LogOutDebug("repeat id \'" , Str , "\' in \'" , filepath , " \' file")
 								#LogOutError("repeat id \'" , Str , "\' in \'" , filepath , " \' file")
 							id_list.append(Str)
-						row_container.append(Str)
+						if cur_rows_index == g_rowType and Str.lower() == g_conditionType.lower():
+							conditionContainer[cur_cell_index] = []  #这个用来记录这一列的条件表达式.
+						else:
+							if cur_cell_index in conditionContainer:
+								if len(Str) > 0:  # 记录条件的时候因为不是一一对应的,所以当为空的时候不需要记录.
+									conditionContainer[cur_cell_index].append(Str)
+									RemovListNewLine(conditionContainer[cur_cell_index])
+									#LogOutDebug("conditionContainer:" , Str)
+							else:
+								row_container.append(Str)
+
+					cur_cell_index = cur_cell_index + 1
 
 				if len(row_container) >= 1:	
 					RemovListNewLine(row_container)
 					g_xlsRecords[filename][cur_rows_index] = row_container
 					#csv_file_writer.writerow(row_container)
-					cur_rows_index = cur_rows_index + 1
-#					LogOutDebug("cell.row_container:" , row_container)
-				
-			cur_sheet_index = cur_sheet_index + 1		
+					cur_rows_index = cur_rows_index + 1   #这里是为了去除一些空行.
+					#LogOutDebug("cell.row_container:" , row_container)
+			cur_sheet_index = cur_sheet_index + 1	
+		g_xlsConditionRecords[filename] = conditionContainer
+		#LogOutDebug("g_xlsConditionRecords:" , g_xlsConditionRecords[filename])
 		#csv_file.close()
 	except Exception as e:
 		LogOutError(e)
 		
 def CheckRecords():
 	for sheet , item in g_xlsRecords.items(): 	#读取sheet
-		for row , rowItem in item.items():	#读取每一行
-			if row == g_rowName:		#命名重名检测,
+		for row , rowItem in item.items():		#读取每一行
+			if row == g_rowName:				#命名重名检测,
 				sameName = []
 				for col , colItem in enumerate(rowItem):	#读取每一列
 					colItemName = colItem
@@ -206,7 +231,7 @@ def CheckRecords():
 						LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , colItem , "use error name .")
 					if item_type == g_structArrayType:
 						if colItem.find('[') <= 0 or colItem.find(']') <= 0:
-							LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , colItem , "error  .no \'[\' or \']\'.")							
+							LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , colItem , "error  .no \'[\' or \']\'.")
 					
 					if item_type == g_structArrayType or item_type == g_structType:
 						npos = colItem.find('[')
@@ -228,7 +253,21 @@ def CheckRecords():
 				for col , colItem in enumerate(rowItem):	#读取每一列
 					item_type = GetType(g_xlsRecords[sheet][g_rowType][col])	
 					CheckDataType(item_type , sheet , row , col , colItem)
-					#LogOutDebug("g_xlsRecords[sheet][row][col]:" , g_xlsRecords[sheet][row][col])
+					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type)
+				#LogOutDebug("g_xlsRecords,[row = " + str(row) + ":" , g_xlsRecords[sheet][row])
+					
+	for sheet , item in g_xlsConditionRecords.items():
+		for col , colItem in item.items():		# 读取每一列
+			sameName = []						# 命名重名检测,
+			for row , rowItem in enumerate(colItem):		# 读取每一行
+				if row == 0:	# 第一行是名字
+					sameName.append(rowItem)
+				elif rowItem in sameName:
+					LogOutError("sheet=" , sheet  , " :row=" , row , " :col=" , col , " item=" , rowItem , " use one same name .")
+
+			for row , rowItem in enumerate(colItem):	#读取每一列
+				CheckDataType(g_conditionType , sheet , row , col , rowItem)
+				#LogOutDebug("g_xlsRecords[sheet][row][col]:" , g_xlsRecords[sheet][row][col])
 					
 def GenerateCSV():
 	
@@ -255,10 +294,10 @@ def GenerateCSV():
 def GenerateCPP(): 
 	GenerateConfigManagerHeader()
 	for sheet , item in g_xlsRecords.items():
-		GenerateConfigLoadHeader(sheet , item[2] , item[1] , item[0])
-		GenerateConfigLoadCpp(sheet , item[2] , item[1] , item[0])
-		GenerateConfigHeader(sheet , item[2] , item[1] , item[0])
-		GenerateConfigCpp(sheet , item[2] , item[1] , item[0])
+		GenerateConfigLoadHeader(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
+		GenerateConfigLoadCpp(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
+		GenerateConfigHeader(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
+		GenerateConfigCpp(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
 	GenerateConfigManagerCPP()
 
 def GenerateStructData(fileWrite , types , datas , comments):	
@@ -268,13 +307,15 @@ def GenerateStructData(fileWrite , types , datas , comments):
 			npos = datas[index].find('[')
 			structName = datas[index][0 : npos]
 			structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
+			#LogOutDebug("name=" , structName , ":structDatas " , structDatas , " size=" , len(structDatas))
 			fileWrite.write("\n" + twoTab + "//" + comments[index] + "\n") 
 			fileWrite.write(twoTab + "struct " + g_configPrefix + structName + "\n");
 			fileWrite.write(twoTab + "{\n");
 			childItems = item.split(',')
 			if len(childItems) != len(structDatas):
-				LogOutError("parase struct error.invalid size . name=" , structName , ":childItems size=" , len(childItems) , ":structDatas size=" , len(structDatas))
+				LogOutError("parase struct error.maybe no detail name. structName=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , " size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
+				#LogOutDebug("name=" , structName , ":structDatas=" , structDatas , ":childItem=" , childItem)
 				fileWrite.write(threeTab + GetType(childItem) + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
 			fileWrite.write(twoTab + "}" + structName + ";\n");
 		elif item_type == g_structArrayType:
@@ -287,7 +328,7 @@ def GenerateStructData(fileWrite , types , datas , comments):
 			item = item.replace('[' , '').replace(']' , '')
 			childItems = item.split(',')
 			if len(childItems) != len(structDatas):
-				LogOutError("parase struct error.invalid size . name=" , structName , ":childItems size=" , len(childItems) , ":structDatas size=" , len(structDatas))
+				LogOutError("parase struct error.invalid size . name=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , " size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
 				fileWrite.write(threeTab + GetType(childItem) + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
 			fileWrite.write(twoTab + "}" + ";\n");
@@ -309,6 +350,7 @@ def GenerateConfigLoadHeader(filename , types , datas , comments):
 	fileWrite.write("#ifndef __" + filename + "_define_h__\n")
 	fileWrite.write("#define __" + filename + "_define_h__\n") 
 	fileWrite.write("#include \"CUtil/inc/Common.h \"\n\n") 
+	fileWrite.write("#include \"Timer/inc/Date.h \"\n\n") 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n") 
 	fileWrite.write(oneTab + "struct " + g_configPrefix + filename + "\n") 
@@ -365,18 +407,18 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 		if item_type == g_structType:
 			npos = datas[index].find('[')
 			structName = datas[index][0 : npos]
-			fileWrite.write(twoTab + "size_t index_" + structName + " = csv.GetIndex(\"" + datas[index] + "\", 1);\n") 
+			fileWrite.write(twoTab + "size_t index_" + structName + " = csv.GetIndex(\"" + datas[index] + "\", " + str(g_rowName) + ");\n") 
 			fileWrite.write(twoTab + "MsgAssert_Re0(index_" + structName + " != (size_t)-1 , \"error " + datas[index] + "\");\n\n") 
 		elif item_type == g_structArrayType:
 			npos = datas[index].find('[')
 			structName = datas[index][0 : npos]
-			fileWrite.write(twoTab + "size_t index_" + structName + " = csv.GetIndex(\"" + datas[index] + "\", 1);\n") 
+			fileWrite.write(twoTab + "size_t index_" + structName + " = csv.GetIndex(\"" + datas[index] + "\", " + str(g_rowName) + ");\n") 
 			fileWrite.write(twoTab + "MsgAssert_Re0(index_" + structName + " != (size_t)-1 , \"error " + datas[index] + "\");\n\n") 
 		else:
-			fileWrite.write(twoTab + "size_t index_" + datas[index] + " = csv.GetIndex(\"" + datas[index] + "\", 1);\n") 
+			fileWrite.write(twoTab + "size_t index_" + datas[index] + " = csv.GetIndex(\"" + datas[index] + "\", " + str(g_rowName) + ");\n") 
 			fileWrite.write(twoTab + "MsgAssert_Re0(index_" + datas[index] + " != (size_t)-1 , \"error " + datas[index] + "\");\n\n") 
 
-	fileWrite.write(twoTab + "for (size_t row = 3; row < csv.Count(); ++row)\n") 
+	fileWrite.write(twoTab + "for (size_t row = " + str(g_rowDataStart) + "; row < csv.Count(); ++row)\n") 
 	fileWrite.write(twoTab + "{\n") 
 	fileWrite.write(threeTab + g_configPrefix + filename + " conf;\n\n") 
 	for index , item in enumerate(types):
@@ -405,6 +447,15 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
 				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
 				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((bool)CUtil::atoi(vals[i].c_str()));\n") 
+				fileWrite.write(threeTab + "}\n\n") 
+			elif Str == g_dateArrayFunc:
+				fileWrite.write(threeTab + "{\n") 
+				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
+				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back(Timer::Date(vals[i]));\n") 
+				#fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back(Timer::Date(vals[i], " + GetDateType(datas[index]) + "));\n") 
 				fileWrite.write(threeTab + "}\n\n") 
 			elif Str == g_doubleArrayFunc:
 				fileWrite.write(threeTab + "{\n") 
@@ -443,6 +494,8 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 					elif childItemType == g_int32Type:
 						strVal = "INT32 val = "
 						strVal = strVal + "(INT32)CUtil::atoi(vals[i].c_str());"
+					elif childItemType == g_dateType:
+						strVal = "Timer::Date val(vals[i]);"
 					elif childItemType == g_int64Type:
 						strVal = "INT64 val = "
 						strVal = strVal + "(INT64)CUtil::atoi(vals[i].c_str());"
@@ -493,6 +546,8 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 					elif childItemType == g_int32Type:
 						strVal = "INT32 val = "
 						strVal = strVal + "(INT32)CUtil::atoi(vals2[j].c_str());"
+					elif childItemType == g_dateType:
+						strVal = "Timer::Date val(vals2[j]);"
 					elif childItemType == g_int64Type:
 						strVal = "INT64 val = "
 						strVal = strVal + "(INT64)CUtil::atoi(vals2[j].c_str());"
@@ -510,8 +565,7 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 				fileWrite.write(fiveTab + "}\n") 
 				fileWrite.write(fiveTab + "conf.vec" + structName + ".push_back(array);\n") 
 				fileWrite.write(fourTab + "}\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-
+				fileWrite.write(threeTab + "}\n\n")
 		else:
 			fileWrite.write(threeTab + "conf." + datas[index] + " = csv." + Str + "(row , index_" + datas[index] + ");\n") 
 			
@@ -785,6 +839,10 @@ def GetType(item):
 		return g_boolType
 	elif item.lower() == "string".lower():
 		return g_stringType
+	elif item.lower() == "condition".lower():
+		return g_conditionType
+	elif item.lower() == "date".lower():
+		return g_dateType
 	elif item.lower() == "int[]".lower() or\
 		item.lower() == "[]int".lower() or\
 		item.lower() == "[]int32".lower() or\
@@ -800,6 +858,9 @@ def GetType(item):
 		item.lower() == "[]float".lower() or\
 		item.lower() == "float[]".lower():
 		return g_doubleArrayType
+	elif item.lower() == "date[]".lower() or\
+		item.lower() == "[]date".lower():
+		return g_dateArrayType
 	elif item.lower() == "string[]".lower() or\
 		item.lower() == "[]string".lower() or\
 		item.lower() == "[]std::string".lower() or\
@@ -837,6 +898,8 @@ def GetTypeFunc(item):
 		return g_boolFunc
 	elif item.lower() == "string".lower():
 		return g_stringFunc
+	elif item.lower() == "date".lower():
+		return g_dateFunc
 	elif item.lower() == "int[]".lower() or\
 		item.lower() == "[]int".lower() or\
 		item.lower() == "[]int32".lower() or\
@@ -860,6 +923,9 @@ def GetTypeFunc(item):
 	elif item.lower() == "bool[]".lower() or\
 		item.lower() == "[]bool".lower():
 		return g_boolArrayFunc
+	elif item.lower() == "Date[]".lower() or\
+		item.lower() == "[]Date".lower():
+		return g_dateArrayFunc
 	elif item.lower().index(",") >= 0 and \
 		item.lower()[0] != "[" and\
 		item.lower()[len(item.lower()) - 1] != "]":
@@ -885,6 +951,8 @@ def GetTypeTab(item):
 	elif item.lower() == "double".lower() or\
 		item.lower() == "float".lower():
 		return sixTab
+	elif item.lower() == "Date".lower():
+		return fiveTab
 	elif item.lower() == "string".lower():
 		return fiveTab
 	elif item.lower() == "int[]".lower() or\
@@ -910,6 +978,9 @@ def GetTypeTab(item):
 		item.lower() == "[]std::string".lower() or\
 		item.lower() == "std::string[]".lower():
 		return oneTab
+	elif item.lower() == "Date[]".lower() or\
+		item.lower() == "[]Date".lower():
+		return twoTab
 	elif item.lower().index(",") >= 0 and \
 		item.lower()[0] != "[" and\
 		item.lower()[len(item.lower()) - 1] != "]":
@@ -923,8 +994,37 @@ def GetTypeTab(item):
 
 	return oneTab
 
+def GetDateType(date):
+	dateItems = date.split('-')
+	if len(dateItems) == 4:
+		return "Timer::DATE_TYPE_YEAR"
+	elif len(dateItems) == 3:
+		return "Timer::DATE_TYPE_MON"
+	elif len(dateItems) == 2:
+		return "Timer::DATE_TYPE_DAY"
+	elif len(dateItems) == 1:
+		timeItems = date.split(':')
+		if len(timeItems) == 3:
+			return "Timer::DATE_TYPE_HOUR"
+		elif len(timeItems) == 2:
+			return "Timer::DATE_TYPE_MIN"
+		elif len(timeItems) == 1:
+			return "Timer::DATE_TYPE_SEC"
+	
+	LogOutError("GetDateType error ." , date)
+	return "Timer::DATE_TYPE_INVALID"
+	
 def RemoveSpecialWord(item):
-	return item.replace(' ','').replace('	','').replace('[','').replace(']','').strip().rstrip()
+	item = item.replace(' ','').replace('	','').replace('[','').replace(']','').strip().rstrip()
+	if len(item) > 0 and item[len(item) - 1] == ',':
+		#LogOutDebug("item:" , item)
+		item = item[0:len(item) - 1]
+		#LogOutDebug("end item:" , item)
+	if len(item) > 0 and item[0] == ',':
+		#LogOutDebug("item:" , item)
+		item = item[1:]
+		#LogOutDebug("end item:" , item)
+	return item
 
 def CheckDataArray(colItem):
 	pp = ""
@@ -939,7 +1039,7 @@ def CheckDataArray(colItem):
 	#LogOutInfo("pp " , pp) 
 	return pp
 
-def CheckDataType(item_type , sheet , row , col , colItem):					
+def CheckDataType(item_type , sheet , row , col , colItem):	
 	if item_type == g_boolType:
 		item = RemoveSpecialWord(colItem)
 		if item.lower() == "true".lower() or\
@@ -948,7 +1048,7 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 			item.lower() == "1".lower():	
 			pass
 		else:
-			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item="  , " bool type error.")							
+			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item  , " bool type error.")							
 
 		if row != -1:
 			g_xlsRecords[sheet][row][col] = item
@@ -957,7 +1057,7 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 	elif item_type == g_int32Type:
 		item = RemoveSpecialWord(colItem)
 		if not item.lower().isdigit():	
-			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item="  , " int32 type error.")							
+			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item  , " int32 type error.")							
 
 		if row != -1:
 			g_xlsRecords[sheet][row][col] = item
@@ -966,7 +1066,7 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 	elif item_type == g_int64Type:
 		item = RemoveSpecialWord(colItem)
 		if not item.lower().isdigit():	
-			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , " int64 type error.")							
+			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item , " int64 type error.")							
 
 		if row != -1:
 			g_xlsRecords[sheet][row][col] = item
@@ -983,28 +1083,59 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 			return item
 	elif item_type == g_stringType:
 		return colItem
+	elif item_type == g_conditionType:
+		item = RemoveSpecialWord(colItem)
+		if row != g_cellName and row != g_cellCS:
+			tagitem = item.lower()[0:item.lower().find(':')]
+			itemContent = item.lower()[item.lower().find(':') + 1:]
+			#LogOutDebug("condition item:" , item , " tagitem=" , tagitem , " itemContent " , itemContent)
+			if tagitem.lower() == g_conditionTag.lower() or tagitem.lower() == g_actionTag.lower():	
+				pass
+			else:
+				LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item , " condition tag error.")							
+
+			if row != -1:
+				g_xlsConditionRecords[sheet][col][row] = item
+			else:
+				return item
+		return item
+
+	elif item_type == g_dateType:
+		item = RemoveSpecialWord(colItem)
+		return item
+	elif item_type == g_dateArrayType:
+		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_int32ArrayType:
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_int64ArrayType:
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_doubleArrayType:
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
+	elif item_type == g_dateArrayType:
+		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_stringArrayType:
 		pass
 	elif item_type == g_conditionType:
 		item = RemoveSpecialWord(colItem)
 		if item.index("(") >= 0 or item.index(")") >= 0 or item.index("|") >= 0:	
-			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item="  , " Condition  type error.")							
+			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item  , " Condition  type error.")							
 
 		if row != -1:
 			g_xlsRecords[sheet][row][col] = item
 		else:
 			return item
-	elif item_type == g_structType:			
+	elif item_type == g_structType:
+#		if len(colItem) > 0 and colItem[len(colItem) - 1] == ',':
+#			colItem = colItem[0:len(colItem) - 1]
+#		if len(colItem) > 0 and colItem[0] == ',':
+#			colItem = colItem[1:]
 		childItems = colItem.split(',')		
 		itemContent = ""
-		for childIndex , childItem in enumerate(childItems):	
+		for childIndex , childItem in enumerate(childItems):
+			if len(childItem) == 0:
+				continue
 			childItem = RemoveSpecialWord(childItem)
+			#LogOutDebug(" childItem" , childItem)
 			childType = GetTypeByIndex(g_xlsRecords[sheet][g_rowType][col] , childIndex)
 			#LogOutDebug("childType" , childType , " childItem" , childItem)
 			childItem = CheckDataType(childType , sheet , -1 , col , childItem)
@@ -1058,7 +1189,7 @@ def MakeTitle(types , datas ):
 			childItems = item.split(',')
 			Str = Str + structName
 			if len(childItems) != len(structDatas):
-				LogOutError("parase struct error.invalid size . name=" , structName , ":childItems size=" , len(childItems) , ":structDatas size=" , len(structDatas))
+				LogOutError("parase struct error.invalid size.index=" , index , " . name=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , "size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
 				Str = Str + GetType(childItem) + " " + structDatas[indexChild]  + ";"
 		elif item_type == g_structArrayType:
@@ -1070,7 +1201,7 @@ def MakeTitle(types , datas ):
 			item = item.replace('[' , '').replace(']' , '')
 			childItems = item.split(',')
 			if len(childItems) != len(structDatas):
-				LogOutError("parase struct error.invalid size . name=" , structName , ":childItems size=" , len(childItems) , ":structDatas size=" , len(structDatas))
+				LogOutError("parase struct error.invalid size.index=" , index , " . name=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , "size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
 				Str = Str + GetType(childItem) + " " + structDatas[indexChild]  + ";"
 		else:
@@ -1264,7 +1395,7 @@ def main(argv):
 	InitColor()
 	#handleArgs(argv)
 	g_xlsImportPath = "./xls_config"
-	g_xlsExportCSVPath = "../../../bin/vs14.0/x64/DLL_Debug_x64/csv_config"
+	g_xlsExportCSVPath = "../../../bin/vs14.0/x64/Lib_Debug_x64/csv_config"
 	g_xlsExportCPPPath = "../../../vsproject/TestLibCore/CSVConfigs"
 	LogOutInfo("generate csv from path:" + g_xlsImportPath + " csv will export to:" + g_xlsExportCSVPath + " cpp will export to:" + g_xlsExportCPPPath) 
 	start()

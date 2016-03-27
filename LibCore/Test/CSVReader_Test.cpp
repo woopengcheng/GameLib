@@ -4,8 +4,8 @@
 #include "gtest/gtest.h"
 
 const char * g_strTest = R"("轨迹ID"	"生效场景 --不配表示所有场景中生效 --否则仅在配置场景中生效"	"循环方式"	"界面中图标"	"属性修改值"	"起始点"	"备注1"	"坐标系"	
-"curve_id"	"validStages"	"wrapMode"	"InterfaceIcon"	"attr_mod_val"	"start_x"	"col_1"	"isLocal"	
 "int"	"int[]"	"string"	"string[]"	"float"	"float[]"	"long"	"bool"	
+"curve_id"	"validStages"	"wrapMode"	"InterfaceIcon"	"attr_mod_val"	"start_x"	"col_1"	"isLocal"	
 "c"	"s"	"s"	"cs"	"cs"	"cs"	"cs"	"s"	
 "1"	",2003,2005,2006"	"once"	"act_image,molong"	"25.5"	"9.76649,8.890732,-16.13906"	"410"	"1"	
 "2"	",2003,2005,2006"	"once"	"act_image,molong"	"50.7"	"9.76649,8.890732,-16.13906"	"5522677700"	"1"	
@@ -29,33 +29,33 @@ TEST(CSVReader , read)
 	CUtil::CSVReader csv;
 	EXPECT_EQ(csv.Load(g_strTest) , 0);
 
-	size_t index_curve_id = csv.GetIndex("curve_id", 1);
+	size_t index_curve_id = csv.GetIndex("curve_id", 2);
 	MsgAssert(index_curve_id != (size_t)-1 , "error");
 
-	size_t index_validStages = csv.GetIndex("validStages", 1);
+	size_t index_validStages = csv.GetIndex("validStages", 2);
 	MsgAssert(index_validStages != (size_t)-1 , "error");
 
-	size_t index_wrapMode = csv.GetIndex("wrapMode", 1);
+	size_t index_wrapMode = csv.GetIndex("wrapMode", 2);
 	MsgAssert(index_wrapMode != (size_t)-1 , "error");
 
-	size_t index_InterfaceIcon = csv.GetIndex("InterfaceIcon", 1);
+	size_t index_InterfaceIcon = csv.GetIndex("InterfaceIcon", 2);
 	MsgAssert(index_InterfaceIcon != (size_t)-1 , "error");
 
-	size_t index_attr_mod_val = csv.GetIndex("attr_mod_val", 1);
+	size_t index_attr_mod_val = csv.GetIndex("attr_mod_val", 2);
 	MsgAssert(index_attr_mod_val != (size_t)-1 , "error");
 
-	size_t index_start_x = csv.GetIndex("start_x", 1);
+	size_t index_start_x = csv.GetIndex("start_x", 2);
 	MsgAssert(index_start_x != (size_t)-1 , "error");
 
-	size_t index_col_1 = csv.GetIndex("col_1", 1);
+	size_t index_col_1 = csv.GetIndex("col_1", 2);
 	MsgAssert(index_col_1 != (size_t)-1 , "error");
 	
-	size_t index_isLocal = csv.GetIndex("isLocal", 1);
+	size_t index_isLocal = csv.GetIndex("isLocal", 2);
 	MsgAssert(index_isLocal != (size_t)-1 , "error");
 	
 	typedef std::vector<SAction> CollectionConfiguresT;
 	CollectionConfiguresT vec;
-	for (size_t row = 3; row < csv.Count(); ++row)
+	for (size_t row = 4; row < csv.Count(); ++row)
 	{
 		SAction conf;
 		conf.curve_id = csv.GetInt32(row, index_curve_id);

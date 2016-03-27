@@ -4,19 +4,19 @@
 
 namespace Timer
 {
-	extern UINT64 	DLL_EXPORT	GetTickCount();									//5 获得CPU的时钟频率启动后的次数,如果除以频率的速度.就可以得到毫秒
-	extern UINT64	DLL_EXPORT	GetTickFrequency();								//5 CPU频率.
-	extern UINT64	DLL_EXPORT	GetTickSecond(UINT64 llTime = -1);				//5 获取CPU运行的时间(秒)
-	extern UINT64	DLL_EXPORT	GetTickMicroSecond(UINT64 llTime = -1);			//5 获取CPU运行的时间(毫秒)
-	extern UINT64	DLL_EXPORT	GetTickMilliSecond(UINT64 llTime = -1);			//5 获取CPU运行的时间(微妙) 
+	extern UINT64 	DLL_EXPORT	GetTickCount();										//5 获得CPU的时钟频率启动后的次数,如果除以频率的速度.就可以得到毫秒
+	extern UINT64	DLL_EXPORT	GetTickFrequency();									//5 CPU频率.
+	extern UINT64	DLL_EXPORT	GetTickSecond(UINT64 llTime = -1);					//5 获取CPU运行的时间(秒)
+	extern UINT64	DLL_EXPORT	GetTickMicroSecond(UINT64 llTime = -1);				//5 获取CPU运行的时间(毫秒)
+	extern UINT64	DLL_EXPORT	GetTickMilliSecond(UINT64 llTime = -1);				//5 获取CPU运行的时间(微妙) 
 
-	extern UINT64	DLL_EXPORT	GetMilliSecond(UINT64 llTime);					//5 获得微妙
-	extern UINT64	DLL_EXPORT	GetMicroSecond(UINT64 llTime);					//5 获得毫秒 
-	extern UINT64	DLL_EXPORT	GetSecond(UINT64 llTime);						//5 获得秒  
+	extern UINT64	DLL_EXPORT	GetMilliSecond(UINT64 llTime);						//5 获得微妙
+	extern UINT64	DLL_EXPORT	GetMicroSecond(UINT64 llTime);						//5 获得毫秒 
+	extern UINT64	DLL_EXPORT	GetSecond(UINT64 llTime);							//5 获得秒  
 
 	extern UINT64	DLL_EXPORT	DiffMilliSecond(UINT64 llTime1, UINT64 llTime2);	//5 比较两个微秒的差异
 	extern UINT64	DLL_EXPORT	DiffMicroSecond(UINT64 llTime1, UINT64 llTime2);	//5 比较两个毫秒的差异
-	extern UINT64 	DLL_EXPORT	DiffSecond(UINT64 llTime1, UINT64 llTime2);		//5 比较两个秒的差异
+	extern UINT64 	DLL_EXPORT	DiffSecond(UINT64 llTime1, UINT64 llTime2);			//5 比较两个秒的差异
 
 	extern time_t	DLL_EXPORT	GetTime();
 	extern void		DLL_EXPORT	sleep(UINT64 llMillSec);
@@ -44,5 +44,6 @@ namespace Timer
 	%Y 完整的年份数字表示，即四位数。 Eg:2008
 	%Z(%z) 时区或名称缩写。Eg:中国标准时间 */
 	extern std::string	DLL_EXPORT	GetDate(std::string strFormat = "%Y-%m-%d");
+	extern INT64		DLL_EXPORT	MakeTime(const char* text, const char* fmt = "%Y-%m-%d-%H:%M:%S");
 }
 #endif

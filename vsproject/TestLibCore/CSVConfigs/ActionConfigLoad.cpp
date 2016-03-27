@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-26 10:44:12
+Date		:	2016-03-27 12:27:19
 Description	:	csv读取文件实现
 ************************************/
 #include "ActionConfigLoad.h"
@@ -19,37 +19,37 @@ namespace Config
 		if(csv.Load(filepath) != 0)
 			return false;
 
-		size_t index_curve_id = csv.GetIndex("curve_id", 1);
+		size_t index_curve_id = csv.GetIndex("curve_id", 2);
 		MsgAssert_Re0(index_curve_id != (size_t)-1 , "error curve_id");
 
-		size_t index_validStages = csv.GetIndex("validStages", 1);
+		size_t index_validStages = csv.GetIndex("validStages", 2);
 		MsgAssert_Re0(index_validStages != (size_t)-1 , "error validStages");
 
-		size_t index_wrapMode = csv.GetIndex("wrapMode", 1);
+		size_t index_wrapMode = csv.GetIndex("wrapMode", 2);
 		MsgAssert_Re0(index_wrapMode != (size_t)-1 , "error wrapMode");
 
-		size_t index_InterfaceIcon = csv.GetIndex("InterfaceIcon", 1);
+		size_t index_InterfaceIcon = csv.GetIndex("InterfaceIcon", 2);
 		MsgAssert_Re0(index_InterfaceIcon != (size_t)-1 , "error InterfaceIcon");
 
-		size_t index_attr_mod_val = csv.GetIndex("attr_mod_val", 1);
+		size_t index_attr_mod_val = csv.GetIndex("attr_mod_val", 2);
 		MsgAssert_Re0(index_attr_mod_val != (size_t)-1 , "error attr_mod_val");
 
-		size_t index_start_x = csv.GetIndex("start_x", 1);
+		size_t index_start_x = csv.GetIndex("start_x", 2);
 		MsgAssert_Re0(index_start_x != (size_t)-1 , "error start_x");
 
-		size_t index_col_1 = csv.GetIndex("col_1", 1);
+		size_t index_col_1 = csv.GetIndex("col_1", 2);
 		MsgAssert_Re0(index_col_1 != (size_t)-1 , "error col_1");
 
-		size_t index_isLocal = csv.GetIndex("isLocal", 1);
+		size_t index_isLocal = csv.GetIndex("isLocal", 2);
 		MsgAssert_Re0(index_isLocal != (size_t)-1 , "error isLocal");
 
-		size_t index_TestStruct = csv.GetIndex("TestStruct[test1,test2,test3,test4,test6]", 1);
+		size_t index_TestStruct = csv.GetIndex("TestStruct[test1,test2,test3,test4,test6]", 2);
 		MsgAssert_Re0(index_TestStruct != (size_t)-1 , "error TestStruct[test1,test2,test3,test4,test6]");
 
-		size_t index_TestStructArray = csv.GetIndex("TestStructArray[test1,test2,test3,test4,test5]", 1);
+		size_t index_TestStructArray = csv.GetIndex("TestStructArray[test1,test2,test3,test4,test5]", 2);
 		MsgAssert_Re0(index_TestStructArray != (size_t)-1 , "error TestStructArray[test1,test2,test3,test4,test5]");
 
-		for (size_t row = 3; row < csv.Count(); ++row)
+		for (size_t row = 4; row < csv.Count(); ++row)
 		{
 			SActionConfigLoad conf;
 

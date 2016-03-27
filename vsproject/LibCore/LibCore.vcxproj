@@ -461,6 +461,7 @@
     <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadPoolInterface.h" />
     <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadState.h" />
     <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadTask.h" />
+    <ClInclude Include="..\..\LibCore\Timer\inc\Date.h" />
     <ClInclude Include="..\..\LibCore\Timer\inc\GlobalTimer.h" />
     <ClInclude Include="..\..\LibCore\Timer\inc\GlobalTimerTask.h" />
     <ClInclude Include="..\..\LibCore\Timer\inc\InternalTimerTask.h" />

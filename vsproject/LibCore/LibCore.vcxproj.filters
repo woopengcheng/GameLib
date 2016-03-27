@@ -684,6 +684,9 @@
     <ClInclude Include="..\..\LibCore\NetLib\inc\NetReactorEpollEx.h">
       <Filter>NetLib\inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\LibCore\Timer\inc\Date.h">
+      <Filter>Timer\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

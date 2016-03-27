@@ -1,11 +1,11 @@
-// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelLow;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;
+// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelLow;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
 /************************************
 FileName	:	ActivityConfig.cpp
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-09 21:35:57
+Date		:	2016-03-27 01:19:17
 Description	:	csv读取数据文件实现
 ************************************/
 #include "ActivityConfig.h"
@@ -38,6 +38,12 @@ namespace Config
 			data.EndTime = config.EndTime;
 			data.Description = config.Description;
 			data.RewardIcon = config.RewardIcon;
+			data.testdate = config.testdate;
+			{
+				data.testDateStruct.begin = config.testDateStruct.begin;
+				data.testDateStruct.end = config.testDateStruct.end;
+			}
+			data.dateArray = config.dateArray;
 			m_mapConfigs.insert(std::make_pair(data.ActivityId,data));
 		}
 		return true;

@@ -1,11 +1,11 @@
-// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelLow;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;
+// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelLow;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
 /************************************
 FileName	:	ActivityConfig.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-09 21:35:57
+Date		:	2016-03-27 01:19:17
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config_ActivityConfig_define_h__
@@ -33,6 +33,15 @@ namespace Config
 		std::string						EndTime;	//活动结束时间点
 		INT32							Description;	//活动说明，通用活动界面中的活动描述
 		std::string						RewardIcon;	//奖励图标，领奖界面中该活动的领奖图标
+		Timer::Date						testdate;	//根据某些condition执行某些action;目前不支持括号和或.全部用&&(与)和!(非)表示满足一个条件可以执行多个action.可以写在一行(支持多个),或者多行.需要保证一个condition和至少一个action.如果没有也没啥.Action:调用玩家的或者帮会等的函数接口.
+
+		//测试时间
+		struct StestDateStruct
+		{
+			Timer::Date					begin;
+			Timer::Date					end;
+		}testDateStruct;
+		std::vector<Timer::Date>			dateArray;	//测试时间结构体.比如说活动开启结束时间
 	};
 
 

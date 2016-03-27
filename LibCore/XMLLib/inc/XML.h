@@ -26,6 +26,8 @@ namespace XML
 	private:
 		MapValuesT   m_mapXMLValues;
 	};
+	extern INT32	g_nStartLoadXMLStaticLib;
+	extern INT32	g_nEndLoadXMLStaticLib;
 }
  
 #endif
