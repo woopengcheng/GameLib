@@ -1,11 +1,11 @@
-// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelLow;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
+// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
 /************************************
 FileName	:	ActivityConfig.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-27 01:19:17
+Date		:	2016-03-27 12:54:58
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config_ActivityConfig_define_h__
@@ -19,7 +19,6 @@ namespace Config
 	{
 		INT32							ActivityId;	//活动id
 		std::string						ActivityName;	//活动名称
-		INT32							ActivityLevelLow;	//显示等级下限,不到等级（不包括自身）不显示
 		INT32							ActivityLevelHigh;	//显示等级上限，超过等级（不包括自身）不显示
 		bool							IsShowEntrance;	//是否显示入口图标，入口图标和界面图标是互斥的；入口图标的形式适合单独放在外面的活动，界面图标就是通用活动中的图标
 		std::vector<std::string>		EntranceIcon;	//入口图标

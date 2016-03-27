@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-27 12:27:19
+Date		:	2016-03-27 12:57:27
 Description	:	csv配置文件
 ************************************/
 #ifndef __ActivityConfigLoad_define_h__
@@ -19,7 +19,6 @@ namespace Config
 	{
 		INT32							ActivityId;	//活动id
 		std::string						ActivityName;	//活动名称
-		INT32							ActivityLevelLow;	//显示等级下限,不到等级（不包括自身）不显示
 		INT32							ActivityLevelHigh;	//显示等级上限，超过等级（不包括自身）不显示
 		bool							IsShowEntrance;	//是否显示入口图标，入口图标和界面图标是互斥的；入口图标的形式适合单独放在外面的活动，界面图标就是通用活动中的图标
 		std::vector<std::string>		EntranceIcon;	//入口图标

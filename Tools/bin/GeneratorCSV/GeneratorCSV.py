@@ -155,7 +155,8 @@ def Xlsx2CSV(filepath):
 		#QUOTE_MINIMAL QUOTE_NONE所有的都要加引号.
 		#csv_file_writer = csv.writer(csv_file , delimiter='	', quotechar='"', quoting=csv.QUOTE_ALL)
 		
-		id_list = [] #用于重复的ID去除
+		id_list = []			# 用于重复的ID去除
+		delete_col_list = []	# 不读取需要删除的列
 		cur_sheet_index = 0
 		xlsx_file_reader = load_workbook(filepath)
 		g_xlsRecords[filename] = collections.OrderedDict()
@@ -183,6 +184,19 @@ def Xlsx2CSV(filepath):
 							Str = str(cell.value)
 						else:
 							Str = Str.encode('gbk').decode('gbk')
+
+					if cur_rows_index == g_rowComent and len(Str) > 0 and Str.lower()[0] == '#':  # 跳过这一列
+						#LogOutDebug("delete_col_list" , delete_col_list)
+						delete_col_list.append(cur_cell_index)
+					if cur_cell_index in delete_col_list:
+						cur_cell_index = cur_cell_index + 1
+						#LogOutDebug("cur_cell_index continue" , cur_cell_index)
+						continue
+
+					if cur_cell_index == g_cellID and len(Str) > 0 and Str.lower()[0] == '#':  # 跳过这一行
+						#LogOutDebug("cur_cell_index break " , cur_cell_index)
+						cur_cell_index = cur_cell_index + 1
+						break
 
 					if len(Str) >= 0:			#有些策划没填的数据为空.也需要记录.
 						if cur_rows_index < 4:

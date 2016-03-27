@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-27 12:27:19
+Date		:	2016-03-27 12:57:27
 Description	:	csv读取文件实现
 ************************************/
 #include "ActivityConfigLoad.h"
@@ -24,9 +24,6 @@ namespace Config
 
 		size_t index_ActivityName = csv.GetIndex("ActivityName", 2);
 		MsgAssert_Re0(index_ActivityName != (size_t)-1 , "error ActivityName");
-
-		size_t index_ActivityLevelLow = csv.GetIndex("ActivityLevelLow", 2);
-		MsgAssert_Re0(index_ActivityLevelLow != (size_t)-1 , "error ActivityLevelLow");
 
 		size_t index_ActivityLevelHigh = csv.GetIndex("ActivityLevelHigh", 2);
 		MsgAssert_Re0(index_ActivityLevelHigh != (size_t)-1 , "error ActivityLevelHigh");
@@ -82,7 +79,6 @@ namespace Config
 
 			conf.ActivityId = csv.GetInt32(row , index_ActivityId);
 			conf.ActivityName = csv.GetString(row , index_ActivityName);
-			conf.ActivityLevelLow = csv.GetInt32(row , index_ActivityLevelLow);
 			conf.ActivityLevelHigh = csv.GetInt32(row , index_ActivityLevelHigh);
 			conf.IsShowEntrance = csv.GetBool(row , index_IsShowEntrance);
 			{
