@@ -11,6 +11,7 @@ Description	:	csv¶ÁÈ¡ÎÄ¼þ
 #ifndef __Config_ActivityConfig_define_h__
 #define __Config_ActivityConfig_define_h__
 #include "ActivityConfigLoad.h"
+#include "../Condition.h"
 
 namespace Config
 {
@@ -52,6 +53,9 @@ namespace Config
 	public:
 		bool LoadFrom(const std::string& filepath);
 		SActivityConfig * GetActivityConfig(INT32 nIndex);
+
+	public:
+		BOOL	RunUse(INT32 nIndex, CUtil::Player * pPlayer);
 
 	private:
 		MapConfigsT m_mapConfigs;

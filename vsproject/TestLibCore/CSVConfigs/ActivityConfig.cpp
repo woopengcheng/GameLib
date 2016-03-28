@@ -61,5 +61,19 @@ namespace Config
 	}
 
 	ActivityConfig * g_pActivityConfig = NULL;
+
+	BOOL ActivityConfig::RunUse(INT32 nIndex , CUtil::Player * pPlayer)
+	{
+		if (CUtil::Condition<CUtil::CONDITION_PLAYER_LEVEL>()(pPlayer) > this->GetActivityConfig(nIndex)->ActivityLevelHigh &&
+			CUtil::Condition<CUtil::CONDITION_VIP_LEVEL>()(pPlayer) < this->GetActivityConfig(nIndex)->ActivityLevelHigh)
+		{
+			CUtil::Action<CUtil::ACTION_TRIGER_TASK>()(pPlayer, 12);
+			CUtil::Action<CUtil::ACTION_TRIGER_TASK>()(pPlayer, 12);
+		}
+
+
+		return FALSE;
+	}
+
 }
 

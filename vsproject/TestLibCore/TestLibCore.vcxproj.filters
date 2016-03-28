@@ -45,6 +45,9 @@
     <ClInclude Include="CSVConfigs\ConfigManager.h">
       <Filter>CSVConfigs</Filter>
     </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

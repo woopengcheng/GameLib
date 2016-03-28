@@ -1,5 +1,5 @@
-#ifndef __cutil_h__
-#define __cutil_h__
+#ifndef __cutil_cutil_h__
+#define __cutil_cutil_h__
 #include "CUtil/inc/Common.h"
 
 namespace Json

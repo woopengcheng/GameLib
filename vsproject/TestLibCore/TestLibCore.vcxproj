@@ -342,6 +342,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Condition.h" />
     <ClInclude Include="CSVConfigs\ActionConfig.h" />
     <ClInclude Include="CSVConfigs\ActionConfigLoad.h" />
     <ClInclude Include="CSVConfigs\ActivityConfig.h" />
