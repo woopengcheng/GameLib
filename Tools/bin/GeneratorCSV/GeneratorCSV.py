@@ -56,9 +56,22 @@ g_xlsImportPath = ""
 g_xlsExportCSVPath = ""
 g_xlsExportCPPPath = ""
 
+g_conditionConfigName = "_ConditionConfig"
+g_globalFuncName = "Global"
 g_xlsDeleteRecord = []
 g_xlsRecords = collections.OrderedDict()
 g_xlsConditionRecords = collections.OrderedDict()
+	
+g_serverConditions = collections.OrderedDict()  # 这里用来记录所有的条件
+g_serverActions = collections.OrderedDict()
+g_clientConditions = collections.OrderedDict()
+g_clientActions = collections.OrderedDict()
+g_serverConditionCol = 1
+g_serverActionCol = 2			
+g_clientConditionCol = 3
+g_clientActionCol = 4
+
+
 g_configPrefix = "S"
 g_loadConfigSuffix = "Load"
 g_xlsNamespace = "Config"
@@ -133,8 +146,9 @@ def GenerateCSVFromXLS():
 		LogOutInfo("filename:" , result);
 		Xlsx2CSV(result)
 		CheckRecords()
-		GenerateCSV()
-		
+		GenerateCSV()		
+	HandleConditionConfig()
+
 def Xlsx2CSV(filepath):
 	dirout = g_xlsExportCSVPath
 	dirout = dirout + os.sep  #新路径名称
@@ -234,6 +248,7 @@ def Xlsx2CSV(filepath):
 		
 def CheckRecords():
 	for sheet , item in g_xlsRecords.items(): 	#读取sheet
+		#LogOutDebug("sheet" , sheet)
 		for row , rowItem in item.items():		#读取每一行
 			if row == g_rowName:				#命名重名检测,
 				sameName = []
@@ -282,7 +297,43 @@ def CheckRecords():
 			for row , rowItem in enumerate(colItem):	#读取每一列
 				CheckDataType(g_conditionType , sheet , row , col , rowItem)
 				#LogOutDebug("g_xlsRecords[sheet][row][col]:" , g_xlsRecords[sheet][row][col])
-					
+				
+def HandleConditionConfig():
+	rowItems = g_xlsRecords[g_conditionConfigName]
+	if len(rowItems) != 0:
+		for row , rowItem in rowItems.items():				# 读取每一行
+			for col , colItem in enumerate(rowItem):		# 读取每一列
+				if row >= g_rowDataStart: 					# 从这行开始是数据	
+					#LogOutInfo("row:" , row , " col:" , col , " colItem:" , colItem)	
+					if len(colItem) == 0:
+						continue			
+					if col == g_serverConditionCol:
+						objects = colItem.split('.')		# 这里肯定是2个.
+						if objects[0] not in g_serverConditions:
+							g_serverConditions[objects[0]] = []
+						g_serverConditions[objects[0]].append(objects[1])
+					if col == g_serverActionCol:
+						objects = colItem.split('.')		# 这里肯定是2个.
+						if objects[0] not in g_serverActions:
+							g_serverActions[objects[0]] = []
+						g_serverActions[objects[0]].append(objects[1]) 
+					if col == g_clientConditionCol:
+						objects = colItem.split('.')		# 这里肯定是2个.
+						if objects[0] not in g_clientConditions:
+							g_clientConditions[objects[0]] = []
+						g_clientConditions[objects[0]].append(objects[1]) 
+					if col == g_clientActionCol:
+						objects = colItem.split('.')		# 这里肯定是2个.
+						if objects[0] not in g_clientActions:
+							g_clientActions[objects[0]] = []
+						g_clientActions[objects[0]].append(objects[1])
+		#LogOutDebug("g_serverConditions:" , g_serverConditions)			
+		#LogOutDebug("g_serverActions:" , g_serverActions)
+		#LogOutDebug("g_clientConditions:" , g_serverConditions)
+		#LogOutDebug("g_clientActions:" , g_clientActions)
+	else:
+		LogOutError("HandleConditionConfig error." , g_conditionConfigName , " no data")
+
 def GenerateCSV():
 	
 	dirout = g_xlsExportCSVPath
