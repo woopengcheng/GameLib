@@ -57,11 +57,14 @@ g_xlsExportCSVPath = ""
 g_xlsExportCPPPath = ""
 
 g_conditionConfigName = "_ConditionConfig"
+g_commonDataName = "_CommonData"
 g_globalFuncName = "Global"
 g_xlsDeleteRecord = []
 g_xlsRecords = collections.OrderedDict()
 g_xlsConditionRecords = collections.OrderedDict()
 	
+g_commonDatas = collections.OrderedDict()  # 这里用来记录所有的共有变量的值
+
 g_serverConditions = collections.OrderedDict()  # 这里用来记录所有的条件
 g_serverActions = collections.OrderedDict()
 g_clientConditions = collections.OrderedDict()
@@ -72,6 +75,17 @@ g_clientConditionCol = 3
 g_clientActionCol = 4
 g_serverExpression = collections.OrderedDict()
 g_clientExpression = collections.OrderedDict()
+g_conditionObjName = "pConfig"		# 这个是当处理条件的时候.如果条件是本表内的,使用的统一名字.
+g_actionNameSplit = "("				# 执行时的名字.用这个来区分
+g_expressionPrefix = "Run"
+g_and = "&&"	#没有或和非运算.如果想用这个.多写几个条件.
+g_great = ">"
+g_greatEqual = ">="
+g_less = "<"
+g_lessEqual = "<="
+g_equal = "=="
+g_notEqual = "!="
+
 
 g_configPrefix = "S"
 g_loadConfigSuffix = "Load"
@@ -132,7 +146,7 @@ class Expression(object):
 	"""docstring for Expression"""
 	def __init__(self, arg):
 		super(Expression, self).__init__()
-		self.condition = Condition
+		self.condition = None
 		self.actions = []
 		
 class Condition(object):
@@ -169,9 +183,11 @@ def GenerateCSVFromXLS():
 	for result in files:
 		LogOutInfo("filename:" , result);
 		Xlsx2CSV(result)
-		CheckRecords()
-		GenerateCSV()		
+
+	CheckRecords()
+	GenerateCSV()		
 	HandleConditionConfig()
+	HandleSheetCondition()
 
 def Xlsx2CSV(filepath):
 	dirout = g_xlsExportCSVPath
@@ -333,7 +349,7 @@ def HandleConditionConfig():
 						continue			
 					if col == g_serverConditionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
+						last = objects[len(objects) - 1].upper()
 						if last not in g_serverConditions:
 							g_serverConditions[last] = []
 						for index , obj in enumerate(objects):
@@ -341,7 +357,7 @@ def HandleConditionConfig():
 								g_serverConditions[last].append(obj)
 					if col == g_serverActionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
+						last = objects[len(objects) - 1].upper()
 						if last not in g_serverActions:
 							g_serverActions[last] = []
 						for index , obj in enumerate(objects):
@@ -349,7 +365,7 @@ def HandleConditionConfig():
 								g_serverActions[last].append(obj)
 					if col == g_clientConditionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
+						last = objects[len(objects) - 1].upper()
 						if last not in g_clientConditions:
 							g_clientConditions[last] = []
 						for index , obj in enumerate(objects):
@@ -357,7 +373,7 @@ def HandleConditionConfig():
 								g_clientConditions[last].append(obj)
 					if col == g_clientActionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
+						last = objects[len(objects) - 1].upper()
 						if last not in g_clientActions:
 							g_clientActions[last] = []
 						for index , obj in enumerate(objects):
@@ -369,6 +385,134 @@ def HandleConditionConfig():
 		#LogOutDebug("g_clientActions:" , g_clientActions)
 	else:
 		LogOutError("HandleConditionConfig error." , g_conditionConfigName , " no data")
+
+def HandleSheetCondition():	
+	for sheet , item in g_xlsConditionRecords.items():
+		g_serverExpression[sheet] = collections.OrderedDict()			# 为每一个sheet创建一系列的条件表达式
+		for col , colItem in item.items():		# 读取每一列
+			bConditionStart = False
+			expression = None
+			cellName = ""
+			for row , rowItem in enumerate(colItem):		# 读取每一行
+				item = RemoveSpecialWord(rowItem)
+				if row == g_cellName:
+					cellName = g_expressionPrefix + rowItem
+					#LogOutDebug("cellName:" , cellName , "g_serverExpression[sheet]:" , g_serverExpression[sheet])
+					g_serverExpression[sheet][cellName] = []	# 这里用来存每一个表达式
+				if row != g_cellName and row != g_cellCS:
+					tagitem = item.lower()[0:item.lower().find(':')]
+					itemContent = item.lower()[item.lower().find(':') + 1:]
+					#LogOutDebug("condition item:" , item , " tagitem=" , tagitem , " itemContent " , itemContent)
+					if tagitem.lower() == g_conditionTag.lower():
+						if not bConditionStart:
+							if expression != None:
+								g_serverExpression[sheet][cellName].append(expression)
+							expression = HandleConditionExpression(True , sheet , itemContent)
+							expression.actions = []
+							bConditionStart = True
+					elif tagitem.lower() == g_actionTag.lower():
+						if bConditionStart:
+							action = HandleAction(True , itemContent)
+							expression.actions.append(action)							
+					else:
+						LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item , " condition tag error.")							
+			
+			if expression != None and cellName != "":
+				g_serverExpression[sheet][cellName].append(expression)	
+		LogOutDebug("g_serverExpression[sheet]:" , g_serverExpression[sheet])	
+def HandleConditionExpression(bServer , sheet , itemContent):	
+	expression = Expression
+	conditions = itemContent.split("&&")
+	expression.condition = Condition
+	for index , item in enumerate(conditions):
+		if item.find(g_great) >= 0:
+			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_great)[0])
+			expression.condition.symbol = g_great
+			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_great)[1])
+		if item.find(g_greatEqual) >= 0:
+			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_greatEqual)[0])
+			expression.condition.symbol = g_greatEqual
+			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_greatEqual)[1])
+		if item.find(g_less) >= 0:
+			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_less)[0])
+			expression.condition.symbol = g_less
+			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_less)[1])
+		if item.find(g_lessEqual) >= 0:
+			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_lessEqual)[0])
+			expression.condition.symbol = g_lessEqual
+			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_lessEqual)[1])
+		if item.find(g_equal) >= 0:
+			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_equal)[0])
+			expression.condition.symbol = g_equal
+			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_equal)[1])
+		if item.find(g_notEqual) >= 0:
+			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_notEqual)[0])
+			expression.condition.symbol = g_notEqual
+			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_notEqual)[1])
+
+	return expression
+
+def CheckConditionValue(bServer , sheet ,  value):
+	if bServer:
+		if value.upper() in g_serverConditions:
+			result = ""
+			for index , item in enumerate(g_serverConditions[value.upper()]):
+				result += item
+				result += "::"
+			result += value.upper()
+			return result
+		if value in g_xlsRecords[sheet][g_rowName]:
+			result = g_conditionObjName + "->" + value
+			return result
+		if value in g_xlsRecords[sheet][g_rowName]:  # todo如果在commondata中该如何处理.
+			result = g_conditionObjName + "->" + value
+			return result
+	else:
+		if value.upper() in g_clientConditions:
+			result = ""
+			for index , item in enumerate(g_clientConditions[value.upper()]):
+				result += item
+				result += "::"
+			result += value.upper()
+			return result
+		if value in g_xlsRecords[sheet][g_rowName]:
+			result = g_conditionObjName + "->" + value
+			return result
+		if value in g_xlsRecords[sheet][g_rowName]:  # todo如果在commondata中该如何处理.
+			result = g_conditionObjName + "->" + value
+			return result
+	
+def HandleAction(bServer , itemContent):	
+	action = Action
+	actions = itemContent.split(g_actionNameSplit)
+	if len(actions) > 0:
+		action.name = CheckActionValue(bServer , actions[0])
+		RemoveSpecialWord(actions[1])
+		action.args = actions[1].split(',')
+			 
+	return action
+
+def CheckActionValue(bServer ,  value):
+	if bServer:
+		if value.upper() in g_serverActions:
+			result = ""
+			for index , item in enumerate(g_serverActions[value.upper()]):
+				result += item
+				result += "::"
+			result += value.upper()
+			return result
+		else:
+			LogOutError("CheckActionValue error." , value , " g_serverActions:" , g_serverActions)
+	else:
+		if value.upper() in g_clientActions:
+			result = ""
+			for index , item in enumerate(g_clientActions[value.upper()]):
+				result += item
+				result += "::"
+			result += value.upper()
+			return result
+		else:
+			LogOutError("CheckActionValue error." , value)
 
 def GenerateCSV():
 	
