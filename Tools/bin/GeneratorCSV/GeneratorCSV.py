@@ -70,7 +70,8 @@ g_serverConditionCol = 1
 g_serverActionCol = 2			
 g_clientConditionCol = 3
 g_clientActionCol = 4
-
+g_serverExpression = collections.OrderedDict()
+g_clientExpression = collections.OrderedDict()
 
 g_configPrefix = "S"
 g_loadConfigSuffix = "Load"
@@ -126,6 +127,29 @@ g_cellID = 0  	# 第一列为ID列
 g_cellName = 0 	# 条件列的   条件名字
 g_cellCS = 1 	# 条件列的   服务器还是客户端代码.
 g_rowDataStart=4# 从这行开始就是数据了.
+
+class Expression(object):
+	"""docstring for Expression"""
+	def __init__(self, arg):
+		super(Expression, self).__init__()
+		self.condition = Condition
+		self.actions = []
+		
+class Condition(object):
+	"""docstring for Condition"""
+	def __init__(self, arg):
+		super(Condition, self).__init__()
+		self.leftvalue = ""
+		self.symbol = ""
+		self.rightvalue = ""
+		
+class Action(object):
+	"""docstring for Action"""
+	def __init__(self, arg):
+		super(Action, self).__init__()
+		self.name = ""
+		self.args = []
+		
 
 def start(): 
 	LogOutInfo("start generate csv.\n")   
@@ -308,25 +332,37 @@ def HandleConditionConfig():
 					if len(colItem) == 0:
 						continue			
 					if col == g_serverConditionCol:
-						objects = colItem.split('.')		# 这里肯定是2个.
-						if objects[0] not in g_serverConditions:
-							g_serverConditions[objects[0]] = []
-						g_serverConditions[objects[0]].append(objects[1])
+						objects = colItem.split('.')		# 这里至少是2个.
+						last = objects[len(objects) - 1]
+						if last not in g_serverConditions:
+							g_serverConditions[last] = []
+						for index , obj in enumerate(objects):
+							if index != len(objects) - 1:
+								g_serverConditions[last].append(obj)
 					if col == g_serverActionCol:
-						objects = colItem.split('.')		# 这里肯定是2个.
-						if objects[0] not in g_serverActions:
-							g_serverActions[objects[0]] = []
-						g_serverActions[objects[0]].append(objects[1]) 
+						objects = colItem.split('.')		# 这里至少是2个.
+						last = objects[len(objects) - 1]
+						if last not in g_serverActions:
+							g_serverActions[last] = []
+						for index , obj in enumerate(objects):
+							if index != len(objects) - 1:
+								g_serverActions[last].append(obj)
 					if col == g_clientConditionCol:
-						objects = colItem.split('.')		# 这里肯定是2个.
-						if objects[0] not in g_clientConditions:
-							g_clientConditions[objects[0]] = []
-						g_clientConditions[objects[0]].append(objects[1]) 
+						objects = colItem.split('.')		# 这里至少是2个.
+						last = objects[len(objects) - 1]
+						if last not in g_clientConditions:
+							g_clientConditions[last] = []
+						for index , obj in enumerate(objects):
+							if index != len(objects) - 1:
+								g_clientConditions[last].append(obj)
 					if col == g_clientActionCol:
-						objects = colItem.split('.')		# 这里肯定是2个.
-						if objects[0] not in g_clientActions:
-							g_clientActions[objects[0]] = []
-						g_clientActions[objects[0]].append(objects[1])
+						objects = colItem.split('.')		# 这里至少是2个.
+						last = objects[len(objects) - 1]
+						if last not in g_clientActions:
+							g_clientActions[last] = []
+						for index , obj in enumerate(objects):
+							if index != len(objects) - 1:
+								g_clientActions[last].append(obj)
 		#LogOutDebug("g_serverConditions:" , g_serverConditions)			
 		#LogOutDebug("g_serverActions:" , g_serverActions)
 		#LogOutDebug("g_clientConditions:" , g_serverConditions)
