@@ -9,6 +9,7 @@ import xml.dom.minidom
 import time,datetime
 import socket
 import csv
+import traceback
 
 #g_platform = "LINUX"
 g_platform = "WIN64"
@@ -108,6 +109,7 @@ g_dateArrayType = "std::vector<Timer::Date>"
 g_conditionType = "Condition"
 g_structType = 1
 g_structArrayType = 2
+g_mapType = "map"
 	
 g_int32Func = "GetInt32"
 g_int64Func = "GetInt64"
@@ -123,6 +125,7 @@ g_stringArrayFunc = 10
 g_structFunc = 11
 g_structArrayFunc = 12
 g_dateArrayFunc = 13
+g_mapFunc = 14
 
 oneTab = "\t"
 twoTab = oneTab + "\t"
@@ -319,11 +322,12 @@ def CheckRecords():
 			elif row == g_rowComent:	
 				pass	
 			else:
+				#LogOutDebug("g_xlsRecords,[row = " + str(row) + ":" , g_xlsRecords[sheet][row])
 				for col , colItem in enumerate(rowItem):	#读取每一列
 					item_type = GetType(g_xlsRecords[sheet][g_rowType][col])	
+					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type , "sheet" , sheet , "col=" , col)
 					CheckDataType(item_type , sheet , row , col , colItem)
 					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type)
-				#LogOutDebug("g_xlsRecords,[row = " + str(row) + ":" , g_xlsRecords[sheet][row])
 					
 	for sheet , item in g_xlsConditionRecords.items():
 		for col , colItem in item.items():		# 读取每一列
@@ -419,7 +423,7 @@ def HandleSheetCondition():
 			
 			if expression != None and cellName != "":
 				g_serverExpression[sheet][cellName].append(expression)	
-		LogOutDebug("g_serverExpression[sheet]:" , g_serverExpression[sheet])	
+		#LogOutDebug("g_serverExpression[sheet]:" , g_serverExpression[sheet])	
 def HandleConditionExpression(bServer , sheet , itemContent):	
 	expression = Expression
 	conditions = itemContent.split("&&")
@@ -709,7 +713,7 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
 				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
 				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((float)CUtil::atof(vals[i].c_str()));\n") 
-				fileWrite.write(threeTab + "}\n\n") 
+				fileWrite.write(threeTab + "}\n\n")
 			elif Str == g_stringArrayFunc:
 				fileWrite.write(threeTab + "{\n") 
 				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
@@ -810,7 +814,38 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 				fileWrite.write(fiveTab + "}\n") 
 				fileWrite.write(fiveTab + "conf.vec" + structName + ".push_back(array);\n") 
 				fileWrite.write(fourTab + "}\n") 
-				fileWrite.write(threeTab + "}\n\n")
+				fileWrite.write(threeTab + "}\n\n")				 
+			elif Str == g_mapFunc:
+				fileWrite.write(threeTab + "{\n") 
+				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \"=\", \"\", \"\\\"\");\n") 
+				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+				mapType , keyType , valueType = GetMapType(item)
+				keyInput = "vals[0]"
+				valueInput = "vals[1]"
+				if keyType == g_boolType:
+					keyInput = "(" + g_boolType + ")CUtil::atoi(vals[0])"
+				if valueType == g_boolType:
+					valueInput = "(" + g_boolType + ")CUtil::atoi(vals[1])"
+				if keyType == g_int32Type:
+					keyInput = "(" + g_int32Type + ")CUtil::atoi(vals[0])"
+				if valueType == g_int32Type:
+					valueInput = "(" + g_int32Type + ")CUtil::atoi(vals[1])"
+				if keyType == g_int64Type:
+					keyInput = "(" + g_int64Type + ")CUtil::atoi(vals[0])"
+				if valueType == g_int64Type:
+					valueInput = "(" + g_int64Type + ")CUtil::atoi(vals[1])"
+				if keyType == g_doubleType:
+					keyInput = "(" + g_doubleType + ")CUtil::atof(vals[0])"
+				if valueType == g_doubleType:
+					valueInput = "(" + g_doubleType + ")CUtil::atof(vals[1])"
+				if keyType == g_dateType:
+					keyInput = "Timer::Date(vals[0])"
+				if valueType == g_dateType:
+					valueInput = "Timer::Date(vals[1])"
+				fileWrite.write(fiveTab + "conf." + datas[index] + ".insert(std::make_pair(" + keyInput + "," + valueInput + "));\n") 
+				fileWrite.write(threeTab + "}\n\n") 
 		else:
 			fileWrite.write(threeTab + "conf." + datas[index] + " = csv." + Str + "(row , index_" + datas[index] + ");\n") 
 			
@@ -1117,13 +1152,21 @@ def GetType(item):
 	elif item.lower() == "Condition".lower():
 		return g_boolArrayType
 	elif item.lower().find(',') >= 0 and \
-		item.lower()[0] != "[" and\
-		item.lower()[len(item.lower()) - 1] != "]":
+		item.lower().find("<") == -1 and\
+		item.lower().find(">") == -1 and\
+		item.lower().find("[") == -1 and\
+		item.lower().find("]") == -1:
 		return g_structType
 	elif item.lower().find(',') >= 0 and \
 		item.lower()[0] == "[" and\
 		item.lower()[len(item.lower()) - 1] == "]":
 		return g_structArrayType
+	elif item.lower().find('map') >= 0 and \
+		item.lower().find("<") >= 0 and\
+		item.lower()[len(item.lower()) - 1] == ">":
+		mapType , keyType , valueType = GetMapType(item)
+		#LogOutDebug("map" , item , "mapType:" , mapType , " key:" , keyType , "value:" , valueType)
+		return mapType
 	else:
 		LogOutError("GetType error." , item)
 
@@ -1171,19 +1214,35 @@ def GetTypeFunc(item):
 	elif item.lower() == "Date[]".lower() or\
 		item.lower() == "[]Date".lower():
 		return g_dateArrayFunc
-	elif item.lower().index(",") >= 0 and \
-		item.lower()[0] != "[" and\
-		item.lower()[len(item.lower()) - 1] != "]":
+	elif item.lower().find(',') >= 0 and \
+		item.lower().find("<") == -1 and\
+		item.lower().find(">") == -1 and\
+		item.lower().find("[") == -1 and\
+		item.lower().find("]") == -1:
 		return g_structFunc
 	elif item.lower().index(",") >= 0 and \
 		item.lower()[0] == "[" and\
 		item.lower()[len(item.lower()) - 1] == "]":
 		return g_structArrayFunc
+	elif item.lower().find('map') >= 0 and \
+		item.lower().find("<") >= 0 and\
+		item.lower()[len(item.lower()) - 1] == ">":
+		return g_mapFunc
 	else:
 		LogOutError("GetTypeFunc error." , item)
 
 	return None
-
+	
+def GetMapType(item):
+	if item.lower().find('map') >= 0 and \
+		item.lower().find("<") and\
+		item.lower()[len(item.lower()) - 1] == ">":
+		RemoveSpecialWord(item)
+		childItems = item.split('<')[1].rstrip('>').split(',')
+		keyType = GetType(RemoveSpecialWord(childItems[0]))
+		valueType = GetType(RemoveSpecialWord(childItems[1]))
+		return "std::map<"+ keyType + " , " + valueType + ">" , keyType , valueType
+		
 def GetTypeTab(item):
 	if  item.lower() == "int".lower() or\
 		item.lower() == "int32".lower():
@@ -1226,13 +1285,19 @@ def GetTypeTab(item):
 	elif item.lower() == "Date[]".lower() or\
 		item.lower() == "[]Date".lower():
 		return twoTab
-	elif item.lower().index(",") >= 0 and \
-		item.lower()[0] != "[" and\
-		item.lower()[len(item.lower()) - 1] != "]":
+	elif item.lower().find(',') >= 0 and \
+		item.lower().find("<") == -1 and\
+		item.lower().find(">") == -1 and\
+		item.lower().find("[") == -1 and\
+		item.lower().find("]") == -1:
 		return twoTab
 	elif item.lower().index(",") >= 0 and \
 		item.lower()[0] == "[" and\
 		item.lower()[len(item.lower()) - 1] == "]":
+		return oneTab
+	if item.lower().find('map') >= 0 and \
+		item.lower().find("<") >= 0 and\
+		item.lower()[len(item.lower()) - 1] == ">":
 		return oneTab
 	else:
 		return twoTab
@@ -1410,7 +1475,19 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 
 			g_xlsRecords[sheet][row][col] = itemContent
 		else:
-			return colItem
+			if item_type.find(g_mapType) >= 0:  #Map类型
+				childItems = colItem.split('=')		
+				itemContent = ""
+				for childIndex , childItem in enumerate(childItems):
+					if childIndex == 0:
+						itemType = RemoveSpecialWord(childItem)
+						itemContent = itemContent + itemType				
+					else:
+						itemContent = itemContent + "="
+						itemContent = itemContent + childItem.strip()
+				return itemContent
+			else:
+				return colItem
 	else:
 		return colItem
 
@@ -1512,6 +1589,7 @@ def LogOutError(*string):
 	
 	print(longStr)
 	GetColor("reset")
+	traceback.print_stack() 
 	sys.exit()
 	
 def InitColor():
@@ -1533,27 +1611,27 @@ def InitColor():
 		g_original = ""
 		g_cyan = ""
 
-def GetColor(type):
+def GetColor(colorType):
 	stdOutHandle = ctypes.windll.kernel32.GetStdHandle(g_stdOutputHandle)
-	if type == "error":
+	if colorType == "error":
 		if g_platform == "LINUX":
 			return g_red
 		else:
 			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_RED | FOREGROUND_INTENSTITY)
 			return ""
-	elif type == "info":
+	elif colorType == "info":
 		if g_platform == "LINUX":
 			return g_green
 		else:
 			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_GREEN | FOREGROUND_INTENSTITY)
 			return ""
-	elif type == "debug" or type == "reset":
+	elif colorType == "debug" or colorType == "reset":
 		if g_platform == "LINUX":
 			return g_original
 		else:
 			ctypes.windll.kernel32.SetConsoleTextAttribute(stdOutHandle , FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN)
 			return ""
-	elif type == "warning" :
+	elif colorType == "warning" :
 		if g_platform == "LINUX":
 			return g_yellow
 		else:

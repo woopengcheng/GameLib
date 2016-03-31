@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-31 01:05:25
+Date		:	2016-03-31 23:58:49
 Description	:	ConfigManager数据管理文件实现
 ************************************/
 #include "ConfigManager.h"
@@ -12,6 +12,7 @@ Description	:	ConfigManager数据管理文件实现
 #include "ActivityConfig.h"
 #include "_ConditionConfig.h"
 #include "ActionConfig.h"
+#include "_CommonData.h"
 	
 
 namespace Config
@@ -21,6 +22,7 @@ namespace Config
 // 		g_pActivityConfig = new Config::ActivityConfig;
 // 		g_p_ConditionConfig = new Config::_ConditionConfig;
 		g_pActionConfig = new Config::ActionConfig;
+		g_p_CommonData = new Config::_CommonData;
 	}
 
 	ConfigManager::~ConfigManager()
@@ -28,6 +30,7 @@ namespace Config
 // 		SAFE_DELETE(Config::g_pActivityConfig);
 // 		SAFE_DELETE(Config::g_p_ConditionConfig);
 		SAFE_DELETE(Config::g_pActionConfig);
+		SAFE_DELETE(Config::g_p_CommonData);
 	}
 
 	ConfigManager & ConfigManager::GetInstance()
@@ -53,6 +56,9 @@ namespace Config
 
 		MsgAssert_ReF1(Config::g_pActionConfig , "ConfigManager not Init")
 		Config::g_pActionConfig->LoadFrom(strCsvPath + "ActionConfig.tabcsv");
+
+		MsgAssert_ReF1(Config::g_p_CommonData , "ConfigManager not Init")
+		Config::g_p_CommonData->LoadFrom(strCsvPath + "_CommonData.tabcsv");
 
 		return 0;
 	}

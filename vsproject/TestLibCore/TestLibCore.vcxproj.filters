@@ -48,6 +48,18 @@
     <ClInclude Include="Condition.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="CSVConfigs\_CommonData.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVConfigs\_CommonDataLoad.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVConfigs\_ConditionConfig.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVConfigs\_ConditionConfigLoad.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -103,6 +115,18 @@
     </ClCompile>
     <ClCompile Include="..\..\LibCore\Test\RTTI_Test.cpp">
       <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVConfigs\_CommonData.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVConfigs\_CommonDataLoad.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVConfigs\_ConditionConfig.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVConfigs\_ConditionConfigLoad.cpp">
+      <Filter>CSVConfigs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

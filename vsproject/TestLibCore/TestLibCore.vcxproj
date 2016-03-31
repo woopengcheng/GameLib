@@ -348,6 +348,10 @@
     <ClInclude Include="CSVConfigs\ActivityConfig.h" />
     <ClInclude Include="CSVConfigs\ActivityConfigLoad.h" />
     <ClInclude Include="CSVConfigs\ConfigManager.h" />
+    <ClInclude Include="CSVConfigs\_CommonData.h" />
+    <ClInclude Include="CSVConfigs\_CommonDataLoad.h" />
+    <ClInclude Include="CSVConfigs\_ConditionConfig.h" />
+    <ClInclude Include="CSVConfigs\_ConditionConfigLoad.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -368,6 +372,10 @@
     <ClCompile Include="CSVConfigs\ActivityConfig.cpp" />
     <ClCompile Include="CSVConfigs\ActivityConfigLoad.cpp" />
     <ClCompile Include="CSVConfigs\ConfigManager.cpp" />
+    <ClCompile Include="CSVConfigs\_CommonData.cpp" />
+    <ClCompile Include="CSVConfigs\_CommonDataLoad.cpp" />
+    <ClCompile Include="CSVConfigs\_ConditionConfig.cpp" />
+    <ClCompile Include="CSVConfigs\_ConditionConfigLoad.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestLibCore.cpp" />
   </ItemGroup>

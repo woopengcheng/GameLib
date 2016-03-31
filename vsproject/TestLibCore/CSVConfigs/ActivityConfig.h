@@ -5,13 +5,12 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-27 12:54:58
+Date		:	2016-03-31 23:58:48
 Description	:	csv¶ÁÈ¡ÎÄ¼þ
 ************************************/
 #ifndef __Config_ActivityConfig_define_h__
 #define __Config_ActivityConfig_define_h__
 #include "ActivityConfigLoad.h"
-#include "../Condition.h"
 
 namespace Config
 {
@@ -53,9 +52,6 @@ namespace Config
 	public:
 		bool LoadFrom(const std::string& filepath);
 		SActivityConfig * GetActivityConfig(INT32 nIndex);
-
-	public:
-		BOOL	RunUse(INT32 nIndex, CUtil::Player * pPlayer);
 
 	private:
 		MapConfigsT m_mapConfigs;

@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-03-27 12:54:58
+Date		:	2016-03-31 23:58:48
 Description	:	csv读取数据文件实现
 ************************************/
 #include "ActivityConfig.h"
@@ -61,19 +61,5 @@ namespace Config
 	}
 
 	ActivityConfig * g_pActivityConfig = NULL;
-
-	BOOL ActivityConfig::RunUse(INT32 nIndex , CUtil::Player * pPlayer)
-	{
-		if (CUtil::Condition<CUtil::CONDITION_PLAYER_LEVEL>()(pPlayer) > this->GetActivityConfig(nIndex)->ActivityLevelHigh &&
-			CUtil::Condition<CUtil::CONDITION_VIP_LEVEL>()(pPlayer) < this->GetActivityConfig(nIndex)->ActivityLevelHigh)
-		{
-			CUtil::Action<CUtil::ACTION_TRIGER_TASK>()(pPlayer, 12);
-			CUtil::Action<CUtil::ACTION_TRIGER_TASK>()(pPlayer, 12);
-		}
-
-
-		return FALSE;
-	}
-
 }
 
