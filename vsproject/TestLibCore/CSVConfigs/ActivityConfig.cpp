@@ -1,12 +1,12 @@
-// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
+Ôªø// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
 /************************************
 FileName	:	ActivityConfig.cpp
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-02 12:00:19
-Description	:	csv∂¡»° ˝æ›Œƒº˛ µœ÷
+Date		:	2016-04-03 01:24:06
+Description	:	csvËØªÂèñÊï∞ÊçÆÊñá‰ª∂ÂÆûÁé∞
 ************************************/
 #include "ActivityConfig.h"
 #include "LogLib/inc/Log.h"
@@ -58,6 +58,33 @@ namespace Config
 		}
 
 		return &iter->second;
+	}
+
+	bool ActivityConfig::RunUse(INT32 nIndex , CUtil::Player * pPlayer/* = NULL*/)
+	{
+		if (GetActivityConfig(nIndex) == NULL)
+		{
+			gErrorStream("RunUse error. ActivityConfig  no this id.id=" << nIndex);
+			return false;
+		}
+
+		if (pPlayer == NULL)
+		{
+			gErrorStream("RunUse error. ActivityConfig  pPlayer = NULL.id=" << nIndex);
+			return false;
+		}
+
+		if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&(CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)<(GetActivityConfig(nIndex)->Description)||(GetActivityConfig(nIndex)->testdate)==Timer::Date("2016-3-28-3:15:10")))
+		{
+			pPlayer->Mail(12);
+		}
+
+		if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->EndTimeDate))
+		{
+			pPlayer->Say(12 , "Âä®ÊÄÅÁ§ºÂåÖ");
+		}
+
+		return true;
 	}
 
 	ActivityConfig * g_pActivityConfig = NULL;

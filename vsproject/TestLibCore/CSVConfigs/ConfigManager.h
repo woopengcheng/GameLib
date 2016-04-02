@@ -1,11 +1,11 @@
-/************************************
+ï»¿/************************************
 FileName	:	ConfigManager.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-02 12:00:19
-Description	:	ConfigManagerÎÄ¼þÉùÃ÷
+Date		:	2016-04-03 01:24:06
+Description	:	ConfigManageræ–‡ä»¶å£°æ˜Ž
 ************************************/
 #ifndef __Config_ConfigManager_define_h__
 #define __Config_ConfigManager_define_h__

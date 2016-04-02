@@ -1,32 +1,33 @@
-// attention dont't change this line:INT32 curve_id;std::vector<INT32> validStages;std::string wrapMode;std::vector<std::string> InterfaceIcon;double attr_mod_val;std::vector<double> start_x;INT64 col_1;bool isLocal;TestStructbool test1;INT64 test2;double test3;INT32 test4;std::string test6;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std::string test5;
+ï»¿// attention dont't change this line:INT32 curve_id;std::vector<INT32> validStages;std::string wrapMode;std::vector<std::string> InterfaceIcon;double attr_mod_val;std::vector<double> start_x;INT64 col_1;bool isLocal;TestStructbool test1;INT64 test2;double test3;INT32 test4;std::string test6;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std::string test5;
 /************************************
 FileName	:	ActionConfig.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-02 12:00:19
-Description	:	csv¶ÁÈ¡ÎÄ¼ş
+Date		:	2016-04-03 01:24:06
+Description	:	csvè¯»å–æ–‡ä»¶
 ************************************/
 #ifndef __Config_ActionConfig_define_h__
 #define __Config_ActionConfig_define_h__
 #include "ActionConfigLoad.h"
+#include "../Condition.h"
 
 namespace Config
 {
 
 	struct SActionConfig
 	{
-		INT32							curve_id;	//¹ì¼£ID
-		std::vector<INT32>				validStages;	//ÉúĞ§³¡¾°--²»Åä±íÊ¾ËùÓĞ³¡¾°ÖĞÉúĞ§--·ñÔò½öÔÚÅäÖÃ³¡¾°ÖĞÉúĞ§
-		std::string						wrapMode;	//Ñ­»··½Ê½
-		std::vector<std::string>		InterfaceIcon;	//½çÃæÖĞÍ¼±ê
-		double							attr_mod_val;	//ÊôĞÔĞŞ¸ÄÖµ
-		std::vector<double>				start_x;	//ÆğÊ¼µã
-		INT64							col_1;	//±¸×¢1
-		bool							isLocal;	//×ø±êÏµ
+		INT32							curve_id;	//è½¨è¿¹ID
+		std::vector<INT32>				validStages;	//ç”Ÿæ•ˆåœºæ™¯--ä¸é…è¡¨ç¤ºæ‰€æœ‰åœºæ™¯ä¸­ç”Ÿæ•ˆ--å¦åˆ™ä»…åœ¨é…ç½®åœºæ™¯ä¸­ç”Ÿæ•ˆ
+		std::string						wrapMode;	//å¾ªç¯æ–¹å¼
+		std::vector<std::string>		InterfaceIcon;	//ç•Œé¢ä¸­å›¾æ ‡
+		double							attr_mod_val;	//å±æ€§ä¿®æ”¹å€¼
+		std::vector<double>				start_x;	//èµ·å§‹ç‚¹
+		INT64							col_1;	//å¤‡æ³¨1
+		bool							isLocal;	//åæ ‡ç³»
 
-		//½á¹¹Ìå
+		//ç»“æ„ä½“
 		struct STestStruct
 		{
 			bool						test1;
@@ -36,7 +37,7 @@ namespace Config
 			std::string					test6;
 		}TestStruct;
 
-		//½á¹¹ÌåÊı×é
+		//ç»“æ„ä½“æ•°ç»„
 		struct STestStructArray
 		{
 			bool						test1;
@@ -55,8 +56,11 @@ namespace Config
 		typedef std_unordered_map<INT32 , SActionConfig> MapConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filepath);
-		SActionConfig * GetActionConfig(INT32 nIndex);
+		bool				LoadFrom(const std::string& filepath);
+		SActionConfig *	GetActionConfig(INT32 nIndex);
+
+	public:
+
 
 	private:
 		MapConfigsT m_mapConfigs;

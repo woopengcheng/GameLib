@@ -4,40 +4,11 @@
 
 namespace CUtil
 {
-// 	enum EConfigConditionType
-// 	{
-// 		CONDITION_BOOL,
-// 		CONDITION_INT32,
-// 		CONDITION_INT64,
-// 		CONDITION_DOUBLE,
-// 		CONDITION_DATE,
-// 		CONDITION_STRING,
-// 	};
-// 
-// 	template<EConfigConditionType type>
-// 	class Condition
-// 	{
-// 	public:
-// 		Condition()
-// 		{}
-// 		~Condition()
-// 		{}
-// 	};
-// 
-// 	template<>
-// 	class Condition<CONDITION_BOOL>
-// 	{
-// 	public:
-// 		bool		operator > (const bool & a)
-// 		{
-// 
-// 		}
-// 	};
 	enum EConditionType
 	{
-		CONDITION_PLAYER_LEVEL,
-		CONDITION_VIP_LEVEL,
-		CONDITION_LEAGUE_LEVEL,
+		PLAYER_LEVEL,
+		VIP_LEVEL,
+		LEAGUE_LEVEL,
 	};
 
 	class Player
@@ -50,6 +21,8 @@ namespace CUtil
 		{
 			return nPlayerLevel;
 		}
+		void Mail(INT32 nMailID) { }
+		void Say(INT32 nChanelID , std::string str) { }
 
 	private:
 		int nPlayerLevel;
@@ -59,7 +32,7 @@ namespace CUtil
 	class Condition;
 
 	template<>
-	class Condition<CONDITION_PLAYER_LEVEL>
+	class Condition<PLAYER_LEVEL>
 	{
 	public:
 		INT32 operator ()(Player * pPlayer)
@@ -73,7 +46,7 @@ namespace CUtil
 	};
 
 	template<>
-	class Condition<CONDITION_VIP_LEVEL>
+	class Condition<VIP_LEVEL>
 	{
 	public:
 		INT32 operator ()(Player * pPlayer)

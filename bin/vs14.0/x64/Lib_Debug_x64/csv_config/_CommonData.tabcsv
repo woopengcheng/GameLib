@@ -1,4 +1,4 @@
-"ÔİÊ±ÎŞÓÃ"	"bool¹«ÓÃÖµ"	"bool¹«ÓÃÖµ2"	"int¹«ÓÃÖµ"	"int64¹«ÓÃÖµ"	"double¹«ÓÃÖµ"	"string¹«ÓÃÖµ"	"date¹«ÓÃÖµ"
+ï»¿"æš‚æ—¶æ— ç”¨"	"boolå…¬ç”¨å€¼"	"boolå…¬ç”¨å€¼2"	"intå…¬ç”¨å€¼"	"int64å…¬ç”¨å€¼"	"doubleå…¬ç”¨å€¼"	"stringå…¬ç”¨å€¼"	"dateå…¬ç”¨å€¼"
 "int"	"map<string,bool>"	"map<string,bool>"	"map<string,int>"	"map<string,int64>"	"map<string,double>"	"map<string,string>"	"map<string,date>"
 "id"	"boolCommon"	"boolCommon2"	"intCommon"	"int64Common"	"doubleCommon"	"stringCommon"	"dateCommon"
 "sc"	"cs"	"cs"	"cs"	"cs"	"cs"	"cs"	"cs"

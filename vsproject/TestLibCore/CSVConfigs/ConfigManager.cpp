@@ -1,11 +1,11 @@
-/************************************
+ï»¿/************************************
 FileName	:	ConfigManager.cpp
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-02 12:00:19
-Description	:	ConfigManagerÊı¾İ¹ÜÀíÎÄ¼şÊµÏÖ
+Date		:	2016-04-03 01:24:06
+Description	:	ConfigManageræ•°æ®ç®¡ç†æ–‡ä»¶å®ç°
 ************************************/
 #include "ConfigManager.h"
 #include "LogLib/inc/Log.h"

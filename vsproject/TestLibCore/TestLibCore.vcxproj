@@ -343,15 +343,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Condition.h" />
-    <ClInclude Include="CSVClientConfigs\ActionConfig.h" />
-    <ClInclude Include="CSVClientConfigs\ActionConfigLoad.h" />
-    <ClInclude Include="CSVClientConfigs\ActivityConfig.h" />
-    <ClInclude Include="CSVClientConfigs\ActivityConfigLoad.h" />
-    <ClInclude Include="CSVClientConfigs\ConfigManager.h" />
-    <ClInclude Include="CSVClientConfigs\_CommonData.h" />
-    <ClInclude Include="CSVClientConfigs\_CommonDataLoad.h" />
-    <ClInclude Include="CSVClientConfigs\_ConditionConfig.h" />
-    <ClInclude Include="CSVClientConfigs\_ConditionConfigLoad.h" />
+    <ClInclude Include="CSVConfigs\ActionConfig.h" />
+    <ClInclude Include="CSVConfigs\ActionConfigLoad.h" />
+    <ClInclude Include="CSVConfigs\ActivityConfig.h" />
+    <ClInclude Include="CSVConfigs\ActivityConfigLoad.h" />
+    <ClInclude Include="CSVConfigs\ConfigManager.h" />
+    <ClInclude Include="CSVConfigs\_CommonData.h" />
+    <ClInclude Include="CSVConfigs\_CommonDataLoad.h" />
+    <ClInclude Include="CSVConfigs\_ConditionConfig.h" />
+    <ClInclude Include="CSVConfigs\_ConditionConfigLoad.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -367,15 +367,15 @@
     <ClCompile Include="..\..\LibCore\Test\Paramter_Test.cpp" />
     <ClCompile Include="..\..\LibCore\Test\ReferCount_Test.cpp" />
     <ClCompile Include="..\..\LibCore\Test\RTTI_Test.cpp" />
-    <ClCompile Include="CSVClientConfigs\ActionConfig.cpp" />
-    <ClCompile Include="CSVClientConfigs\ActionConfigLoad.cpp" />
-    <ClCompile Include="CSVClientConfigs\ActivityConfig.cpp" />
-    <ClCompile Include="CSVClientConfigs\ActivityConfigLoad.cpp" />
-    <ClCompile Include="CSVClientConfigs\ConfigManager.cpp" />
-    <ClCompile Include="CSVClientConfigs\_CommonData.cpp" />
-    <ClCompile Include="CSVClientConfigs\_CommonDataLoad.cpp" />
-    <ClCompile Include="CSVClientConfigs\_ConditionConfig.cpp" />
-    <ClCompile Include="CSVClientConfigs\_ConditionConfigLoad.cpp" />
+    <ClCompile Include="CSVConfigs\ActionConfig.cpp" />
+    <ClCompile Include="CSVConfigs\ActionConfigLoad.cpp" />
+    <ClCompile Include="CSVConfigs\ActivityConfig.cpp" />
+    <ClCompile Include="CSVConfigs\ActivityConfigLoad.cpp" />
+    <ClCompile Include="CSVConfigs\ConfigManager.cpp" />
+    <ClCompile Include="CSVConfigs\_CommonData.cpp" />
+    <ClCompile Include="CSVConfigs\_CommonDataLoad.cpp" />
+    <ClCompile Include="CSVConfigs\_ConditionConfig.cpp" />
+    <ClCompile Include="CSVConfigs\_ConditionConfigLoad.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestLibCore.cpp" />
   </ItemGroup>

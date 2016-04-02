@@ -1,11 +1,11 @@
-/************************************
+ï»¿/************************************
 FileName	:	_CommonDataLoad.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-02 12:00:19
-Description	:	csvÅäÖÃÎÄ¼ş
+Date		:	2016-04-03 01:24:06
+Description	:	csvé…ç½®æ–‡ä»¶
 ************************************/
 #ifndef ___CommonDataLoad_define_h__
 #define ___CommonDataLoad_define_h__
@@ -17,14 +17,14 @@ namespace Config
 {
 	struct S_CommonDataLoad
 	{
-		INT32							id;	//ÔİÊ±ÎŞÓÃ
-		std::map<std::string , bool>		boolCommon;	//bool¹«ÓÃÖµ
-		std::map<std::string , bool>		boolCommon2;	//bool¹«ÓÃÖµ2
-		std::map<std::string , INT32>		intCommon;	//int¹«ÓÃÖµ
-		std::map<std::string , INT64>		int64Common;	//int64¹«ÓÃÖµ
-		std::map<std::string , double>		doubleCommon;	//double¹«ÓÃÖµ
-		std::map<std::string , std::string>		stringCommon;	//string¹«ÓÃÖµ
-		std::map<std::string , Timer::Date>		dateCommon;	//date¹«ÓÃÖµ
+		INT32							id;	//æš‚æ—¶æ— ç”¨
+		std::map<std::string , bool>		boolCommon;	//boolå…¬ç”¨å€¼
+		std::map<std::string , bool>		boolCommon2;	//boolå…¬ç”¨å€¼2
+		std::map<std::string , INT32>		intCommon;	//intå…¬ç”¨å€¼
+		std::map<std::string , INT64>		int64Common;	//int64å…¬ç”¨å€¼
+		std::map<std::string , double>		doubleCommon;	//doubleå…¬ç”¨å€¼
+		std::map<std::string , std::string>		stringCommon;	//stringå…¬ç”¨å€¼
+		std::map<std::string , Timer::Date>		dateCommon;	//dateå…¬ç”¨å€¼
 	};
 
 

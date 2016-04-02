@@ -67,6 +67,8 @@ g_xlsRecords = collections.OrderedDict()
 g_xlsConditionRecords = collections.OrderedDict()
 	
 g_commonDatas = collections.OrderedDict()  # 这里用来记录所有的共有变量的值
+g_repeatServerCommonDatas = []  # 这里用来记录所有的共有变量重复的值,防止在条件表达式中写错.
+g_repeatClientCommonDatas = []  # 这里用来记录所有的共有变量重复的值,防止在条件表达式中写错.
 
 g_serverConditions = collections.OrderedDict()  # 这里用来记录所有的条件
 g_serverActions = collections.OrderedDict()
@@ -95,9 +97,12 @@ g_loadConfigSuffix = "Load"
 g_xlsNamespace = "Config"
 g_conditionTag = "condition"
 g_actionTag = "action"
+g_pointPrefix = "p"		#指针的前缀
+g_conditionSymbol = [">" , '=' , "<" , "(" , ")" , "&" , "|" , "!"]
 
 g_serverType = "s".lower()
 g_clientType = "c".lower()
+g_bCheckCSTypeStrict = False	#检测CS条件的时候是否执行严格检测.即.服务器是否需要客户端数据.默认是需要的.
 
 g_int32Type = "INT32"
 g_int64Type = "INT64"
@@ -146,24 +151,17 @@ g_rowType = 1	# 类型行
 g_rowName = 2 	# 为类型名字行
 g_rowCS = 3   	# 第三行为是否是服务器还是客户端代码
 g_cellID = 0  	# 第一列为ID列
-g_cellName = 0 	# 条件列的   条件名字
-g_cellCS = 1 	# 条件列的   服务器还是客户端代码.
+g_conditionCellName = 0 	# 条件列的   条件名字
+g_conditionCellCS = 1 	# 条件列的   服务器还是客户端代码.
+g_conditionDataStart = 2 	# 条件列的   数据开始行.
 g_rowDataStart=4# 从这行开始就是数据了.
 
 class Expression(object):
 	"""docstring for Expression"""
 	def __init__(self, arg):
 		super(Expression, self).__init__()
-		self.condition = None
+		self.condition = ""
 		self.actions = []
-		
-class Condition(object):
-	"""docstring for Condition"""
-	def __init__(self, arg):
-		super(Condition, self).__init__()
-		self.leftvalue = ""
-		self.symbol = ""
-		self.rightvalue = ""
 		
 class Action(object):
 	"""docstring for Action"""
@@ -177,6 +175,8 @@ class CommonData(object):
 	def __init__(self, arg):
 		super(CommonData, self).__init__()
 		self.value = ""
+		self.keyType = ""
+		self.valueType = ""
 		self.objects = []
 
 def start(): 
@@ -201,8 +201,8 @@ def GenerateCSVFromXLS():
 	CheckRecords()
 	GenerateCSV()		
 	HandleConditionConfig()
-	HandleSheetCondition()
 	HandleCommondataConfig()
+	HandleSheetCondition()
 	CheckRepeatCommonData()
 
 def Xlsx2CSV(filepath):
@@ -253,7 +253,7 @@ def Xlsx2CSV(filepath):
 						if type(cell.value) != str:
 							Str = str(cell.value)
 						else:
-							Str = Str.encode('gbk').decode('gbk')
+							Str = Str.encode('gbk').decode('gbk').encode('utf-8').decode('utf-8')
 
 					if cur_rows_index == g_rowComent and len(Str) > 0 and Str.lower()[0] == '#':  # 跳过这一列
 						#LogOutDebug("delete_col_list" , delete_col_list)
@@ -283,7 +283,7 @@ def Xlsx2CSV(filepath):
 								if len(Str) > 0:  # 记录条件的时候因为不是一一对应的,所以当为空的时候不需要记录.
 									conditionContainer[cur_cell_index].append(Str)
 									RemovListNewLine(conditionContainer[cur_cell_index])
-									#LogOutDebug("conditionContainer:" , Str)
+									#LogOutDebug("cur_cell_index:" , cur_cell_index , " conditionContainer:" , len(conditionContainer[cur_cell_index]) , " Str:" , str(Str))
 							else:
 								row_container.append(Str)
 
@@ -297,8 +297,8 @@ def Xlsx2CSV(filepath):
 					#LogOutDebug("cell.row_container:" , row_container)
 			cur_sheet_index = cur_sheet_index + 1	
 		g_xlsConditionRecords[filename] = conditionContainer
-		#LogOutDebug("g_xlsConditionRecords:" , g_xlsConditionRecords[filename])
-		#csv_file.close()
+		#LogOutDebug("g_xlsConditionRecords:" , len(g_xlsConditionRecords[filename]))
+
 	except Exception as e:
 		LogOutError(e)
 		
@@ -357,7 +357,7 @@ def CheckRecords():
 
 			for row , rowItem in enumerate(colItem):	#读取每一列
 				CheckDataType(g_conditionType , sheet , row , col , rowItem)
-				#LogOutDebug("g_xlsRecords[sheet][row][col]:" , g_xlsRecords[sheet][row][col])
+				#LogOutDebug("g_xlsConditionRecords:" , g_xlsConditionRecords[sheet][col][row])
 				
 def HandleConditionConfig():
 	rowItems = g_xlsRecords[g_conditionConfigName]
@@ -378,7 +378,7 @@ def HandleConditionConfig():
 								g_serverConditions[last].append(obj)
 					if col == g_serverActionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1].upper()
+						last = objects[len(objects) - 1]
 						if last not in g_serverActions:
 							g_serverActions[last] = []
 						for index , obj in enumerate(objects):
@@ -394,7 +394,7 @@ def HandleConditionConfig():
 								g_clientConditions[last].append(obj)
 					if col == g_clientActionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1].upper()
+						last = objects[len(objects) - 1]
 						if last not in g_clientActions:
 							g_clientActions[last] = []
 						for index , obj in enumerate(objects):
@@ -421,156 +421,244 @@ def HandleCommondataConfig():
 					#LogOutDebug("row:" , row , " col:" , col , " colItem:" , colItem , " mapType:" , mapType , " keyType:", keyType ," valueType:" , valueType)	
 
 					datas = colItem.split('=')
-					if datas[0] not in g_commonDatas:
-						g_commonDatas[datas[0]] = CommonData
-						g_commonDatas[datas[0]].value = datas[1]
-						g_commonDatas[datas[0]].objects = []
-						g_commonDatas[datas[0]].objects.append(g_commonDataObject)
-						g_commonDatas[datas[0]].objects.append(g_xlsRecords[g_commonDataName][g_rowName][col])
+					commonKey = datas[0].upper()
+					if commonKey not in g_commonDatas:
+						g_commonDatas[commonKey] = CommonData(None)
+						g_commonDatas[commonKey].value = datas[1]
+						g_commonDatas[commonKey].keyType = keyType
+						g_commonDatas[commonKey].valueType = valueType
+						g_commonDatas[commonKey].objects = []
+						g_commonDatas[commonKey].objects.append(g_commonDataObject)
+						#g_commonDatas[datas[0]].objects.append(g_xlsRecords[g_commonDataName][g_rowName][col])
 					else:
 						LogOutError("row:" , row , " col:" , col , " colItem:" , colItem , " mapType:" , mapType , " keyType:", keyType ," valueType:" , valueType , " error. the sameName" , datas[0])
 					
 	else:
 		LogOutError("HandleConditionConfig error." , g_conditionConfigName , " no data")
+	#LogOutDebug("g_commonDatas:" , g_commonDatas)
 
 def CheckRepeatCommonData():
 	for conmonIndex , commondata in g_commonDatas.items():
 		for serverIndex , serverCondition in g_serverConditions.items():
 			#LogOutDebug(conmonIndex , " commondata=" , commondata , " serverCondition=" , serverCondition)
 			if conmonIndex == serverIndex:
-				LogOutError("the same commondata warning." , conmonIndex , " commondata=" , commondata , " serverCondition=" , serverCondition)
+				g_repeatServerCommonDatas.append(conmonIndex)
+				LogOutDebug("the same commondata warning." , conmonIndex , " commondata=" , commondata , " serverCondition=" , serverCondition)
 		for clientIndex , clientCondition in g_clientConditions.items():
 			#LogOutDebug(conmonIndex , " commondata=" , commondata , " clientCondition=" , clientCondition)
 			if conmonIndex == clientIndex:
+				g_repeatClientCommonDatas.append(conmonIndex)
 				LogOutError("the same commondata warning." , conmonIndex , " commondata=" , commondata , " clientCondition=" , clientCondition)
 
 def HandleSheetCondition():	
 	for sheet , item in g_xlsConditionRecords.items():
 		g_serverExpression[sheet] = collections.OrderedDict()			# 为每一个sheet创建一系列的条件表达式
+		g_clientExpression[sheet] = collections.OrderedDict()			# 为每一个sheet创建一系列的条件表达式
 		for col , colItem in item.items():		# 读取每一列
 			bConditionStart = False
-			expression = None
+			serverExpression = None
+			clientExpression = None
 			cellName = ""
+			#LogOutDebug("sheet:" , sheet)
+			csType = g_xlsConditionRecords[sheet][col][g_conditionCellCS]
+			bServer = CheckCSType(csType , True , True)
+			bClient = CheckCSType(csType , False , True)
 			for row , rowItem in enumerate(colItem):		# 读取每一行
 				item = RemoveSpecialWord(rowItem)
-				if row == g_cellName:
+				#LogOutDebug("condition row:" , str(row) )
+				if row == g_conditionCellName:
 					cellName = g_expressionPrefix + rowItem
-					#LogOutDebug("cellName:" , cellName , "g_serverExpression[sheet]:" , g_serverExpression[sheet])
-					g_serverExpression[sheet][cellName] = []	# 这里用来存每一个表达式
-				if row != g_cellName and row != g_cellCS:
+					if bServer:
+						#LogOutDebug("cellName:" , cellName , "g_serverExpression[sheet]:" , g_serverExpression[sheet])
+						g_serverExpression[sheet][cellName] = []	# 这里用来存每一个表达式
+					if bClient:
+						g_clientExpression[sheet][cellName] = []	# 这里用来存每一个表达式
+				if row >= g_conditionDataStart:
 					tagitem = item.lower()[0:item.lower().find(':')]
 					itemContent = item.lower()[item.lower().find(':') + 1:]
-					#LogOutDebug("condition item:" , item , " tagitem=" , tagitem , " itemContent " , itemContent)
+					#LogOutDebug("tagitem=" , tagitem.lower() , " itemContent " , itemContent.lower())
 					if tagitem.lower() == g_conditionTag.lower():
-						if not bConditionStart:
-							if expression != None:
-								g_serverExpression[sheet][cellName].append(expression)
-							expression = HandleConditionExpression(True , sheet , itemContent)
-							expression.actions = []
-							bConditionStart = True
+						if serverExpression != None:
+							g_serverExpression[sheet][cellName].append(serverExpression)
+						if clientExpression != None:
+							g_clientExpression[sheet][cellName].append(clientExpression)
+						#LogOutDebug("condition csType:" , csType , " IsServer=" , IsServerCSType(csType) , " itemContent " , itemContent)
+						if bServer:
+							serverExpression = Expression(None)
+							HandleConditionExpression(True , sheet , itemContent , serverExpression)
+							serverExpression.actions = []
+						if bClient:
+							clientExpression = Expression(None)
+							HandleConditionExpression(False , sheet , itemContent , clientExpression)
+							clientExpression.actions = []
+							#LogOutDebug("1.serverExpression:" , serverExpression.condition)
+							#LogOutDebug("1.clientExpression:" , clientExpression.condition)
 					elif tagitem.lower() == g_actionTag.lower():
-						if bConditionStart:
+						if bServer:
 							action = HandleAction(True , itemContent)
-							expression.actions.append(action)							
+							serverExpression.actions.append(action)
+							#LogOutDebug("action=" , action)
+						if bClient:
+							action = HandleAction(False , itemContent)
+							clientExpression.actions.append(action) 
+							#LogOutDebug("action=" , action)
 					else:
-						LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item , " condition tag error.")							
+						LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item , " condition tag error.")				
 			
-			if expression != None and cellName != "":
-				g_serverExpression[sheet][cellName].append(expression)	
-		#LogOutDebug("g_serverExpression[sheet]:" , g_serverExpression[sheet])	
-def HandleConditionExpression(bServer , sheet , itemContent):	
-	expression = Expression
-	conditions = itemContent.split("&&")
-	expression.condition = Condition
-	for index , item in enumerate(conditions):
-		if item.find(g_great) >= 0:
-			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_great)[0])
-			expression.condition.symbol = g_great
-			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_great)[1])
-		if item.find(g_greatEqual) >= 0:
-			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_greatEqual)[0])
-			expression.condition.symbol = g_greatEqual
-			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_greatEqual)[1])
-		if item.find(g_less) >= 0:
-			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_less)[0])
-			expression.condition.symbol = g_less
-			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_less)[1])
-		if item.find(g_lessEqual) >= 0:
-			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_lessEqual)[0])
-			expression.condition.symbol = g_lessEqual
-			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_lessEqual)[1])
-		if item.find(g_equal) >= 0:
-			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_equal)[0])
-			expression.condition.symbol = g_equal
-			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_equal)[1])
-		if item.find(g_notEqual) >= 0:
-			expression.condition.leftvalue = CheckConditionValue(bServer , sheet , item.split(g_notEqual)[0])
-			expression.condition.symbol = g_notEqual
-			expression.condition.rightvalue = CheckConditionValue(bServer , sheet , item.split(g_notEqual)[1])
+			if cellName != "":
+				if bServer and serverExpression != None:
+					g_serverExpression[sheet][cellName].append(serverExpression)	
+					#LogOutDebug("serverExpression:" , serverExpression.condition)
+				if bClient and clientExpression != None:
+					g_clientExpression[sheet][cellName].append(clientExpression)	
+					#LogOutDebug("clientExpression:" ,clientExpression.condition)
 
-	return expression
+def HandleConditionExpression(bServer , sheet , itemContent , expression):	
+	result = ""
+	start = 0
+	end = 0
+	keyWord = ""
+	for i , item in enumerate(list(itemContent)):
+		if item in g_conditionSymbol:
+			end = i
+			if end != start: # 代表是一个符号					
+				keyWord = itemContent[start:end]
+				#LogOutDebug("keyWord:" , keyWord , "result:" , result)
+				result = result + ParaseConditionKeyWord(bServer , keyWord.upper() , sheet)
+			result += item
+			start = i + 1			
+	keyWord = itemContent[start:]
+	if len(keyWord) > 0:# 最后一个肯定不是符号.所以必然会有一个条件.
+		result = result + ParaseConditionKeyWord(bServer , keyWord.upper() , sheet)
+	expression.condition = result
+	#LogOutDebug("bServer:" + str(bServer) + ":result." , result)
 
-def CheckConditionValue(bServer , sheet ,  value):
-	if bServer:
-		if value.upper() in g_serverConditions:
-			result = ""
-			for index , item in enumerate(g_serverConditions[value.upper()]):
-				result += item
-				result += "::"
-			result += value.upper()
-			return result
-		if value in g_xlsRecords[sheet][g_rowName]:
-			result = g_conditionObjName + "->" + value
-			return result
-		if value in g_xlsRecords[sheet][g_rowName]:  # todo如果在commondata中该如何处理.
-			result = g_conditionObjName + "->" + value
-			return result
-	else:
-		if value.upper() in g_clientConditions:
-			result = ""
-			for index , item in enumerate(g_clientConditions[value.upper()]):
-				result += item
-				result += "::"
-			result += value.upper()
-			return result
-		if value in g_xlsRecords[sheet][g_rowName]:
-			result = g_conditionObjName + "->" + value
-			return result
-		if value in g_xlsRecords[sheet][g_rowName]:  # todo如果在commondata中该如何处理.
-			result = g_conditionObjName + "->" + value
-			return result
+	#return expression	
 	
+def ParaseConditionKeyWord(bServer , keyWord , sheet):
+	keys = keyWord.split(".")
+	last = keys[len(keys) - 1].upper()
+	result = ""	
+
+	isInCommonData = False
+	if last in g_commonDatas:
+		isInCommonData = True
+		commondata = g_commonDatas[last.upper()]
+		for index , key in enumerate(keys):
+			if key in commondata.objects:
+				if commondata.valueType != g_dateType:
+					return commondata.value
+				else:
+					return g_dateType + "(\"" + commondata.value + "\")"
+
+	if bServer:
+		if last not in g_repeatServerCommonDatas:
+			if isInCommonData:
+				commondata = g_commonDatas[last.upper()]
+				if commondata.valueType != g_dateType:
+					return commondata.value
+				else:
+					return g_dateType + "(\"" + commondata.value + "\")"
+
+			if last in g_serverConditions:
+				condition = g_serverConditions[last]
+				return GetConditionByCondition(bServer , condition , last)
+		else:
+			condition = g_serverConditions[last]
+			isInCondition = False
+			for index , key in enumerate(keys):
+				if key in condition:
+					isInCondition = True
+			if isInCondition:
+				return GetConditionByCondition(bServer , condition , last)
+	else:
+		if last not in g_repeatClientCommonDatas:
+			if isInCommonData:
+				commondata = g_commonDatas[last.upper()]
+				if commondata.valueType != g_dateType:
+					return commondata.value
+				else:
+					return g_dateType + "(\"" + commondata.value + "\")"
+			if last in g_clientConditions:
+				condition = g_clientConditions[last]
+				return GetConditionByCondition(bServer , condition , last)
+		else:
+			condition = g_clientConditions[last]
+			isInCondition = False
+			for index , key in enumerate(keys):
+				if key in condition:
+					isInCondition = True
+				else:
+					isInCondition = False
+			if isInCondition:
+				return GetConditionByCondition(bServer , condition , last)
+
+	for index , rowName in enumerate(g_xlsRecords[sheet][g_rowName]):
+		#LogOutDebug("rowName:", rowName.upper() , " last:" , last) 
+		if rowName.upper() == last:
+			return "(" + "Get" + sheet + "(nIndex)->" + rowName + ")"
+	
+	LogOutError("ParaseConditionKeyWord ERR." , keyWord , "not in commondata or condition or cur excel")
+
+def GetConditionByCondition(bServer , condition , last):
+	result = ""
+	if bServer:
+		result = result + "CUtil::Condition<"
+	else:
+		result = result + "CUtil::Condition<"
+	for index , obj in enumerate(condition):		# 读取每一行
+		result = result + obj
+		result = result + "::"
+	result = result + last
+	if bServer:
+		result = result + ">()(pPlayer)"
+	else:
+		result = result + ">()(pPlayer)"
+	return result
+
+
 def HandleAction(bServer , itemContent):	
-	action = Action
+	action = Action(None)
 	actions = itemContent.split(g_actionNameSplit)
 	if len(actions) > 0:
 		action.name = CheckActionValue(bServer , actions[0])
-		RemoveSpecialWord(actions[1])
+		actions[1] = RemoveSpecialWord(actions[1])
+		actions[1] = actions[1].replace(")" , "").replace("(" , "")
 		action.args = actions[1].split(',')
 			 
 	return action
 
-def CheckActionValue(bServer ,  value):
+def MakeDicKeyUpper(value , tmp):
+	for index , item in value.items():
+		tmp[index.upper()] = item
+		
+def GetDicKeyByUpper(value , tmp):
+	for indexValue , item in value.items():
+		if indexValue.upper() == tmp.upper():
+			return indexValue
+		
+def CheckActionValue(bServer ,  value):	
+	tmp = collections.OrderedDict()
 	if bServer:
-		if value.upper() in g_serverActions:
-			result = ""
-			for index , item in enumerate(g_serverActions[value.upper()]):
-				result += item
-				result += "::"
-			result += value.upper()
-			return result
-		else:
-			LogOutError("CheckActionValue error." , value , " g_serverActions:" , g_serverActions)
+		MakeDicKeyUpper(g_serverActions , tmp)
 	else:
-		if value.upper() in g_clientActions:
-			result = ""
-			for index , item in enumerate(g_clientActions[value.upper()]):
-				result += item
-				result += "::"
-			result += value.upper()
-			return result
+		MakeDicKeyUpper(g_clientActions , tmp)
+	
+	if value.upper() in tmp:
+		result = ""
+		for index , item in enumerate(tmp[value.upper()]):
+			result += g_pointPrefix
+			result += item
+			result += "->"
+			
+		if bServer:
+			result += GetDicKeyByUpper(g_serverActions , value.upper())
 		else:
-			LogOutError("CheckActionValue error." , value)
+			result += GetDicKeyByUpper(g_clientActions , value.upper())
+		return result
+	else:
+		LogOutError("CheckActionValue error." , value , " g_serverActions:" , g_serverActions)
+	
 
 def GenerateCSV():
 	
@@ -582,7 +670,7 @@ def GenerateCSV():
 			csv_filename = '{xlsx}.tabcsv'.format(xlsx=filename)		
 			dirfileout  = dirout + csv_filename
 			#LogOutDebug("dirfileout" , dirfileout )
-			csv_file = open(dirfileout , 'w' , newline='')
+			csv_file = open(dirfileout , 'w' , newline='' , encoding='utf_8_sig')
 			
 			#QUOTE_MINIMAL QUOTE_NONE所有的都要加引号.
 			csv_file_writer = csv.writer(csv_file , delimiter='	', quotechar='"', quoting=csv.QUOTE_ALL)
@@ -653,7 +741,7 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
 
-	fileWrite = open(outputPath , "a")
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	
 	#以下是生成数据定义
 	WriteFileDescription(fileWrite , filename + ".h" , "csv配置文件")
@@ -697,7 +785,7 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
 
-	fileWrite = open(outputPath , "a")
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	
 	WriteFileDescription(fileWrite , filename + ".cpp" , "csv读取文件实现")
 	fileWrite.write("#include \"" + filename + ".h\"\n") 
@@ -890,9 +978,9 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
 				keyInput = "vals[0]"
 				valueInput = "vals[1]"
 				if keyType == g_boolType:
-					keyInput = "(" + g_boolType + ")CUtil::atoi(vals[0])"
+					keyInput = "!!" + "CUtil::atoi(vals[0])"
 				if valueType == g_boolType:
-					valueInput = "(" + g_boolType + ")CUtil::atoi(vals[1])"
+					valueInput = "!!" + "CUtil::atoi(vals[1])"
 				if keyType == g_int32Type:
 					keyInput = "(" + g_int32Type + ")CUtil::atoi(vals[0])"
 				if valueType == g_int32Type:
@@ -937,7 +1025,7 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	#if os.path.exists(outputPath): 
 	#	os.remove(outputPath)
 
-	fileWrite = open(outputPath , "a")
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	
 	loadConfig = filename + g_loadConfigSuffix
 	dataConfig = g_configPrefix + filename
@@ -947,7 +1035,8 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	WriteFileDescription(fileWrite , filename + ".h" , "csv读取文件")
 	fileWrite.write("#ifndef __" + g_xlsNamespace + "_" + filename + "_define_h__\n")
 	fileWrite.write("#define __" + g_xlsNamespace + "_" + filename +  "_define_h__\n") 
-	fileWrite.write("#include \"" + loadConfig + ".h\"\n\n") 
+	fileWrite.write("#include \"" + loadConfig + ".h\"\n") 
+	fileWrite.write("#include \"../Condition.h\"\n\n") 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n\n") 
 
@@ -962,8 +1051,9 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + "typedef std_unordered_map<" + GetType(types[0]) + " , " + dataConfig + "> MapConfigsT;\n\n")
 	fileWrite.write(oneTab + "public:\n")
-	fileWrite.write(twoTab + "bool LoadFrom(const std::string& filepath);\n")
-	fileWrite.write(twoTab + dataConfig + " * Get" + filename + "(INT32 nIndex);\n\n")
+	fileWrite.write(twoTab + "bool" + fourTab + "LoadFrom(const std::string& filepath);\n")
+	fileWrite.write(twoTab + dataConfig + " *" + oneTab + "Get" + filename + "(INT32 nIndex);\n\n")
+	GenerateConditionFunc(fileWrite , bServer , filename , types , datas , comments , css)
 	fileWrite.write(oneTab + "private:\n")
 	fileWrite.write(twoTab + "MapConfigsT m_mapConfigs;\n\n")
 	
@@ -975,6 +1065,21 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	
 	fileWrite.close()	 	
 
+def GenerateConditionFunc(fileWrite , bServer , filename , types , datas , comments , css):	
+	eachExpressions = None
+	if bServer and filename in g_serverExpression:
+		eachExpressions = g_serverExpression[filename]
+	elif not bServer and filename in g_clientExpression:
+		eachExpressions = g_clientExpression[filename]
+	if eachExpressions != None:			
+		fileWrite.write(oneTab + "public:\n")
+		for index , expression in eachExpressions.items():
+			if bServer:
+				fileWrite.write(twoTab + "bool" + fourTab + index + "(INT32 nIndex , CUtil::Player * pPlayer = NULL)" + ";\n")
+			else:
+				fileWrite.write(twoTab + "bool" + fourTab + index + "(INT32 nIndex , CUtil::Player * pPlayer = NULL)" + ";\n")
+		fileWrite.write("\n\n")
+
 def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
 	if CheckNeedDelete(outputPath , types , datas ):
@@ -985,7 +1090,7 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 
 	loadConfig = filename + g_loadConfigSuffix
 	dataConfig = g_configPrefix + filename
-	fileWrite = open(outputPath , "a")
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	
 	strTitle = MakeTitle(types , datas)
 	fileWrite.write(strTitle)	
@@ -1056,17 +1161,59 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	fileWrite.write(twoTab + "return &iter->second;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 
+	GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , comments , css)
+
 	fileWrite.write(oneTab + filename + " * g_p" + filename + " = NULL;\n") 
 	fileWrite.write("}\n\n") 
 	
 	fileWrite.close()
+
+def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , comments , css):	
+	eachExpressions = None
+	if bServer and filename in g_serverExpression:
+		eachExpressions = g_serverExpression[filename]
+	elif (not bServer) and filename in g_clientExpression:
+		eachExpressions = g_clientExpression[filename]
+	if eachExpressions != None and len(eachExpressions) > 0:			
+		for index , expressions in eachExpressions.items():
+			if bServer:
+				fileWrite.write(oneTab + "bool " + filename + "::" + index + "(INT32 nIndex , CUtil::Player * pPlayer/* = NULL*/)" + "\n")
+			else:
+				fileWrite.write(oneTab + "bool " + filename + "::" + index + "(INT32 nIndex , Player * pPlayer/* = NULL*/)" + "\n")
+
+			fileWrite.write(oneTab + "{\n")
+			fileWrite.write(twoTab + "if (Get" + filename +"(nIndex) == NULL)\n")
+			fileWrite.write(twoTab + "{\n")
+			fileWrite.write(threeTab + "gErrorStream(\"RunUse error. " + filename + "  no this id.id=\" << nIndex);\n")
+			fileWrite.write(threeTab + "return false;\n")
+			fileWrite.write(twoTab + "}\n\n")
+
+			fileWrite.write(twoTab + "if (pPlayer == NULL)\n")
+			fileWrite.write(twoTab + "{\n")
+			fileWrite.write(threeTab + "gErrorStream(\"RunUse error. " + filename + "  pPlayer = NULL.id=\" << nIndex);\n")
+			fileWrite.write(threeTab + "return false;\n")
+			fileWrite.write(twoTab + "}\n\n")
+
+			for indexExpression , expression in enumerate(expressions):
+				fileWrite.write(twoTab + "if (" + expression.condition + ")\n")
+				fileWrite.write(twoTab + "{\n")
+				for actionIndex , action in enumerate(expression.actions):
+					fileWrite.write(threeTab + action.name + "(" )
+					for argIndex , arg in enumerate(action.args):
+						fileWrite.write(arg)
+						if len(action.args) - 1 != argIndex:
+							fileWrite.write(" , ")
+					fileWrite.write(");\n")
+				fileWrite.write(twoTab + "}\n\n")
+			fileWrite.write(twoTab + "return true;\n")
+		fileWrite.write(oneTab + "}\n\n") 
 
 def GenerateConfigManagerHeader(bServer):
 	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigManager.h"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath) 
 
-	fileWrite = open(outputPath , "a") 
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig') 
 
 	WriteFileDescription(fileWrite , "ConfigManager.h" , "ConfigManager文件声明")
 	fileWrite.write("#ifndef __" + g_xlsNamespace + "_ConfigManager" + "_define_h__\n")
@@ -1101,7 +1248,7 @@ def GenerateConfigManagerCPP(bServer):
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
 
-	fileWrite = open(outputPath , "a")
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	
 	WriteFileDescription(fileWrite , "ConfigManager.cpp" , "ConfigManager数据管理文件实现")
 	fileWrite.write("#include \"" + "ConfigManager.h\"\n") 
@@ -1306,7 +1453,7 @@ def GetMapType(item):
 	if item.lower().find('map') >= 0 and \
 		item.lower().find("<") and\
 		item.lower()[len(item.lower()) - 1] == ">":
-		RemoveSpecialWord(item)
+		item = RemoveSpecialWord(item)
 		childItems = item.split('<')[1].rstrip('>').split(',')
 		keyType = GetType(RemoveSpecialWord(childItems[0]))
 		valueType = GetType(RemoveSpecialWord(childItems[1]))
@@ -1464,14 +1611,14 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 		return colItem
 	elif item_type == g_conditionType:
 		item = RemoveSpecialWord(colItem)
-		if row != g_cellName and row != g_cellCS:
+		if row >= g_conditionDataStart:
 			tagitem = item.lower()[0:item.lower().find(':')]
 			itemContent = item.lower()[item.lower().find(':') + 1:]
 			#LogOutDebug("condition item:" , item , " tagitem=" , tagitem , " itemContent " , itemContent)
 			if tagitem.lower() == g_conditionTag.lower() or tagitem.lower() == g_actionTag.lower():	
 				pass
 			else:
-				LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item , " condition tag error.")							
+				LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item , " condition tag error.")						
 
 			if row != -1:
 				g_xlsConditionRecords[sheet][col][row] = item
@@ -1610,7 +1757,7 @@ def CheckNeedDelete(outputFile , types , datas):
 	if os.path.exists(outputFile): 
 		strNew = MakeTitle(types , datas)
 		
-		fileRead = open(outputFile , "r")
+		fileRead = open(outputFile , "r" , encoding = "utf-8")
 		for line in fileRead: 
 			strOld = line
 			break
@@ -1631,16 +1778,28 @@ def GetCPPFilePath(bServer):
 	else:
 		return g_xlsExportClientCPPPath
 	
-def CheckCSType(data , bServer = True): 
+def IsServerCSType(data): 
+	if data.lower().find(g_serverType) < 0 and data.lower().find(g_clientType) < 0:
+		LogOutError("CheckCSType error." , data)
+		
+	if data.lower().find(g_serverType) >= 0:
+		return True
+	else:
+		return False
+		
+def CheckCSType(data , bServer = True , bStrict = False): 
 	if data.lower().find(g_serverType) < 0 and data.lower().find(g_clientType) < 0:
 		LogOutError("CheckCSType error." , data)
 
 	if bServer:
-		return True # 服务器都需要
-		#if data.lower().find(g_serverType) >= 0:
-		#	return True
-		#else:
-		#	return False
+		if bStrict or g_bCheckCSTypeStrict:
+			if data.lower().find(g_serverType) >= 0:
+				return True
+			else:
+				return False
+		else:
+			return True # 服务器都需要
+	
 	else:
 		if data.lower().find(g_clientType) >= 0:
 			return True

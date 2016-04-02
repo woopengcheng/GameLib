@@ -1,46 +1,47 @@
-// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
+ï»¿// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
 /************************************
 FileName	:	ActivityConfig.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-02 12:00:19
-Description	:	csv¶ÁÈ¡ÎÄ¼ş
+Date		:	2016-04-03 01:24:06
+Description	:	csvè¯»å–æ–‡ä»¶
 ************************************/
 #ifndef __Config_ActivityConfig_define_h__
 #define __Config_ActivityConfig_define_h__
 #include "ActivityConfigLoad.h"
+#include "../Condition.h"
 
 namespace Config
 {
 
 	struct SActivityConfig
 	{
-		INT32							ActivityId;	//»î¶¯id
-		std::string						ActivityName;	//»î¶¯Ãû³Æ
-		INT32							ActivityLevelHigh;	//ÏÔÊ¾µÈ¼¶ÉÏÏŞ£¬³¬¹ıµÈ¼¶£¨²»°üÀ¨×ÔÉí£©²»ÏÔÊ¾
-		bool							IsShowEntrance;	//ÊÇ·ñÏÔÊ¾Èë¿ÚÍ¼±ê£¬Èë¿ÚÍ¼±êºÍ½çÃæÍ¼±êÊÇ»¥³âµÄ£»Èë¿ÚÍ¼±êµÄĞÎÊ½ÊÊºÏµ¥¶À·ÅÔÚÍâÃæµÄ»î¶¯£¬½çÃæÍ¼±ê¾ÍÊÇÍ¨ÓÃ»î¶¯ÖĞµÄÍ¼±ê
-		std::vector<std::string>		EntranceIcon;	//Èë¿ÚÍ¼±ê
-		bool							IsShowInterface;	//ÊÇ·ñ½çÃæÖĞÏÔÊ¾£¬ÔÚÕâÀïÏÔÊ¾£¬¾ÍÊÇÍ¨ÓÃ»î¶¯µÄĞÎÊ½£»·ñÔò¾ÍÊÇÔÚÈë¿ÚÍ¼±êÖĞÏÔÊ¾£¬ÏÔÊ¾Îªµ¥¶À»î¶¯µÄĞÎÊ½
-		std::vector<std::string>		InterfaceIcon;	//½çÃæÖĞÍ¼±ê
-		INT32							StartTimeWeek;	//»î¶¯¿ªÊ¼Ê±¼äÖÜ£¬¼´Ã¿ÖÜµÄÄÄÒ»Ìì£»ÕâÀïÌîĞ´µÄÖµÓÅÏÈ¼¶×î´ó£¬Óë¾ßÌå¿ªÊ¼Ê±¼äÌì£¬½áÊøÊ±¼äÌìÎŞ¹Ø
-		INT32							EndTimeWeek;	//»î¶¯½áÊøÊ±¼äÖÜ
-		INT32							StartTimeDate;	//»î¶¯¿ªÊ¼Ê±¼äÌì£¬²»ÔÚ´ËÊ±¼äÄÚ£¬Ôò»î¶¯²»»áÏÔÊ¾
-		INT32							EndTimeDate;	//»î¶¯½áÊøÊ±¼äÌì
-		std::string						StartTime;	//»î¶¯¿ªÊ¼Ê±¼äµã£¬²»ÔÚ´ËÊ±¼äÄÚÔò»î¶¯²»ÏÔÊ¾
-		std::string						EndTime;	//»î¶¯½áÊøÊ±¼äµã
-		INT32							Description;	//»î¶¯ËµÃ÷£¬Í¨ÓÃ»î¶¯½çÃæÖĞµÄ»î¶¯ÃèÊö
-		std::string						RewardIcon;	//½±ÀøÍ¼±ê£¬Áì½±½çÃæÖĞ¸Ã»î¶¯µÄÁì½±Í¼±ê
-		Timer::Date						testdate;	//¸ù¾İÄ³Ğ©conditionÖ´ĞĞÄ³Ğ©action;Ä¿Ç°²»Ö§³ÖÀ¨ºÅºÍ»ò.È«²¿ÓÃ&&(Óë)ºÍ!(·Ç)±íÊ¾Âú×ãÒ»¸öÌõ¼ş¿ÉÒÔÖ´ĞĞ¶à¸öaction.¿ÉÒÔĞ´ÔÚÒ»ĞĞ(Ö§³Ö¶à¸ö),»òÕß¶àĞĞ.ĞèÒª±£Ö¤Ò»¸öconditionºÍÖÁÉÙÒ»¸öaction.Èç¹ûÃ»ÓĞÒ²Ã»É¶.Action:µ÷ÓÃÍæ¼ÒµÄ»òÕß°ï»áµÈµÄº¯Êı½Ó¿Ú.
+		INT32							ActivityId;	//æ´»åŠ¨id
+		std::string						ActivityName;	//æ´»åŠ¨åç§°
+		INT32							ActivityLevelHigh;	//æ˜¾ç¤ºç­‰çº§ä¸Šé™ï¼Œè¶…è¿‡ç­‰çº§ï¼ˆä¸åŒ…æ‹¬è‡ªèº«ï¼‰ä¸æ˜¾ç¤º
+		bool							IsShowEntrance;	//æ˜¯å¦æ˜¾ç¤ºå…¥å£å›¾æ ‡ï¼Œå…¥å£å›¾æ ‡å’Œç•Œé¢å›¾æ ‡æ˜¯äº’æ–¥çš„ï¼›å…¥å£å›¾æ ‡çš„å½¢å¼é€‚åˆå•ç‹¬æ”¾åœ¨å¤–é¢çš„æ´»åŠ¨ï¼Œç•Œé¢å›¾æ ‡å°±æ˜¯é€šç”¨æ´»åŠ¨ä¸­çš„å›¾æ ‡
+		std::vector<std::string>		EntranceIcon;	//å…¥å£å›¾æ ‡
+		bool							IsShowInterface;	//æ˜¯å¦ç•Œé¢ä¸­æ˜¾ç¤ºï¼Œåœ¨è¿™é‡Œæ˜¾ç¤ºï¼Œå°±æ˜¯é€šç”¨æ´»åŠ¨çš„å½¢å¼ï¼›å¦åˆ™å°±æ˜¯åœ¨å…¥å£å›¾æ ‡ä¸­æ˜¾ç¤ºï¼Œæ˜¾ç¤ºä¸ºå•ç‹¬æ´»åŠ¨çš„å½¢å¼
+		std::vector<std::string>		InterfaceIcon;	//ç•Œé¢ä¸­å›¾æ ‡
+		INT32							StartTimeWeek;	//æ´»åŠ¨å¼€å§‹æ—¶é—´å‘¨ï¼Œå³æ¯å‘¨çš„å“ªä¸€å¤©ï¼›è¿™é‡Œå¡«å†™çš„å€¼ä¼˜å…ˆçº§æœ€å¤§ï¼Œä¸å…·ä½“å¼€å§‹æ—¶é—´å¤©ï¼Œç»“æŸæ—¶é—´å¤©æ— å…³
+		INT32							EndTimeWeek;	//æ´»åŠ¨ç»“æŸæ—¶é—´å‘¨
+		INT32							StartTimeDate;	//æ´»åŠ¨å¼€å§‹æ—¶é—´å¤©ï¼Œä¸åœ¨æ­¤æ—¶é—´å†…ï¼Œåˆ™æ´»åŠ¨ä¸ä¼šæ˜¾ç¤º
+		INT32							EndTimeDate;	//æ´»åŠ¨ç»“æŸæ—¶é—´å¤©
+		std::string						StartTime;	//æ´»åŠ¨å¼€å§‹æ—¶é—´ç‚¹ï¼Œä¸åœ¨æ­¤æ—¶é—´å†…åˆ™æ´»åŠ¨ä¸æ˜¾ç¤º
+		std::string						EndTime;	//æ´»åŠ¨ç»“æŸæ—¶é—´ç‚¹
+		INT32							Description;	//æ´»åŠ¨è¯´æ˜ï¼Œé€šç”¨æ´»åŠ¨ç•Œé¢ä¸­çš„æ´»åŠ¨æè¿°
+		std::string						RewardIcon;	//å¥–åŠ±å›¾æ ‡ï¼Œé¢†å¥–ç•Œé¢ä¸­è¯¥æ´»åŠ¨çš„é¢†å¥–å›¾æ ‡
+		Timer::Date						testdate;	//æ ¹æ®æŸäº›conditionæ‰§è¡ŒæŸäº›action;ç›®å‰ä¸æ”¯æŒæ‹¬å·å’Œæˆ–.å…¨éƒ¨ç”¨&&(ä¸)å’Œ!(é)è¡¨ç¤ºæ»¡è¶³ä¸€ä¸ªæ¡ä»¶å¯ä»¥æ‰§è¡Œå¤šä¸ªaction.å¯ä»¥å†™åœ¨ä¸€è¡Œ(æ”¯æŒå¤šä¸ª),æˆ–è€…å¤šè¡Œ.éœ€è¦ä¿è¯ä¸€ä¸ªconditionå’Œè‡³å°‘ä¸€ä¸ªaction.å¦‚æœæ²¡æœ‰ä¹Ÿæ²¡å•¥.Action:è°ƒç”¨ç©å®¶çš„æˆ–è€…å¸®ä¼šç­‰çš„å‡½æ•°æ¥å£.
 
-		//²âÊÔÊ±¼ä
+		//æµ‹è¯•æ—¶é—´
 		struct StestDateStruct
 		{
 			Timer::Date					begin;
 			Timer::Date					end;
 		}testDateStruct;
-		std::vector<Timer::Date>			dateArray;	//²âÊÔÊ±¼ä½á¹¹Ìå.±ÈÈçËµ»î¶¯¿ªÆô½áÊøÊ±¼ä
+		std::vector<Timer::Date>			dateArray;	//æµ‹è¯•æ—¶é—´ç»“æ„ä½“.æ¯”å¦‚è¯´æ´»åŠ¨å¼€å¯ç»“æŸæ—¶é—´
 	};
 
 
@@ -50,8 +51,12 @@ namespace Config
 		typedef std_unordered_map<INT32 , SActivityConfig> MapConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filepath);
-		SActivityConfig * GetActivityConfig(INT32 nIndex);
+		bool				LoadFrom(const std::string& filepath);
+		SActivityConfig *	GetActivityConfig(INT32 nIndex);
+
+	public:
+		bool				RunUse(INT32 nIndex , CUtil::Player * pPlayer = NULL);
+
 
 	private:
 		MapConfigsT m_mapConfigs;

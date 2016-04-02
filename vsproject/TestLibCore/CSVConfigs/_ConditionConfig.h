@@ -1,27 +1,28 @@
-// attention dont't change this line:INT32 nConditionID;std::string strServerCondition;std::string strServerAction;std::string strClientCondition;std::string strClientAction;
+ï»¿// attention dont't change this line:INT32 nConditionID;std::string strServerCondition;std::string strServerAction;std::string strClientCondition;std::string strClientAction;
 /************************************
 FileName	:	_ConditionConfig.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-02 12:00:19
-Description	:	csv¶ÁÈ¡ÎÄ¼ş
+Date		:	2016-04-03 01:24:06
+Description	:	csvè¯»å–æ–‡ä»¶
 ************************************/
 #ifndef __Config__ConditionConfig_define_h__
 #define __Config__ConditionConfig_define_h__
 #include "_ConditionConfigLoad.h"
+#include "../Condition.h"
 
 namespace Config
 {
 
 	struct S_ConditionConfig
 	{
-		INT32							nConditionID;	//Ìõ¼şID·şÎñÆ÷ºÍ¿Í»§¶ËÓĞÒ»¸öÃ¶¾ÙÓëÖ®Ò»Ò»¶ÔÓ¦(Õâ¸öÎÄ¼şÓÉ³ÌĞò¸Ä¶¯.)
-		std::string						strServerCondition;	//·şÎñÆ÷Ìõ¼şÓë·şÎñÆ÷µÄÃ¶¾ÙÖµÏàÍ¬.
-		std::string						strServerAction;	//·şÎñÆ÷Ö´ĞĞ¶¯×÷
-		std::string						strClientCondition;	//¿Í»§¶ËÌõ¼şÓë¿Í»§¶ËµÄÃ¶¾ÙÖµÏàÍ¬.
-		std::string						strClientAction;	//¿Í»§¶ËÖ´ĞĞ¶¯×÷
+		INT32							nConditionID;	//æ¡ä»¶IDæœåŠ¡å™¨å’Œå®¢æˆ·ç«¯æœ‰ä¸€ä¸ªæšä¸¾ä¸ä¹‹ä¸€ä¸€å¯¹åº”(è¿™ä¸ªæ–‡ä»¶ç”±ç¨‹åºæ”¹åŠ¨.)
+		std::string						strServerCondition;	//æœåŠ¡å™¨æ¡ä»¶ä¸æœåŠ¡å™¨çš„æšä¸¾å€¼ç›¸åŒ.
+		std::string						strServerAction;	//æœåŠ¡å™¨æ‰§è¡ŒåŠ¨ä½œ
+		std::string						strClientCondition;	//å®¢æˆ·ç«¯æ¡ä»¶ä¸å®¢æˆ·ç«¯çš„æšä¸¾å€¼ç›¸åŒ.
+		std::string						strClientAction;	//å®¢æˆ·ç«¯æ‰§è¡ŒåŠ¨ä½œ
 	};
 
 
@@ -31,8 +32,11 @@ namespace Config
 		typedef std_unordered_map<INT32 , S_ConditionConfig> MapConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filepath);
-		S_ConditionConfig * Get_ConditionConfig(INT32 nIndex);
+		bool				LoadFrom(const std::string& filepath);
+		S_ConditionConfig *	Get_ConditionConfig(INT32 nIndex);
+
+	public:
+
 
 	private:
 		MapConfigsT m_mapConfigs;

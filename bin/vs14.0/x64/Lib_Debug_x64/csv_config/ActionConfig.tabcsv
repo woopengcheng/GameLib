@@ -1,4 +1,4 @@
-"¹ì¼£ID"	"ÉúĞ§³¡¾°--²»Åä±íÊ¾ËùÓĞ³¡¾°ÖĞÉúĞ§--·ñÔò½öÔÚÅäÖÃ³¡¾°ÖĞÉúĞ§"	"Ñ­»··½Ê½"	"½çÃæÖĞÍ¼±ê"	"ÊôĞÔĞŞ¸ÄÖµ"	"ÆğÊ¼µã"	"±¸×¢1"	"×ø±êÏµ"	"½á¹¹Ìå"	"½á¹¹ÌåÊı×é"
+ï»¿"è½¨è¿¹ID"	"ç”Ÿæ•ˆåœºæ™¯--ä¸é…è¡¨ç¤ºæ‰€æœ‰åœºæ™¯ä¸­ç”Ÿæ•ˆ--å¦åˆ™ä»…åœ¨é…ç½®åœºæ™¯ä¸­ç”Ÿæ•ˆ"	"å¾ªç¯æ–¹å¼"	"ç•Œé¢ä¸­å›¾æ ‡"	"å±æ€§ä¿®æ”¹å€¼"	"èµ·å§‹ç‚¹"	"å¤‡æ³¨1"	"åæ ‡ç³»"	"ç»“æ„ä½“"	"ç»“æ„ä½“æ•°ç»„"
 "int"	"int[]"	"string"	"string[]"	"float"	"float[]"	"long"	"bool"	"bool,long,float,int,string"	"[bool,long,float,int,string]"
 "curve_id"	"validStages"	"wrapMode"	"InterfaceIcon"	"attr_mod_val"	"start_x"	"col_1"	"isLocal"	"TestStruct[test1,test2,test3,test4,test6]"	"TestStructArray[test1,test2,test3,test4,test5]"
 "sc"	"s"	"s"	"cs"	"cs"	"cs"	"cs"	"s"	"cs"	"cs"

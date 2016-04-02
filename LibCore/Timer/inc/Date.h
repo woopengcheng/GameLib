@@ -31,11 +31,22 @@ namespace Timer
 		void				SetDate(std::string val) { m_strDate = val; }
 		Timer::EDateType	GetDateType() const { return m_eDateType; }
 		void				SetDateType(Timer::EDateType val) { m_eDateType = val; }
+
+	public:
+		bool				operator == (const Date & date)
+		{
+			if (date.GetDateType() == m_eDateType && date.GetDateStr() == m_strDate)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
 	private:
 		EDateType			m_eDateType;
 		std::string			m_strDate;
 	};
-
 
 }
 #endif
