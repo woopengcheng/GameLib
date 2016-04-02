@@ -1,7 +1,7 @@
 "条件ID服务器和客户端有一个枚举与之一一对应(这个文件由程序改动.)"	"服务器条件与服务器的枚举值相同."	"服务器执行动作"	"客户端条件与客户端的枚举值相同."	"客户端执行动作"
 "int"	"string"	"string"	"string"	"string"
 "nConditionID"	"strServerCondition"	"strServerAction"	"strClientCondition"	"strClientAction"
-"c"	"s"	""	"s"	""
+"sc"	"s"	"s"	"c"	"c"
 "1"	"Player.PLAYER_LEVEL"	"Player.TrigerTask"	"Player.PLAYER_LEVEL"	"Global.Say"
 "2"	"Player.VIP_LEVEL"	"Player.Mail"	"Player.VIP_LEVEL"	""
 "3"	"Player.LEAGUE_LEVEL"	"Player.Say"	"Player.LEAGUE_LEVEL"	""

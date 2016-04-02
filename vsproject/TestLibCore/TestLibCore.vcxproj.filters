@@ -30,34 +30,34 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CSVConfigs\ActionConfig.h">
-      <Filter>CSVConfigs</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVConfigs\ActionConfigLoad.h">
-      <Filter>CSVConfigs</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVConfigs\ActivityConfig.h">
-      <Filter>CSVConfigs</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVConfigs\ActivityConfigLoad.h">
-      <Filter>CSVConfigs</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVConfigs\ConfigManager.h">
-      <Filter>CSVConfigs</Filter>
-    </ClInclude>
     <ClInclude Include="Condition.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="CSVConfigs\_CommonData.h">
+    <ClInclude Include="CSVClientConfigs\_CommonData.h">
       <Filter>CSVConfigs</Filter>
     </ClInclude>
-    <ClInclude Include="CSVConfigs\_CommonDataLoad.h">
+    <ClInclude Include="CSVClientConfigs\_CommonDataLoad.h">
       <Filter>CSVConfigs</Filter>
     </ClInclude>
-    <ClInclude Include="CSVConfigs\_ConditionConfig.h">
+    <ClInclude Include="CSVClientConfigs\_ConditionConfig.h">
       <Filter>CSVConfigs</Filter>
     </ClInclude>
-    <ClInclude Include="CSVConfigs\_ConditionConfigLoad.h">
+    <ClInclude Include="CSVClientConfigs\_ConditionConfigLoad.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVClientConfigs\ActionConfig.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVClientConfigs\ActionConfigLoad.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVClientConfigs\ActivityConfig.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVClientConfigs\ActivityConfigLoad.h">
+      <Filter>CSVConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVClientConfigs\ConfigManager.h">
       <Filter>CSVConfigs</Filter>
     </ClInclude>
   </ItemGroup>
@@ -67,21 +67,6 @@
     </ClCompile>
     <ClCompile Include="TestLibCore.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVConfigs\ActionConfig.cpp">
-      <Filter>CSVConfigs</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVConfigs\ActionConfigLoad.cpp">
-      <Filter>CSVConfigs</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVConfigs\ActivityConfig.cpp">
-      <Filter>CSVConfigs</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVConfigs\ActivityConfigLoad.cpp">
-      <Filter>CSVConfigs</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVConfigs\ConfigManager.cpp">
-      <Filter>CSVConfigs</Filter>
     </ClCompile>
     <ClCompile Include="..\..\LibCore\Test\Chunk_Test.cpp">
       <Filter>Test</Filter>
@@ -116,16 +101,31 @@
     <ClCompile Include="..\..\LibCore\Test\RTTI_Test.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="CSVConfigs\_CommonData.cpp">
+    <ClCompile Include="CSVClientConfigs\_CommonData.cpp">
       <Filter>CSVConfigs</Filter>
     </ClCompile>
-    <ClCompile Include="CSVConfigs\_CommonDataLoad.cpp">
+    <ClCompile Include="CSVClientConfigs\_CommonDataLoad.cpp">
       <Filter>CSVConfigs</Filter>
     </ClCompile>
-    <ClCompile Include="CSVConfigs\_ConditionConfig.cpp">
+    <ClCompile Include="CSVClientConfigs\_ConditionConfig.cpp">
       <Filter>CSVConfigs</Filter>
     </ClCompile>
-    <ClCompile Include="CSVConfigs\_ConditionConfigLoad.cpp">
+    <ClCompile Include="CSVClientConfigs\_ConditionConfigLoad.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVClientConfigs\ActionConfig.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVClientConfigs\ActionConfigLoad.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVClientConfigs\ActivityConfig.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVClientConfigs\ActivityConfigLoad.cpp">
+      <Filter>CSVConfigs</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVClientConfigs\ConfigManager.cpp">
       <Filter>CSVConfigs</Filter>
     </ClCompile>
   </ItemGroup>

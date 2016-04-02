@@ -55,9 +55,11 @@ BACKGROUND_INTENSTITY = 0x80
 			
 g_xlsImportPath = ""
 g_xlsExportCSVPath = ""
-g_xlsExportCPPPath = ""
+g_xlsExportServerCPPPath = ""
+g_xlsExportClientCPPPath = ""
 
 g_conditionConfigName = "_ConditionConfig"
+g_commonDataObject = "Common"
 g_commonDataName = "_CommonData"
 g_globalFuncName = "Global"
 g_xlsDeleteRecord = []
@@ -93,6 +95,9 @@ g_loadConfigSuffix = "Load"
 g_xlsNamespace = "Config"
 g_conditionTag = "condition"
 g_actionTag = "action"
+
+g_serverType = "s".lower()
+g_clientType = "c".lower()
 
 g_int32Type = "INT32"
 g_int64Type = "INT64"
@@ -167,6 +172,12 @@ class Action(object):
 		self.name = ""
 		self.args = []
 		
+class CommonData(object):
+	"""docstring for CommonData"""
+	def __init__(self, arg):
+		super(CommonData, self).__init__()
+		self.value = ""
+		self.objects = []
 
 def start(): 
 	LogOutInfo("start generate csv.\n")   
@@ -191,6 +202,8 @@ def GenerateCSVFromXLS():
 	GenerateCSV()		
 	HandleConditionConfig()
 	HandleSheetCondition()
+	HandleCommondataConfig()
+	CheckRepeatCommonData()
 
 def Xlsx2CSV(filepath):
 	dirout = g_xlsExportCSVPath
@@ -318,7 +331,11 @@ def CheckRecords():
 					item_type = GetType(colItem)					
 				
 			elif row == g_rowCS:	
-				pass
+				for col , colItem in enumerate(rowItem):	#读取每一列
+					if col == g_cellID:
+						g_xlsRecords[sheet][row][col] = g_serverType + g_clientType
+					CheckCSType(colItem)	
+
 			elif row == g_rowComent:	
 				pass	
 			else:
@@ -389,6 +406,43 @@ def HandleConditionConfig():
 		#LogOutDebug("g_clientActions:" , g_clientActions)
 	else:
 		LogOutError("HandleConditionConfig error." , g_conditionConfigName , " no data")
+
+def HandleCommondataConfig():
+	rowItems = g_xlsRecords[g_commonDataName]
+	if len(rowItems) != 0:
+		for row , rowItem in rowItems.items():				# 读取每一行
+			for col , colItem in enumerate(rowItem):		# 读取每一列
+				if row >= g_rowDataStart: 					# 从这行开始是数据	
+					if len(colItem) == 0:
+						continue
+					if col <= g_cellID:
+						continue
+					mapType , keyType , valueType = GetMapType(g_xlsRecords[g_commonDataName][g_rowType][col])
+					#LogOutDebug("row:" , row , " col:" , col , " colItem:" , colItem , " mapType:" , mapType , " keyType:", keyType ," valueType:" , valueType)	
+
+					datas = colItem.split('=')
+					if datas[0] not in g_commonDatas:
+						g_commonDatas[datas[0]] = CommonData
+						g_commonDatas[datas[0]].value = datas[1]
+						g_commonDatas[datas[0]].objects = []
+						g_commonDatas[datas[0]].objects.append(g_commonDataObject)
+						g_commonDatas[datas[0]].objects.append(g_xlsRecords[g_commonDataName][g_rowName][col])
+					else:
+						LogOutError("row:" , row , " col:" , col , " colItem:" , colItem , " mapType:" , mapType , " keyType:", keyType ," valueType:" , valueType , " error. the sameName" , datas[0])
+					
+	else:
+		LogOutError("HandleConditionConfig error." , g_conditionConfigName , " no data")
+
+def CheckRepeatCommonData():
+	for conmonIndex , commondata in g_commonDatas.items():
+		for serverIndex , serverCondition in g_serverConditions.items():
+			#LogOutDebug(conmonIndex , " commondata=" , commondata , " serverCondition=" , serverCondition)
+			if conmonIndex == serverIndex:
+				LogOutError("the same commondata warning." , conmonIndex , " commondata=" , commondata , " serverCondition=" , serverCondition)
+		for clientIndex , clientCondition in g_clientConditions.items():
+			#LogOutDebug(conmonIndex , " commondata=" , commondata , " clientCondition=" , clientCondition)
+			if conmonIndex == clientIndex:
+				LogOutError("the same commondata warning." , conmonIndex , " commondata=" , commondata , " clientCondition=" , clientCondition)
 
 def HandleSheetCondition():	
 	for sheet , item in g_xlsConditionRecords.items():
@@ -541,16 +595,23 @@ def GenerateCSV():
 		LogOutError(e)
 
 def GenerateCPP(): 
-	GenerateConfigManagerHeader()
+	GenerateCPPFiles(True)
+	GenerateCPPFiles(False)
+	
+def GenerateCPPFiles(bServer): 
+	GenerateConfigManagerHeader(bServer)
 	for sheet , item in g_xlsRecords.items():
-		GenerateConfigLoadHeader(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
-		GenerateConfigLoadCpp(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
-		GenerateConfigHeader(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
-		GenerateConfigCpp(sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent])
-	GenerateConfigManagerCPP()
-
-def GenerateStructData(fileWrite , types , datas , comments):	
+		GenerateConfigLoadHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+		GenerateConfigLoadCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+		GenerateConfigHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+		GenerateConfigCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+	GenerateConfigManagerCPP(bServer)
+	
+def GenerateStructData(bServer , fileWrite , types , datas , comments , css):	
 	for index , item in enumerate(types):
+		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
+		if not CheckCSType(css[index] , bServer):
+			continue
 		item_type = GetType(item)
 		if item_type == g_structType:
 			npos = datas[index].find('[')
@@ -586,9 +647,9 @@ def GenerateStructData(fileWrite , types , datas , comments):
 			fileWrite.write(twoTab + item_type + GetTypeTab(item) + oneTab + datas[index] + ";"  + oneTab)
 			fileWrite.write("//" + comments[index] + "\n") 
 
-def GenerateConfigLoadHeader(filename , types , datas , comments):
+def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css):
 	filename = filename + g_loadConfigSuffix
-	outputPath = g_xlsExportCPPPath  + os.sep + filename + ".h"
+	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".h"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
 
@@ -604,7 +665,7 @@ def GenerateConfigLoadHeader(filename , types , datas , comments):
 	fileWrite.write("{\n") 
 	fileWrite.write(oneTab + "struct " + g_configPrefix + filename + "\n") 
 	fileWrite.write(oneTab + "{\n") 
-	GenerateStructData(fileWrite , types , datas , comments)
+	GenerateStructData(bServer , fileWrite , types , datas , comments , css)
 	fileWrite.write(oneTab + "};\n\n\n") 
 			
 	#以下是生成导入数据接口
@@ -630,9 +691,9 @@ def GenerateConfigLoadHeader(filename , types , datas , comments):
 
 	fileWrite.close()	  
 	
-def GenerateConfigLoadCpp(filename , types , datas , comments):
+def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
 	filename = filename + g_loadConfigSuffix
-	outputPath = g_xlsExportCPPPath  + os.sep + filename + ".cpp"
+	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
 
@@ -652,6 +713,8 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 	fileWrite.write(threeTab + "return false;\n\n") 
 
 	for index , item in enumerate(types):
+		if not CheckCSType(css[index] , bServer):
+			continue
 		item_type = GetType(item)
 		if item_type == g_structType:
 			npos = datas[index].find('[')
@@ -671,6 +734,8 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 	fileWrite.write(twoTab + "{\n") 
 	fileWrite.write(threeTab + g_configPrefix + filename + " conf;\n\n") 
 	for index , item in enumerate(types):
+		if not CheckCSType(css[index] , bServer):
+			continue
 		Str = GetTypeFunc(item)
 		if type(Str) != str :
 			if Str == g_int32ArrayFunc:
@@ -864,10 +929,11 @@ def GenerateConfigLoadCpp(filename , types , datas , comments):
 	
 	fileWrite.close()	
 
-def GenerateConfigHeader(filename , types , datas , comments):
-	outputPath = g_xlsExportCPPPath  + os.sep + filename + ".h"
+def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
+	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".h"
 	if CheckNeedDelete(outputPath , types , datas ):
-		return
+		os.remove(outputPath)
+		#return
 	#if os.path.exists(outputPath): 
 	#	os.remove(outputPath)
 
@@ -887,7 +953,7 @@ def GenerateConfigHeader(filename , types , datas , comments):
 
 	fileWrite.write(oneTab + "struct " + dataConfig + "\n") 
 	fileWrite.write(oneTab + "{\n") 	 
-	GenerateStructData(fileWrite , types , datas , comments)
+	GenerateStructData(bServer , fileWrite , types , datas , comments , css)
 	fileWrite.write(oneTab + "};\n\n\n") 
 			
 	fileWrite.write(oneTab + "class " + filename + "\n") 
@@ -909,10 +975,11 @@ def GenerateConfigHeader(filename , types , datas , comments):
 	
 	fileWrite.close()	 	
 
-def GenerateConfigCpp(filename , types , datas , comments):
-	outputPath = g_xlsExportCPPPath  + os.sep + filename + ".cpp"
+def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
+	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
 	if CheckNeedDelete(outputPath , types , datas ):
-		return
+		os.remove(outputPath)
+		#return
 	#if os.path.exists(outputPath): 
 	#	os.remove(outputPath)
 
@@ -939,6 +1006,8 @@ def GenerateConfigCpp(filename , types , datas , comments):
 	fileWrite.write(threeTab + g_xlsNamespace + "::" + dataConfig + " data = {0};\n") 
 	
 	for index , item in enumerate(types):
+		if not CheckCSType(css[index] , bServer):
+			continue
 		itemType = GetType(item)
 		if itemType == g_structType:
 			npos = datas[index].find('[')
@@ -992,8 +1061,8 @@ def GenerateConfigCpp(filename , types , datas , comments):
 	
 	fileWrite.close()
 
-def GenerateConfigManagerHeader():
-	outputPath = g_xlsExportCPPPath  + os.sep + "ConfigManager.h"
+def GenerateConfigManagerHeader(bServer):
+	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigManager.h"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath) 
 
@@ -1027,8 +1096,8 @@ def GenerateConfigManagerHeader():
 	fileWrite.close()	 	
 
 
-def GenerateConfigManagerCPP():
-	outputPath = g_xlsExportCPPPath  + os.sep + "ConfigManager.cpp"
+def GenerateConfigManagerCPP(bServer):
+	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigManager.cpp"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
 
@@ -1412,6 +1481,8 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 
 	elif item_type == g_dateType:
 		item = RemoveSpecialWord(colItem)
+		if row != -1:
+			g_xlsRecords[sheet][row][col] = item
 		return item
 	elif item_type == g_dateArrayType:
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
@@ -1428,7 +1499,7 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 	elif item_type == g_conditionType:
 		item = RemoveSpecialWord(colItem)
 		if item.index("(") >= 0 or item.index(")") >= 0 or item.index("|") >= 0:	
-			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item  , " Condition  type error.")							
+			LogOutError("sheet=" , sheet , " :row=" , row , " :col=" , col , " item=" , item  , " Condition  type error.")				
 
 		if row != -1:
 			g_xlsRecords[sheet][row][col] = item
@@ -1475,21 +1546,25 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 
 			g_xlsRecords[sheet][row][col] = itemContent
 		else:
-			if item_type.find(g_mapType) >= 0:  #Map类型
-				childItems = colItem.split('=')		
-				itemContent = ""
-				for childIndex , childItem in enumerate(childItems):
-					if childIndex == 0:
-						itemType = RemoveSpecialWord(childItem)
-						itemContent = itemContent + itemType				
-					else:
-						itemContent = itemContent + "="
-						itemContent = itemContent + childItem.strip()
-				return itemContent
-			else:
-				return colItem
+			return colItem
 	else:
-		return colItem
+		#LogOutDebug("item_type" , item_type)
+		if item_type.find(g_mapType) >= 0:  #Map类型
+			childItems = colItem.split('=')		
+			itemContent = ""
+			for childIndex , childItem in enumerate(childItems):
+				if childIndex == 0:
+					itemType = RemoveSpecialWord(childItem)
+					itemContent = itemContent + itemType				
+				else:
+					itemContent = itemContent + "="
+					itemContent = itemContent + childItem.strip()
+			#LogOutDebug("itemContent" , itemContent)
+			if row != -1:
+				g_xlsRecords[sheet][row][col] = itemContent
+			return itemContent
+		else:
+			return colItem
 
 def GetTypeByIndex(types , index):
 	typeItems = types.split(',')
@@ -1549,6 +1624,28 @@ def CheckNeedDelete(outputFile , types , datas):
 		return True
 	else:
 		return False
+
+def GetCPPFilePath(bServer): 
+	if bServer:
+		return g_xlsExportServerCPPPath
+	else:
+		return g_xlsExportClientCPPPath
+	
+def CheckCSType(data , bServer = True): 
+	if data.lower().find(g_serverType) < 0 and data.lower().find(g_clientType) < 0:
+		LogOutError("CheckCSType error." , data)
+
+	if bServer:
+		return True # 服务器都需要
+		#if data.lower().find(g_serverType) >= 0:
+		#	return True
+		#else:
+		#	return False
+	else:
+		if data.lower().find(g_clientType) >= 0:
+			return True
+		else:
+			return False
 
 ################################流程无关函数处理#####################################
 def Usage():
@@ -1673,19 +1770,23 @@ def CreateExportPathFiles():
 		os.makedirs(g_xlsExportCSVPath)
 		LogOutInfo("create dir: " , g_xlsExportCSVPath)
 		
-	if False == os.path.exists(g_xlsExportCPPPath):
-		os.makedirs(g_xlsExportCPPPath)
-		LogOutInfo("create dir: " , g_xlsExportCPPPath)
+	if False == os.path.exists(g_xlsExportServerCPPPath):
+		os.makedirs(g_xlsExportServerCPPPath)
+		LogOutInfo("create dir: " , g_xlsExportServerCPPPath)
 
+	if False == os.path.exists(g_xlsExportClientCPPPath):
+		os.makedirs(g_xlsExportClientCPPPath)
+		LogOutInfo("create dir: " , g_xlsExportClientCPPPath)
 
 ################################main函数处理#####################################
 def handleArgs(argv): 
 	global g_xlsImportPath 
 	global g_xlsExportCSVPath
-	global g_xlsExportCPPPath
+	global g_xlsExportServerCPPPath
+	global g_xlsExportClientCPPPath
 	
 	try:
-		opts, args = getopt.getopt(argv[1:], 'hvi:o:c:', ['import='])
+		opts, args = getopt.getopt(argv[1:], 'hvi:o:c:s:', ['import='])
 	except: 
 		Usage()
 		sys.exit(2) 
@@ -1703,8 +1804,10 @@ def handleArgs(argv):
 			g_xlsImportPath = a
 		elif o in ('-o','--export',):
 			g_xlsExportCSVPath = a
-		elif o in ('-c','--cppexport',):
-			g_xlsExportCPPPath = a
+		elif o in ('-s','--servercpp',):
+			g_xlsExportServerCPPPath = a
+		elif o in ('-c','--clientcpp',):
+			g_xlsExportClientCPPPath = a
 		elif o in ('--fre',):
 			Fre=a
 		else:
@@ -1714,13 +1817,16 @@ def handleArgs(argv):
 def main(argv):
 	global g_xlsImportPath 
 	global g_xlsExportCSVPath
-	global g_xlsExportCPPPath
+	global g_xlsExportServerCPPPath
+	global g_xlsExportClientCPPPath
+	
 	InitColor()
 	#handleArgs(argv)
 	g_xlsImportPath = "./xls_config"
 	g_xlsExportCSVPath = "../../../bin/vs14.0/x64/Lib_Debug_x64/csv_config"
-	g_xlsExportCPPPath = "../../../vsproject/TestLibCore/CSVConfigs"
-	LogOutInfo("generate csv from path:" + g_xlsImportPath + " csv will export to:" + g_xlsExportCSVPath + " cpp will export to:" + g_xlsExportCPPPath) 
+	g_xlsExportServerCPPPath = "../../../vsproject/TestLibCore/CSVConfigs"
+	g_xlsExportClientCPPPath = "../../../vsproject/TestLibCore/CSVClientConfigs"
+	LogOutInfo("generate csv.path:" + g_xlsImportPath + " csv:" + g_xlsExportCSVPath + " server_cpp:" + g_xlsExportServerCPPPath + " client_cpp:" + g_xlsExportClientCPPPath) 
 	start()
 	LogOutInfo("complete generate csv.") 
 	
