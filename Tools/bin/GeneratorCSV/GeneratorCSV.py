@@ -156,27 +156,49 @@ g_conditionCellCS = 1 	# 条件列的   服务器还是客户端代码.
 g_conditionDataStart = 2 	# 条件列的   数据开始行.
 g_rowDataStart=4# 从这行开始就是数据了.
 
-class Expression(object):
-	"""docstring for Expression"""
+class Object(object):
+	"""docstring for Object"""
 	def __init__(self, arg):
-		super(Expression, self).__init__()
-		self.condition = ""
-		self.actions = []
-		
+		super(Object, self).__init__()
+		self.name = ""
+		self.namespace = []
+
 class Action(object):
 	"""docstring for Action"""
 	def __init__(self, arg):
 		super(Action, self).__init__()
-		self.name = ""
+		self.actionName = Object(None)
 		self.args = []
 		
 class Condition(object):
 	"""docstring for Condition"""
 	def __init__(self, arg):
 		super(Condition, self).__init__()
-		self.objs = []
+		self.conditionName = Object(None)
 		self.args = []
 		
+class ExpressionCondition(object):
+	"""docstring for ExpressionCondition"""
+	def __init__(self, arg):
+		super(ExpressionCondition, self).__init__()
+		self.text = ""
+		self.objs = []
+		
+class ExpressionAction(object):
+	"""docstring for ExpressionAction"""
+	def __init__(self, arg):
+		super(ExpressionAction, self).__init__()
+		self.name = ""
+		self.args = []
+		self.objs = []
+		
+class Expression(object):
+	"""docstring for Expression"""
+	def __init__(self, arg):
+		super(Expression, self).__init__()
+		self.condition = ExpressionCondition(None)
+		self.actions = []		
+
 class CommonData(object):
 	"""docstring for CommonData"""
 	def __init__(self, arg):
@@ -366,6 +388,78 @@ def CheckRecords():
 				CheckDataType(g_conditionType , sheet , row , col , rowItem)
 				#LogOutDebug("g_xlsConditionRecords:" , g_xlsConditionRecords[sheet][col][row])
 				
+def HandleConditionFromItem(conditions , colItem):
+	args = []
+	colItem = RemoveSpecialWord(colItem)
+	condition = colItem.split('(')		# 这里至少是2个.
+	if len(condition) > 1:
+		args = condition[1]
+	
+	# 处理名字.包括命名空间
+	names = condition[0].split('.')
+	name = names[len(names) - 1]			# 这个肯定是名字
+	if name not in conditions:
+		conditions[name] = Condition(None)
+		conditions[name].conditionName.name = name
+	for index , obj in enumerate(names):
+		if index != len(names) - 1:
+			conditions[name].conditionName.namespace.append(obj)
+	
+	#处理条件的参数
+	if len(args) > 0:
+		args = args.replace(")" , "").split(',')
+		#LogOutDebug("args1:" , args)
+	if len(args) <= 0 or len(args[0]) <= 0:
+		args = []		
+		#LogOutDebug("args2:" , args)
+	for index , arg in enumerate(args):
+		argNames = arg.split('.')
+		argObject = Object(None)
+		if len(argNames) > 0:
+			argName = argNames[len(argNames) - 1]			# 这个肯定是名字
+		argObject.name = argName
+		for argIndex , argName in enumerate(argNames):
+			if argIndex != len(argNames) - 1:
+				argObject.namespace.append(argName)
+		conditions[name].args.append(argObject)	
+		
+def HandleActionFromItem(actions , colItem):	
+	args = []
+	colItem = RemoveSpecialWord(colItem)
+	action = colItem.split('(')		# 这里至少是2个.
+	if len(action) > 1:
+		args = action[1]
+	
+	# 处理名字.包括命名空间
+	names = action[0].split('.')
+	name = names[len(names) - 1]			# 这个肯定是名字
+	if name not in actions:
+		actions[name] = Action(None)
+		#actions[name].actionName.name = name
+	for index , obj in enumerate(names):
+		if index == len(names) - 2:	  # 对于action而言.括号前的倒数第二个参数代表对象.CUtil.Player.Mail(CUtil.League , CUtil.Player)
+			actions[name].actionName.name = obj
+		elif index != len(names) - 1:
+			actions[name].actionName.namespace.append(obj)
+	
+	#处理条件的参数
+	if len(args) > 0:
+		args = args.replace(")" , "").split(',')
+		#LogOutDebug("args1:" , args)
+	if len(args) <= 0 or len(args[0]) <= 0:
+		args = []		
+		#LogOutDebug("args2:" , args)
+	for index , arg in enumerate(args):
+		argNames = arg.split('.')
+		argObject = Object(None)
+		if len(argNames) > 0:
+			argName = argNames[len(argNames) - 1]			# 这个肯定是名字
+		argObject.name = argName
+		for argIndex , argName in enumerate(argNames):
+			if argIndex != len(argNames) - 1:
+				argObject.namespace.append(argName)
+		actions[name].args.append(argObject)	
+		
 def HandleConditionConfig():
 	rowItems = g_xlsRecords[g_conditionConfigName]
 	if len(rowItems) != 0:
@@ -376,53 +470,13 @@ def HandleConditionConfig():
 					if len(colItem) == 0:
 						continue			
 					if col == g_serverConditionCol:
-						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
-						args = last.split('(') 
-						name = args[0]
-						if len(args) > 1:
-							args = args[1].replace(")" , "").split(',')
-						else:
-							args = []
-						if name not in g_serverConditions:
-							g_serverConditions[name] = Condition(None)
-						for index , obj in enumerate(objects):
-							if index != len(objects) - 1:
-								g_serverConditions[name].objs.append(obj)
-						for index , arg in enumerate(args):
-							g_serverConditions[name].args.append(arg)
+						HandleConditionFromItem(g_serverConditions , colItem)						
 					if col == g_serverActionCol:
-						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
-						if last not in g_serverActions:
-							g_serverActions[last] = []
-						for index , obj in enumerate(objects):
-							if index != len(objects) - 1:
-								g_serverActions[last].append(obj)
+						HandleActionFromItem(g_serverActions , colItem)						
 					if col == g_clientConditionCol:
-						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
-						args = last.split('(') 
-						name = args[0]
-						if len(args) > 1:
-							args = args[1].replace(")" , "").split(',')
-						else:
-							args = []
-						if name not in g_clientConditions:
-							g_clientConditions[name] = Condition(None)
-						for index , obj in enumerate(objects):
-							if index != len(objects) - 1:
-								g_clientConditions[name].objs.append(obj)
-						for index , arg in enumerate(args):
-							g_clientConditions[name].args.append(arg)
+						HandleConditionFromItem(g_clientConditions , colItem)						
 					if col == g_clientActionCol:
-						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1]
-						if last not in g_clientActions:
-							g_clientActions[last] = []
-						for index , obj in enumerate(objects):
-							if index != len(objects) - 1:
-								g_clientActions[last].append(obj)
+						HandleActionFromItem(g_clientActions , colItem)	
 		#LogOutDebug("g_serverConditions:" , g_serverConditions)			
 		#LogOutDebug("g_serverActions:" , g_serverActions)
 		#LogOutDebug("g_clientConditions:" , g_serverConditions)
@@ -508,21 +562,21 @@ def HandleSheetCondition():
 						#LogOutDebug("condition csType:" , csType , " IsServer=" , IsServerCSType(csType) , " itemContent " , itemContent)
 						if bServer:
 							serverExpression = Expression(None)
-							HandleConditionExpression(True , sheet , itemContent , serverExpression)
+							serverExpression = HandleConditionExpression(True , sheet , itemContent , serverExpression)
 							serverExpression.actions = []
 						if bClient:
 							clientExpression = Expression(None)
-							HandleConditionExpression(False , sheet , itemContent , clientExpression)
+							clientExpression = HandleConditionExpression(False , sheet , itemContent , clientExpression)
 							clientExpression.actions = []
 							#LogOutDebug("1.serverExpression:" , serverExpression.condition)
 							#LogOutDebug("1.clientExpression:" , clientExpression.condition)
 					elif tagitem.lower() == g_actionTag.lower():
 						if bServer:
-							action = HandleAction(True , itemContent)
+							action = HandleExpressionAction(True , itemContent)
 							serverExpression.actions.append(action)
 							#LogOutDebug("action=" , action)
 						if bClient:
-							action = HandleAction(False , itemContent)
+							action = HandleExpressionAction(False , itemContent)
 							clientExpression.actions.append(action) 
 							#LogOutDebug("action=" , action)
 					else:
@@ -542,13 +596,14 @@ def HandleConditionExpression(bServer , sheet , itemContent , expression):
 	end = 0
 	keyWord = ""
 	symbol = True
+	objs = []
 	for i , item in enumerate(list(itemContent)):
 		if item in g_conditionSymbol:
 			end = i
 			if end != start: # 代表是一个符号					
 				keyWord = itemContent[start:end]
 				#LogOutDebug("keyWord:" , keyWord , "result:" , result)
-				value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , item)
+				value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , item , objs)
 				result = result + value
 			if symbol == True:
 				result += item
@@ -557,14 +612,15 @@ def HandleConditionExpression(bServer , sheet , itemContent , expression):
 			start = i + 1			
 	keyWord = itemContent[start:]
 	if len(keyWord) > 0:# 最后一个肯定不是符号.所以必然会有一个条件.
-		value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , "")
+		value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , "" , [])
 		result = result + value
-	expression.condition = result
+	expression.condition.text = result
+	expression.condition.objs = objs
 	#LogOutDebug("bServer:" + str(bServer) + ":result." , result)
 
-	#return expression	
+	return expression	
 	
-def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol):
+def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol , objs):
 	keys = keyWord.split(".")
 	last = keys[len(keys) - 1].upper()
 	result = ""	
@@ -605,7 +661,7 @@ def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol):
 
 		if last in dicConditions:
 			condition = dicConditions[last]
-			return GetConditionByCondition(bServer , condition , GetDicKeyByUpper(dicOrigCondition , last) , symbol)
+			return GetConditionByCondition(bServer , condition , GetDicKeyByUpper(dicOrigCondition , last) , symbol , objs)
 	else:
 		condition = dicConditions[last]
 		isInCondition = False
@@ -613,7 +669,7 @@ def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol):
 			if key in condition.objs:
 				isInCondition = True
 		if isInCondition:
-			return GetConditionByCondition(bServer , condition , GetDicKeyByUpper(dicOrigCondition , last) , symbol)
+			return GetConditionByCondition(bServer , condition , GetDicKeyByUpper(dicOrigCondition , last) , symbol , objs)
 
 	for index , rowName in enumerate(g_xlsRecords[sheet][g_rowName]):
 		#LogOutDebug("rowName:", rowName.upper() , " last:" , last) 
@@ -622,28 +678,37 @@ def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol):
 	
 	LogOutError("ParaseConditionKeyWord ERR." , keyWord , "not in commondata or condition or cur excel")
 
-def GetConditionByCondition(bServer , condition , last , symbol):
+def GetConditionByCondition(bServer , condition , last , symbol , objs):
 	needWriteSymbol = True
 	result = ""
 	if bServer:
 		result = result + "CUtil::Condition<"
 	else:
 		result = result + "CUtil::Condition<"
-	for index , obj in enumerate(condition.objs):
+	for index , obj in enumerate(condition.conditionName.namespace):
 		result = result + obj
 		result = result + "::"
 	result = result + last
 	result = result + ">()"
-	result = result + "("
+	
+	if not (symbol == '(' and len(condition.args) <= 0): # 如果下一个是括号.但是又没有对象.则不添加这个括号.
+		result = result + "("
 	for index , arg in enumerate(condition.args):
-		result = result + arg
-		LogOutDebug("condition.args:" , condition.args)
+		result += g_pointPrefix
+		result += arg.name
+		#LogOutDebug("condition.args:" , condition.args)
 		if len(condition.args) - 1 != index:
 			result = result + ","
 		else:
-			if symbol == '(' and len(arg) > 0:
+			if symbol == '(':
 				result = result + ","
-		
+		bInArgs = False
+		for argIndex , obj in enumerate(objs):
+			if arg.name == obj.name:
+				bInArgs = True
+		if not bInArgs:
+			objs.append(arg)
+			
 	if symbol != '(':
 		result = result + ")"
 	else:
@@ -653,18 +718,19 @@ def GetConditionByCondition(bServer , condition , last , symbol):
 	return result , needWriteSymbol
 
 
-def HandleAction(bServer , itemContent):	
-	action = Action(None)
+def HandleExpressionAction(bServer , itemContent):	
+	action = ExpressionAction(None)
 	actions = itemContent.split(g_actionNameSplit)
 	if len(actions) > 0:
-		action.name = CheckActionValue(bServer , actions[0])
+		args = []
+		action.name = CheckActionValue(bServer , actions[0] , action.objs , action.args)
 		actions[1] = RemoveSpecialWord(actions[1])
 		actions[1] = actions[1].replace(")" , "").replace("(" , "")
-		action.args = actions[1].split(',')
+		action.args += actions[1].split(',')
 			 
 	return action
 
-def CheckActionValue(bServer ,  value):	
+def CheckActionValue(bServer ,  value , objs , args):	
 	tmp = collections.OrderedDict()
 	if bServer:
 		MakeDicKeyUpper(g_serverActions , tmp)
@@ -673,11 +739,31 @@ def CheckActionValue(bServer ,  value):
 	
 	if value.upper() in tmp:
 		result = ""
-		for index , item in enumerate(tmp[value.upper()]):
+		name = tmp[value.upper()].actionName.name
+		if len(name) > 0:
 			result += g_pointPrefix
-			result += item
+			result += name
 			result += "->"
+				
+			bIn = False
+			for objIndex , obj in enumerate(objs):
+				if tmp[value.upper()].actionName.name == obj.name:
+					bIn = True
+			if not bIn:
+				objs.append(tmp[value.upper()].actionName)
 			
+			for index , arg in enumerate(tmp[value.upper()].args):
+				argValue = g_pointPrefix
+				argValue += arg.name
+				args.append(argValue)
+				
+				bIn = False
+				for objIndex , obj in enumerate(objs):
+					if arg.name == obj.name:
+						bIn = True
+				if not bIn:
+					objs.append(arg)
+				
 		if bServer:
 			result += GetDicKeyByUpper(g_serverActions , value.upper())
 		else:
@@ -1100,13 +1186,35 @@ def GenerateConditionFunc(fileWrite , bServer , filename , types , datas , comme
 		eachExpressions = g_clientExpression[filename]
 	if eachExpressions != None:			
 		fileWrite.write(oneTab + "public:\n")
-		for index , expression in eachExpressions.items():
-			if bServer:
-				fileWrite.write(twoTab + "bool" + fourTab + index + "(INT32 nIndex , CUtil::Player * pPlayer = NULL)" + ";\n")
-			else:
-				fileWrite.write(twoTab + "bool" + fourTab + index + "(INT32 nIndex , CUtil::Player * pPlayer = NULL)" + ";\n")
+		for index , expressions in eachExpressions.items():
+			GenerateExpressionFuncName(False , fileWrite , filename , index , expressions)
 		fileWrite.write("\n\n")
 
+def GenerateExpressionFuncName(bCPP , fileWrite , filename , index , expressions):
+	objs = []
+	GetExpressionsObjects(expressions , objs)
+	if not bCPP:
+		fileWrite.write(twoTab + "bool" + fourTab + index + "(INT32 nIndex")
+	else:
+		fileWrite.write(oneTab + "bool " + filename + "::" + index + "(INT32 nIndex")
+		
+	for objIndex , obj in enumerate(objs):
+		if len(obj.name) > 0:
+			fileWrite.write(" , ")
+			for objNamespace , namespace in enumerate(obj.namespace):
+				fileWrite.write(namespace)
+				fileWrite.write("::")
+			fileWrite.write(obj.name) 
+			if not bCPP:
+				fileWrite.write(" * " + g_pointPrefix + obj.name + " = NULL") 
+			else:
+				fileWrite.write(" * " + g_pointPrefix + obj.name + "/* = NULL*/" ) 
+		
+	if not bCPP:
+		fileWrite.write(");\n")
+	else:
+		fileWrite.write(")\n")
+		
 def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
 	if CheckNeedDelete(outputPath , types , datas ):
@@ -1203,10 +1311,7 @@ def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , co
 		eachExpressions = g_clientExpression[filename]
 	if eachExpressions != None and len(eachExpressions) > 0:			
 		for index , expressions in eachExpressions.items():
-			if bServer:
-				fileWrite.write(oneTab + "bool " + filename + "::" + index + "(INT32 nIndex , CUtil::Player * pPlayer/* = NULL*/)" + "\n")
-			else:
-				fileWrite.write(oneTab + "bool " + filename + "::" + index + "(INT32 nIndex , Player * pPlayer/* = NULL*/)" + "\n")
+			GenerateExpressionFuncName(True , fileWrite , filename , index , expressions)
 
 			fileWrite.write(oneTab + "{\n")
 			fileWrite.write(twoTab + "if (Get" + filename +"(nIndex) == NULL)\n")
@@ -1215,25 +1320,56 @@ def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , co
 			fileWrite.write(threeTab + "return false;\n")
 			fileWrite.write(twoTab + "}\n\n")
 
-			fileWrite.write(twoTab + "if (pPlayer == NULL)\n")
-			fileWrite.write(twoTab + "{\n")
-			fileWrite.write(threeTab + "gErrorStream(\"RunUse error. " + filename + "  pPlayer = NULL.id=\" << nIndex);\n")
-			fileWrite.write(threeTab + "return false;\n")
-			fileWrite.write(twoTab + "}\n\n")
-
 			for indexExpression , expression in enumerate(expressions):
-				fileWrite.write(twoTab + "if (" + expression.condition + ")\n")
+				objs = []
+				GetExpressionObjects(expression , objs)
+
+				fileWrite.write(twoTab + "if (")
+				for objIndex , obj in enumerate(objs):
+					fileWrite.write(g_pointPrefix + obj.name + " != NULL")
+					if len(objs) - 1 != objIndex:				
+						fileWrite.write(" && ")
+					else:			
+						fileWrite.write(")\n")
 				fileWrite.write(twoTab + "{\n")
+
+				fileWrite.write(threeTab + "if (" + expression.condition.text + ")\n")
+				fileWrite.write(threeTab + "{\n")
 				for actionIndex , action in enumerate(expression.actions):
-					fileWrite.write(threeTab + action.name + "(" )
+					fileWrite.write(fourTab + action.name + "(" )
 					for argIndex , arg in enumerate(action.args):
 						fileWrite.write(arg)
 						if len(action.args) - 1 != argIndex:
 							fileWrite.write(" , ")
 					fileWrite.write(");\n")
+				fileWrite.write(threeTab + "}\n")
 				fileWrite.write(twoTab + "}\n\n")
+
 			fileWrite.write(twoTab + "return true;\n")
 			fileWrite.write(oneTab + "}\n\n") 
+
+def GetExpressionsObjects(expressions , objs):
+	for indexExpression , expression in enumerate(expressions):
+		GetExpressionObjects(expression , objs)
+
+def GetExpressionObjects(expression , objs):
+	#LogOutDebug("expression:" , expression)
+	for conditionIndex , conditionObj in enumerate(expression.condition.objs):
+		bIn = False
+		for index , obj in enumerate(objs):
+			if obj.name == conditionObj.name:
+				bIn = True
+		if not bIn:		
+			#LogOutDebug("conditionObj:" , conditionObj.name)
+			objs.append(conditionObj)
+	for actionIndex , action in enumerate(expression.actions):
+		for objIndex , actionObj in enumerate(action.objs):
+			bIn = False
+			for index , obj in enumerate(objs):
+				if obj.name == actionObj.name:
+					bIn = True
+			if not bIn:
+				objs.append(actionObj)
 
 def GenerateConfigManagerHeader(bServer):
 	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigManager.h"

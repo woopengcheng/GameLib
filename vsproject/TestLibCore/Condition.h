@@ -13,6 +13,20 @@ namespace CUtil
 		TEST_MULIT_ARGS,
 	};
 
+	class League
+	{
+	public:
+		League() {}
+		~League() {}
+	};
+
+	class Team
+	{
+	public:
+		Team() {}
+		~Team() {}
+	};
+
 	class Player
 	{
 	public:
@@ -23,7 +37,7 @@ namespace CUtil
 		{
 			return nPlayerLevel;
 		}
-		void Mail(INT32 nMailID) { }
+		void Mail(League * pLeague, Team * pTeam , INT32 nMailID) { }
 		void Say(INT32 nChanelID , std::string str) { }
 
 	private:
@@ -37,7 +51,7 @@ namespace CUtil
 	class Condition<PLAYER_LEVEL>
 	{
 	public:
-		INT32 operator ()(Player * pPlayer)
+		INT32 operator ()(Player * pPlayer , League * pLeague)
 		{
 			if (pPlayer)
 			{

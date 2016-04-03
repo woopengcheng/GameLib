@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-03 12:47:58
+Date		:	2016-04-03 20:12:41
 Description	:	csv读取数据文件实现
 ************************************/
 #include "ActivityConfig.h"
@@ -60,7 +60,7 @@ namespace Config
 		return &iter->second;
 	}
 
-	bool ActivityConfig::RunUse(INT32 nIndex , CUtil::Player * pPlayer/* = NULL*/)
+	bool ActivityConfig::RunUse(INT32 nIndex , CUtil::Player * pPlayer/* = NULL*/ , CUtil::League * pLeague/* = NULL*/ , CUtil::Team * pTeam/* = NULL*/)
 	{
 		if (GetActivityConfig(nIndex) == NULL)
 		{
@@ -68,30 +68,33 @@ namespace Config
 			return false;
 		}
 
-		if (pPlayer == NULL)
+		if (pPlayer != NULL && pLeague != NULL && pTeam != NULL)
 		{
-			gErrorStream("RunUse error. ActivityConfig  pPlayer = NULL.id=" << nIndex);
-			return false;
+			if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer,pLeague)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&(CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)<((GetActivityConfig(nIndex)->Description)+(GetActivityConfig(nIndex)->StartTimeDate))||(GetActivityConfig(nIndex)->testdate)==Timer::Date("2016-3-28-3:15:10"))&&(CUtil::Condition<CUtil::pow>()(1221.123,1221.124)>1221.125))
+			{
+				pPlayer->Mail(pLeague , pTeam , 12);
+			}
 		}
 
-		if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&(CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)<((GetActivityConfig(nIndex)->Description)+(GetActivityConfig(nIndex)->StartTimeDate))||(GetActivityConfig(nIndex)->testdate)==Timer::Date("2016-3-28-3:15:10"))&&(CUtil::Condition<CUtil::pow>()(1221.123,1221.124)>1221.125))
+		if (pPlayer != NULL && pLeague != NULL)
 		{
-			pPlayer->Mail(12);
+			if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer,pLeague)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->EndTimeDate)||CUtil::Condition<CUtil::TEST_MULIT_ARGS>()(pPlayer,(GetActivityConfig(nIndex)->IsShowInterface),(GetActivityConfig(nIndex)->Description),1231231,1221.123,(GetActivityConfig(nIndex)->RewardIcon),Timer::Date("2016-3-28-3:15:10")))
+			{
+				pPlayer->Say(12 , "动态礼包");
+			}
 		}
 
-		if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->EndTimeDate)||CUtil::Condition<CUtil::TEST_MULIT_ARGS>()(pPlayer,(GetActivityConfig(nIndex)->IsShowInterface),(GetActivityConfig(nIndex)->Description),1231231,1221.123,(GetActivityConfig(nIndex)->RewardIcon),Timer::Date("2016-3-28-3:15:10")))
+		if (pPlayer != NULL && pLeague != NULL)
 		{
-			pPlayer->Say(12 , "动态礼包");
-		}
-
-		if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->EndTimeDate))
-		{
+			if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer,pLeague)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->EndTimeDate))
+			{
+			}
 		}
 
 		return true;
 	}
 
-	bool ActivityConfig::RunUse1(INT32 nIndex , CUtil::Player * pPlayer/* = NULL*/)
+	bool ActivityConfig::RunUse1(INT32 nIndex , CUtil::Player * pPlayer/* = NULL*/ , CUtil::League * pLeague/* = NULL*/ , CUtil::Team * pTeam/* = NULL*/)
 	{
 		if (GetActivityConfig(nIndex) == NULL)
 		{
@@ -99,20 +102,20 @@ namespace Config
 			return false;
 		}
 
-		if (pPlayer == NULL)
+		if (pPlayer != NULL && pLeague != NULL && pTeam != NULL)
 		{
-			gErrorStream("RunUse error. ActivityConfig  pPlayer = NULL.id=" << nIndex);
-			return false;
+			if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer,pLeague)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&(CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)<(GetActivityConfig(nIndex)->Description)||(GetActivityConfig(nIndex)->testdate)==Timer::Date("2016-3-28-3:15:10")))
+			{
+				pPlayer->Mail(pLeague , pTeam , 12);
+			}
 		}
 
-		if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&(CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)<(GetActivityConfig(nIndex)->Description)||(GetActivityConfig(nIndex)->testdate)==Timer::Date("2016-3-28-3:15:10")))
+		if (pPlayer != NULL && pLeague != NULL)
 		{
-			pPlayer->Mail(12);
-		}
-
-		if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->EndTimeDate))
-		{
-			pPlayer->Say(12 , "动态礼包");
+			if (CUtil::Condition<CUtil::PLAYER_LEVEL>()(pPlayer,pLeague)>(GetActivityConfig(nIndex)->ActivityLevelHigh)&&CUtil::Condition<CUtil::VIP_LEVEL>()(pPlayer)>(GetActivityConfig(nIndex)->EndTimeDate))
+			{
+				pPlayer->Say(12 , "动态礼包");
+			}
 		}
 
 		return true;
