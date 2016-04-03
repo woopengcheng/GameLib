@@ -9,6 +9,8 @@ namespace CUtil
 		PLAYER_LEVEL,
 		VIP_LEVEL,
 		LEAGUE_LEVEL,
+		pow,
+		TEST_MULIT_ARGS,
 	};
 
 	class Player
@@ -44,6 +46,15 @@ namespace CUtil
 			return -1;
 		}
 	};
+	template<>
+	class Condition<pow>
+	{
+	public:
+		double operator ()(double x , double y)
+		{
+			return ::pow(x, y);
+		}
+	};
 
 	template<>
 	class Condition<VIP_LEVEL>
@@ -59,6 +70,19 @@ namespace CUtil
 		}
 	};
 
+	template<>
+	class Condition<TEST_MULIT_ARGS>
+	{
+	public:
+		INT32 operator ()(Player * pPlayer, bool b1, INT32 n1 , INT64 n2 , double f2 , std::string str , Timer::Date date)
+		{
+			if (pPlayer)
+			{
+				return pPlayer->GetPlayerLevel();
+			}
+			return -1;
+		}
+	};
 	enum EActionType
 	{
 		ACTION_TRIGER_TASK,

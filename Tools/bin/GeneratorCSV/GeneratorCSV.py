@@ -98,7 +98,7 @@ g_xlsNamespace = "Config"
 g_conditionTag = "condition"
 g_actionTag = "action"
 g_pointPrefix = "p"		#指针的前缀
-g_conditionSymbol = [">" , '=' , "<" , "(" , ")" , "&" , "|" , "!"]
+g_conditionSymbol = [">" , '=' , "<" , "(" , ")" , "&" , "|" , "!" , "+" , "-" , "*" , "/" , "%" , "^" , ","]
 
 g_serverType = "s".lower()
 g_clientType = "c".lower()
@@ -170,6 +170,13 @@ class Action(object):
 		self.name = ""
 		self.args = []
 		
+class Condition(object):
+	"""docstring for Condition"""
+	def __init__(self, arg):
+		super(Condition, self).__init__()
+		self.objs = []
+		self.args = []
+		
 class CommonData(object):
 	"""docstring for CommonData"""
 	def __init__(self, arg):
@@ -180,9 +187,9 @@ class CommonData(object):
 		self.objects = []
 
 def start(): 
-	LogOutInfo("start generate csv.\n")   
+	LogOutInfo("start generate csv.\n")  
+	DeleteExportPathFiles() 
 	CreateExportPathFiles()
-	DeleteExportPathFiles()
 	GenerateCSVFromXLS()
 	LogOutInfo("generate CSV finished.\n") 
 			
@@ -192,10 +199,10 @@ def start():
 
 def GenerateCSVFromXLS():
 	root = g_xlsImportPath
-	
-	files = Search(root ,'.xlsx')
+	files = []
+	Search(root , '.xlsx' , files)
 	for result in files:
-		LogOutInfo("filename:" , result);
+		LogOutInfo("load file: " , result);
 		Xlsx2CSV(result)
 
 	CheckRecords()
@@ -214,7 +221,7 @@ def Xlsx2CSV(filepath):
 		filename = os.path.splitext(filename.replace(' ', '_'))[0]
 		if filename.find('#') >= 0:
 			filename = filename.replace('#' , '')
-			LogOutInfo("delete filename.filename=" , filename )
+			LogOutInfo("skip file: " , filepath )
 			g_xlsDeleteRecord.append(filename)
 
 		#csv_filename = '{xlsx}.tabcsv'.format(xlsx=filename)		
@@ -370,12 +377,20 @@ def HandleConditionConfig():
 						continue			
 					if col == g_serverConditionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1].upper()
-						if last not in g_serverConditions:
-							g_serverConditions[last] = []
+						last = objects[len(objects) - 1]
+						args = last.split('(') 
+						name = args[0]
+						if len(args) > 1:
+							args = args[1].replace(")" , "").split(',')
+						else:
+							args = []
+						if name not in g_serverConditions:
+							g_serverConditions[name] = Condition(None)
 						for index , obj in enumerate(objects):
 							if index != len(objects) - 1:
-								g_serverConditions[last].append(obj)
+								g_serverConditions[name].objs.append(obj)
+						for index , arg in enumerate(args):
+							g_serverConditions[name].args.append(arg)
 					if col == g_serverActionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
 						last = objects[len(objects) - 1]
@@ -386,12 +401,20 @@ def HandleConditionConfig():
 								g_serverActions[last].append(obj)
 					if col == g_clientConditionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
-						last = objects[len(objects) - 1].upper()
-						if last not in g_clientConditions:
-							g_clientConditions[last] = []
+						last = objects[len(objects) - 1]
+						args = last.split('(') 
+						name = args[0]
+						if len(args) > 1:
+							args = args[1].replace(")" , "").split(',')
+						else:
+							args = []
+						if name not in g_clientConditions:
+							g_clientConditions[name] = Condition(None)
 						for index , obj in enumerate(objects):
 							if index != len(objects) - 1:
-								g_clientConditions[last].append(obj)
+								g_clientConditions[name].objs.append(obj)
+						for index , arg in enumerate(args):
+							g_clientConditions[name].args.append(arg)
 					if col == g_clientActionCol:
 						objects = colItem.split('.')		# 这里至少是2个.
 						last = objects[len(objects) - 1]
@@ -421,7 +444,7 @@ def HandleCommondataConfig():
 					#LogOutDebug("row:" , row , " col:" , col , " colItem:" , colItem , " mapType:" , mapType , " keyType:", keyType ," valueType:" , valueType)	
 
 					datas = colItem.split('=')
-					commonKey = datas[0].upper()
+					commonKey = datas[0]
 					if commonKey not in g_commonDatas:
 						g_commonDatas[commonKey] = CommonData(None)
 						g_commonDatas[commonKey].value = datas[1]
@@ -441,12 +464,12 @@ def CheckRepeatCommonData():
 	for conmonIndex , commondata in g_commonDatas.items():
 		for serverIndex , serverCondition in g_serverConditions.items():
 			#LogOutDebug(conmonIndex , " commondata=" , commondata , " serverCondition=" , serverCondition)
-			if conmonIndex == serverIndex:
+			if conmonIndex.upper() == serverIndex.upper():
 				g_repeatServerCommonDatas.append(conmonIndex)
 				LogOutDebug("the same commondata warning." , conmonIndex , " commondata=" , commondata , " serverCondition=" , serverCondition)
 		for clientIndex , clientCondition in g_clientConditions.items():
 			#LogOutDebug(conmonIndex , " commondata=" , commondata , " clientCondition=" , clientCondition)
-			if conmonIndex == clientIndex:
+			if conmonIndex.upper() == clientIndex.upper():
 				g_repeatClientCommonDatas.append(conmonIndex)
 				LogOutError("the same commondata warning." , conmonIndex , " commondata=" , commondata , " clientCondition=" , clientCondition)
 
@@ -518,103 +541,116 @@ def HandleConditionExpression(bServer , sheet , itemContent , expression):
 	start = 0
 	end = 0
 	keyWord = ""
+	symbol = True
 	for i , item in enumerate(list(itemContent)):
 		if item in g_conditionSymbol:
 			end = i
 			if end != start: # 代表是一个符号					
 				keyWord = itemContent[start:end]
 				#LogOutDebug("keyWord:" , keyWord , "result:" , result)
-				result = result + ParaseConditionKeyWord(bServer , keyWord.upper() , sheet)
-			result += item
+				value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , item)
+				result = result + value
+			if symbol == True:
+				result += item
+			else:
+				symbol = True
 			start = i + 1			
 	keyWord = itemContent[start:]
 	if len(keyWord) > 0:# 最后一个肯定不是符号.所以必然会有一个条件.
-		result = result + ParaseConditionKeyWord(bServer , keyWord.upper() , sheet)
+		value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , "")
+		result = result + value
 	expression.condition = result
 	#LogOutDebug("bServer:" + str(bServer) + ":result." , result)
 
 	#return expression	
 	
-def ParaseConditionKeyWord(bServer , keyWord , sheet):
+def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol):
 	keys = keyWord.split(".")
 	last = keys[len(keys) - 1].upper()
 	result = ""	
-
+	
+	dicCommondata = collections.OrderedDict()
+	dicConditions = collections.OrderedDict()
+	dicOrigCondition = collections.OrderedDict()
+	dicRepeatCommondata = []
+	
+	MakeDicKeyUpper(g_commonDatas , dicCommondata)
+	if bServer:
+		dicRepeatCommondata = g_repeatServerCommonDatas
+		dicOrigCondition = g_serverConditions
+		MakeDicKeyUpper(g_serverConditions , dicConditions)
+	else:
+		dicRepeatCommondata = g_repeatClientCommonDatas
+		dicOrigCondition = g_clientConditions
+		MakeDicKeyUpper(g_clientConditions , dicConditions)
+		
 	isInCommonData = False
-	if last in g_commonDatas:
+	if last in dicCommondata:
 		isInCommonData = True
-		commondata = g_commonDatas[last.upper()]
+		commondata = dicCommondata[last]
 		for index , key in enumerate(keys):
 			if key in commondata.objects:
 				if commondata.valueType != g_dateType:
-					return commondata.value
+					return commondata.value , True
 				else:
-					return g_dateType + "(\"" + commondata.value + "\")"
+					return g_dateType + "(\"" + commondata.value + "\")" , True
 
-	if bServer:
-		if last not in g_repeatServerCommonDatas:
-			if isInCommonData:
-				commondata = g_commonDatas[last.upper()]
-				if commondata.valueType != g_dateType:
-					return commondata.value
-				else:
-					return g_dateType + "(\"" + commondata.value + "\")"
+	if last not in dicRepeatCommondata:
+		if isInCommonData:
+			commondata = dicCommondata[last]
+			if commondata.valueType != g_dateType:
+				return commondata.value , True
+			else:
+				return g_dateType + "(\"" + commondata.value + "\")" , True
 
-			if last in g_serverConditions:
-				condition = g_serverConditions[last]
-				return GetConditionByCondition(bServer , condition , last)
-		else:
-			condition = g_serverConditions[last]
-			isInCondition = False
-			for index , key in enumerate(keys):
-				if key in condition:
-					isInCondition = True
-			if isInCondition:
-				return GetConditionByCondition(bServer , condition , last)
+		if last in dicConditions:
+			condition = dicConditions[last]
+			return GetConditionByCondition(bServer , condition , GetDicKeyByUpper(dicOrigCondition , last) , symbol)
 	else:
-		if last not in g_repeatClientCommonDatas:
-			if isInCommonData:
-				commondata = g_commonDatas[last.upper()]
-				if commondata.valueType != g_dateType:
-					return commondata.value
-				else:
-					return g_dateType + "(\"" + commondata.value + "\")"
-			if last in g_clientConditions:
-				condition = g_clientConditions[last]
-				return GetConditionByCondition(bServer , condition , last)
-		else:
-			condition = g_clientConditions[last]
-			isInCondition = False
-			for index , key in enumerate(keys):
-				if key in condition:
-					isInCondition = True
-				else:
-					isInCondition = False
-			if isInCondition:
-				return GetConditionByCondition(bServer , condition , last)
+		condition = dicConditions[last]
+		isInCondition = False
+		for index , key in enumerate(keys):
+			if key in condition.objs:
+				isInCondition = True
+		if isInCondition:
+			return GetConditionByCondition(bServer , condition , GetDicKeyByUpper(dicOrigCondition , last) , symbol)
 
 	for index , rowName in enumerate(g_xlsRecords[sheet][g_rowName]):
 		#LogOutDebug("rowName:", rowName.upper() , " last:" , last) 
 		if rowName.upper() == last:
-			return "(" + "Get" + sheet + "(nIndex)->" + rowName + ")"
+			return "(" + "Get" + sheet + "(nIndex)->" + rowName + ")" , True
 	
 	LogOutError("ParaseConditionKeyWord ERR." , keyWord , "not in commondata or condition or cur excel")
 
-def GetConditionByCondition(bServer , condition , last):
+def GetConditionByCondition(bServer , condition , last , symbol):
+	needWriteSymbol = True
 	result = ""
 	if bServer:
 		result = result + "CUtil::Condition<"
 	else:
 		result = result + "CUtil::Condition<"
-	for index , obj in enumerate(condition):		# 读取每一行
+	for index , obj in enumerate(condition.objs):
 		result = result + obj
 		result = result + "::"
 	result = result + last
-	if bServer:
-		result = result + ">()(pPlayer)"
+	result = result + ">()"
+	result = result + "("
+	for index , arg in enumerate(condition.args):
+		result = result + arg
+		LogOutDebug("condition.args:" , condition.args)
+		if len(condition.args) - 1 != index:
+			result = result + ","
+		else:
+			if symbol == '(' and len(arg) > 0:
+				result = result + ","
+		
+	if symbol != '(':
+		result = result + ")"
 	else:
-		result = result + ">()(pPlayer)"
-	return result
+		if len(condition.args) > 0:
+			needWriteSymbol = False
+		
+	return result , needWriteSymbol
 
 
 def HandleAction(bServer , itemContent):	
@@ -628,15 +664,6 @@ def HandleAction(bServer , itemContent):
 			 
 	return action
 
-def MakeDicKeyUpper(value , tmp):
-	for index , item in value.items():
-		tmp[index.upper()] = item
-		
-def GetDicKeyByUpper(value , tmp):
-	for indexValue , item in value.items():
-		if indexValue.upper() == tmp.upper():
-			return indexValue
-		
 def CheckActionValue(bServer ,  value):	
 	tmp = collections.OrderedDict()
 	if bServer:
@@ -1206,7 +1233,7 @@ def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , co
 					fileWrite.write(");\n")
 				fileWrite.write(twoTab + "}\n\n")
 			fileWrite.write(twoTab + "return true;\n")
-		fileWrite.write(oneTab + "}\n\n") 
+			fileWrite.write(oneTab + "}\n\n") 
 
 def GenerateConfigManagerHeader(bServer):
 	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigManager.h"
@@ -1757,7 +1784,7 @@ def CheckNeedDelete(outputFile , types , datas):
 	if os.path.exists(outputFile): 
 		strNew = MakeTitle(types , datas)
 		
-		fileRead = open(outputFile , "r" , encoding = "utf-8")
+		fileRead = open(outputFile , "r" , encoding = "utf_8_sig")
 		for line in fileRead: 
 			strOld = line
 			break
@@ -1806,6 +1833,15 @@ def CheckCSType(data , bServer = True , bStrict = False):
 		else:
 			return False
 
+def MakeDicKeyUpper(value , tmp):
+	for index , item in value.items():
+		tmp[index.upper()] = item
+		
+def GetDicKeyByUpper(value , tmp):
+	for indexValue , item in value.items():
+		if indexValue.upper() == tmp.upper():
+			return indexValue
+		
 ################################流程无关函数处理#####################################
 def Usage():
     print('GenerateCSV.py usage:')
@@ -1905,21 +1941,30 @@ def WriteFileDescription(fileWrite , sfile , desc):
 	fileWrite.write("Description	:	" + desc + "\n")
 	fileWrite.write("************************************/" + "\n")
 
-def Search(base , suffix):
-    pattern = suffix
-    fileresult = []
-    cur_list = os.listdir(base)
-    for item in cur_list:
-        full_path = os.path.join(base, item)
-        if os.path.isdir(full_path):            
-            fileresult += Search(full_path , suffix)
-        if os.path:
-            if full_path.endswith(pattern):
-                fileresult.append(full_path)
-    return fileresult
+def Search(base , suffix , fileresult):
+	pattern = suffix
+	cur_list = os.listdir(base)
+	for item in cur_list:
+		full_path = os.path.join(base, item)
+		if os.path.isdir(full_path):            
+			Search(full_path , suffix, fileresult)
+		if os.path:
+			if full_path.endswith(pattern):
+				CheckIsInList(fileresult , full_path)
+				fileresult.append(full_path)
+	return fileresult
 	
+def CheckIsInList(files , cur_file):
+	filename = os.path.basename(cur_file) #获取文件名
+	for sfile in files:
+		tmp = os.path.basename(sfile) #获取文件名
+		if tmp == filename:
+			LogOutError("the same file. first=" , cur_file , " :second=" , sfile)
+
+
 def DeleteExportPathFiles():
-	files = Search(g_xlsExportCSVPath , '.tabcsv')
+	files = []
+	Search(g_xlsExportCSVPath , '.tabcsv' , files)
 	for sfile in files:
 		if os.path.exists(sfile): 
 			os.remove(sfile)
