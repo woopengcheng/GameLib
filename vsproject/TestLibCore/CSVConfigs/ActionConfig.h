@@ -1,24 +1,23 @@
-﻿// attention dont't change this line:INT32 curve_id;std::vector<INT32> validStages;std::string wrapMode;std::vector<std::string> InterfaceIcon;double attr_mod_val;std::vector<double> start_x;INT64 col_1;bool isLocal;TestStructbool test1;INT64 test2;double test3;INT32 test4;std::string test6;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std::string test5;
+﻿// attention dont't change this line:INT64 curve_id;std::vector<INT32> validStages;std::string wrapMode;std::vector<std::string> InterfaceIcon;double attr_mod_val;std::vector<double> start_x;INT64 col_1;bool isLocal;TestStructbool test1;INT64 test2;double test3;INT32 test4;std::string test6;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std::string test5;
 /************************************
 FileName	:	ActionConfig.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-03 20:12:41
+Date		:	2016-04-04 17:44:53
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config_ActionConfig_define_h__
 #define __Config_ActionConfig_define_h__
 #include "ActionConfigLoad.h"
 #include "../Condition.h"
-
 namespace Config
 {
 
 	struct SActionConfig
 	{
-		INT32							curve_id;	//轨迹ID
+		INT64							curve_id;	//轨迹ID
 		std::vector<INT32>				validStages;	//生效场景--不配表示所有场景中生效--否则仅在配置场景中生效
 		std::string						wrapMode;	//循环方式
 		std::vector<std::string>		InterfaceIcon;	//界面中图标
@@ -53,11 +52,11 @@ namespace Config
 	class ActionConfig
 	{
 	public:
-		typedef std_unordered_map<INT32 , SActionConfig> MapConfigsT;
+		typedef std_unordered_map<INT64 , SActionConfig> MapConfigsT;
 
 	public:
 		bool				LoadFrom(const std::string& filepath);
-		SActionConfig *	GetActionConfig(INT32 nIndex);
+		SActionConfig *	GetActionConfig(INT64 id);
 
 	public:
 

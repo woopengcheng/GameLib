@@ -104,6 +104,9 @@ g_serverType = "s".lower()
 g_clientType = "c".lower()
 g_bCheckCSTypeStrict = False	#检测CS条件的时候是否执行严格检测.即.服务器是否需要客户端数据.默认是需要的.
 
+g_configTypePrefix = "std_unordered_map<"
+g_globaleNamePrefix = "g_p"
+
 g_int32Type = "INT32"
 g_int64Type = "INT64"
 g_boolType = "bool"
@@ -119,6 +122,7 @@ g_dateArrayType = "std::vector<Timer::Date>"
 g_conditionType = "Condition"
 g_structType = 1
 g_structArrayType = 2
+g_configType = 3
 g_mapType = "map"
 	
 g_int32Func = "GetInt32"
@@ -136,6 +140,7 @@ g_structFunc = 11
 g_structArrayFunc = 12
 g_dateArrayFunc = 13
 g_mapFunc = 14
+g_configFunc = 15
 
 oneTab = "\t"
 twoTab = oneTab + "\t"
@@ -372,7 +377,7 @@ def CheckRecords():
 				for col , colItem in enumerate(rowItem):	#读取每一列
 					item_type = GetType(g_xlsRecords[sheet][g_rowType][col])	
 					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type , "sheet" , sheet , "col=" , col)
-					CheckDataType(item_type , sheet , row , col , colItem)
+					CheckDataType(item_type , sheet , row , col , colItem , -1)
 					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type)
 					
 	for sheet , item in g_xlsConditionRecords.items():
@@ -385,7 +390,7 @@ def CheckRecords():
 					LogOutError("sheet=" , sheet  , " :row=" , row , " :col=" , col , " item=" , rowItem , " use one same name .")
 
 			for row , rowItem in enumerate(colItem):	#读取每一列
-				CheckDataType(g_conditionType , sheet , row , col , rowItem)
+				CheckDataType(g_conditionType , sheet , row , col , rowItem , -1)
 				#LogOutDebug("g_xlsConditionRecords:" , g_xlsConditionRecords[sheet][col][row])
 				
 def HandleConditionFromItem(conditions , colItem):
@@ -674,7 +679,7 @@ def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol , objs):
 	for index , rowName in enumerate(g_xlsRecords[sheet][g_rowName]):
 		#LogOutDebug("rowName:", rowName.upper() , " last:" , last) 
 		if rowName.upper() == last:
-			return "(" + "Get" + sheet + "(nIndex)->" + rowName + ")" , True
+			return "(" + "Get" + sheet + "(id)->" + rowName + ")" , True
 	
 	LogOutError("ParaseConditionKeyWord ERR." , keyWord , "not in commondata or condition or cur excel")
 
@@ -808,7 +813,7 @@ def GenerateCPPFiles(bServer):
 		GenerateConfigCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
 	GenerateConfigManagerCPP(bServer)
 	
-def GenerateStructData(bServer , fileWrite , types , datas , comments , css):	
+def GenerateStructData(bServer , fileWrite , types , datas , comments , css , bLoad):	
 	for index , item in enumerate(types):
 		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
 		if not CheckCSType(css[index] , bServer):
@@ -827,7 +832,15 @@ def GenerateStructData(bServer , fileWrite , types , datas , comments , css):
 				LogOutError("parase struct error.maybe no detail name. structName=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , " size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
 				#LogOutDebug("name=" , structName , ":structDatas=" , structDatas , ":childItem=" , childItem)
-				fileWrite.write(threeTab + GetType(childItem) + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
+
+				childType = GetType(childItem)
+				if childType == g_configType:
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+					childType , keyType , valueType  = GetConfigType(parentName)
+					if bLoad:
+						childType = GetType(keyType)
+
+				fileWrite.write(threeTab + childType + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
 			fileWrite.write(twoTab + "}" + structName + ";\n");
 		elif item_type == g_structArrayType:
 			npos = datas[index].find('[')
@@ -841,10 +854,22 @@ def GenerateStructData(bServer , fileWrite , types , datas , comments , css):
 			if len(childItems) != len(structDatas):
 				LogOutError("parase struct error.invalid size . name=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , " size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
-				fileWrite.write(threeTab + GetType(childItem) + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
+				childType = GetType(childItem)
+				if childType == g_configType:
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+					childType , keyType , valueType  = GetConfigType(parentName)
+					if bLoad:
+						childType = GetType(keyType)
+
+				fileWrite.write(threeTab + childType + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
 			fileWrite.write(twoTab + "}" + ";\n");
 			fileWrite.write(twoTab + "std::vector<" + g_configPrefix + structName + ">" + twoTab + "vec" + structName + ";\n");
 		else:
+			if item_type == g_configType:
+				item_type , keyType , valueType = GetConfigType(item)
+				if bLoad:
+					item_type = GetType(keyType)
+				
 			fileWrite.write(twoTab + item_type + GetTypeTab(item) + oneTab + datas[index] + ";"  + oneTab)
 			fileWrite.write("//" + comments[index] + "\n") 
 
@@ -866,7 +891,7 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css
 	fileWrite.write("{\n") 
 	fileWrite.write(oneTab + "struct " + g_configPrefix + filename + "\n") 
 	fileWrite.write(oneTab + "{\n") 
-	GenerateStructData(bServer , fileWrite , types , datas , comments , css)
+	GenerateStructData(bServer , fileWrite , types , datas , comments , css , True)
 	fileWrite.write(oneTab + "};\n\n\n") 
 			
 	#以下是生成导入数据接口
@@ -937,184 +962,7 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
 	for index , item in enumerate(types):
 		if not CheckCSType(css[index] , bServer):
 			continue
-		Str = GetTypeFunc(item)
-		if type(Str) != str :
-			if Str == g_int32ArrayFunc:
-				fileWrite.write(threeTab + "{\n") 
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
-				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((INT32)CUtil::atoi(vals[i].c_str()));\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-			elif Str == g_int64ArrayFunc:
-				fileWrite.write(threeTab + "{\n") 
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
-				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((INT64)CUtil::atoi(vals[i].c_str()));\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-			elif Str == g_boolArrayFunc:
-				fileWrite.write(threeTab + "{\n") 
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
-				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((bool)CUtil::atoi(vals[i].c_str()));\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-			elif Str == g_dateArrayFunc:
-				fileWrite.write(threeTab + "{\n") 
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
-				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back(Timer::Date(vals[i]));\n") 
-				#fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back(Timer::Date(vals[i], " + GetDateType(datas[index]) + "));\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-			elif Str == g_doubleArrayFunc:
-				fileWrite.write(threeTab + "{\n") 
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
-				fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((float)CUtil::atof(vals[i].c_str()));\n") 
-				fileWrite.write(threeTab + "}\n\n")
-			elif Str == g_stringArrayFunc:
-				fileWrite.write(threeTab + "{\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, conf." + datas[index] + ", \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-			elif Str == g_structFunc:
-				fileWrite.write(threeTab + "{\n") 
-
-				npos = datas[index].find('[')
-				structName = datas[index][0 : npos]
-				structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
-				childItems = item.split(',')
-
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + structName + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n")
-				fileWrite.write(fourTab + "{\n") 
-				for indexChild , childItem in enumerate(childItems):
-					fileWrite.write(fiveTab + "if(i == " + str(indexChild) + ")\n")
-					fileWrite.write(fiveTab + "{\n") 
-
-					childItemType = GetType(childItem)
-					if childItemType == g_boolType:
-						strVal = "bool val = "
-						strVal = strVal + "CUtil::strtobool(vals[i].c_str()) >= 1;"
-					elif childItemType == g_int32Type:
-						strVal = "INT32 val = "
-						strVal = strVal + "(INT32)CUtil::atoi(vals[i].c_str());"
-					elif childItemType == g_dateType:
-						strVal = "Timer::Date val(vals[i]);"
-					elif childItemType == g_int64Type:
-						strVal = "INT64 val = "
-						strVal = strVal + "(INT64)CUtil::atoi(vals[i].c_str());"
-					elif childItemType == g_doubleType:
-						strVal = "double val = "
-						strVal = strVal + "(float)CUtil::atof(vals[i].c_str());"
-					elif childItemType == g_stringType:
-						strVal = "std::string val = "
-						strVal = strVal + "vals[i].c_str();"
-					
-					fileWrite.write(sixTab + strVal + "\n") 
-					fileWrite.write(sixTab + "conf." + structName + "." + structDatas[indexChild] + " = val;\n") 
-
-					fileWrite.write(fiveTab + "}\n") 
-				fileWrite.write(fourTab + "}\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-
-			elif Str == g_structArrayFunc:		
-				fileWrite.write(threeTab + "{\n") 
-
-				npos = datas[index].find('[')
-				structName = datas[index][0 : npos]
-				structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
-				childItems = item.replace('[' , '').replace(']' , '').split(',')
-				
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + structName + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \"]\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n")
-				fileWrite.write(fourTab + "{\n") 
-				fileWrite.write(fiveTab + "std::string strVal = vals[i];\n") 
-				fileWrite.write(fiveTab + "if (strVal[0] == '[')\n") 
-				fileWrite.write(sixTab + "strVal.assign(vals[i], 1, vals[i].length() - 1);\n\n") 
-				fileWrite.write(fiveTab + g_configPrefix + filename + "::" + g_configPrefix + structName + "	" + "array;\n") 
-				fileWrite.write(fiveTab + "std::vector<std::string> vals2;\n") 
-				fileWrite.write(fiveTab + "CUtil::tokenize(strVal, vals2, \",\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fiveTab + "for (size_t j = 0; j < vals2.size(); ++j)\n") 
-				fileWrite.write(fiveTab + "{\n")
-				#childItems = re.split('(\[.*\])' , item)
-				for indexChild , childItem in enumerate(childItems):
-					fileWrite.write(sixTab + "if(j == " + str(indexChild) + ")\n")
-					fileWrite.write(sixTab + "{\n") 
-
-					childItemType = GetType(childItem)
-					if childItemType == g_boolType:
-						strVal = "bool val = "
-						strVal = strVal + "CUtil::strtobool(vals2[j].c_str()) >= 1;"
-					elif childItemType == g_int32Type:
-						strVal = "INT32 val = "
-						strVal = strVal + "(INT32)CUtil::atoi(vals2[j].c_str());"
-					elif childItemType == g_dateType:
-						strVal = "Timer::Date val(vals2[j]);"
-					elif childItemType == g_int64Type:
-						strVal = "INT64 val = "
-						strVal = strVal + "(INT64)CUtil::atoi(vals2[j].c_str());"
-					elif childItemType == g_doubleType:
-						strVal = "double val = "
-						strVal = strVal + "(float)CUtil::atof(vals2[j].c_str());"
-					elif childItemType == g_stringType:
-						strVal = "std::string val = "
-						strVal = strVal + "vals2[j].c_str();"
-					
-					fileWrite.write(sixTab + oneTab + strVal + "\n") 
-					fileWrite.write(sixTab + oneTab  + "array." + structDatas[indexChild] + " = val;\n") 
-
-					fileWrite.write(sixTab + "}\n") 
-				fileWrite.write(fiveTab + "}\n") 
-				fileWrite.write(fiveTab + "conf.vec" + structName + ".push_back(array);\n") 
-				fileWrite.write(fourTab + "}\n") 
-				fileWrite.write(threeTab + "}\n\n")				 
-			elif Str == g_mapFunc:
-				fileWrite.write(threeTab + "{\n") 
-				fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
-				fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
-				fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \"=\", \"\", \"\\\"\");\n") 
-				fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
-				mapType , keyType , valueType = GetMapType(item)
-				keyInput = "vals[0]"
-				valueInput = "vals[1]"
-				if keyType == g_boolType:
-					keyInput = "!!" + "CUtil::atoi(vals[0])"
-				if valueType == g_boolType:
-					valueInput = "!!" + "CUtil::atoi(vals[1])"
-				if keyType == g_int32Type:
-					keyInput = "(" + g_int32Type + ")CUtil::atoi(vals[0])"
-				if valueType == g_int32Type:
-					valueInput = "(" + g_int32Type + ")CUtil::atoi(vals[1])"
-				if keyType == g_int64Type:
-					keyInput = "(" + g_int64Type + ")CUtil::atoi(vals[0])"
-				if valueType == g_int64Type:
-					valueInput = "(" + g_int64Type + ")CUtil::atoi(vals[1])"
-				if keyType == g_doubleType:
-					keyInput = "(" + g_doubleType + ")CUtil::atof(vals[0])"
-				if valueType == g_doubleType:
-					valueInput = "(" + g_doubleType + ")CUtil::atof(vals[1])"
-				if keyType == g_dateType:
-					keyInput = "Timer::Date(vals[0])"
-				if valueType == g_dateType:
-					valueInput = "Timer::Date(vals[1])"
-				fileWrite.write(fiveTab + "conf." + datas[index] + ".insert(std::make_pair(" + keyInput + "," + valueInput + "));\n") 
-				fileWrite.write(threeTab + "}\n\n") 
-		else:
-			fileWrite.write(threeTab + "conf." + datas[index] + " = csv." + Str + "(row , index_" + datas[index] + ");\n") 
-			
+		GenerateLoadCppData(fileWrite , item , datas , index , filename)
 
 	fileWrite.write(threeTab + "m_vtConfigs.push_back(conf);\n") 
 	fileWrite.write(twoTab + "}\n\n") 
@@ -1130,6 +978,205 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
 	
 	fileWrite.close()	
 
+def GenerateLoadCppData(fileWrite , item , datas , index , filename):
+	Str = GetTypeFunc(item)
+	if type(Str) != str :
+		if Str == g_int32ArrayFunc:
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+			fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((INT32)CUtil::atoi(vals[i].c_str()));\n") 
+			fileWrite.write(threeTab + "}\n\n") 
+		elif Str == g_int64ArrayFunc:
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+			fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((INT64)CUtil::atoi(vals[i].c_str()));\n") 
+			fileWrite.write(threeTab + "}\n\n") 
+		elif Str == g_boolArrayFunc:
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+			fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((bool)CUtil::atoi(vals[i].c_str()));\n") 
+			fileWrite.write(threeTab + "}\n\n") 
+		elif Str == g_dateArrayFunc:
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+			fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back(Timer::Date(vals[i]));\n") 
+			#fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back(Timer::Date(vals[i], " + GetDateType(datas[index]) + "));\n") 
+			fileWrite.write(threeTab + "}\n\n") 
+		elif Str == g_doubleArrayFunc:
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+			fileWrite.write(fiveTab + "conf." + datas[index] + ".push_back((float)CUtil::atof(vals[i].c_str()));\n") 
+			fileWrite.write(threeTab + "}\n\n")
+		elif Str == g_stringArrayFunc:
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, conf." + datas[index] + ", \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(threeTab + "}\n\n") 
+		elif Str == g_structFunc:
+			fileWrite.write(threeTab + "{\n") 
+
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
+			childItems = item.split(',')
+
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + structName + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n")
+			fileWrite.write(fourTab + "{\n") 
+			for indexChild , childItem in enumerate(childItems):
+				fileWrite.write(fiveTab + "if(i == " + str(indexChild) + ")\n")
+				fileWrite.write(fiveTab + "{\n") 
+
+				strVal = GenerateStructDateByType(childItem , False)					
+				
+				fileWrite.write(sixTab + strVal + "\n") 
+				fileWrite.write(sixTab + "conf." + structName + "." + structDatas[indexChild] + " = val;\n") 
+
+				fileWrite.write(fiveTab + "}\n") 
+			fileWrite.write(fourTab + "}\n") 
+			fileWrite.write(threeTab + "}\n\n") 
+
+		elif Str == g_structArrayFunc:		
+			fileWrite.write(threeTab + "{\n") 
+
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
+			childItems = item.replace('[' , '').replace(']' , '').split(',')
+			
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + structName + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \"]\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n")
+			fileWrite.write(fourTab + "{\n") 
+			fileWrite.write(fiveTab + "std::string strVal = vals[i];\n") 
+			fileWrite.write(fiveTab + "if (strVal[0] == '[')\n") 
+			fileWrite.write(sixTab + "strVal.assign(vals[i], 1, vals[i].length() - 1);\n\n") 
+			fileWrite.write(fiveTab + g_configPrefix + filename + "::" + g_configPrefix + structName + "	" + "array;\n") 
+			fileWrite.write(fiveTab + "std::vector<std::string> vals2;\n") 
+			fileWrite.write(fiveTab + "CUtil::tokenize(strVal, vals2, \",\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fiveTab + "for (size_t j = 0; j < vals2.size(); ++j)\n") 
+			fileWrite.write(fiveTab + "{\n")
+			#childItems = re.split('(\[.*\])' , item)
+			for indexChild , childItem in enumerate(childItems):
+				fileWrite.write(sixTab + "if(j == " + str(indexChild) + ")\n")
+				fileWrite.write(sixTab + "{\n") 
+
+				strVal = GenerateStructDateByType(childItem , True)	
+				
+				fileWrite.write(sixTab + oneTab + strVal + "\n") 
+				fileWrite.write(sixTab + oneTab  + "array." + structDatas[indexChild] + " = val;\n") 
+
+				fileWrite.write(sixTab + "}\n") 
+			fileWrite.write(fiveTab + "}\n") 
+			fileWrite.write(fiveTab + "conf.vec" + structName + ".push_back(array);\n") 
+			fileWrite.write(fourTab + "}\n") 
+			fileWrite.write(threeTab + "}\n\n")				 
+		elif Str == g_mapFunc:
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::vector<std::string> vals;\n") 
+			fileWrite.write(fourTab + "std::string __tmp = csv.GetString(row, index_" + datas[index] + ");\n") 
+			fileWrite.write(fourTab + "CUtil::tokenize(__tmp, vals, \"=\", \"\", \"\\\"\");\n") 
+			fileWrite.write(fourTab + "for (size_t i = 0; i < vals.size(); ++i)\n") 
+			
+			mapType , keyType , valueType = GetMapType(item)
+			keyInput = GenerateMapDateByType(keyType , True)
+			valueInput = GenerateMapDateByType(valueType , False)
+			
+			fileWrite.write(fiveTab + "conf." + datas[index] + ".insert(std::make_pair(" + keyInput + "," + valueInput + "));\n") 
+			fileWrite.write(threeTab + "}\n\n") 
+		elif Str == g_configFunc:
+			tmp = collections.OrderedDict()
+			MakeDicKeyUpper(g_xlsRecords , tmp)
+			parentName = GetDicKeyByUpper(g_xlsRecords , item)
+			itemType , configKeyType , configValueType = GetConfigType(item)
+			
+			GenerateLoadCppData(fileWrite , configKeyType , datas , index , filename)
+	else:
+		fileWrite.write(threeTab + "conf." + datas[index] + " = csv." + Str + "(row , index_" + datas[index] + ");\n") 
+
+def GenerateMapDateByType(itemType , isKey):
+	keyWord = ""
+	result = ""
+	if isKey:
+		result = "vals[0]"
+		keyWord = "vals[0]"
+	else:
+		result = "vals[1]"
+		keyWord = "vals[1]"
+		
+	if itemType == g_boolType:
+		result = "!!" + "CUtil::atoi(" + keyWord + ")"
+	if itemType == g_int32Type:
+		result = "(" + g_int32Type + ")CUtil::atoi(" + keyWord + ")"
+	if itemType == g_int64Type:
+		result = "(" + g_int64Type + ")CUtil::atoi(" + keyWord + ")"
+	if itemType == g_doubleType:
+		result = "(" + g_doubleType + ")CUtil::atof(" + keyWord + ")"
+	if itemType == g_dateType:
+		result = "Timer::Date(" + keyWord + ")"
+	if itemType == g_configType:
+		tmp = collections.OrderedDict()
+		MakeDicKeyUpper(g_xlsRecords , tmp)
+		parentName = GetDicKeyByUpper(g_xlsRecords , item)
+		itemType , configKeyType , configValueType = GetConfigType(item)
+		
+		return GenerateMapDateByType(GetType(configKeyType) , isKey)
+		
+	return result
+	
+def GenerateStructDateByType(childItem , bArray):
+	strVal = ""
+	strVals = ""
+	if bArray == True:
+		strVals = "vals2[j]"
+	else:
+		strVals = "vals[i]"		
+	
+	childItemType = GetType(childItem)
+	if childItemType == g_boolType:
+		strVal = "bool val = "
+		strVal = strVal + "CUtil::strtobool(" + strVals + ".c_str()) >= 1;"
+	elif childItemType == g_int32Type:
+		strVal = "INT32 val = "
+		strVal = strVal + "(INT32)CUtil::atoi(" + strVals + ".c_str());"
+	elif childItemType == g_dateType:
+		strVal = "Timer::Date val(vals[i]);"
+	elif childItemType == g_int64Type:
+		strVal = "INT64 val = "
+		strVal = strVal + "(INT64)CUtil::atoi(" + strVals + ".c_str());"
+	elif childItemType == g_doubleType:
+		strVal = "double val = "
+		strVal = strVal + "(float)CUtil::atof(" + strVals + ".c_str());"
+	elif childItemType == g_stringType:
+		strVal = "std::string val = "
+		strVal = strVal + strVals + ".c_str();"
+	elif childItemType == g_configType:
+		tmp = collections.OrderedDict()
+		MakeDicKeyUpper(g_xlsRecords , tmp)
+		parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+		itemType , keyType , valueType = GetConfigType(childItem)
+		
+		return GenerateStructDateByType(keyType , bArray)
+		
+	return strVal
 def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".h"
 	if CheckNeedDelete(outputPath , types , datas ):
@@ -1149,13 +1196,26 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	fileWrite.write("#ifndef __" + g_xlsNamespace + "_" + filename + "_define_h__\n")
 	fileWrite.write("#define __" + g_xlsNamespace + "_" + filename +  "_define_h__\n") 
 	fileWrite.write("#include \"" + loadConfig + ".h\"\n") 
-	fileWrite.write("#include \"../Condition.h\"\n\n") 
+	fileWrite.write("#include \"../Condition.h\"\n") 
+
+	for index , item in enumerate(types):
+		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
+		if not CheckCSType(css[index] , bServer):
+			continue
+		item_type = GetType(item)
+		if item_type == g_configType:
+			tmp = collections.OrderedDict()
+			MakeDicKeyUpper(g_xlsRecords , tmp)
+			parentName = GetDicKeyByUpper(g_xlsRecords , item)
+
+			fileWrite.write("#include \"" + parentName + ".h\"\n\n") 
+
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n\n") 
 
 	fileWrite.write(oneTab + "struct " + dataConfig + "\n") 
 	fileWrite.write(oneTab + "{\n") 	 
-	GenerateStructData(bServer , fileWrite , types , datas , comments , css)
+	GenerateStructData(bServer , fileWrite , types , datas , comments , css , False)
 	fileWrite.write(oneTab + "};\n\n\n") 
 			
 	fileWrite.write(oneTab + "class " + filename + "\n") 
@@ -1165,13 +1225,13 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	fileWrite.write(twoTab + "typedef std_unordered_map<" + GetType(types[0]) + " , " + dataConfig + "> MapConfigsT;\n\n")
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + "bool" + fourTab + "LoadFrom(const std::string& filepath);\n")
-	fileWrite.write(twoTab + dataConfig + " *" + oneTab + "Get" + filename + "(INT32 nIndex);\n\n")
+	fileWrite.write(twoTab + dataConfig + " *" + oneTab + "Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id);\n\n")
 	GenerateConditionFunc(fileWrite , bServer , filename , types , datas , comments , css)
 	fileWrite.write(oneTab + "private:\n")
 	fileWrite.write(twoTab + "MapConfigsT m_mapConfigs;\n\n")
 	
 	fileWrite.write(oneTab + "};\n") 			
-	fileWrite.write(oneTab + "extern " + filename + " * g_p" + filename + ";\n") 
+	fileWrite.write(oneTab + "extern " + filename + " * " + g_globaleNamePrefix + filename + ";\n") 
 
 
 	fileWrite.write("}\n\n" + "#endif// end" + "  __" + g_xlsNamespace + "_" + filename + "_define_h__\n") 
@@ -1194,9 +1254,9 @@ def GenerateExpressionFuncName(bCPP , fileWrite , filename , index , expressions
 	objs = []
 	GetExpressionsObjects(expressions , objs)
 	if not bCPP:
-		fileWrite.write(twoTab + "bool" + fourTab + index + "(INT32 nIndex")
+		fileWrite.write(twoTab + "bool" + fourTab + index + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id")
 	else:
-		fileWrite.write(oneTab + "bool " + filename + "::" + index + "(INT32 nIndex")
+		fileWrite.write(oneTab + "bool " + filename + "::" + index + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id")
 		
 	for objIndex , obj in enumerate(objs):
 		if len(obj.name) > 0:
@@ -1243,7 +1303,7 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	fileWrite.write(twoTab + "for(size_t i = 0; i < loadConfig.Count(); ++i)\n") 
 	fileWrite.write(twoTab + "{\n") 
 	fileWrite.write(threeTab + g_xlsNamespace + "::" + g_configPrefix + loadConfig + "& config = loadConfig.Get(i);\n") 
-	fileWrite.write(threeTab + g_xlsNamespace + "::" + dataConfig + " data = {0};\n") 
+	fileWrite.write(threeTab + g_xlsNamespace + "::" + dataConfig + " data;\n") 
 	
 	for index , item in enumerate(types):
 		if not CheckCSType(css[index] , bServer):
@@ -1257,7 +1317,15 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 
 			fileWrite.write(threeTab + "{\n") 
 			for indexChild , childItem in enumerate(childItems):
-				fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + " = config." + structName + "." + structDatas[indexChild] + ";\n") 
+				childItem = RemoveSpecialWord(childItem)
+				if GetType(childItem) == g_configType:
+					tmp = collections.OrderedDict()
+					MakeDicKeyUpper(g_xlsRecords , tmp)
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+
+					fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + ".insert(std::make_pair(config." + structName + "." + structDatas[indexChild] + " , " + g_globaleNamePrefix + parentName + "->Get" + parentName + "(config." + structName + "." + structDatas[indexChild] + ")));\n") 
+				else:
+					fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + " = config." + structName + "." + structDatas[indexChild] + ";\n") 
 			fileWrite.write(threeTab + "}\n")
 
 		elif itemType == g_structArrayType:			
@@ -1273,10 +1341,24 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 			fileWrite.write(fourTab + "{\n") 
 			fileWrite.write(fiveTab + g_configPrefix + filename + "::" + g_configPrefix + structName + " array;\n")
 			for indexChild , childItem in enumerate(childItems):
-				fileWrite.write(fiveTab + "array." + structDatas[indexChild] + " = iter->" + structDatas[indexChild] + ";\n")
+				childItem = RemoveSpecialWord(childItem)
+				if GetType(childItem) == g_configType:
+					tmp = collections.OrderedDict()
+					MakeDicKeyUpper(g_xlsRecords , tmp)
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+
+					fileWrite.write(fiveTab + "array." + structDatas[indexChild] + ".insert(std::make_pair(iter->" + structDatas[indexChild] + " , " + g_globaleNamePrefix + parentName + "->Get" + parentName + "(iter->" + structDatas[indexChild] + ")));\n") 
+				else:
+					fileWrite.write(fiveTab + "array." + structDatas[indexChild] + " = iter->" + structDatas[indexChild] + ";\n")
 			fileWrite.write(fiveTab + "data.vec" + structName + ".push_back(array);\n")
 			fileWrite.write(fourTab + "}\n")
 			fileWrite.write(threeTab + "}\n")
+		elif itemType == g_configType:
+			tmp = collections.OrderedDict()
+			MakeDicKeyUpper(g_xlsRecords , tmp)
+			parentName = GetDicKeyByUpper(g_xlsRecords , item)
+
+			fileWrite.write(threeTab + "data." + datas[index] + ".insert(std::make_pair(config." + datas[index] + " , " + g_globaleNamePrefix + parentName + "->Get" + parentName + "(config." + datas[index] + ")));\n") 
 		else:
 			fileWrite.write(threeTab + "data." + datas[index] + " = config." + datas[index] + ";\n") 
 
@@ -1285,12 +1367,12 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	fileWrite.write(twoTab + "return true;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 			
-	fileWrite.write(oneTab + dataConfig + " * " + filename + "::Get" + filename + "(INT32 nIndex)\n")
+	fileWrite.write(oneTab + dataConfig + " * " + filename + "::Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id)\n")
 	fileWrite.write(oneTab + "{\n") 
-	fileWrite.write(twoTab + "MapConfigsT::iterator iter = m_mapConfigs.find(nIndex);\n") 
+	fileWrite.write(twoTab + "MapConfigsT::iterator iter = m_mapConfigs.find(id);\n") 
 	fileWrite.write(twoTab + "if(iter == m_mapConfigs.end())\n") 
 	fileWrite.write(twoTab + "{\n") 
-	fileWrite.write(threeTab + "gWarniStream( \"" + filename + "::Get" + filename + " NotFound \" << nIndex);\n") 
+	fileWrite.write(threeTab + "gWarniStream( \"" + filename + "::Get" + filename + " NotFound \" << id);\n") 
 	fileWrite.write(threeTab + "return NULL;\n") 
 	fileWrite.write(twoTab + "}\n\n") 
 	fileWrite.write(twoTab + "return &iter->second;\n") 
@@ -1298,7 +1380,7 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 
 	GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , comments , css)
 
-	fileWrite.write(oneTab + filename + " * g_p" + filename + " = NULL;\n") 
+	fileWrite.write(oneTab + filename + " * " + g_globaleNamePrefix + filename + " = NULL;\n") 
 	fileWrite.write("}\n\n") 
 	
 	fileWrite.close()
@@ -1314,9 +1396,9 @@ def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , co
 			GenerateExpressionFuncName(True , fileWrite , filename , index , expressions)
 
 			fileWrite.write(oneTab + "{\n")
-			fileWrite.write(twoTab + "if (Get" + filename +"(nIndex) == NULL)\n")
+			fileWrite.write(twoTab + "if (Get" + filename +"(id) == NULL)\n")
 			fileWrite.write(twoTab + "{\n")
-			fileWrite.write(threeTab + "gErrorStream(\"RunUse error. " + filename + "  no this id.id=\" << nIndex);\n")
+			fileWrite.write(threeTab + "gErrorStream(\"RunUse error. " + filename + "  no this id.id=\" << id);\n")
 			fileWrite.write(threeTab + "return false;\n")
 			fileWrite.write(twoTab + "}\n\n")
 
@@ -1426,18 +1508,18 @@ def GenerateConfigManagerCPP(bServer):
 	fileWrite.write(oneTab + "{\n") 
 	for sheet , item in g_xlsRecords.items():
 		if sheet in g_xlsDeleteRecord:
-			fileWrite.write("// " + twoTab + "g_p" + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
+			fileWrite.write("// " + twoTab + g_globaleNamePrefix + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
 		else:
-			fileWrite.write(twoTab + "g_p" + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
+			fileWrite.write(twoTab + g_globaleNamePrefix + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 	
 	fileWrite.write(oneTab + "ConfigManager::~ConfigManager()\n") 
 	fileWrite.write(oneTab + "{\n") 
 	for sheet , item in g_xlsRecords.items():
 		if sheet in g_xlsDeleteRecord:
-			fileWrite.write("// " + twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  "g_p" + sheet + ");\n") 
+			fileWrite.write("// " + twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
 		else:
-			fileWrite.write(twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  "g_p" + sheet + ");\n") 
+			fileWrite.write(twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 
 	fileWrite.write(oneTab + "ConfigManager & ConfigManager::GetInstance()\n") 
@@ -1455,11 +1537,11 @@ def GenerateConfigManagerCPP(bServer):
 	fileWrite.write(twoTab + "}\n\n") 
 	for sheet , item in g_xlsRecords.items():
 		if sheet in g_xlsDeleteRecord:
-			fileWrite.write("// " + twoTab + "MsgAssert_ReF1(" + g_xlsNamespace + "::" +  "g_p" + sheet + " , \"ConfigManager not Init\")\n") 
-			fileWrite.write("// " + twoTab + "" + g_xlsNamespace + "::" +  "g_p" + sheet + "->LoadFrom(strCsvPath + \"" + sheet + ".tabcsv\");\n\n") 
+			fileWrite.write("// " + twoTab + "MsgAssert_ReF1(" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + " , \"ConfigManager not Init\")\n") 
+			fileWrite.write("// " + twoTab + "" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + "->LoadFrom(strCsvPath + \"" + sheet + ".tabcsv\");\n\n") 
 		else:
-			fileWrite.write(twoTab + "MsgAssert_ReF1(" + g_xlsNamespace + "::" +  "g_p" + sheet + " , \"ConfigManager not Init\")\n") 
-			fileWrite.write(twoTab + "" + g_xlsNamespace + "::" +  "g_p" + sheet + "->LoadFrom(strCsvPath + \"" + sheet + ".tabcsv\");\n\n") 
+			fileWrite.write(twoTab + "MsgAssert_ReF1(" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + " , \"ConfigManager not Init\")\n") 
+			fileWrite.write(twoTab + "" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + "->LoadFrom(strCsvPath + \"" + sheet + ".tabcsv\");\n\n") 
 	fileWrite.write(twoTab + "return 0;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 
@@ -1484,8 +1566,22 @@ def RemovListNewLine(List):
 	for index , item2 in enumerate(List):
 		List[index] = RemoveNewLine(item2)
 
+def GetConfigType(item):
+	tmp = collections.OrderedDict()
+	MakeDicKeyUpper(g_xlsRecords , tmp)
+
+	parentName = GetDicKeyByUpper(g_xlsRecords , item)
+	parentType = g_xlsRecords[parentName][g_rowType][g_cellID] 
+	valueType = g_configPrefix + parentName + " *"
+	return g_configTypePrefix + GetType(parentType) + " , " + valueType + ">" , parentType , valueType
+
 def GetType(item):
-	if  item.lower() == "int".lower() or\
+	tmp = collections.OrderedDict()
+	MakeDicKeyUpper(g_xlsRecords , tmp)
+	
+	if item.upper() in tmp:
+		return g_configType	
+	elif  item.lower() == "int".lower() or\
 		item.lower() == "int32".lower():
 		return g_int32Type
 	elif item.lower() == "int64".lower() or\
@@ -1552,7 +1648,12 @@ def GetType(item):
 	return "None"
 
 def GetTypeFunc(item):
-	if  item.lower() == "int".lower() or\
+	tmp = collections.OrderedDict()
+	MakeDicKeyUpper(g_xlsRecords , tmp)
+	
+	if item.upper() in tmp:
+		return g_configFunc
+	elif  item.lower() == "int".lower() or\
 		item.lower() == "int32".lower():
 		return g_int32Func
 	elif item.lower() == "int64".lower() or\
@@ -1619,10 +1720,23 @@ def GetMapType(item):
 		item = RemoveSpecialWord(item)
 		childItems = item.split('<')[1].rstrip('>').split(',')
 		keyType = GetType(RemoveSpecialWord(childItems[0]))
+		if keyType == g_configType:
+			parentName = GetDicKeyByUpper(g_xlsRecords , childItems[0])
+			parentType = g_xlsRecords[parentName][g_rowType][g_cellID]
+			keyType = GetType(parentType)
 		valueType = GetType(RemoveSpecialWord(childItems[1]))
+		if valueType == g_configType:
+			parentName = GetDicKeyByUpper(g_xlsRecords , childItems[1])
+			parentType = g_xlsRecords[parentName][g_rowType][g_cellID]
+			valueType = GetType(parentType)
 		return "std::map<"+ keyType + " , " + valueType + ">" , keyType , valueType
 		
 def GetTypeTab(item):
+	tmp = collections.OrderedDict()
+	MakeDicKeyUpper(g_xlsRecords , tmp)
+	
+	if item.upper() in tmp:
+		return oneTab	
 	if  item.lower() == "int".lower() or\
 		item.lower() == "int32".lower():
 		return sixTab
@@ -1728,7 +1842,7 @@ def CheckDataArray(colItem):
 	#LogOutInfo("pp " , pp) 
 	return pp
 
-def CheckDataType(item_type , sheet , row , col , colItem):	
+def CheckDataType(item_type , sheet , row , col , colItem , childIndex):	
 	if item_type == g_boolType:
 		item = RemoveSpecialWord(colItem)
 		if item.lower() == "true".lower() or\
@@ -1806,6 +1920,18 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_stringArrayType:
 		pass
+	elif item_type == g_configType:
+		name = g_xlsRecords[sheet][g_rowType][col]
+
+		if GetType(name) == g_structType or GetType(name) == g_structArrayType:
+			name = RemoveSpecialWord(name)			
+			itemContent = name.split(',')		
+			name = itemContent[childIndex]
+
+		parentName = GetDicKeyByUpper(g_xlsRecords , name)
+		#LogOutDebug("name:" , name , "sheet:" , sheet , "parentName:" , parentName)
+		parentType = g_xlsRecords[parentName][g_rowType][g_cellID]
+		return CheckDataType(parentType , sheet , row , col , colItem , childIndex)
 	elif item_type == g_conditionType:
 		item = RemoveSpecialWord(colItem)
 		if item.index("(") >= 0 or item.index(")") >= 0 or item.index("|") >= 0:	
@@ -1829,7 +1955,7 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 			#LogOutDebug(" childItem" , childItem)
 			childType = GetTypeByIndex(g_xlsRecords[sheet][g_rowType][col] , childIndex)
 			#LogOutDebug("childType" , childType , " childItem" , childItem)
-			childItem = CheckDataType(childType , sheet , -1 , col , childItem)
+			childItem = CheckDataType(childType , sheet , -1 , col , childItem , childIndex)
 			itemContent = itemContent + childItem
 			if len(childItems) - 1 != childIndex:
 				itemContent = itemContent + ","
@@ -1851,7 +1977,7 @@ def CheckDataType(item_type , sheet , row , col , colItem):
 				if len(childItem) > 0:
 					#LogOutDebug("itemContent:" , itemContent , "childIndex" , childIndex , "size=" , len(childItems) , "childItems" , childItems , "colItem:" , colItem)
 					childItem = childItem.replace('[' , '').replace(']' , '').strip().rstrip().lstrip()
-					childItem = CheckDataType(g_structType , sheet , -1 , col , childItem)
+					childItem = CheckDataType(g_structType , sheet , -1 , col , childItem , -1)
 					itemContent = itemContent + childItem
 
 			g_xlsRecords[sheet][row][col] = itemContent
@@ -1898,7 +2024,12 @@ def MakeTitle(types , datas ):
 			if len(childItems) != len(structDatas):
 				LogOutError("parase struct error.invalid size.index=" , index , " . name=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , "size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
-				Str = Str + GetType(childItem) + " " + structDatas[indexChild]  + ";"
+				childType = GetType(childItem)
+				if childType == g_configType:
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+					childType , keyType , valueType  = GetConfigType(parentName)
+
+				Str = Str + childType + " " + structDatas[indexChild]  + ";"
 		elif item_type == g_structArrayType:
 			npos = datas[index].find('[')
 			structName = datas[index][0 : npos]
@@ -1910,8 +2041,17 @@ def MakeTitle(types , datas ):
 			if len(childItems) != len(structDatas):
 				LogOutError("parase struct error.invalid size.index=" , index , " . name=" , structName , ":childItems " , childItems , "size=" , len(childItems) , ":structDatas " , structDatas , "size=" , len(structDatas))
 			for indexChild , childItem in enumerate(childItems):
-				Str = Str + GetType(childItem) + " " + structDatas[indexChild]  + ";"
+				childType = GetType(childItem)
+				if childType == g_configType:
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+					childType , keyType , valueType  = GetConfigType(parentName)
+				Str = Str + childType + " " + structDatas[indexChild]  + ";"		
 		else:
+			if item_type == g_configType:
+				tmp = collections.OrderedDict()
+				MakeDicKeyUpper(g_xlsRecords , tmp)
+				item_type = GetDicKeyByUpper(g_xlsRecords , item)		
+				#item_type , keyType , valueType = GetConfigType(item)
 			Str = Str + item_type + " " + datas[index]   + ";"
 	Str += "\n"
 	return Str

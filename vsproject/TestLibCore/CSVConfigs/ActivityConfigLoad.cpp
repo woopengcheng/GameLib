@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-03 20:12:41
+Date		:	2016-04-04 17:44:53
 Description	:	csv读取文件实现
 ************************************/
 #include "ActivityConfigLoad.h"
@@ -67,17 +67,32 @@ namespace Config
 		size_t index_testdate = csv.GetIndex("testdate", 2);
 		MsgAssert_Re0(index_testdate != (size_t)-1 , "error testdate");
 
-		size_t index_testDateStruct = csv.GetIndex("testDateStruct[begin,end]", 2);
-		MsgAssert_Re0(index_testDateStruct != (size_t)-1 , "error testDateStruct[begin,end]");
+		size_t index_testDateStruct = csv.GetIndex("testDateStruct[begin,end,actionConfig]", 2);
+		MsgAssert_Re0(index_testDateStruct != (size_t)-1 , "error testDateStruct[begin,end,actionConfig]");
 
 		size_t index_dateArray = csv.GetIndex("dateArray", 2);
 		MsgAssert_Re0(index_dateArray != (size_t)-1 , "error dateArray");
+
+		size_t index_testConfig = csv.GetIndex("testConfig", 2);
+		MsgAssert_Re0(index_testConfig != (size_t)-1 , "error testConfig");
+
+		size_t index_testConfig2 = csv.GetIndex("testConfig2", 2);
+		MsgAssert_Re0(index_testConfig2 != (size_t)-1 , "error testConfig2");
+
+		size_t index_dateCommon = csv.GetIndex("dateCommon", 2);
+		MsgAssert_Re0(index_dateCommon != (size_t)-1 , "error dateCommon");
+
+		size_t index_TestStructArray = csv.GetIndex("TestStructArray[test1,test2,test3,test4,test5,test6]", 2);
+		MsgAssert_Re0(index_TestStructArray != (size_t)-1 , "error TestStructArray[test1,test2,test3,test4,test5,test6]");
+
+		size_t index_TestStruct = csv.GetIndex("TestStruct[test1,test2,test3,test4,test6,test7]", 2);
+		MsgAssert_Re0(index_TestStruct != (size_t)-1 , "error TestStruct[test1,test2,test3,test4,test6,test7]");
 
 		for (size_t row = 4; row < csv.Count(); ++row)
 		{
 			SActivityConfigLoad conf;
 
-			conf.ActivityId = csv.GetInt32(row , index_ActivityId);
+			conf.ActivityId = csv.GetString(row , index_ActivityId);
 			conf.ActivityName = csv.GetString(row , index_ActivityName);
 			conf.ActivityLevelHigh = csv.GetInt32(row , index_ActivityLevelHigh);
 			conf.IsShowEntrance = csv.GetBool(row , index_IsShowEntrance);
@@ -117,6 +132,11 @@ namespace Config
 						Timer::Date val(vals[i]);
 						conf.testDateStruct.end = val;
 					}
+					if(i == 2)
+					{
+						INT64 val = (INT64)CUtil::atoi(vals[i].c_str());
+						conf.testDateStruct.actionConfig = val;
+					}
 				}
 			}
 
@@ -126,6 +146,105 @@ namespace Config
 				CUtil::tokenize(__tmp, vals, ",", "", "\"");
 				for (size_t i = 0; i < vals.size(); ++i)
 					conf.dateArray.push_back(Timer::Date(vals[i]));
+			}
+
+			conf.testConfig = csv.GetInt64(row , index_testConfig);
+			conf.testConfig2 = csv.GetInt64(row , index_testConfig2);
+			{
+				std::vector<std::string> vals;
+				std::string __tmp = csv.GetString(row, index_dateCommon);
+				CUtil::tokenize(__tmp, vals, "=", "", "\"");
+				for (size_t i = 0; i < vals.size(); ++i)
+					conf.dateCommon.insert(std::make_pair(vals[0],(INT64)CUtil::atoi(vals[1])));
+			}
+
+			{
+				std::vector<std::string> vals;
+				std::string __tmp = csv.GetString(row, index_TestStructArray);
+				CUtil::tokenize(__tmp, vals, "]", "", "\"");
+				for (size_t i = 0; i < vals.size(); ++i)
+				{
+					std::string strVal = vals[i];
+					if (strVal[0] == '[')
+						strVal.assign(vals[i], 1, vals[i].length() - 1);
+
+					SActivityConfigLoad::STestStructArray	array;
+					std::vector<std::string> vals2;
+					CUtil::tokenize(strVal, vals2, ",", "", "\"");
+					for (size_t j = 0; j < vals2.size(); ++j)
+					{
+						if(j == 0)
+						{
+							bool val = CUtil::strtobool(vals2[j].c_str()) >= 1;
+							array.test1 = val;
+						}
+						if(j == 1)
+						{
+							INT64 val = (INT64)CUtil::atoi(vals2[j].c_str());
+							array.test2 = val;
+						}
+						if(j == 2)
+						{
+							double val = (float)CUtil::atof(vals2[j].c_str());
+							array.test3 = val;
+						}
+						if(j == 3)
+						{
+							INT32 val = (INT32)CUtil::atoi(vals2[j].c_str());
+							array.test4 = val;
+						}
+						if(j == 4)
+						{
+							std::string val = vals2[j].c_str();
+							array.test5 = val;
+						}
+						if(j == 5)
+						{
+							INT64 val = (INT64)CUtil::atoi(vals2[j].c_str());
+							array.test6 = val;
+						}
+					}
+					conf.vecTestStructArray.push_back(array);
+				}
+			}
+
+			{
+				std::vector<std::string> vals;
+				std::string __tmp = csv.GetString(row, index_TestStruct);
+				CUtil::tokenize(__tmp, vals, ",", "", "\"");
+				for (size_t i = 0; i < vals.size(); ++i)
+				{
+					if(i == 0)
+					{
+						bool val = CUtil::strtobool(vals[i].c_str()) >= 1;
+						conf.TestStruct.test1 = val;
+					}
+					if(i == 1)
+					{
+						INT64 val = (INT64)CUtil::atoi(vals[i].c_str());
+						conf.TestStruct.test2 = val;
+					}
+					if(i == 2)
+					{
+						double val = (float)CUtil::atof(vals[i].c_str());
+						conf.TestStruct.test3 = val;
+					}
+					if(i == 3)
+					{
+						INT32 val = (INT32)CUtil::atoi(vals[i].c_str());
+						conf.TestStruct.test4 = val;
+					}
+					if(i == 4)
+					{
+						std::string val = vals[i].c_str();
+						conf.TestStruct.test6 = val;
+					}
+					if(i == 5)
+					{
+						INT64 val = (INT64)CUtil::atoi(vals[i].c_str());
+						conf.TestStruct.test7 = val;
+					}
+				}
 			}
 
 			m_vtConfigs.push_back(conf);

@@ -1,24 +1,27 @@
-﻿// attention dont't change this line:INT32 ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std::vector<Timer::Date> dateArray;
+﻿// attention dont't change this line:std::string ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std_unordered_map<INT64 , SActionConfig *> actionConfig;std::vector<Timer::Date> dateArray;ActionConfig testConfig;ActionConfig testConfig2;std::map<std::string , INT64> dateCommon;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std::string test5;std_unordered_map<INT64 , SActionConfig *> test6;TestStructbool test1;INT64 test2;double test3;INT32 test4;std::string test6;std_unordered_map<INT64 , SActionConfig *> test7;
 /************************************
 FileName	:	ActivityConfig.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-03 20:12:41
+Date		:	2016-04-04 17:44:53
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config_ActivityConfig_define_h__
 #define __Config_ActivityConfig_define_h__
 #include "ActivityConfigLoad.h"
 #include "../Condition.h"
+#include "ActionConfig.h"
+
+#include "ActionConfig.h"
 
 namespace Config
 {
 
 	struct SActivityConfig
 	{
-		INT32							ActivityId;	//活动id
+		std::string						ActivityId;	//活动id
 		std::string						ActivityName;	//活动名称
 		INT32							ActivityLevelHigh;	//显示等级上限，超过等级（不包括自身）不显示
 		bool							IsShowEntrance;	//是否显示入口图标，入口图标和界面图标是互斥的；入口图标的形式适合单独放在外面的活动，界面图标就是通用活动中的图标
@@ -40,23 +43,50 @@ namespace Config
 		{
 			Timer::Date					begin;
 			Timer::Date					end;
+			std_unordered_map<INT64 , SActionConfig *>	actionConfig;
 		}testDateStruct;
 		std::vector<Timer::Date>			dateArray;	//根据某些condition执行某些action;目前不支持括号和或.全部用&&(与)和!(非)表示满足一个条件可以执行多个action.可以写在一行(支持多个),或者多行.需要保证一个condition和至少一个action.如果没有也没啥.Action:调用玩家的或者帮会等的函数接口.
+		std_unordered_map<INT64 , SActionConfig *>		testConfig;	//测试时间
+		std_unordered_map<INT64 , SActionConfig *>		testConfig2;	//测试时间结构体.比如说活动开启结束时间
+		std::map<std::string , INT64>		dateCommon;	//测试时间数组
+
+		//嵌套表使用
+		struct STestStructArray
+		{
+			bool						test1;
+			INT64						test2;
+			double						test3;
+			INT32						test4;
+			std::string					test5;
+			std_unordered_map<INT64 , SActionConfig *>	test6;
+		};
+		std::vector<STestStructArray>		vecTestStructArray;
+
+		//嵌套表使用
+		struct STestStruct
+		{
+			bool						test1;
+			INT64						test2;
+			double						test3;
+			INT32						test4;
+			std::string					test6;
+			std_unordered_map<INT64 , SActionConfig *>	test7;
+		}TestStruct;
 	};
 
 
 	class ActivityConfig
 	{
 	public:
-		typedef std_unordered_map<INT32 , SActivityConfig> MapConfigsT;
+		typedef std_unordered_map<std::string , SActivityConfig> MapConfigsT;
 
 	public:
 		bool				LoadFrom(const std::string& filepath);
-		SActivityConfig *	GetActivityConfig(INT32 nIndex);
+		SActivityConfig *	GetActivityConfig(std::string id);
 
 	public:
-		bool				RunUse(INT32 nIndex , CUtil::Player * pPlayer = NULL , CUtil::League * pLeague = NULL , CUtil::Team * pTeam = NULL);
-		bool				RunUse1(INT32 nIndex , CUtil::Player * pPlayer = NULL , CUtil::League * pLeague = NULL , CUtil::Team * pTeam = NULL);
+		bool				RunUse(std::string id , CUtil::Player * pPlayer = NULL , CUtil::League * pLeague = NULL , CUtil::Team * pTeam = NULL);
+		bool				RunUse1(std::string id , CUtil::Player * pPlayer = NULL , CUtil::League * pLeague = NULL , CUtil::Team * pTeam = NULL);
 
 
 	private:

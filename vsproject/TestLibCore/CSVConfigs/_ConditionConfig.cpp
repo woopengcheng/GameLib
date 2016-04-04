@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-03 20:12:41
+Date		:	2016-04-04 17:44:53
 Description	:	csv读取数据文件实现
 ************************************/
 #include "_ConditionConfig.h"
@@ -21,7 +21,7 @@ namespace Config
 		for(size_t i = 0; i < loadConfig.Count(); ++i)
 		{
 			Config::S_ConditionConfigLoad& config = loadConfig.Get(i);
-			Config::S_ConditionConfig data = {0};
+			Config::S_ConditionConfig data;
 			data.nConditionID = config.nConditionID;
 			data.strServerCondition = config.strServerCondition;
 			data.strServerAction = config.strServerAction;
@@ -32,12 +32,12 @@ namespace Config
 		return true;
 	}
 
-	S_ConditionConfig * _ConditionConfig::Get_ConditionConfig(INT32 nIndex)
+	S_ConditionConfig * _ConditionConfig::Get_ConditionConfig(INT32 id)
 	{
-		MapConfigsT::iterator iter = m_mapConfigs.find(nIndex);
+		MapConfigsT::iterator iter = m_mapConfigs.find(id);
 		if(iter == m_mapConfigs.end())
 		{
-			gWarniStream( "_ConditionConfig::Get_ConditionConfig NotFound " << nIndex);
+			gWarniStream( "_ConditionConfig::Get_ConditionConfig NotFound " << id);
 			return NULL;
 		}
 

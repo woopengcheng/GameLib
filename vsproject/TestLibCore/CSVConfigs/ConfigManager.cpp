@@ -4,13 +4,13 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-03 20:05:15
+Date		:	2016-04-04 17:44:53
 Description	:	ConfigManager数据管理文件实现
 ************************************/
 #include "ConfigManager.h"
 #include "LogLib/inc/Log.h"
-#include "ActivityConfig.h"
 #include "ActionConfig.h"
+#include "ActivityConfig.h"
 #include "_ConditionConfig.h"
 #include "_CommonData.h"
 	
@@ -19,16 +19,16 @@ namespace Config
 {
 	ConfigManager::ConfigManager()
 	{
- 		g_pActivityConfig = new Config::ActivityConfig;
 		g_pActionConfig = new Config::ActionConfig;
+		g_pActivityConfig = new Config::ActivityConfig;
 // 		g_p_ConditionConfig = new Config::_ConditionConfig;
 		g_p_CommonData = new Config::_CommonData;
 	}
 
 	ConfigManager::~ConfigManager()
 	{
- 		SAFE_DELETE(Config::g_pActivityConfig);
 		SAFE_DELETE(Config::g_pActionConfig);
+		SAFE_DELETE(Config::g_pActivityConfig);
 // 		SAFE_DELETE(Config::g_p_ConditionConfig);
 		SAFE_DELETE(Config::g_p_CommonData);
 	}
@@ -48,11 +48,11 @@ namespace Config
 			strCsvPath = strCsvPath + "/";
 		}
 
-		MsgAssert_ReF1(Config::g_pActivityConfig , "ConfigManager not Init")
-		Config::g_pActivityConfig->LoadFrom(strCsvPath + "ActivityConfig.tabcsv");
-
 		MsgAssert_ReF1(Config::g_pActionConfig , "ConfigManager not Init")
 		Config::g_pActionConfig->LoadFrom(strCsvPath + "ActionConfig.tabcsv");
+
+		MsgAssert_ReF1(Config::g_pActivityConfig , "ConfigManager not Init")
+		Config::g_pActivityConfig->LoadFrom(strCsvPath + "ActivityConfig.tabcsv");
 
 // 		MsgAssert_ReF1(Config::g_p_ConditionConfig , "ConfigManager not Init")
 // 		Config::g_p_ConditionConfig->LoadFrom(strCsvPath + "_ConditionConfig.tabcsv");
@@ -65,10 +65,6 @@ namespace Config
 
 	INT32 ConfigManager::Cleanup()
 	{
-		static CUtil::Player p1;
-		static CUtil::League p2;
-		static CUtil::Team p3;
-		g_pActivityConfig->RunUse(1, &p1, &p2, &p3);
 		return -1;
 	}
 

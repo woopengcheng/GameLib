@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-03 20:12:41
+Date		:	2016-04-04 17:44:53
 Description	:	csv读取数据文件实现
 ************************************/
 #include "_CommonData.h"
@@ -21,7 +21,7 @@ namespace Config
 		for(size_t i = 0; i < loadConfig.Count(); ++i)
 		{
 			Config::S_CommonDataLoad& config = loadConfig.Get(i);
-			Config::S_CommonData data = {0};
+			Config::S_CommonData data;
 			data.id = config.id;
 			data.boolCommon = config.boolCommon;
 			data.boolCommon2 = config.boolCommon2;
@@ -35,12 +35,12 @@ namespace Config
 		return true;
 	}
 
-	S_CommonData * _CommonData::Get_CommonData(INT32 nIndex)
+	S_CommonData * _CommonData::Get_CommonData(INT32 id)
 	{
-		MapConfigsT::iterator iter = m_mapConfigs.find(nIndex);
+		MapConfigsT::iterator iter = m_mapConfigs.find(id);
 		if(iter == m_mapConfigs.end())
 		{
-			gWarniStream( "_CommonData::Get_CommonData NotFound " << nIndex);
+			gWarniStream( "_CommonData::Get_CommonData NotFound " << id);
 			return NULL;
 		}
 

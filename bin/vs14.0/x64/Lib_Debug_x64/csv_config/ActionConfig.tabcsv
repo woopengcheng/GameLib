@@ -1,5 +1,5 @@
 ﻿"轨迹ID"	"生效场景--不配表示所有场景中生效--否则仅在配置场景中生效"	"循环方式"	"界面中图标"	"属性修改值"	"起始点"	"备注1"	"坐标系"	"结构体"	"结构体数组"
-"int"	"int[]"	"string"	"string[]"	"float"	"float[]"	"long"	"bool"	"bool,long,float,int,string"	"[bool,long,float,int,string]"
+"int64"	"int[]"	"string"	"string[]"	"float"	"float[]"	"long"	"bool"	"bool,long,float,int,string"	"[bool,long,float,int,string]"
 "curve_id"	"validStages"	"wrapMode"	"InterfaceIcon"	"attr_mod_val"	"start_x"	"col_1"	"isLocal"	"TestStruct[test1,test2,test3,test4,test6]"	"TestStructArray[test1,test2,test3,test4,test5]"
 "sc"	"s"	"s"	"cs"	"cs"	"cs"	"cs"	"s"	"cs"	"cs"
 "1"	"2003,2005,2006"	"once"	"act_image,molong"	"25.5"	"9.76649,8.890732,-16.13906"	"410"	"True"	"True,123,123.2,1231,asdf"	"[True,123,123.2,1231,1zxcv][0,123,123.2,1232,1zxcv]"
