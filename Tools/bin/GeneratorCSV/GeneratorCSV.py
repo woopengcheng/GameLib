@@ -1919,7 +1919,7 @@ def CheckDataType(item_type , sheet , row , col , colItem , childIndex):
 	elif item_type == g_dateArrayType:
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_stringArrayType:
-		pass
+		return item
 	elif item_type == g_configType:
 		name = g_xlsRecords[sheet][g_rowType][col]
 
