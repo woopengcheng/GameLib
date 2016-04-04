@@ -20,6 +20,8 @@ from openpyxl import Workbook
 from openpyxl.compat import range
 from openpyxl.cell import get_column_letter
 from openpyxl import load_workbook
+from openpyxl.writer.excel import ExcelWriter 
+from openpyxl.worksheet.hyperlink import Hyperlink
 
 from xml.dom import minidom , Node 
 
@@ -65,6 +67,7 @@ g_globalFuncName = "Global"
 g_xlsDeleteRecord = []
 g_xlsRecords = collections.OrderedDict()
 g_xlsConditionRecords = collections.OrderedDict()
+g_xlsFilePath = collections.OrderedDict()
 	
 g_commonDatas = collections.OrderedDict()  # 这里用来记录所有的共有变量的值
 g_repeatServerCommonDatas = []  # 这里用来记录所有的共有变量重复的值,防止在条件表达式中写错.
@@ -218,12 +221,80 @@ def start():
 	DeleteExportPathFiles() 
 	CreateExportPathFiles()
 	GenerateCSVFromXLS()
-	LogOutInfo("generate CSV finished.\n") 
+	#CheckXLS()
+	LogOutInfo("generate CSV finished.\n") 		
+	HandleConditionConfig()
+	HandleCommondataConfig()
+	HandleSheetCondition()
+	CheckRepeatCommonData()
 			
 	LogOutInfo("start generate CPP.\n")   	
 	GenerateCPP()
 	LogOutInfo("generate CPP finished.\n") 
 
+def CheckXLS():
+	root = g_xlsImportPath
+	files = []
+	Search(root , '.xlsx' , files)
+	for filepath in files:
+		HyperLinkXLS(filepath)
+
+def HyperLinkXLS(filepath):
+	dirout = g_xlsExportCSVPath
+	dirout = dirout + os.sep  #新路径名称
+
+	filename = os.path.basename(filepath) #获取文件名
+	filename = os.path.splitext(filename.replace(' ', '_'))[0]
+
+	bWrite = False
+	xlsx_file = load_workbook(filepath , False , False , False , False , False )
+	writeWB = ExcelWriter(xlsx_file)
+	for sheet in xlsx_file.get_sheet_names():		
+		cur_real_row_index = -1
+		sheet_ranges = xlsx_file[sheet]
+		for row in sheet_ranges.rows:
+			cur_real_row_index += 1
+
+			cur_real_cell_index = -1
+			for cell in row:
+				if cur_real_row_index != g_rowComent:
+					break
+				cur_real_cell_index = cur_real_cell_index + 1
+				
+				hyperLink = ""				
+				item = sheet_ranges.rows[g_rowType][cur_real_cell_index].value
+				#LogOutDebug("filename:" , filename , " cur_cell_index:" , cur_cell_index , " len:" , len(g_xlsRecords[filename][g_rowType]))
+				#LogOutDebug("item:" , item )
+				colType = GetType(item)
+				if colType == g_configType:
+					hyperLink = GetDicKeyByUpper(g_xlsRecords , item) # 找绝对路径.
+				elif colType == g_structType or colType == g_structArrayType:
+					item = RemoveSpecialWord(item)
+					childItems = item.split(',')
+					for indexChild , childItem in enumerate(childItems):
+						childType = GetType(childItem)
+						if childType == g_configType:
+							hyperLink = GetDicKeyByUpper(g_xlsRecords , childItem) # 找绝对路径.
+							break
+				elif colType.find(g_mapType) >= 0:
+					mapType , keyName , valueName = GetMapType(item , False)
+					if GetType(keyName) == g_configType:
+						hyperLink = keyName
+					elif GetType(valueName) == g_configType:
+						hyperLink = valueName
+
+				if len(hyperLink) > 0:
+					bWrite = True
+					LogOutDebug("hyperLink:" , hyperLink)
+					sheet_ranges.rows[g_rowComent][cur_real_cell_index].hyperlink = g_xlsFilePath[hyperLink]
+					#sheet_ranges.rows[g_rowComent][cur_real_cell_index].style.fill.fill_type = 'solid'
+					#sheet_ranges.rows[g_rowComent][cur_real_cell_index].style.fill.start_color = Color("FF0000")
+					#sheet_ranges.rows[g_rowComent][cur_real_cell_index].style.fill.end_color = Color("00FF00")
+	if bWrite:
+		writeWB.save(filepath)
+	#LogOutDebug("g_xlsConditionRecords:" , len(g_xlsConditionRecords[filename]))
+
+		
 def GenerateCSVFromXLS():
 	root = g_xlsImportPath
 	files = []
@@ -233,11 +304,7 @@ def GenerateCSVFromXLS():
 		Xlsx2CSV(result)
 
 	CheckRecords()
-	GenerateCSV()		
-	HandleConditionConfig()
-	HandleCommondataConfig()
-	HandleSheetCondition()
-	CheckRepeatCommonData()
+	GenerateCSV()
 
 def Xlsx2CSV(filepath):
 	dirout = g_xlsExportCSVPath
@@ -246,23 +313,17 @@ def Xlsx2CSV(filepath):
 		# 一个表中的所有sheet输出到一个csv文件中,所以要保证格式一致.文件名用xlsx文件名
 		filename = os.path.basename(filepath) #获取文件名
 		filename = os.path.splitext(filename.replace(' ', '_'))[0]
+		#LogOutDebug("path:" , filepath)
+		g_xlsFilePath[filename] = os.path.abspath(filepath)
 		if filename.find('#') >= 0:
 			filename = filename.replace('#' , '')
 			LogOutInfo("skip file: " , filepath )
 			g_xlsDeleteRecord.append(filename)
-
-		#csv_filename = '{xlsx}.tabcsv'.format(xlsx=filename)		
-		#dirfileout  = dirout + csv_filename
-		#LogOutDebug("dirfileout" , dirfileout )
-		#csv_file = open(dirfileout , 'w' , newline='')
-		
-		#QUOTE_MINIMAL QUOTE_NONE所有的都要加引号.
-		#csv_file_writer = csv.writer(csv_file , delimiter='	', quotechar='"', quoting=csv.QUOTE_ALL)
 		
 		id_list = []			# 用于重复的ID去除
 		delete_col_list = []	# 不读取需要删除的列
 		cur_sheet_index = 0
-		xlsx_file_reader = load_workbook(filepath)
+		xlsx_file_reader = load_workbook(filepath , True , False , False , False , True )
 		g_xlsRecords[filename] = collections.OrderedDict()
 		conditionContainer = collections.OrderedDict() #这个专门处理条件表达式的.
 		for sheet in xlsx_file_reader.get_sheet_names():			
@@ -276,16 +337,17 @@ def Xlsx2CSV(filepath):
 				row_container = [] 
 				cur_cell_index = 0
 				for cell in row:		
-					Str = ""	
-					if type(cell.value) == type(None):
+					Str = ""
+					cellValue = cell.value
+					if type(cellValue) == type(None):
 						if cur_cell_index == g_cellID:
 							break		
 						Str = ""	
 #						LogOutError("error parase filepath" , filepath , "  cur_sheet " , sheet , "  cur_rows_index " , cur_rows_index ,"  cur_cell_index " , cur_cell_index , "  type(cell.value) " , type(cell.value))
 					else:
-						Str = cell.value
-						if type(cell.value) != str:
-							Str = str(cell.value)
+						Str = cellValue
+						if type(cellValue) != str:
+							Str = str(cellValue)
 						else:
 							Str = Str.encode('gbk').decode('gbk').encode('utf-8').decode('utf-8')
 
@@ -326,7 +388,6 @@ def Xlsx2CSV(filepath):
 				if len(row_container) >= 1:	
 					RemovListNewLine(row_container)
 					g_xlsRecords[filename][cur_rows_index] = row_container
-					#csv_file_writer.writerow(row_container)
 					cur_rows_index = cur_rows_index + 1   #这里是为了去除一些空行.
 					#LogOutDebug("cell.row_container:" , row_container)
 			cur_sheet_index = cur_sheet_index + 1	
@@ -376,7 +437,7 @@ def CheckRecords():
 				#LogOutDebug("g_xlsRecords,[row = " + str(row) + ":" , g_xlsRecords[sheet][row])
 				for col , colItem in enumerate(rowItem):	#读取每一列
 					item_type = GetType(g_xlsRecords[sheet][g_rowType][col])	
-					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type , "sheet" , sheet , "col=" , col)
+					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type , "sheet" , sheet , "col=" , col , " colItem:" , colItem)
 					CheckDataType(item_type , sheet , row , col , colItem , -1)
 					#LogOutDebug("CheckDataType,row=" + str(row) + ":item_type=" , item_type)
 					
@@ -1592,11 +1653,13 @@ def GetType(item):
 		return g_doubleType
 	elif item.lower() == "bool".lower():
 		return g_boolType
-	elif item.lower() == "string".lower():
+	elif item.lower() == "string".lower() or\
+		item.lower() == "std::string".lower():
 		return g_stringType
 	elif item.lower() == "condition".lower():
 		return g_conditionType
-	elif item.lower() == "date".lower():
+	elif item.lower() == "date".lower() or\
+		item.lower() == "Timer::date".lower():
 		return g_dateType
 	elif item.lower() == "int[]".lower() or\
 		item.lower() == "[]int".lower() or\
@@ -1614,7 +1677,9 @@ def GetType(item):
 		item.lower() == "float[]".lower():
 		return g_doubleArrayType
 	elif item.lower() == "date[]".lower() or\
-		item.lower() == "[]date".lower():
+		item.lower() == "[]date".lower()or\
+		item.lower() == "Timer::date[]".lower()or\
+		item.lower() == "[]Timer::date".lower():
 		return g_dateArrayType
 	elif item.lower() == "string[]".lower() or\
 		item.lower() == "[]string".lower() or\
@@ -1664,9 +1729,11 @@ def GetTypeFunc(item):
 		return g_doubleFunc
 	elif item.lower() == "bool".lower():
 		return g_boolFunc
-	elif item.lower() == "string".lower():
+	elif item.lower() == "string".lower() or\
+		item.lower() == "std::string".lower():
 		return g_stringFunc
-	elif item.lower() == "date".lower():
+	elif item.lower() == "date".lower()or\
+		item.lower() == "Timer::date".lower():
 		return g_dateFunc
 	elif item.lower() == "int[]".lower() or\
 		item.lower() == "[]int".lower() or\
@@ -1692,7 +1759,9 @@ def GetTypeFunc(item):
 		item.lower() == "[]bool".lower():
 		return g_boolArrayFunc
 	elif item.lower() == "Date[]".lower() or\
-		item.lower() == "[]Date".lower():
+		item.lower() == "[]Date".lower()or\
+		item.lower() == "Timer::date[]".lower()or\
+		item.lower() == "[]Timer::date".lower():
 		return g_dateArrayFunc
 	elif item.lower().find(',') >= 0 and \
 		item.lower().find("<") == -1 and\
@@ -1713,24 +1782,31 @@ def GetTypeFunc(item):
 
 	return None
 	
-def GetMapType(item):
+def GetMapType(item , bReadConfigType = True):
 	if item.lower().find('map') >= 0 and \
 		item.lower().find("<") and\
 		item.lower()[len(item.lower()) - 1] == ">":
 		item = RemoveSpecialWord(item)
 		childItems = item.split('<')[1].rstrip('>').split(',')
 		keyType = GetType(RemoveSpecialWord(childItems[0]))
+		keyName = keyType
 		if keyType == g_configType:
-			parentName = GetDicKeyByUpper(g_xlsRecords , childItems[0])
-			parentType = g_xlsRecords[parentName][g_rowType][g_cellID]
+			keyName = GetDicKeyByUpper(g_xlsRecords , childItems[0])
+			parentType = g_xlsRecords[keyName][g_rowType][g_cellID]
 			keyType = GetType(parentType)
+
 		valueType = GetType(RemoveSpecialWord(childItems[1]))
+		valueName = valueType
 		if valueType == g_configType:
-			parentName = GetDicKeyByUpper(g_xlsRecords , childItems[1])
-			parentType = g_xlsRecords[parentName][g_rowType][g_cellID]
+			valueName = GetDicKeyByUpper(g_xlsRecords , childItems[1])
+			parentType = g_xlsRecords[valueName][g_rowType][g_cellID]			
 			valueType = GetType(parentType)
-		return "std::map<"+ keyType + " , " + valueType + ">" , keyType , valueType
-		
+
+		if bReadConfigType:
+			return "std::map<"+ keyType + " , " + valueType + ">" , keyType , valueType
+		else:
+			return "std::map<"+ keyType + " , " + valueType + ">" , keyName , valueName
+
 def GetTypeTab(item):
 	tmp = collections.OrderedDict()
 	MakeDicKeyUpper(g_xlsRecords , tmp)
@@ -1748,9 +1824,11 @@ def GetTypeTab(item):
 	elif item.lower() == "double".lower() or\
 		item.lower() == "float".lower():
 		return sixTab
-	elif item.lower() == "Date".lower():
+	elif item.lower() == "Date".lower()or\
+		item.lower() == "Timer::date".lower():
 		return fiveTab
-	elif item.lower() == "string".lower():
+	elif item.lower() == "string".lower() or\
+		item.lower() == "std::string".lower():
 		return fiveTab
 	elif item.lower() == "int[]".lower() or\
 		item.lower() == "[]int".lower() or\
@@ -1776,7 +1854,9 @@ def GetTypeTab(item):
 		item.lower() == "std::string[]".lower():
 		return oneTab
 	elif item.lower() == "Date[]".lower() or\
-		item.lower() == "[]Date".lower():
+		item.lower() == "[]Date".lower()or\
+		item.lower() == "Timer::date[]".lower()or\
+		item.lower() == "[]Timer::date".lower():
 		return twoTab
 	elif item.lower().find(',') >= 0 and \
 		item.lower().find("<") == -1 and\
@@ -1919,7 +1999,7 @@ def CheckDataType(item_type , sheet , row , col , colItem , childIndex):
 	elif item_type == g_dateArrayType:
 		g_xlsRecords[sheet][row][col] = CheckDataArray(colItem)
 	elif item_type == g_stringArrayType:
-		return item
+		return colItem
 	elif item_type == g_configType:
 		name = g_xlsRecords[sheet][g_rowType][col]
 
@@ -1941,6 +2021,8 @@ def CheckDataType(item_type , sheet , row , col , colItem , childIndex):
 			g_xlsRecords[sheet][row][col] = item
 		else:
 			return item
+			
+		return item
 	elif item_type == g_structType:
 #		if len(colItem) > 0 and colItem[len(colItem) - 1] == ',':
 #			colItem = colItem[0:len(colItem) - 1]
