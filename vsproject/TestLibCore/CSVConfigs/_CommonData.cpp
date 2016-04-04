@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-04 23:25:20
+Date		:	2016-04-05 00:29:30
 Description	:	csv读取数据文件实现
 ************************************/
 #include "_CommonData.h"
@@ -15,8 +15,12 @@ namespace Config
 {
 	bool _CommonData::LoadFrom(const std::string & filepath)
 	{
+		if (m_bLoaded)
+		{
+			return false;
+		}
 		Config::_CommonDataLoad loadConfig;
-		MsgAssert_Re0(loadConfig.LoadFrom(filepath) , "Error _CommonDataLoadFrom " << filepath);
+		MsgAssert_Re0(loadConfig.LoadFrom(filepath + "_CommonData.tabcsv") , "Error _CommonDataLoadFrom " << filepath + "_CommonData.tabcsv");
 
 		for(size_t i = 0; i < loadConfig.Count(); ++i)
 		{
@@ -32,11 +36,17 @@ namespace Config
 			data.dateCommon = config.dateCommon;
 			m_mapConfigs.insert(std::make_pair(data.id,data));
 		}
+
+		m_bLoaded = true;
 		return true;
 	}
 
-	S_CommonData * _CommonData::Get_CommonData(INT32 id)
+	S_CommonData * _CommonData::Get_CommonData(INT32 id , std::string strFilePath/* = ""*/)
 	{
+		if (!m_bLoaded)
+		{
+			LoadFrom(strFilePath);
+		}
 		MapConfigsT::iterator iter = m_mapConfigs.find(id);
 		if(iter == m_mapConfigs.end())
 		{

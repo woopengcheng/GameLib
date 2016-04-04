@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-04 23:25:20
+Date		:	2016-04-05 00:29:30
 Description	:	ConfigManager数据管理文件实现
 ************************************/
 #include "ConfigManager.h"
@@ -49,16 +49,16 @@ namespace Config
 		}
 
 		MsgAssert_ReF1(Config::g_pActionConfig , "ConfigManager not Init")
-		Config::g_pActionConfig->LoadFrom(strCsvPath + "ActionConfig.tabcsv");
+		Config::g_pActionConfig->LoadFrom(strCsvPath);
 
 		MsgAssert_ReF1(Config::g_pActivityConfig , "ConfigManager not Init")
-		Config::g_pActivityConfig->LoadFrom(strCsvPath + "ActivityConfig.tabcsv");
+		Config::g_pActivityConfig->LoadFrom(strCsvPath);
 
-// 		MsgAssert_ReF1(Config::g_p_ConditionConfig , "ConfigManager not Init")
-// 		Config::g_p_ConditionConfig->LoadFrom(strCsvPath + "_ConditionConfig.tabcsv");
+// 		MsgAssert_ReF1(Config::g_p_ConditionConfig , "ConfigManager not Init");
+// 		Config::g_p_ConditionConfig->LoadFrom(strCsvPath);
 
 		MsgAssert_ReF1(Config::g_p_CommonData , "ConfigManager not Init")
-		Config::g_p_CommonData->LoadFrom(strCsvPath + "_CommonData.tabcsv");
+		Config::g_p_CommonData->LoadFrom(strCsvPath);
 
 		return 0;
 	}

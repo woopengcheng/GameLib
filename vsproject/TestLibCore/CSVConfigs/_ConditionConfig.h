@@ -5,13 +5,14 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-04 23:25:20
+Date		:	2016-04-05 00:29:30
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config__ConditionConfig_define_h__
 #define __Config__ConditionConfig_define_h__
 #include "_ConditionConfigLoad.h"
 #include "../Condition.h"
+#include "CUtil/inc/CSVConfig.h"
 namespace Config
 {
 
@@ -25,14 +26,14 @@ namespace Config
 	};
 
 
-	class _ConditionConfig
+	class _ConditionConfig: public CUtil::CSVConfig
 	{
 	public:
 		typedef std_unordered_map<INT32 , S_ConditionConfig> MapConfigsT;
 
 	public:
 		bool				LoadFrom(const std::string& filepath);
-		S_ConditionConfig *	Get_ConditionConfig(INT32 id);
+		S_ConditionConfig *	Get_ConditionConfig(INT32 id , std::string strFilePath = "");
 
 	public:
 

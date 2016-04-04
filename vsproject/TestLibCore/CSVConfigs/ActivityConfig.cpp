@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-04 23:25:20
+Date		:	2016-04-05 00:29:30
 Description	:	csv读取数据文件实现
 ************************************/
 #include "ActivityConfig.h"
@@ -15,8 +15,12 @@ namespace Config
 {
 	bool ActivityConfig::LoadFrom(const std::string & filepath)
 	{
+		if (m_bLoaded)
+		{
+			return false;
+		}
 		Config::ActivityConfigLoad loadConfig;
-		MsgAssert_Re0(loadConfig.LoadFrom(filepath) , "Error ActivityConfigLoadFrom " << filepath);
+		MsgAssert_Re0(loadConfig.LoadFrom(filepath + "ActivityConfig.tabcsv") , "Error ActivityConfigLoadFrom " << filepath + "ActivityConfig.tabcsv");
 
 		for(size_t i = 0; i < loadConfig.Count(); ++i)
 		{
@@ -41,11 +45,11 @@ namespace Config
 			{
 				data.testDateStruct.begin = config.testDateStruct.begin;
 				data.testDateStruct.end = config.testDateStruct.end;
-				data.testDateStruct.actionConfig.insert(std::make_pair(config.testDateStruct.actionConfig , g_pActionConfig->GetActionConfig(config.testDateStruct.actionConfig)));
+				data.testDateStruct.actionConfig.insert(std::make_pair(config.testDateStruct.actionConfig , g_pActionConfig->GetActionConfig(config.testDateStruct.actionConfig , filepath)));
 			}
 			data.dateArray = config.dateArray;
-			data.testConfig.insert(std::make_pair(config.testConfig , g_pActionConfig->GetActionConfig(config.testConfig)));
-			data.testConfig2.insert(std::make_pair(config.testConfig2 , g_pActionConfig->GetActionConfig(config.testConfig2)));
+			data.testConfig.insert(std::make_pair(config.testConfig , g_pActionConfig->GetActionConfig(config.testConfig , filepath)));
+			data.testConfig2.insert(std::make_pair(config.testConfig2 , g_pActionConfig->GetActionConfig(config.testConfig2 , filepath)));
 			data.dateCommon = config.dateCommon;
 			{
 				std::vector<SActivityConfigLoad::STestStructArray>::iterator iter = config.vecTestStructArray.begin();
@@ -58,7 +62,7 @@ namespace Config
 					array.test3 = iter->test3;
 					array.test4 = iter->test4;
 					array.test5 = iter->test5;
-					array.test6.insert(std::make_pair(iter->test6 , g_pActionConfig->GetActionConfig(iter->test6)));
+					array.test6.insert(std::make_pair(iter->test6 , g_pActionConfig->GetActionConfig(iter->test6 , filepath)));
 					data.vecTestStructArray.push_back(array);
 				}
 			}
@@ -68,15 +72,21 @@ namespace Config
 				data.TestStruct.test3 = config.TestStruct.test3;
 				data.TestStruct.test4 = config.TestStruct.test4;
 				data.TestStruct.test6 = config.TestStruct.test6;
-				data.TestStruct.test7.insert(std::make_pair(config.TestStruct.test7 , g_pActionConfig->GetActionConfig(config.TestStruct.test7)));
+				data.TestStruct.test7.insert(std::make_pair(config.TestStruct.test7 , g_pActionConfig->GetActionConfig(config.TestStruct.test7 , filepath)));
 			}
 			m_mapConfigs.insert(std::make_pair(data.ActivityId,data));
 		}
+
+		m_bLoaded = true;
 		return true;
 	}
 
-	SActivityConfig * ActivityConfig::GetActivityConfig(std::string id)
+	SActivityConfig * ActivityConfig::GetActivityConfig(std::string id , std::string strFilePath/* = ""*/)
 	{
+		if (!m_bLoaded)
+		{
+			LoadFrom(strFilePath);
+		}
 		MapConfigsT::iterator iter = m_mapConfigs.find(id);
 		if(iter == m_mapConfigs.end())
 		{

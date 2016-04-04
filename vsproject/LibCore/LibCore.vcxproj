@@ -307,6 +307,7 @@
     <ClInclude Include="..\..\LibCore\CUtil\inc\CommandHandler.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\Common.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\CRTTI.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\CSVConfig.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\CSVReader.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\CUtil.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\DeelxRegexp.h" />

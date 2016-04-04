@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-04 23:25:20
+Date		:	2016-04-05 00:29:30
 Description	:	csv读取数据文件实现
 ************************************/
 #include "_ConditionConfig.h"
@@ -15,8 +15,12 @@ namespace Config
 {
 	bool _ConditionConfig::LoadFrom(const std::string & filepath)
 	{
+		if (m_bLoaded)
+		{
+			return false;
+		}
 		Config::_ConditionConfigLoad loadConfig;
-		MsgAssert_Re0(loadConfig.LoadFrom(filepath) , "Error _ConditionConfigLoadFrom " << filepath);
+		MsgAssert_Re0(loadConfig.LoadFrom(filepath + "_ConditionConfig.tabcsv") , "Error _ConditionConfigLoadFrom " << filepath + "_ConditionConfig.tabcsv");
 
 		for(size_t i = 0; i < loadConfig.Count(); ++i)
 		{
@@ -29,11 +33,17 @@ namespace Config
 			data.strClientAction = config.strClientAction;
 			m_mapConfigs.insert(std::make_pair(data.nConditionID,data));
 		}
+
+		m_bLoaded = true;
 		return true;
 	}
 
-	S_ConditionConfig * _ConditionConfig::Get_ConditionConfig(INT32 id)
+	S_ConditionConfig * _ConditionConfig::Get_ConditionConfig(INT32 id , std::string strFilePath/* = ""*/)
 	{
+		if (!m_bLoaded)
+		{
+			LoadFrom(strFilePath);
+		}
 		MapConfigsT::iterator iter = m_mapConfigs.find(id);
 		if(iter == m_mapConfigs.end())
 		{
