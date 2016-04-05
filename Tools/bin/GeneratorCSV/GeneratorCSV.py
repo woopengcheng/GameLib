@@ -936,6 +936,8 @@ def GenerateStructData(bServer , fileWrite , types , datas , comments , css , bL
 
 def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css):
 	filename = filename + g_loadConfigSuffix
+	if GetCPPFilePath(bServer) == "":
+		return
 	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".h"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
@@ -980,6 +982,8 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css
 	
 def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
 	filename = filename + g_loadConfigSuffix
+	if GetCPPFilePath(bServer) == "":
+		return
 	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
@@ -1239,6 +1243,8 @@ def GenerateStructDateByType(childItem , bArray):
 		
 	return strVal
 def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
+	if GetCPPFilePath(bServer) == "":
+		return
 	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".h"
 	if CheckNeedDelete(outputPath , types , datas ):
 		os.remove(outputPath)
@@ -1337,6 +1343,8 @@ def GenerateExpressionFuncName(bCPP , fileWrite , filename , index , expressions
 		fileWrite.write(")\n")
 		
 def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
+	if GetCPPFilePath(bServer) == "":
+		return
 	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
 	if CheckNeedDelete(outputPath , types , datas ):
 		os.remove(outputPath)
@@ -1524,6 +1532,8 @@ def GetExpressionObjects(expression , objs):
 				objs.append(actionObj)
 
 def GenerateConfigManagerHeader(bServer):
+	if GetCPPFilePath(bServer) == "":
+		return
 	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigManager.h"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath) 
@@ -1559,6 +1569,8 @@ def GenerateConfigManagerHeader(bServer):
 
 
 def GenerateConfigManagerCPP(bServer):
+	if GetCPPFilePath(bServer) == "":
+		return
 	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigManager.cpp"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
@@ -2384,6 +2396,10 @@ def handleArgs(argv):
 		else:
 			print('unhandled option')
 			sys.exit(3) 
+	if g_xlsImportPath == "":
+		LogOutError("no xls g_xlsImportPath")
+	elif g_xlsExportCSVPath == "":
+		LogOutError("no xls g_xlsExportCSVPath")
 			
 def main(argv):
 	global g_xlsImportPath 
@@ -2392,7 +2408,7 @@ def main(argv):
 	global g_xlsExportClientCPPPath
 	
 	InitColor()
-	#handleArgs(argv)
+	handleArgs(argv)
 	g_xlsImportPath = "./xls_config"
 	g_xlsExportCSVPath = "../../../bin/vs14.0/x64/Lib_Debug_x64/csv_config"
 	g_xlsExportServerCPPPath = "../../../vsproject/TestLibCore/CSVConfigs"
