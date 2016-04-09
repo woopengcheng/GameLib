@@ -71,8 +71,6 @@
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">.lib</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\LibCore\deps\RocksDB\build\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rocksdblib.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rocksdblib</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
   </PropertyGroup>
@@ -110,10 +108,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -158,10 +156,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -206,10 +204,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -223,7 +221,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalOptions> /d2Zi+ /Oxt %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <CallingConvention>Cdecl</CallingConvention>
@@ -254,10 +252,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\GitHub\LibCore\deps\RocksDB;E:\GitHub\LibCore\deps\RocksDB\include;E:\GitHub\LibCore\deps\RocksDB\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\include;..\third-party\gtest-1.7.0\fused-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -269,262 +267,194 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\GitHub\LibCore\deps\RocksDB\build\CMakeFiles\ba3645945d46268b487fcdc0e1c513cf\build_version.cc.rule">
+    <CustomBuild Include="..\build\CMakeFiles\ba3645945d46268b487fcdc0e1c513cf\build_version.cc.rule">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ../util/build_version.cc</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">Generating ../util/build_version.cc</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">Generating ../util/build_version.cc</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-echo #include "build_version.h" &gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_sha = "rocksdb_build_git_sha:0"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_datetime = "rocksdb_build_git_datetime:02/23/16 10:35:25"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_compile_date = __DATE__; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">setlocal
-echo #include "build_version.h" &gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_sha = "rocksdb_build_git_sha:0"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_datetime = "rocksdb_build_git_datetime:02/23/16 10:35:25"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_compile_date = __DATE__; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">setlocal
-echo #include "build_version.h" &gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_sha = "rocksdb_build_git_sha:0"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_datetime = "rocksdb_build_git_datetime:02/23/16 10:35:25"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_compile_date = __DATE__; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:/GitHub/LibCore/deps/RocksDB/build/CMakeFiles/ba3645945d46268b487fcdc0e1c513cf/build_version.cc.rule;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">E:/GitHub/LibCore/deps/RocksDB/build/CMakeFiles/ba3645945d46268b487fcdc0e1c513cf/build_version.cc.rule;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:/GitHub/LibCore/deps/RocksDB/build/CMakeFiles/ba3645945d46268b487fcdc0e1c513cf/build_version.cc.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc</Outputs>
+     
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">false</LinkObjects>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ../util/build_version.cc</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-echo #include "build_version.h" &gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_sha = "rocksdb_build_git_sha:0"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_git_datetime = "rocksdb_build_git_datetime:02/23/16 10:35:25"; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-echo const char* rocksdb_build_compile_date = __DATE__; &gt;&gt; E:/GitHub/LibCore/deps/RocksDB/util/build_version.cc
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:/GitHub/LibCore/deps/RocksDB/build/CMakeFiles/ba3645945d46268b487fcdc0e1c513cf/build_version.cc.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">false</LinkObjects>      
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\auto_roll_logger.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\c.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\column_family.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compacted_db_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction_iterator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction_job.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\compaction_picker.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\convenience.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\dbformat.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_filesnapshot.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl_debug.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl_experimental.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_impl_readonly.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_info_dumper.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\db_iter.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\event_helpers.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\experimental.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\filename.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\file_indexer.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\flush_job.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\flush_scheduler.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\forward_iterator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\internal_stats.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\log_reader.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\log_writer.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\managed_iterator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\memtable.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\memtable_allocator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\memtable_list.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\merge_helper.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\merge_operator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\repair.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\slice.cc">
+    <ClCompile Include="..\db\auto_roll_logger.cc" />
+    <ClCompile Include="..\db\builder.cc" />
+    <ClCompile Include="..\db\c.cc" />
+    <ClCompile Include="..\db\column_family.cc" />
+    <ClCompile Include="..\db\compacted_db_impl.cc" />
+    <ClCompile Include="..\db\compaction.cc" />
+    <ClCompile Include="..\db\compaction_iterator.cc" />
+    <ClCompile Include="..\db\compaction_job.cc" />
+    <ClCompile Include="..\db\compaction_picker.cc" />
+    <ClCompile Include="..\db\convenience.cc" />
+    <ClCompile Include="..\db\dbformat.cc" />
+    <ClCompile Include="..\db\db_filesnapshot.cc" />
+    <ClCompile Include="..\db\db_impl.cc" />
+    <ClCompile Include="..\db\db_impl_debug.cc" />
+    <ClCompile Include="..\db\db_impl_experimental.cc" />
+    <ClCompile Include="..\db\db_impl_readonly.cc" />
+    <ClCompile Include="..\db\db_info_dumper.cc" />
+    <ClCompile Include="..\db\db_iter.cc" />
+    <ClCompile Include="..\db\event_helpers.cc" />
+    <ClCompile Include="..\db\experimental.cc" />
+    <ClCompile Include="..\db\filename.cc" />
+    <ClCompile Include="..\db\file_indexer.cc" />
+    <ClCompile Include="..\db\flush_job.cc" />
+    <ClCompile Include="..\db\flush_scheduler.cc" />
+    <ClCompile Include="..\db\forward_iterator.cc" />
+    <ClCompile Include="..\db\internal_stats.cc" />
+    <ClCompile Include="..\db\log_reader.cc" />
+    <ClCompile Include="..\db\log_writer.cc" />
+    <ClCompile Include="..\db\managed_iterator.cc" />
+    <ClCompile Include="..\db\memtable.cc" />
+    <ClCompile Include="..\db\memtable_allocator.cc" />
+    <ClCompile Include="..\db\memtable_list.cc" />
+    <ClCompile Include="..\db\merge_helper.cc" />
+    <ClCompile Include="..\db\merge_operator.cc" />
+    <ClCompile Include="..\db\repair.cc" />
+    <ClCompile Include="..\db\slice.cc">
       <ObjectFileName>$(IntDir)/db/slice.cc.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\snapshot_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\table_cache.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\table_properties_collector.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\transaction_log_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\version_builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\version_edit.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\version_set.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\wal_manager.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_batch.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_batch_base.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_controller.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\write_thread.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\db\xfunc_test_points.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\hash_cuckoo_rep.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\hash_linklist_rep.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\hash_skiplist_rep.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\skiplistrep.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\memtable\vectorrep.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\stack_trace.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\win\env_win.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\win\port_win.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\port\win\win_logger.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\adaptive_table_factory.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_filter_block.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_table_builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_table_factory.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_based_table_reader.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_hash_index.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\block_prefix_index.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\bloom_block.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\cuckoo_table_builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\cuckoo_table_factory.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\cuckoo_table_reader.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\flush_block_policy.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\format.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\full_filter_block.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\get_context.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\iterator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\merger.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\sst_file_writer.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\meta_blocks.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_factory.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_index.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_key_coding.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\plain_table_reader.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\table_properties.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\table\two_level_iterator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\sst_dump_tool.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\db_bench_tool.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\dump\db_dump_tool.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\arena.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\bloom.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\build_version.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\cache.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\coding.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\compaction_job_stats_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\comparator.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\concurrent_arena.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\crc32c.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\delete_scheduler.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\dynamic_bloom.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\env.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\env_hdfs.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\event_logger.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\file_util.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\file_reader_writer.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\sst_file_manager_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\filter_policy.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\hash.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\histogram.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\instrumented_mutex.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\iostats_context.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\ldb_cmd.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\tools\ldb_tool.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\logging.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\log_buffer.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\memenv.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\murmurhash.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\mutable_cf_options.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_helper.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_parser.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\options_sanity_check.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\perf_context.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\perf_level.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\random.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\rate_limiter.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\slice.cc">
+    <ClCompile Include="..\db\snapshot_impl.cc" />
+    <ClCompile Include="..\db\table_cache.cc" />
+    <ClCompile Include="..\db\table_properties_collector.cc" />
+    <ClCompile Include="..\db\transaction_log_impl.cc" />
+    <ClCompile Include="..\db\version_builder.cc" />
+    <ClCompile Include="..\db\version_edit.cc" />
+    <ClCompile Include="..\db\version_set.cc" />
+    <ClCompile Include="..\db\wal_manager.cc" />
+    <ClCompile Include="..\db\write_batch.cc" />
+    <ClCompile Include="..\db\write_batch_base.cc" />
+    <ClCompile Include="..\db\write_controller.cc" />
+    <ClCompile Include="..\db\write_thread.cc" />
+    <ClCompile Include="..\db\xfunc_test_points.cc" />
+    <ClCompile Include="..\memtable\hash_cuckoo_rep.cc" />
+    <ClCompile Include="..\memtable\hash_linklist_rep.cc" />
+    <ClCompile Include="..\memtable\hash_skiplist_rep.cc" />
+    <ClCompile Include="..\memtable\skiplistrep.cc" />
+    <ClCompile Include="..\memtable\vectorrep.cc" />
+    <ClCompile Include="..\port\stack_trace.cc" />
+    <ClCompile Include="..\port\win\env_win.cc" />
+    <ClCompile Include="..\port\win\port_win.cc" />
+    <ClCompile Include="..\port\win\win_logger.cc" />
+    <ClCompile Include="..\table\adaptive_table_factory.cc" />
+    <ClCompile Include="..\table\block.cc" />
+    <ClCompile Include="..\table\block_based_filter_block.cc" />
+    <ClCompile Include="..\table\block_based_table_builder.cc" />
+    <ClCompile Include="..\table\block_based_table_factory.cc" />
+    <ClCompile Include="..\table\block_based_table_reader.cc" />
+    <ClCompile Include="..\table\block_builder.cc" />
+    <ClCompile Include="..\table\block_hash_index.cc" />
+    <ClCompile Include="..\table\block_prefix_index.cc" />
+    <ClCompile Include="..\table\bloom_block.cc" />
+    <ClCompile Include="..\table\cuckoo_table_builder.cc" />
+    <ClCompile Include="..\table\cuckoo_table_factory.cc" />
+    <ClCompile Include="..\table\cuckoo_table_reader.cc" />
+    <ClCompile Include="..\table\flush_block_policy.cc" />
+    <ClCompile Include="..\table\format.cc" />
+    <ClCompile Include="..\table\full_filter_block.cc" />
+    <ClCompile Include="..\table\get_context.cc" />
+    <ClCompile Include="..\table\iterator.cc" />
+    <ClCompile Include="..\table\merger.cc" />
+    <ClCompile Include="..\table\sst_file_writer.cc" />
+    <ClCompile Include="..\table\meta_blocks.cc" />
+    <ClCompile Include="..\table\plain_table_builder.cc" />
+    <ClCompile Include="..\table\plain_table_factory.cc" />
+    <ClCompile Include="..\table\plain_table_index.cc" />
+    <ClCompile Include="..\table\plain_table_key_coding.cc" />
+    <ClCompile Include="..\table\plain_table_reader.cc" />
+    <ClCompile Include="..\table\table_properties.cc" />
+    <ClCompile Include="..\table\two_level_iterator.cc" />
+    <ClCompile Include="..\tools\sst_dump_tool.cc" />
+    <ClCompile Include="..\tools\db_bench_tool.cc" />
+    <ClCompile Include="..\tools\dump\db_dump_tool.cc" />
+    <ClCompile Include="..\util\arena.cc" />
+    <ClCompile Include="..\util\bloom.cc" />
+    <ClCompile Include="..\util\build_version.cc" />
+    <ClCompile Include="..\util\cache.cc" />
+    <ClCompile Include="..\util\coding.cc" />
+    <ClCompile Include="..\util\compaction_job_stats_impl.cc" />
+    <ClCompile Include="..\util\comparator.cc" />
+    <ClCompile Include="..\util\concurrent_arena.cc" />
+    <ClCompile Include="..\util\crc32c.cc" />
+    <ClCompile Include="..\util\delete_scheduler.cc" />
+    <ClCompile Include="..\util\dynamic_bloom.cc" />
+    <ClCompile Include="..\util\env.cc" />
+    <ClCompile Include="..\util\env_hdfs.cc" />
+    <ClCompile Include="..\util\event_logger.cc" />
+    <ClCompile Include="..\util\file_util.cc" />
+    <ClCompile Include="..\util\file_reader_writer.cc" />
+    <ClCompile Include="..\util\sst_file_manager_impl.cc" />
+    <ClCompile Include="..\util\filter_policy.cc" />
+    <ClCompile Include="..\util\hash.cc" />
+    <ClCompile Include="..\util\histogram.cc" />
+    <ClCompile Include="..\util\instrumented_mutex.cc" />
+    <ClCompile Include="..\util\iostats_context.cc" />
+    <ClCompile Include="..\tools\ldb_cmd.cc" />
+    <ClCompile Include="..\tools\ldb_tool.cc" />
+    <ClCompile Include="..\util\logging.cc" />
+    <ClCompile Include="..\util\log_buffer.cc" />
+    <ClCompile Include="..\util\memenv.cc" />
+    <ClCompile Include="..\util\murmurhash.cc" />
+    <ClCompile Include="..\util\mutable_cf_options.cc" />
+    <ClCompile Include="..\util\options.cc" />
+    <ClCompile Include="..\util\options_builder.cc" />
+    <ClCompile Include="..\util\options_helper.cc" />
+    <ClCompile Include="..\util\options_parser.cc" />
+    <ClCompile Include="..\util\options_sanity_check.cc" />
+    <ClCompile Include="..\util\perf_context.cc" />
+    <ClCompile Include="..\util\perf_level.cc" />
+    <ClCompile Include="..\util\random.cc" />
+    <ClCompile Include="..\util\rate_limiter.cc" />
+    <ClCompile Include="..\util\slice.cc">
       <ObjectFileName>$(IntDir)/util/slice.cc.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\statistics.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\status.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\status_message.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\string_util.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\sync_point.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\testharness.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\testutil.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_local.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_updater.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_util.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\thread_status_util_debug.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\xfunc.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\util\xxhash.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\backupable\backupable_db.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\checkpoint\checkpoint.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\compaction_filters\remove_emptyvalue_compactionfilter.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\document\document_db.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\document\json_document.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\document\json_document_builder.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\env_mirror.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\flashcache\flashcache.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\geodb\geodb_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\leveldb_options\leveldb_options.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\memory\memory_util.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\string_append\stringappend.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\string_append\stringappend2.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\put.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\merge_operators\uint64add.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\options\options_util.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\redis\redis_lists.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\spatialdb\spatial_db.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\table_properties_collectors\compact_on_deletion_collector.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\optimistic_transaction_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\optimistic_transaction_db_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_base.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_db_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_db_mutex_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_lock_mgr.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\transactions\transaction_util.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\ttl\db_ttl_impl.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\write_batch_with_index\write_batch_with_index.cc" />
-    <ClCompile Include="E:\GitHub\LibCore\deps\RocksDB\utilities\write_batch_with_index\write_batch_with_index_internal.cc" />
+    <ClCompile Include="..\util\statistics.cc" />
+    <ClCompile Include="..\util\status.cc" />
+    <ClCompile Include="..\util\status_message.cc" />
+    <ClCompile Include="..\util\string_util.cc" />
+    <ClCompile Include="..\util\sync_point.cc" />
+    <ClCompile Include="..\util\testharness.cc" />
+    <ClCompile Include="..\util\testutil.cc" />
+    <ClCompile Include="..\util\thread_local.cc" />
+    <ClCompile Include="..\util\thread_status_impl.cc" />
+    <ClCompile Include="..\util\thread_status_updater.cc" />
+    <ClCompile Include="..\util\thread_status_util.cc" />
+    <ClCompile Include="..\util\thread_status_util_debug.cc" />
+    <ClCompile Include="..\util\xfunc.cc" />
+    <ClCompile Include="..\util\xxhash.cc" />
+    <ClCompile Include="..\utilities\backupable\backupable_db.cc" />
+    <ClCompile Include="..\utilities\checkpoint\checkpoint.cc" />
+    <ClCompile Include="..\utilities\compaction_filters\remove_emptyvalue_compactionfilter.cc" />
+    <ClCompile Include="..\utilities\document\document_db.cc" />
+    <ClCompile Include="..\utilities\document\json_document.cc" />
+    <ClCompile Include="..\utilities\document\json_document_builder.cc" />
+    <ClCompile Include="..\utilities\env_mirror.cc" />
+    <ClCompile Include="..\utilities\flashcache\flashcache.cc" />
+    <ClCompile Include="..\utilities\geodb\geodb_impl.cc" />
+    <ClCompile Include="..\utilities\leveldb_options\leveldb_options.cc" />
+    <ClCompile Include="..\utilities\memory\memory_util.cc" />
+    <ClCompile Include="..\utilities\merge_operators\string_append\stringappend.cc" />
+    <ClCompile Include="..\utilities\merge_operators\string_append\stringappend2.cc" />
+    <ClCompile Include="..\utilities\merge_operators\put.cc" />
+    <ClCompile Include="..\utilities\merge_operators\uint64add.cc" />
+    <ClCompile Include="..\utilities\options\options_util.cc" />
+    <ClCompile Include="..\utilities\redis\redis_lists.cc" />
+    <ClCompile Include="..\utilities\spatialdb\spatial_db.cc" />
+    <ClCompile Include="..\utilities\table_properties_collectors\compact_on_deletion_collector.cc" />
+    <ClCompile Include="..\utilities\transactions\optimistic_transaction_impl.cc" />
+    <ClCompile Include="..\utilities\transactions\optimistic_transaction_db_impl.cc" />
+    <ClCompile Include="..\utilities\transactions\transaction_base.cc" />
+    <ClCompile Include="..\utilities\transactions\transaction_impl.cc" />
+    <ClCompile Include="..\utilities\transactions\transaction_db_impl.cc" />
+    <ClCompile Include="..\utilities\transactions\transaction_db_mutex_impl.cc" />
+    <ClCompile Include="..\utilities\transactions\transaction_lock_mgr.cc" />
+    <ClCompile Include="..\utilities\transactions\transaction_util.cc" />
+    <ClCompile Include="..\utilities\ttl\db_ttl_impl.cc" />
+    <ClCompile Include="..\utilities\write_batch_with_index\write_batch_with_index.cc" />
+    <ClCompile Include="..\utilities\write_batch_with_index\write_batch_with_index_internal.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
