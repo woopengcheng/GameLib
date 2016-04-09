@@ -235,7 +235,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)..\Tools\bin\GeneratorRPC\GeneratorRpcTest.bat</Command>
+      <Command>$(SolutionDir)..\Tools\bin\GeneratorRPC\GeneratorGameDBRpc.bat</Command>
     </PreBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -281,7 +281,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\bin\GeneratorRPC\test.py" />
+    <None Include="..\..\bin\GeneratorRPC\GameDB.html" />
+    <None Include="..\..\bin\GeneratorRPC\GeneratorRpc.py" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +292,10 @@
   <ItemGroup>
     <ClCompile Include="GenRpcs.cpp" />
     <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\bin\GeneratorRPC\GameDB.xml" />
+    <Xml Include="..\..\bin\GeneratorRPC\GameDB.xsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

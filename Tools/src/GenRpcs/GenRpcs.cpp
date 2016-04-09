@@ -6,7 +6,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	system("GeneratorRPC\\GeneratorRpc.bat");
+	system("GeneratorRPC\\GeneratorGameDBRpc.bat");
 	return 0;
 }
 
