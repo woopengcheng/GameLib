@@ -13,10 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Generator">
+      <UniqueIdentifier>{6df425b1-9eb6-4a28-a7bc-b7998761a811}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="..\..\bin\GeneratorRPC\test.py" />
+    <None Include="..\..\bin\GeneratorRPC\GameDB.html">
+      <Filter>Generator</Filter>
+    </None>
+    <None Include="..\..\bin\GeneratorRPC\GeneratorRpc.py">
+      <Filter>Generator</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -33,5 +41,13 @@
     <ClCompile Include="GenRpcs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\bin\GeneratorRPC\GameDB.xml">
+      <Filter>Generator</Filter>
+    </Xml>
+    <Xml Include="..\..\bin\GeneratorRPC\GameDB.xsl">
+      <Filter>Generator</Filter>
+    </Xml>
   </ItemGroup>
 </Project>
