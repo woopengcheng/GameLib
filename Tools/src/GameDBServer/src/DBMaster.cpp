@@ -11,6 +11,7 @@ namespace Server
 		: ThreadPool::ThreadSustainTask(101 , "DBMaster" )
 		, m_nHandlerCount(0)
 		, m_llServerID(-1)
+		, m_pMasterHandler(NULL)
 	{
 		m_pRpcListener = new MasterListener(this);
 	}
@@ -61,10 +62,16 @@ namespace Server
 		return CErrno::Success();
 	}
 
-	INT32 DBMaster::CreateMasterHandler(INT32 nSessionID)
+	INT32 DBMaster::CreateMasterHandler(INT32 nSessionID , const std::string & strDBName)
 	{
-		MasterHandler * pMasterHandler = new MasterHandler(++m_nHandlerCount , nSessionID , this);
-		m_vecMasterHandlers.push_back(pMasterHandler);
+		if (!m_pMasterHandler)
+		{
+			m_pMasterHandler = new MasterHandler(++m_nHandlerCount, this);
+		}
+		
+		m_pMasterHandler->CreateSlaveRecord(strDBName, nSessionID);
+// 		MasterHandler * pMasterHandler = new MasterHandler(++m_nHandlerCount , nSessionID , this);
+// 		m_vecMasterHandlers.push_back(pMasterHandler);
 		return m_nHandlerCount;
 	}
 
@@ -98,15 +105,24 @@ namespace Server
 	{
 		if (m_pDBMaster)
 		{
-			if (strNetNodeName == g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSLAVE])
-			{
-				INT32 nMasterHandlerID = m_pDBMaster->CreateMasterHandler(nSessionID);
-				rpc_SyncMasterHandler(nSessionID, Msg::Object(1) , Msg::Object(nMasterHandlerID) , nMasterHandlerID);
-			}
 
-			if (strNetNodeName == g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSERVER])
+			if (strNetNodeName == g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSERVER])  //5 除去链接DBServer的其他的都是slave的连接.如果未来有其他连接.那么需要加在else的上面.else是特殊处理.
 			{
-				INT32 nMasterHandlerID = m_pDBMaster->CreateMasterHandler(nSessionID);
+//				INT32 nMasterHandlerID = m_pDBMaster->CreateMasterHandler(nSessionID);
+			}
+			else
+			{
+				std::string strCurNode;
+				std::vector<std::string> vals;
+				CUtil::tokenize(strNetNodeName, vals, "_", "", "\"");
+				if (vals.size() < 3)
+				{
+					return CErrno::Failure();
+				}
+				std::string strDBName = vals[2];
+
+				INT32 nMasterHandlerID = m_pDBMaster->CreateMasterHandler(nSessionID, strDBName);
+				rpc_SyncMasterHandler(nSessionID, Msg::Object(1), Msg::Object(nMasterHandlerID), nMasterHandlerID);
 			}
 		}
 

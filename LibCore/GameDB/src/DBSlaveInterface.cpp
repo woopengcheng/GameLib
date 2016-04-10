@@ -23,6 +23,25 @@ namespace GameDB
 
 		return  InitDB(conf);
 	}
+	std::string&   replace_all(std::string&   str, const   std::string&   old_value, const   std::string&   new_value)
+	{
+		while (true) {
+			std::string::size_type   pos(0);
+			if ((pos = str.find(old_value)) != std::string::npos)
+				str.replace(pos, old_value.length(), new_value);
+			else   break;
+		}
+		return   str;
+	}
+	std::string&   replace_all_distinct(std::string&   str, const   std::string&   old_value, const   std::string&   new_value)
+	{
+		for (std::string::size_type pos(0); pos != std::string::npos; pos += new_value.length()) {
+			if ((pos = str.find(old_value, pos)) != std::string::npos)
+				str.replace(pos, old_value.length(), new_value);
+			else   break;
+		}
+		return   str;
+	}
 
 	CErrno DBSlaveInterface::InitDB(const Json::Value & conf)
 	{  
@@ -37,6 +56,24 @@ namespace GameDB
 		std::string strDirectory = conf.get("slave_dir" , "./slave_db/").asString();
 		if(strDirectory[strDirectory.length() - 1] != '/')
 			strDirectory = strDirectory + "/";
+	
+		std::string cmd = "del   /s/q  ";
+		char buf[80];
+		getcwd(buf, sizeof(buf));
+		cmd += buf;
+
+#ifdef WIN32
+		replace_all_distinct(strDirectory, "/", "\\");
+#endif
+		if (strDirectory[0] == '.')
+		{
+			std::string tmp(strDirectory.begin() + 1, strDirectory.end());
+			cmd += tmp;
+		}
+		else
+		{
+			cmd += strDirectory;
+		}
 
 		SDBSlaveInfo objInfo; 
 		objInfo.strDir = strDirectory;
@@ -60,8 +97,10 @@ namespace GameDB
 			return CErrno::Failure();
 		}
 
+		std::string tmpCmd = cmd;
 		for(size_t i = 0; i < databases.size(); ++i)
 		{     
+			tmpCmd = cmd;
 			std::string strDBName = databases[(INT32)i].asString(); 
 			objInfo.strDBName = strDBName;  
 			OnCreateDatabase(objInfo);
@@ -70,6 +109,9 @@ namespace GameDB
 			{
 				m_pNetThread->InsertClientsQueue(strDBName, strAddress , nPort);
 			}
+
+			tmpCmd += strDBName;
+			::system(tmpCmd.c_str());
 		} 
 		return CErrno::Success();
 	} 

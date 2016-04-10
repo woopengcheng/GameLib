@@ -37,7 +37,7 @@ namespace Server
 		virtual CErrno			Update(void) override;
 
 	public:
-		INT32					CreateMasterHandler(INT32 nSessionID); 
+		INT32					CreateMasterHandler(INT32 nSessionID , const std::string & strDBName);
 		SlaveRecord			*	GetSlaveRecord(const std::string & strDBName);
 		INT64					GetServerID() const { return m_llServerID; }
 		void					SetServerID(INT64 nID) { m_llServerID = nID; }
@@ -49,6 +49,7 @@ namespace Server
 		INT64					m_llServerID;
 		INT32					m_nHandlerCount;
 		VecMasterHandlersT		m_vecMasterHandlers; 
+		MasterHandler		*	m_pMasterHandler;
 
 	};  
 	 

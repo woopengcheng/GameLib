@@ -9,7 +9,7 @@ namespace Server
 	public:
 		SlaveRecord(MasterHandler * pHandler)
 			: m_pMaster(pHandler)
-			, m_objRemoteSlaveID(-1)
+			, m_objSlaveID(-1)
 			, m_nSlaveSessionID(0)
 		{
 		}
@@ -22,8 +22,8 @@ namespace Server
 	public:
 		INT32			GetSlaveSessionID() const { return m_nSlaveSessionID; }
 		void			SetSlaveSessionID(INT32 val) { m_nSlaveSessionID = val; }
-		Msg::Object		GetObjRemoteSlaveID() const { return m_objRemoteSlaveID; }
-		void			SetObjRemoteSlaveID(Msg::Object val) { m_objRemoteSlaveID = val; }
+		Msg::Object		GetSlaveID() const { return m_objSlaveID; }
+		void			SetSlaveID(Msg::Object val) { m_objSlaveID = val; }
 		void			SetDBName(std::string strName){ m_strDBName = strName; }
 		std::string		GetDBName( ){ return m_strDBName; }
 		void			SetUserAuth(GameDB::UserAuth & objUserInfo){ m_objAuthInfo = objUserInfo; }
@@ -31,7 +31,7 @@ namespace Server
 
 	private:
 		INT32			 m_nSlaveSessionID;
-		Msg::Object      m_objRemoteSlaveID;		
+		Msg::Object      m_objSlaveID;		
 		MasterHandler *  m_pMaster;
 		std::string		 m_strDBName;
 		GameDB::UserAuth m_objAuthInfo;		

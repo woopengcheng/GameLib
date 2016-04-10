@@ -16,31 +16,29 @@ namespace Server
 	{ 
  		RPC_DEFINE_MasterHandler;
 	public:
-		typedef std::map<Msg::Object , SlaveRecord *> CollectionSlaveRecordsT;
+		typedef std::map<std::string , SlaveRecord *> CollectionSlaveRecordsT;
 
 	public:
-		MasterHandler(Msg::Object objID , INT32 nSessionID , DBMaster * pDBMaster)
+		MasterHandler(Msg::Object objID , DBMaster * pDBMaster)
 			: Msg::IRpcMsgCallableObject(objID , pDBMaster->GetRpcManager())
 			, m_pDBMaster(pDBMaster)
-			, m_nSessionID(nSessionID)
 		{}
 		~MasterHandler();
 
 	public:
-		bool			SendFile(const std::string & strFilePath , std::string & strFileName);
-		DBMaster 	 *  GetDBMaster(){ return m_pDBMaster; }
-		void			StartSyncToSlave(std::string strDBDir);
-		void			CreateSlaveRecord(Msg::Object id);
-		BOOL			SetSlaveRecordInfo(Msg::Object id , GameDB::User & objUser);
-		BOOL			DelSlaveRecord(Msg::Object id);
-		SlaveRecord  *  GetSlaveRecord(Msg::Object id);
-		SlaveRecord  *  GetSlaveRecord(std::string strName);
-		INT32			GetSessionID(){ return m_nSessionID; }
+		bool						SendFile(INT32 nSessionID , const std::string & strFilePath , std::string & strFileName);
+		DBMaster				*	GetDBMaster(){ return m_pDBMaster; }
+		void						StartSyncToSlave(std::string strDBDir);
+		void						CreateSlaveRecord(const std::string & strDBName, INT32 nSessionID);
+		BOOL						SetSlaveRecordInfo(const std::string & strDBName, GameDB::User & objUser);
+		BOOL						DelSlaveRecord(const std::string & strDBName);
+		SlaveRecord				*	GetSlaveRecord(const std::string & strDBName);
+		SlaveRecord				*	GetSlaveRecordBySessionID(INT32 nSessionID);
+		SlaveRecord				*	GetSlaveRecordBySlaveID(INT64 nSlaveID);
 
 	private:
-		INT32			m_nSessionID;
-		DBMaster	 *  m_pDBMaster;
-		CollectionSlaveRecordsT m_mapSlaveRecords;
+		DBMaster				*	m_pDBMaster;
+		CollectionSlaveRecordsT		m_mapSlaveRecords;
 	}; 
 }
 

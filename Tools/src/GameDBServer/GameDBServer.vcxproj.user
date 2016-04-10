@@ -8,6 +8,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">
     <LocalDebuggerWorkingDirectory>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>./gdbServer.conf</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>./gdbSlave.conf</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

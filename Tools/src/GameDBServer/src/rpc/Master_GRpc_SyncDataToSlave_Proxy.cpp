@@ -9,7 +9,7 @@ Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcServerProxy(INT32 nSession
 	Server::SlaveRecord * pSlaveRecord = Server::DBMaster::GetInstance().GetSlaveRecord(dbname);
 	if (pSlaveRecord)
 	{
-		if(-1 == ProxySendMsg(pSlaveRecord->GetSlaveSessionID() , pSlaveRecord->GetObjRemoteSlaveID() , dbname , value))
+		if(-1 == ProxySendMsg(pSlaveRecord->GetSlaveSessionID() , pSlaveRecord->GetSlaveID() , dbname , value))
 		{
 			Return(res);
 		}

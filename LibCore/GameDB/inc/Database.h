@@ -37,16 +37,17 @@ namespace GameDB
 		}
 
 	public:
-		std::string		 GetName() const { return m_strName; } 
-		std::string		 GetDirectory() const { return m_strDirectory; }
-		DB	   * GetLevelDB() const { return m_pLevelDB; } 
-		Options GetObjOptions() const { return m_objOptions; } 
+		std::string			GetName() const { return m_strName; } 
+		std::string			GetDirectory() const { return m_strDirectory; }
+		DB				*	GetLevelDB() const { return m_pLevelDB; } 
+		Options				GetObjOptions() const { return m_objOptions; }
+		BackupEnvironment * GetBackupEnv() const { return m_pBackupEnv; }
 		   
 	private:
 		std::string			m_strName;
 		std::string			m_strDirectory; 
-		DB		  * m_pLevelDB;
-		Options	m_objOptions;
+		DB				*	m_pLevelDB;
+		Options				m_objOptions;
 		Cache			  * m_pCustomCache;   //5 用户自定义缓存
 		BackupEnvironment * m_pBackupEnv;
 	};

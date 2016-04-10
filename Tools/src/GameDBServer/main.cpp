@@ -20,6 +20,7 @@
 #include "SlaveHandler.h" 
 #include "ThreadPool/inc/ThreadPoolInterface.h"
 #include "GameDB/inc/RemoteNodeDefine.h"
+#include "MsgLib/inc/MsgHelper.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {  
@@ -44,7 +45,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		Json::Value objDBServer = root.get("server", Json::Value());
 		Server::DBServer::GetInstance().Init(objDBServer);
 
-		static Server::MasterHandler  ObjMasterHandler(10000,0,&Server::DBMaster::GetInstance()); 
+//		static Server::MasterHandler  ObjMasterHandler(10000,&Server::DBMaster::GetInstance()); 
 	}
 	else if (strRunMode.compare("slave") == 0)
 	{
@@ -60,14 +61,34 @@ int _tmain(int argc, _TCHAR* argv[])
 	//5 等待slave连接成功,并且请求数据
 	if (strRunMode.compare("slave") == 0 )
 	{
+		std::vector<std::string> vecDBName;
+		Json::Value databases = root.get("slave", Json::Value()).get("databases", Json::Value());
+		for (size_t i = 0; i < databases.size(); ++i)
+		{
+			std::string strDBName = databases[(INT32)i].asString();
+			vecDBName.push_back(strDBName);
+		}
+		std::vector<std::string>::iterator iter = vecDBName.begin() , end = vecDBName.end();
 		gDebugStream("waiting slave connect master.");
 		while(1)
 		{
-			if (Server::DBSlave::GetInstance().GetRpcManager()->IsConnected(g_strGameDBNodes[NETNODE_DBSLAVE_TO_DBMASTER]) && Server::DBSlave::GetInstance().GetMasterID() > 0)
+			if (Server::DBSlave::GetInstance().GetMasterID() > 0)
 			{
-				Server::DBSlave::GetInstance().StartAuth();
-				gDebugStream("slave connect success.");
-				break;
+				bool bConnected = true;
+				for (iter = vecDBName.begin(); iter != end;++iter)
+				{
+					std::string strDBName = Msg::MsgHelper::GeneratePeerInfoKey(*iter, "dbmaster");
+					if (!Server::DBSlave::GetInstance().GetRpcManager()->IsConnected(strDBName))
+					{
+						bConnected = false;
+					}
+				}
+				if (bConnected)
+				{
+					Server::DBSlave::GetInstance().StartAuth();
+					gDebugStream("slave connect success.");
+					break;
+				}
 			}
 			Server::DBSlave::GetInstance().Update();
 		}

@@ -114,14 +114,20 @@ namespace Server
 	{
 		if (m_pDBSlave)
 		{
-			if (strNetNodeName == g_strGameDBNodes[NETNODE_SYSDB_TO_DBMASTER])
-			{
-				m_pDBSlave->SetSlaveSessionID(g_szSystemDatabase , nSessionID);
-			}
-			else if (strNetNodeName == g_strGameDBNodes[NETNODE_TEST_TO_DBMASTER])
-			{
-				m_pDBSlave->SetSlaveSessionID("testdb", nSessionID);
-			}
+			std::string strCurNode;
+			std::vector<std::string> vals;
+			CUtil::tokenize(strNetNodeName, vals, "_", "", "\"");
+			std::string strDBName = vals[0];
+			m_pDBSlave->SetSlaveSessionID(strDBName, nSessionID);
+
+// 			if (strNetNodeName == g_strGameDBNodes[NETNODE_SYSDB_TO_DBMASTER])
+// 			{
+// 				m_pDBSlave->SetSlaveSessionID(g_szSystemDatabase , nSessionID);
+// 			}
+// 			else if (strNetNodeName == g_strGameDBNodes[NETNODE_TEST_TO_DBMASTER])
+// 			{
+// 				m_pDBSlave->SetSlaveSessionID("testdb", nSessionID);
+// 			}
 		}
 
 		return CErrno::Success();

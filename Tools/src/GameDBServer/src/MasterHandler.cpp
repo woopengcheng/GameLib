@@ -10,8 +10,19 @@ namespace Server
 		std::vector<std::string> files;
 		GameDB::GetDefaultEnv()->GetChildren(strDBDir,&files);
 
-		INT32 nType = 1;  		 
-		rpc_MasterStartSync(m_nSessionID, m_pRpcMsgCall->GetProxySrcID() , GetObjectID() , std::string() , nType , nType , CUtil::Chunk());
+		INT32 nType = 1;
+		INT32 nSessionID = -1;
+		CUtil::Parameters * pParams = GetInParams();
+		if (pParams)
+		{
+			std::string strDBName = pParams->GetValue<std::string>(0);
+			SlaveRecord * pRecord = GetSlaveRecord(strDBName);
+			if (pRecord)
+			{
+				nSessionID = pRecord->GetSlaveSessionID();
+			}
+		}
+		rpc_MasterStartSync(nSessionID, m_pRpcMsgCall->GetProxySrcID() , GetObjectID() , std::string() , nType , nType , CUtil::Chunk());
 
 		for(size_t i = 0; i < files.size(); ++i)
 		{
@@ -19,14 +30,14 @@ namespace Server
 			if(filename == "." || filename == "..")
 				continue;
 
-			SendFile(strDBDir + "/" + filename,filename);
+			SendFile(nSessionID, strDBDir + "/" + filename,filename);
 		}
 
 		nType = 2;
-		rpc_MasterStartSync(m_nSessionID , m_pRpcMsgCall->GetProxySrcID() , GetObjectID() , std::string() , nType , nType , CUtil::Chunk());
+		rpc_MasterStartSync(nSessionID, m_pRpcMsgCall->GetProxySrcID() , GetObjectID() , std::string() , nType , nType , CUtil::Chunk());
 	}
 
-	bool MasterHandler::SendFile(const std::string & strFilePath , std::string & strFileName)
+	bool MasterHandler::SendFile(INT32 nSessionID, const std::string & strFilePath , std::string & strFileName)
 	{
 		static const size_t cst_buffer_size = 1*1024*1024;
 
@@ -48,7 +59,7 @@ namespace Server
 			filesize -= (INT64)size; 
 
 			INT32 nType = 0; 
-			rpc_MasterStartSync(m_nSessionID , m_pRpcMsgCall->GetProxySrcID() , GetObjectID() , strFileName , (INT32)filesize , nType , CUtil::Chunk(tmpbuf , (UINT32)size));
+			rpc_MasterStartSync(nSessionID, m_pRpcMsgCall->GetProxySrcID() , GetObjectID() , strFileName , (INT32)filesize , nType , CUtil::Chunk(tmpbuf , (UINT32)size));
 			
 			gDebugStream("send file:" << strFileName << "send size: " << size );
 		}
@@ -59,11 +70,11 @@ namespace Server
 
 	}
 
-	BOOL MasterHandler::SetSlaveRecordInfo(Msg::Object id , GameDB::User & objUser)
+	BOOL MasterHandler::SetSlaveRecordInfo(const std::string & strDBName, GameDB::User & objUser)
 	{
 		GameDB::UserAuth objAuth(objUser);
 
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(id);
+		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			SlaveRecord * pRecord = iter->second;
@@ -78,9 +89,9 @@ namespace Server
 		return FALSE;
 	}
 
-	BOOL MasterHandler::DelSlaveRecord(Msg::Object id)
+	BOOL MasterHandler::DelSlaveRecord(const std::string & strDBName)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(id);
+		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			SAFE_DELETE(iter->second);
@@ -92,16 +103,17 @@ namespace Server
 		return FALSE;
 	}
 
-	void MasterHandler::CreateSlaveRecord(Msg::Object id)
+	void MasterHandler::CreateSlaveRecord(const std::string & strDBName , INT32 nSessionID)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(id);
+		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			SlaveRecord * pRecord = iter->second;
 			if (pRecord)
 			{ 
-				pRecord->SetSlaveSessionID(m_nSessionID);
-				pRecord->SetObjRemoteSlaveID(id); 
+				pRecord->SetSlaveSessionID(nSessionID);
+				pRecord->SetDBName(strDBName);
+//				pRecord->SetObjRemoteSlaveID(id); 
 			}
 		}
 		else
@@ -109,10 +121,11 @@ namespace Server
 			SlaveRecord * pRecord = new SlaveRecord(this);
 			if (pRecord)
 			{ 
-				pRecord->SetSlaveSessionID(m_nSessionID);
-				pRecord->SetObjRemoteSlaveID(id); 
+				pRecord->SetSlaveSessionID(nSessionID);
+				pRecord->SetDBName(strDBName);
+//				pRecord->SetObjRemoteSlaveID(id); 
 
-				m_mapSlaveRecords.insert(std::make_pair(id , pRecord));
+				m_mapSlaveRecords.insert(std::make_pair(strDBName , pRecord));
 			}
 		}
 	}
@@ -127,9 +140,9 @@ namespace Server
 		m_mapSlaveRecords.clear();
 	}
 
-	SlaveRecord * MasterHandler::GetSlaveRecord(Msg::Object id)
+	SlaveRecord * MasterHandler::GetSlaveRecord(const std::string & strDBName)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(id);
+		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			return iter->second;
@@ -138,17 +151,31 @@ namespace Server
 		return NULL;
 	}
 
-	SlaveRecord * MasterHandler::GetSlaveRecord(std::string strName)
+	SlaveRecord	* MasterHandler::GetSlaveRecordBySessionID(INT32 nSessionID)
 	{
 		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
-		for(;iter != m_mapSlaveRecords.end();++iter)
+		for (;iter != m_mapSlaveRecords.end();++iter)
 		{
-			if (iter->second->GetDBName() == strName)
+			if (iter->second->GetSlaveSessionID() == nSessionID)
 			{
 				return iter->second;
 			}
 		}
-		
+
+		return NULL;
+	}
+
+	SlaveRecord				* MasterHandler::GetSlaveRecordBySlaveID(INT64 nSlaveID)
+	{
+		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
+		for (; iter != m_mapSlaveRecords.end(); ++iter)
+		{
+			if (iter->second->GetSlaveID() == nSlaveID)
+			{
+				return iter->second;
+			}
+		}
+
 		return NULL;
 	}
 

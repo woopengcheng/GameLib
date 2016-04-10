@@ -35,6 +35,7 @@ namespace GameDB
 	public:
 		virtual Status				Backup(const std::string & strDir , void * arg);
 		virtual Status				DeleteFile(const std::string & strFile){ return RemoveFile(strFile); }
+		virtual Status				DeleteDir(const std::string& d);
 		virtual bool				CheckCopyFile(const std::string& strName);
 		virtual bool				CanCopyFile(const std::string& strName);
 		virtual Status				CloneFile(void * arg , const std::string & strFile , int64_t llFileLength);

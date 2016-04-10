@@ -20,7 +20,7 @@ namespace Server
 			: Msg::IRpcMsgCallableObject(Msg::Object(nObjectID) , pDBServer->GetRpcManager())
 			, m_pDBServer(pDBServer)
 			, m_strDatabaseName("")
-			, m_nClientSessionID(nSessionID)
+			, m_nRemoteSessionID(nSessionID)
 		{}
 		 
 	public:
@@ -33,14 +33,14 @@ namespace Server
 
 			return NULL;
 		}
-		INT32						GetClientSessionID() const { return m_nClientSessionID; }
+		INT32						GetSessionID() const { return m_nRemoteSessionID; }
 		DBServer	*				GetDBServer() { return m_pDBServer; }
 		void						SetAuthInfo(const GameDB::UserAuth & val) { m_objAuthInfo = val; }
 		const GameDB::UserAuth &	GetAuthInfo() const { return m_objAuthInfo; }
 
 	private:
 		DBServer				*	m_pDBServer;
-		INT32						m_nClientSessionID;
+		INT32						m_nRemoteSessionID;
 		std::string					m_strDatabaseName;
 		GameDB::UserAuth			m_objAuthInfo;
 	}; 

@@ -1,7 +1,6 @@
+#include "GameDB/inc/db_port.h"
 #ifdef USE_ROCKSDB
-
 #include "GameDB/inc/RocksDB.h"
-
 namespace GameDB
 {
 	const DBComparator* BytewiseComparator()

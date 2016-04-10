@@ -6,7 +6,7 @@ Msg::ObjectMsgCall * Server::MasterHandler::SlaveRequestSync_RpcServerProxy(INT3
 	std_string newbackdir = std::string();
 	INT32 res = 0;
 	 
-	if(-1 == ProxySendMsg(g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSERVER], 1 , dbname))
+	if(-1 == ProxySendMsg(g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSERVER], Server::DBMaster::GetInstance().GetServerID(), dbname))
 	{
 		Return(newbackdir , res);
 	}

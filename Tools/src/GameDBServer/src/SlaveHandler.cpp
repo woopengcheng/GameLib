@@ -1,5 +1,6 @@
 #include "GameDB/inc/RemoteNodeDefine.h"
 #include "GameDB/inc/Comparator.h"
+#include "GameDB/inc/BackupEnvironment.h"
 #include "GameDB/inc/DBCommon.h"
 #include "Timer/inc/TimerHelp.h"
 #include "SlaveHandler.h"
@@ -61,8 +62,12 @@ namespace Server
 		GameDB::Options objOp;
 		objOp.error_if_exists = true;
 		objOp.create_if_missing = false;
-		objOp.comparator = new GameDB::Comparator();
+		objOp.comparator = new GameDB::Comparator(); 
+#ifdef USE_LEVELDB
 		objOp.compression = kSnappyCompression;
+#else
+		objOp.compression = kNoCompression;
+#endif
 
 		m_pDatabase = new GameDB::Database(strDBName,strDir,objOp);
 		if(!m_pDatabase->Open() || !m_pDatabase->GetLevelDB())

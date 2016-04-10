@@ -6,7 +6,15 @@ Msg::ObjectMsgCall * Server::MasterHandler::SlaveStartAuth_RpcServerProxy(INT32 
 {
 	std_string value = std::string();
 
-	CreateSlaveRecord(objSrc);
+	SlaveRecord * pRecord = GetSlaveRecordBySessionID(nSessionID);
+	if (pRecord)
+	{
+		pRecord->SetSlaveID(objSrc);
+	}
+	else
+	{
+		ReturnNULL;
+	}
 
 	if(-1 == ProxySendMsg(g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSERVER], 1 , name , pwd))
 	{
@@ -23,12 +31,20 @@ Msg::ObjectMsgCall * Server::MasterHandler::SlaveStartAuth_RpcClientProxy(INT32 
 	{
 		GameDB::User objUser;
 		objUser.FromBson(value.c_str() , (INT32)value.length()); 
-		
-		SetSlaveRecordInfo(m_pRpcMsgCall->GetProxySrcID() , objUser);
+		SlaveRecord * pRecord = GetSlaveRecordBySlaveID(m_pRpcMsgCall->GetProxySrcID().m_llObjID);
+		if (pRecord)
+		{
+			GameDB::UserAuth objAuth(objUser);
+			pRecord->SetUserAuth(objAuth);
+		}
 	} 
 	else
 	{
-		DelSlaveRecord(m_pRpcMsgCall->GetProxySrcID());
+		SlaveRecord * pRecord = GetSlaveRecordBySlaveID(m_pRpcMsgCall->GetProxySrcID().m_llObjID);
+		if (pRecord)
+		{
+			DelSlaveRecord(pRecord->GetDBName());
+		}
 	}
 
 	std::cout << "SlaveStartAuth_RpcClientProxy" << std::endl;

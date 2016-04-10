@@ -55,7 +55,7 @@ namespace Server
 			else
 			{
 				SAFE_DELETE(pHandler);
-				gErrorStream("AddServerHandler error,same sessionid=" << pHandler->GetClientSessionID() << ":handlerID=%d" << m_nHandlerCount);
+				gErrorStream("AddServerHandler error,same sessionid=" << pHandler->GetSessionID() << ":handlerID=%d" << m_nHandlerCount);
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace Server
 			if (strNetNodeName == g_strGameDBNodes[NETNODE_DBSERVER_TO_DBMASTER])
 			{
 				INT32 nHandlerID = m_pDBServer->CreateServerHandler(nSessionID);
-				rpc_SyncServerHandler(nSessionID, Msg::Object(0),0);
+				rpc_SyncServerHandler(nSessionID, Msg::Object(0), nHandlerID);
 			}
 		}
 		return CErrno::Success();

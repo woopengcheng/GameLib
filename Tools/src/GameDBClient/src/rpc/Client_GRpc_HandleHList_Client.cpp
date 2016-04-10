@@ -7,7 +7,7 @@ Msg::ObjectMsgCall * Client::GRpc::HandleHList_RpcClient(INT32 nSessionID , Msg:
 		CUtil::CStream cs;
 		cs.Pushback(res.Begin() , res.GetDataLen());
 
-		INT32 nCount = 0;
+		INT64 nCount = 0;
 		cs >> nCount;
 
 		std::string strKey;

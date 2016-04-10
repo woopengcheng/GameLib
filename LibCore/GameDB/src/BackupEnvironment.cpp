@@ -30,6 +30,11 @@ namespace GameDB
 		return s;  
 	}
 
+	Status BackupEnvironment::DeleteDir(const std::string& d)
+	{
+		return target()->DeleteDir(d);
+	}
+
 	bool BackupEnvironment::CheckCopyFile(const std::string& strName)
 	{
 		uint64_t llNumber = 0;
@@ -165,7 +170,7 @@ namespace GameDB
 	Status BackupEnvironment::CloneFile( const std::string& strSrc,const std::string& strDst,int64_t llFileLength )
 	{
 		Status objStatus;
-#ifdef USE_ROCKDB
+#ifdef USE_ROCKSDB
 		std::unique_ptr<SequentialFile> pReadFile;
 		std::unique_ptr<WritableFile> pWriteFile;
 		const EnvOptions options;
@@ -183,7 +188,7 @@ namespace GameDB
 			return objStatus;
 		} 
 
-#ifdef USE_ROCKDB
+#ifdef USE_ROCKSDB
 		objStatus = target()->NewWritableFile(strDst, &pWriteFile, options);
 #else
 		objStatus = target()->NewWritableFile(strDst, &pWriteFile);
@@ -228,7 +233,7 @@ namespace GameDB
 				break;
 			}
 		}
-
+		SAFE_DELETE(pTmpBuf);
 #ifdef USE_LEVELDB
 		SAFE_DELETE(pWriteFile);
 		SAFE_DELETE(pReadFile);
@@ -240,7 +245,7 @@ namespace GameDB
 	{
 		Status objStatus;
 		std::unique_ptr<WritableFile> pWriteFile;
-#ifdef USE_ROCKDB
+#ifdef USE_ROCKSDB
 		const EnvOptions options;
 		objStatus = target()->NewWritableFile(strDir, &pWriteFile, options);
 #else
