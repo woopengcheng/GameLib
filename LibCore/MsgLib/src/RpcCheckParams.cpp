@@ -34,7 +34,10 @@ namespace Msg
 		}
 		else
 		{
-			gWarniStream(strFunName << "Has return params");
+			if (objParam != iter->second)
+			{
+				gErrorStream(strFunName << "return params error.");
+			}
 		} 
 	}
 
@@ -48,7 +51,10 @@ namespace Msg
 		}
 		else
 		{
-			gWarniStream(strFunName << "Has deliver params");
+			if (objParam != iter->second)
+			{
+				gErrorStream(strFunName << "deliver params error.");
+			}
 		}
 	} 
 
