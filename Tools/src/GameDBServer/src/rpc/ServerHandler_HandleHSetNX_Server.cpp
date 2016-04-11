@@ -15,8 +15,8 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleHSetNX_RpcServer(INT32 nSessio
 	GameDB::Operate oper;
 	GameDB::HashTable::HSetNX(*pDB , oper , table , key , value);
 	if (oper.IsSuccess())
-	{ 
-		rpc_SyncDataToSlave("tcp://127.0.0.1:9001" , 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+	{
+		SyncDataToSlave(oper);
 
 		res = 0;
 		gDebugStream("table:" << table << "key:" << key << "value:" << value << "success."); 

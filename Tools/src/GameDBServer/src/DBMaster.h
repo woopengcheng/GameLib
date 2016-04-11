@@ -48,7 +48,6 @@ namespace Server
 	private:
 		INT64					m_llServerID;
 		INT32					m_nHandlerCount;
-		VecMasterHandlersT		m_vecMasterHandlers; 
 		MasterHandler		*	m_pMasterHandler;
 
 	};  

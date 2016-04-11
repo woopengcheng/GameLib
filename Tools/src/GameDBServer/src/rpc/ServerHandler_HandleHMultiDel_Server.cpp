@@ -28,7 +28,7 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleHMultiDel_RpcServer(INT32 nSes
 	GameDB::HashTable::HMultiDel(*pDB , oper , table ,vecKeys);
 	if (oper.IsSuccess())
 	{
-		rpc_SyncDataToSlave("tcp://127.0.0.1:9001" , 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+		SyncDataToSlave(oper);
 
 		gDebugStream("HMultiDel table:" << table << "success.");  
 		oper.GetOperateReturns().GetStream() >> res; 

@@ -15,7 +15,7 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleZDel_RpcServer(INT32 nSessionI
 	GameDB::SortedSet::ZDel(*pDB , oper , table , key);
 	if (oper.IsSuccess())
 	{
-		rpc_SyncDataToSlave("tcp://127.0.0.1:9001" , 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+		SyncDataToSlave(oper);
 
 		oper.GetOperateReturns().GetStream() >> score ;
 		gDebugStream("HDel: table:" << table  << "success.");

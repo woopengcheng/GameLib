@@ -16,7 +16,7 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleHSetIncr_RpcServer(INT32 nSess
 	GameDB::HashTable::HSetIncr(*pDB , oper , table , key , value);
 	if (oper.IsSuccess())
 	{
-		rpc_SyncDataToSlave("tcp://127.0.0.1:9001" , 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+		SyncDataToSlave(oper);
 
 		oper.GetOperateReturns().GetStream() >> res;
 		gDebugStream("table:" << table << "key:" << key << "value:" << value << "success."); 

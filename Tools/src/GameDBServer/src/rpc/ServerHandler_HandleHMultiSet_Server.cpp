@@ -30,7 +30,7 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleHMultiSet_RpcServer(INT32 nSes
 	GameDB::HashTable::HMultiSet(*pDB , oper , table ,mapKeys);
 	if (oper.IsSuccess())
 	{
-		rpc_SyncDataToSlave("tcp://127.0.0.1:9001" , 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+		SyncDataToSlave(oper); 
 
 		res = 0;
 		gDebugStream("HMultiDel table:" << table << "success."); 

@@ -1,14 +1,15 @@
 #ifndef __test_server_object_h__
 #define __test_server_object_h__
-
 #include "MsgLib/inc/IRpcMsgCallableObject.h"
 #include "MsgLib/inc/RpcManager.h"
 #include "MsgLib/inc/Object.h"
+#include "GameDB/inc/UserAuth.h"
+#include "GameDB/inc/SortedSet.h"
+#include "GameDB/inc/RemoteNodeDefine.h"
 #include "RpcDefines.h" 
 #include "MsgNameDefine.h"  
 #include "DBServer.h" 
-#include "GameDB/inc/UserAuth.h"
-#include "GameDB/inc/SortedSet.h"
+#include "RPCCallFuncs.h"
 
 namespace Server
 {  
@@ -16,11 +17,10 @@ namespace Server
 	{ 
 		RPC_DEFINE_ServerHandler;
 	public:
-		ServerHandler(INT32 nObjectID , DBServer * pDBServer , INT32 nSessionID)
+		ServerHandler(INT32 nObjectID , DBServer * pDBServer)
 			: Msg::IRpcMsgCallableObject(Msg::Object(nObjectID) , pDBServer->GetRpcManager())
 			, m_pDBServer(pDBServer)
 			, m_strDatabaseName("")
-			, m_nRemoteSessionID(nSessionID)
 		{}
 		 
 	public:
@@ -33,17 +33,21 @@ namespace Server
 
 			return NULL;
 		}
-		INT32						GetSessionID() const { return m_nRemoteSessionID; }
 		DBServer	*				GetDBServer() { return m_pDBServer; }
 		void						SetAuthInfo(const GameDB::UserAuth & val) { m_objAuthInfo = val; }
 		const GameDB::UserAuth &	GetAuthInfo() const { return m_objAuthInfo; }
+		INT32						SyncDataToSlave(GameDB::Operate & oper)
+		{
+			return rpc_SyncDataToSlave(g_strGameDBNodes[NETNODE_DBSERVER_TO_DBMASTER], 0, GetObjectID(), m_strDatabaseName, oper.GetOperateRecord().GetData());
+		}
 
 	private:
 		DBServer				*	m_pDBServer;
-		INT32						m_nRemoteSessionID;
 		std::string					m_strDatabaseName;
 		GameDB::UserAuth			m_objAuthInfo;
 	}; 
+
+
 }
 
 #endif

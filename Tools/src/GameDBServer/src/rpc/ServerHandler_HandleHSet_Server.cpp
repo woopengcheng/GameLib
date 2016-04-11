@@ -3,6 +3,7 @@
 #include "GameDB/inc/Environment.h"
 #include "GameDB/inc/Database.h"
 #include "GameDB/inc/Operate.h"
+#include "GameDB/inc/RemoteNodeDefine.h"
 #include "RPCCallFuncs.h"
 
 Msg::ObjectMsgCall * Server::ServerHandler::HandleHSet_RpcServer(INT32 nSessionID , Msg::Object objSrc ,  std_string & table/* = std::string()*/ , std_string & key/* = std::string()*/  , std_string & value /* = std::string()*/  )
@@ -18,8 +19,8 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleHSet_RpcServer(INT32 nSessionI
 	GameDB::Operate oper;
 	GameDB::HashTable::HSet(*pDB , oper , table , key , value);
 	if (oper.IsSuccess())
-	{ 
-		rpc_SyncDataToSlave(GetSessionID(), 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+	{
+		SyncDataToSlave(oper);
 
 		res = 0;
 		gDebugStream("table:" << table << "key:" << key << "value:" << value << "success."); 

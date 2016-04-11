@@ -16,7 +16,7 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleZSet_RpcServer(INT32 nSessionI
 	GameDB::SortedSet::ZSet(*pDB , oper , table , key , score);
 	if (oper.IsSuccess())
 	{
-		rpc_SyncDataToSlave("tcp://127.0.0.1:9001" , 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+		SyncDataToSlave(oper);
 
 		gDebugStream("table:" << table << "key:" << key << "score:" << score << "success.");
 		Return(0);

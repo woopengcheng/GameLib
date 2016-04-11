@@ -44,7 +44,7 @@ namespace Server
 
 	INT32 DBServer::CreateServerHandler(INT32 nSessionID)
 	{
-		ServerHandler * pHandler = new ServerHandler(++m_nHandlerCount , this, nSessionID);
+		ServerHandler * pHandler = new ServerHandler(++m_nHandlerCount , this);
 		if (pHandler)
 		{
 			MapServerHandlersT::iterator iter = m_mapServerHandlers.find(m_nHandlerCount);

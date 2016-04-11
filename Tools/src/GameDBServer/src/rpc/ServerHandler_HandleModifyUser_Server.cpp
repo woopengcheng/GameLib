@@ -38,7 +38,7 @@ Msg::ObjectMsgCall * Server::ServerHandler::HandleModifyUser_RpcServer(INT32 nSe
 
 	if (oper.IsSuccess())
 	{
-		rpc_SyncDataToSlave("tcp://127.0.0.1:9001" , 0 , GetObjectID() , m_strDatabaseName , oper.GetOperateRecord().GetData());
+		SyncDataToSlave(oper);
 
 		res = 0;
 	}

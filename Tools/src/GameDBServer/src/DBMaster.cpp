@@ -20,12 +20,7 @@ namespace Server
 	{
 		SAFE_DELETE(m_pRpcListener);
 
-		VecMasterHandlersT::iterator iter = m_vecMasterHandlers.begin();
-		for (;iter != m_vecMasterHandlers.end();++iter)
-		{
-			SAFE_DELETE(*iter);
-		}
-		m_vecMasterHandlers.clear();
+		SAFE_DELETE(m_pMasterHandler);
 	}
 
 	CErrno DBMaster::Init(Json::Value & conf)
@@ -77,18 +72,9 @@ namespace Server
 
 	SlaveRecord * DBMaster::GetSlaveRecord(const std::string & strDBName)
 	{
-		VecMasterHandlersT::iterator iter = m_vecMasterHandlers.begin();
-		for (;iter != m_vecMasterHandlers.end();++iter)
+		if (m_pMasterHandler)
 		{
-			MasterHandler * pMasterHandler = *iter;
-			if (pMasterHandler)
-			{
-				SlaveRecord * pRecord = pMasterHandler->GetSlaveRecord(strDBName); 
-				if (pRecord)
-				{
-					return pRecord;
-				}
-			}
+			return m_pMasterHandler->GetSlaveRecord(strDBName);
 		}
 
 		return NULL;
