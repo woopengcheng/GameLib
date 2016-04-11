@@ -2032,6 +2032,8 @@ def CheckDataType(item_type , sheet , row , col , colItem , childIndex):
 		parentName = GetDicKeyByUpper(g_xlsRecords , name)
 		#LogOutDebug("name:" , name , "sheet:" , sheet , "parentName:" , parentName)
 		parentType = g_xlsRecords[parentName][g_rowType][g_cellID]
+		if not CheckConfigData(parentName , colItem):
+			LogOutError(colItem , " not in " , parentName , " id col." , "config row=" , row , " col=" , col)
 		return CheckDataType(parentType , sheet , row , col , colItem , childIndex)
 	elif item_type == g_conditionType:
 		item = RemoveSpecialWord(colItem)
@@ -2105,6 +2107,12 @@ def CheckDataType(item_type , sheet , row , col , colItem , childIndex):
 		else:
 			return colItem
 
+def CheckConfigData(parentName , colItem):
+	for row , rowItem in g_xlsRecords[parentName].items():		#读取每一行
+		if rowItem[g_cellID] == colItem:
+			return True
+	return False
+	
 def GetTypeByIndex(types , index):
 	typeItems = types.split(',')
 	for childIndex , childItem in enumerate(typeItems):
