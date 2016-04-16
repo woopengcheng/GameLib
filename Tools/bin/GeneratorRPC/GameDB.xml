@@ -803,7 +803,7 @@
 		<Rpc name="SyncMasterHandler" syncType="1" timeout="10">
 			<Targets> 
 				<Client name="Master" include="MasterHandler.h" class="MasterHandler"/> 
-				<Server name="Slave" include="SlaveHandler.h" class="SlaveHandler" /> 
+				<Server name="Slave"/> 
 			</Targets>
 			
 			<Call > 
@@ -832,6 +832,7 @@
 			</Return>
 		</Rpc>
 		
+		<!--
 		<Rpc name="SlaveSelectDB" syncType="1" timeout="10">
 			<Targets> 
 				<Client name="Slave" include="SlaveHandler.h" class="SlaveHandler" /> 
@@ -846,6 +847,7 @@
 				<Param name="res" type="INT32" default="0"/> 
 			</Return>
 		</Rpc>
+		-->
 		
 		<Rpc name="SlaveRequestSync" syncType="1" timeout="3600">
 			<Targets> 

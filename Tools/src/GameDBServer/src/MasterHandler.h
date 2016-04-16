@@ -16,12 +16,30 @@ namespace Server
 	{ 
  		RPC_DEFINE_MasterHandler;
 	public:
-		typedef std::map<std::string , SlaveRecord *> CollectionSlaveRecordsT;
+		typedef std::vector<CUtil::Chunk>						VecSaveCachesT;
+		struct SaveCaches
+		{
+			VecSaveCachesT	vecSaveCaches;
+			INT32			nCurPos;		//5 当前同步积存池的位置.
+			INT32			nLastPos;		//5 最后一次更新的位置.
+
+			SaveCaches()
+				: nCurPos(0)
+				, nLastPos(0)
+			{
+				vecSaveCaches.clear();
+			}
+		};
+
+		typedef std_unordered_map<std::string, SlaveRecord *>		MapSlaveRecordsT;
+		typedef std_unordered_map<std::string, SaveCaches>			MapSaveCachesT;  //5 给每一数据库一个积存池.用来同步slave使用.
 
 	public:
 		MasterHandler(Msg::Object objID , DBMaster * pDBMaster)
 			: Msg::IRpcMsgCallableObject(objID , pDBMaster->GetRpcManager())
 			, m_pDBMaster(pDBMaster)
+			, m_nRecordCount(0)
+			, m_nDBSlaveSessionID(0)
 		{}
 		~MasterHandler();
 
@@ -29,16 +47,20 @@ namespace Server
 		bool						SendFile(INT32 nSessionID , const std::string & strFilePath , std::string & strFileName);
 		DBMaster				*	GetDBMaster(){ return m_pDBMaster; }
 		void						StartSyncToSlave(std::string strDBDir);
-		void						CreateSlaveRecord(const std::string & strDBName, INT32 nSessionID);
+		INT32						CreateSlaveRecord(const std::string & strDBName, INT32 nSessionID);
 		BOOL						SetSlaveRecordInfo(const std::string & strDBName, GameDB::User & objUser);
 		BOOL						DelSlaveRecord(const std::string & strDBName);
 		SlaveRecord				*	GetSlaveRecord(const std::string & strDBName);
 		SlaveRecord				*	GetSlaveRecordBySessionID(INT32 nSessionID);
 		SlaveRecord				*	GetSlaveRecordBySlaveID(INT64 nSlaveID);
+		void						SetDBSlaveSessionID(INT32 nSessionID) { m_nDBSlaveSessionID = nSessionID; }
+		INT32						GetDBSlaveSessionID() { return m_nDBSlaveSessionID; }
 
 	private:
 		DBMaster				*	m_pDBMaster;
-		CollectionSlaveRecordsT		m_mapSlaveRecords;
+		MapSlaveRecordsT			m_mapSlaveRecords;
+		INT32						m_nRecordCount;
+		INT32						m_nDBSlaveSessionID;
 	}; 
 }
 

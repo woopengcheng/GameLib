@@ -36,7 +36,6 @@ namespace Server
 
 	public:
 		void					StartAuth();
-		void					SelectDB();
 		void					RequestSyncData();
 		DBSlave				*	GetDBSlave(){ return m_pDBSlave; }
 		bool					RecvFile(std::string strDir , std::string strFileName , std::string strDBName , INT32 nFileSize , INT32 nSendType , const CUtil::Chunk & objChunk);

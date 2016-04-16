@@ -56,6 +56,8 @@ namespace Net
 		void SetSendBufSize(INT32 val) { m_nSendBufSize = val; }
 		INT32 GetRecvBufSize() const { return m_nRecvBufSize; }
 		void SetRecvBufSize(INT32 val) { m_nRecvBufSize = val; }
+		BOOL GetReconnectState() const { return m_bReconnectState; }
+		void SetReconnectState(BOOL val) { m_bReconnectState = val; }
 		BOOL IsTimeout(void)
 		{ 
 			if (m_objTimeout.IsStarted())
@@ -82,6 +84,8 @@ namespace Net
 		void			*	m_pContext;
 		INT32				m_nSendBufSize;
 		INT32				m_nRecvBufSize;
+		BOOL				m_bReconnectState;  //5 是否是断线重连连接上的.
+
 	private:
 		BOOL				m_bCanWrite;
 		Timer::TimeCount	m_objTimeout; 

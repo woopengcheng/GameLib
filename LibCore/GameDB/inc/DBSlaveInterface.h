@@ -37,8 +37,13 @@ namespace GameDB
 		virtual CErrno  Update(void) override;
 		virtual void	OnCreateDatabase(const SDBSlaveInfo & objInfo){} 
 
-	private: 
+	public:
 		CErrno			InitDB(const Json::Value & conf);
+		void			SetMasterID(Msg::Object nMasterID) { m_objMasterID = nMasterID; }
+		Msg::Object		GetMasterID() { return m_objMasterID; }
+
+	private:
+		Msg::Object		m_objMasterID;
 	};
 }
 

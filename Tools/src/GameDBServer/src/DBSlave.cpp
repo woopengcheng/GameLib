@@ -8,7 +8,6 @@ namespace Server
 {
 	DBSlave::DBSlave(void)
 		: ThreadPool::ThreadSustainTask(102 , "DBSlave" )
-		, m_objMasterID(0)
 		, m_nSlaveCount(0)
 	{
 		m_pRpcListener = new SlaveListener(this);
@@ -110,6 +109,18 @@ namespace Server
 		}
 	}
 
+	void DBSlave::RequestSyncData(const std::string & strDBName)
+	{
+		SlaveHandler * pHandler = GetSlaveHandler(strDBName);
+		if (pHandler)
+		{
+			pHandler->RequestSyncData();
+
+			return;
+		}
+		gDebugStream("RequestSyncData error. no this db=" << strDBName);
+	}
+
 	CErrno SlaveListener::OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)
 	{
 		if (m_pDBSlave)
@@ -117,17 +128,23 @@ namespace Server
 			std::string strCurNode;
 			std::vector<std::string> vals;
 			CUtil::tokenize(strNetNodeName, vals, "_", "", "\"");
+			if (vals.size() < 3)
+			{
+				return CErrno::Failure();
+			}
 			std::string strDBName = vals[0];
-			m_pDBSlave->SetSlaveSessionID(strDBName, nSessionID);
+			CUtil::tokenize(strDBName, vals, SLAVE_SPECIAL_SPLIT, "", "\"");
+			if (vals.size() >= 2)
+			{
+				strDBName = vals[0];
+				m_pDBSlave->SetSlaveSessionID(strDBName, nSessionID);
 
-// 			if (strNetNodeName == g_strGameDBNodes[NETNODE_SYSDB_TO_DBMASTER])
-// 			{
-// 				m_pDBSlave->SetSlaveSessionID(g_szSystemDatabase , nSessionID);
-// 			}
-// 			else if (strNetNodeName == g_strGameDBNodes[NETNODE_TEST_TO_DBMASTER])
-// 			{
-// 				m_pDBSlave->SetSlaveSessionID("testdb", nSessionID);
-// 			}
+				if (bReconnect)
+				{
+					m_pDBSlave->RequestSyncData(strDBName);
+					gDebugStream("slave reconnect:dbname=" << strDBName);
+				}
+			}
 		}
 
 		return CErrno::Success();

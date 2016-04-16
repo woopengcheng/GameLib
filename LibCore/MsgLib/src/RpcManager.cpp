@@ -26,9 +26,9 @@ namespace Msg
 					IRpcListener * pListener = m_pRpcInterface->GetRpcListener();
 					if (pListener)
 					{
-						pListener->OnConnected(m_pRpcInterface, objInfo.nSessionID, strName);
+						pListener->OnConnected(m_pRpcInterface, objInfo.nSessionID, strName , !!objInfo.bReconnectState);
 					}
-					gDebugStream("rpcmanager recv new session.NodeName=" << strName << ":address=" << objInfo.strAddress << ":port=" << objInfo.usPeerPort << ":bReconnect=" << objInfo.bReconect << ":clientSessionID=" << objInfo.nSessionID << ":PeerSessionID=" << objInfo.nPeerSessionID);
+					gDebugStream("rpcmanager recv new session.NodeName=" << strName << ":address=" << objInfo.strAddress << ":port=" << objInfo.usPeerPort << ":bReconnect=" << objInfo.bConected << ":clientSessionID=" << objInfo.nSessionID << ":PeerSessionID=" << objInfo.nPeerSessionID << ":reconnect state=" << objInfo.bReconnectState);
 				}
 			}
 		}

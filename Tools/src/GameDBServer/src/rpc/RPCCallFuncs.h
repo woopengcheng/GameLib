@@ -271,42 +271,6 @@ namespace Server
 		return rpc_SlaveStartAuth( nSessionID ,vecTargets , objSrc , name , pwd , pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SlaveSelectDB(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		GEN_RPC_CALL_1((&(Server::DBSlave::GetInstance())) , pSessionName , Msg::g_szSlaveSelectDB_RpcCall , dbname, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
-	}
-
-	static INT32  rpc_SlaveSelectDB(const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		std::vector<Msg::Object> vecTargets;
-		vecTargets.push_back(objTarget);
-		return rpc_SlaveSelectDB( pSessionName ,vecTargets , objSrc , dbname, pCallback , usPriority , objSyncType);
-	}
-
-	static INT32  rpc_SlaveSelectDB(const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		GEN_RPC_CALL_1((&(Server::DBSlave::GetInstance())) , pSessionName , Msg::g_szSlaveSelectDB_RpcCall , dbname, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
-	}
-
-	static INT32  rpc_SlaveSelectDB(const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		std::vector<Msg::Object> vecTargets;
-		vecTargets.push_back(objTarget);
-		return rpc_SlaveSelectDB( pSessionName ,vecTargets , objSrc , dbname, pCallback , usPriority , objSyncType);
-	}
-
-	static INT32  rpc_SlaveSelectDB(INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		GEN_RPC_CALL_1((&(Server::DBSlave::GetInstance())) , nSessionID , Msg::g_szSlaveSelectDB_RpcCall , dbname, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
-	}
-
-	static INT32  rpc_SlaveSelectDB(INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		std::vector<Msg::Object> vecTargets;
-		vecTargets.push_back(objTarget);
-		return rpc_SlaveSelectDB( nSessionID ,vecTargets , objSrc , dbname , pCallback , usPriority , objSyncType);
-	}
-
 	static INT32  rpc_SlaveRequestSync(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
 		GEN_RPC_CALL_1((&(Server::DBSlave::GetInstance())) , pSessionName , Msg::g_szSlaveRequestSync_RpcCall , dbname, vecTargets , objSrc , pCallback , usPriority , objSyncType , 3600);

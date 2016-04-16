@@ -103,13 +103,4 @@ namespace Server
 			Server::rpc_SlaveRequestSync(m_nMasterSessionID, m_pDBSlave->GetMasterID() , m_objID , m_objSlaveInfo.strDBName);
 		}
 	}
-
-	void SlaveHandler::SelectDB()
-	{ 
-		if (m_pDBSlave)
-		{
-			Server::rpc_SlaveSelectDB(m_nMasterSessionID, m_pDBSlave->GetMasterID() , m_objID , m_objSlaveInfo.strDBName , NULL , 1);
-		}
-
-	}
 }

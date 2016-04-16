@@ -38,9 +38,8 @@ namespace Server
 
 	public: 
 		void					StartAuth();
-		void					SetMasterID(Msg::Object nMasterID){ m_objMasterID = nMasterID; }
-		Msg::Object				GetMasterID( ){ return m_objMasterID; }
 		void					SetSlaveSessionID(const std::string & strDBName, INT32 nSessionID);
+		void					RequestSyncData(const std::string & strDBName);
 		SlaveHandler		* 	GetSlaveHandler(const std::string & strDBName);
 
 	private: 
@@ -48,7 +47,6 @@ namespace Server
 
 	private:
 		INT32					m_nSlaveCount;
-		Msg::Object				m_objMasterID;
 		CollectionSlavesT		m_mapSalves;
 	};  
 	 

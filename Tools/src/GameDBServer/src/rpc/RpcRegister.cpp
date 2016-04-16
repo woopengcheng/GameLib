@@ -32,16 +32,16 @@ namespace Server
 	static unsigned char g_rpcDefaultParam_unsigned_char = 0;
 	static std::string g_rpcDefaultParam_std__string = std::string();
 	static time_t g_rpcDefaultParam_time_t = 0;
-	static UINT8 g_rpcDefaultParam_UINT8 = 0;
 	static SINT8 g_rpcDefaultParam_SINT8 = 0;
-	static UINT16 g_rpcDefaultParam_UINT16 = 0;
+	static UINT8 g_rpcDefaultParam_UINT8 = 0;
 	static INT16 g_rpcDefaultParam_INT16 = 0;
+	static UINT16 g_rpcDefaultParam_UINT16 = 0;
 	static UINT32 g_rpcDefaultParam_UINT32 = 0;
 	static INT32 g_rpcDefaultParam_INT32 = 0;
-	static INT64 g_rpcDefaultParam_INT64 = 0;
 	static UINT64 g_rpcDefaultParam_UINT64 = 0;
-	static double g_rpcDefaultParam_double = 0.0f;
+	static INT64 g_rpcDefaultParam_INT64 = 0;
 	static float g_rpcDefaultParam_float = 0.0f;
+	static double g_rpcDefaultParam_double = 0.0f;
 	static std_string g_rpcDefaultParam_std_string = std::string();
 	static CUtilChunk g_rpcDefaultParam_CUtilChunk = CUtil::Chunk();
 	static TestRpcData g_rpcDefaultParam_TestRpcData = TestRpcData();
@@ -455,15 +455,6 @@ namespace Server
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SlaveStartAuth", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SlaveStartAuth", objReturnParams);
 			m_pRpcManager->RegisterFunc<ServerHandler >(Msg::g_szSlaveStartAuth_RpcServer , &ServerHandler::SlaveStartAuth_RpcServer); 
-		}
-
-		//tool SlaveSelectDB generate default deliver and return check param here
-		{
-			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string);
-			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
-			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SlaveSelectDB", objDeliverParams);
-			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SlaveSelectDB", objReturnParams);
 		}
 
 		//tool SlaveRequestSync generate default deliver and return check param here
@@ -880,16 +871,6 @@ namespace Server
 			m_pRpcManager->RegisterFunc<MasterHandler >(Msg::g_szSlaveStartAuth_RpcTimeoutProxy ,&MasterHandler::SlaveStartAuth_RpcTimeoutProxy); 
 		}
 
-		//tool SlaveSelectDB generate default deliver and return check param here
-		{
-			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string);
-			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
-			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SlaveSelectDB", objDeliverParams);
-			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SlaveSelectDB", objReturnParams);
-			m_pRpcManager->RegisterFunc<MasterHandler >(Msg::g_szSlaveSelectDB_RpcServer , &MasterHandler::SlaveSelectDB_RpcServer); 
-		}
-
 		//tool SlaveRequestSync generate default deliver and return check param here
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
@@ -1289,7 +1270,7 @@ namespace Server
 			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SyncMasterHandler", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncMasterHandler", objReturnParams);
-			m_pRpcManager->RegisterFunc<SlaveHandler >(Msg::g_szSyncMasterHandler_RpcServer , &SlaveHandler::SyncMasterHandler_RpcServer); 
+			m_pRpcManager->RegisterFunc<GRpc >(Msg::g_szSyncMasterHandler_RpcServer , &GRpc::SyncMasterHandler_RpcServer); 
 		}
 
 		//tool SlaveStartAuth generate default deliver and return check param here
@@ -1302,18 +1283,6 @@ namespace Server
 			
 			m_pRpcManager->RegisterFunc<SlaveHandler >(Msg::g_szSlaveStartAuth_RpcClient , &SlaveHandler::SlaveStartAuth_RpcClient); 
 			m_pRpcManager->RegisterFunc<SlaveHandler >(Msg::g_szSlaveStartAuth_RpcTimeout ,&SlaveHandler::SlaveStartAuth_RpcTimeout); 
-		}
-
-		//tool SlaveSelectDB generate default deliver and return check param here
-		{
-			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string);
-			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
-			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SlaveSelectDB", objDeliverParams);
-			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SlaveSelectDB", objReturnParams);
-			
-			m_pRpcManager->RegisterFunc<SlaveHandler >(Msg::g_szSlaveSelectDB_RpcClient , &SlaveHandler::SlaveSelectDB_RpcClient); 
-			m_pRpcManager->RegisterFunc<SlaveHandler >(Msg::g_szSlaveSelectDB_RpcTimeout ,&SlaveHandler::SlaveSelectDB_RpcTimeout); 
 		}
 
 		//tool SlaveRequestSync generate default deliver and return check param here

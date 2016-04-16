@@ -74,7 +74,7 @@ namespace Server
 	{
 		GameDB::UserAuth objAuth(objUser);
 
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
+		MapSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			SlaveRecord * pRecord = iter->second;
@@ -91,7 +91,7 @@ namespace Server
 
 	BOOL MasterHandler::DelSlaveRecord(const std::string & strDBName)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
+		MapSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			SAFE_DELETE(iter->second);
@@ -103,17 +103,20 @@ namespace Server
 		return FALSE;
 	}
 
-	void MasterHandler::CreateSlaveRecord(const std::string & strDBName , INT32 nSessionID)
+	INT32 MasterHandler::CreateSlaveRecord(const std::string & strDBName , INT32 nSessionID)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
+		MapSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			SlaveRecord * pRecord = iter->second;
 			if (pRecord)
 			{ 
+				if (pRecord->GetDBName() != strDBName)
+				{
+					gDebugStream("dbname didn't match old dbname. new=" << strDBName << ":old=" << pRecord->GetDBName());
+				}
 				pRecord->SetSlaveSessionID(nSessionID);
 				pRecord->SetDBName(strDBName);
-//				pRecord->SetObjRemoteSlaveID(id); 
 			}
 		}
 		else
@@ -123,16 +126,18 @@ namespace Server
 			{ 
 				pRecord->SetSlaveSessionID(nSessionID);
 				pRecord->SetDBName(strDBName);
-//				pRecord->SetObjRemoteSlaveID(id); 
 
 				m_mapSlaveRecords.insert(std::make_pair(strDBName , pRecord));
+				++m_nRecordCount;
 			}
 		}
+
+		return m_nRecordCount;
 	}
 
 	MasterHandler::~MasterHandler()
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
+		MapSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
 		for (;iter != m_mapSlaveRecords.end();++iter)
 		{
 			SAFE_DELETE(iter->second);
@@ -142,7 +147,7 @@ namespace Server
 
 	SlaveRecord * MasterHandler::GetSlaveRecord(const std::string & strDBName)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
+		MapSlaveRecordsT::iterator iter = m_mapSlaveRecords.find(strDBName);
 		if (iter != m_mapSlaveRecords.end())
 		{
 			return iter->second;
@@ -153,7 +158,7 @@ namespace Server
 
 	SlaveRecord	* MasterHandler::GetSlaveRecordBySessionID(INT32 nSessionID)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
+		MapSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
 		for (;iter != m_mapSlaveRecords.end();++iter)
 		{
 			if (iter->second->GetSlaveSessionID() == nSessionID)
@@ -167,7 +172,7 @@ namespace Server
 
 	SlaveRecord				* MasterHandler::GetSlaveRecordBySlaveID(INT64 nSlaveID)
 	{
-		CollectionSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
+		MapSlaveRecordsT::iterator iter = m_mapSlaveRecords.begin();
 		for (; iter != m_mapSlaveRecords.end(); ++iter)
 		{
 			if (iter->second->GetSlaveID() == nSlaveID)

@@ -17,7 +17,8 @@ namespace Server
 	class  DBMaster : public GameDB::DBMasterInterface  , ThreadPool::ThreadSustainTask
 	{ 
 	public:
-		typedef std::vector<MasterHandler *> VecMasterHandlersT;
+		typedef std::vector<SlaveRecord *>							VecSlaveRecordsT;
+		typedef std_unordered_map<INT32, MasterHandler *>			MapMasterHandlersT;
 
 	public:
 		DBMaster(void) ;
@@ -37,8 +38,11 @@ namespace Server
 		virtual CErrno			Update(void) override;
 
 	public:
-		INT32					CreateMasterHandler(INT32 nSessionID , const std::string & strDBName);
-		SlaveRecord			*	GetSlaveRecord(const std::string & strDBName);
+		INT32					CreateMasterHandler(INT32 nSessionID);
+		MasterHandler		*	GetMasterHandler(INT32 nID);
+		INT32					CreateSlaveRecord(INT32 nMasterID, INT32 nSessionID, const std::string & strDBName);
+		SlaveRecord			*	GetSlaveRecord(INT32 nMasterID, const std::string & strDBName);
+		bool					GetSlaveRecord(const std::string & strDBName , VecSlaveRecordsT & vecSlaveRecords);
 		INT64					GetServerID() const { return m_llServerID; }
 		void					SetServerID(INT64 nID) { m_llServerID = nID; }
 
@@ -48,7 +52,7 @@ namespace Server
 	private:
 		INT64					m_llServerID;
 		INT32					m_nHandlerCount;
-		MasterHandler		*	m_pMasterHandler;
+		MapMasterHandlersT		m_mapMasterHandlers;
 
 	};  
 	 

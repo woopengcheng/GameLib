@@ -11,7 +11,6 @@ namespace Server
 		: ThreadPool::ThreadSustainTask(101 , "DBMaster" )
 		, m_nHandlerCount(0)
 		, m_llServerID(-1)
-		, m_pMasterHandler(NULL)
 	{
 		m_pRpcListener = new MasterListener(this);
 	}
@@ -20,7 +19,12 @@ namespace Server
 	{
 		SAFE_DELETE(m_pRpcListener);
 
-		SAFE_DELETE(m_pMasterHandler);
+		MapMasterHandlersT::iterator iter = m_mapMasterHandlers.begin();
+		for (;iter != m_mapMasterHandlers.end();++iter)
+		{
+			SAFE_DELETE(iter->second);
+		}
+		m_mapMasterHandlers.clear();
 	}
 
 	CErrno DBMaster::Init(Json::Value & conf)
@@ -57,27 +61,74 @@ namespace Server
 		return CErrno::Success();
 	}
 
-	INT32 DBMaster::CreateMasterHandler(INT32 nSessionID , const std::string & strDBName)
+	INT32 DBMaster::CreateMasterHandler(INT32 nSessionID)
 	{
-		if (!m_pMasterHandler)
-		{
-			m_pMasterHandler = new MasterHandler(++m_nHandlerCount, this);
-		}
-		
-		m_pMasterHandler->CreateSlaveRecord(strDBName, nSessionID);
-// 		MasterHandler * pMasterHandler = new MasterHandler(++m_nHandlerCount , nSessionID , this);
-// 		m_vecMasterHandlers.push_back(pMasterHandler);
+		++m_nHandlerCount;
+		MasterHandler * pMasterHandler = new MasterHandler(m_nHandlerCount, this);
+				
+		pMasterHandler->SetDBSlaveSessionID(nSessionID);
+ 		m_mapMasterHandlers.insert(std::make_pair(m_nHandlerCount , pMasterHandler));
 		return m_nHandlerCount;
 	}
 
-	SlaveRecord * DBMaster::GetSlaveRecord(const std::string & strDBName)
+	MasterHandler		* DBMaster::GetMasterHandler(INT32 nID)
 	{
-		if (m_pMasterHandler)
+		MapMasterHandlersT::iterator iter = m_mapMasterHandlers.find(nID);
+		if (iter != m_mapMasterHandlers.end())
 		{
-			return m_pMasterHandler->GetSlaveRecord(strDBName);
+			return iter->second;
 		}
 
 		return NULL;
+	}
+
+	INT32 DBMaster::CreateSlaveRecord(INT32 nMasterID, INT32 nSessionID, const std::string & strDBName)
+	{
+		MasterHandler * pHandler = GetMasterHandler(nMasterID);
+		if (pHandler)
+		{
+			return pHandler->CreateSlaveRecord(strDBName, nSessionID);
+		}
+		else
+		{
+			gErrorStream("CreateSlaveRecord error masterID=" << nMasterID << "sessionID=" << nSessionID << ":dbName=" << strDBName);
+		}
+
+		return 0;
+	}
+
+	SlaveRecord * DBMaster::GetSlaveRecord(INT32 nMasterID , const std::string & strDBName)
+	{
+		MasterHandler * pHandler = GetMasterHandler(nMasterID);
+		if (pHandler)
+		{
+			return pHandler->GetSlaveRecord(strDBName);
+		}
+
+		return NULL;
+	}
+
+	bool DBMaster::GetSlaveRecord(const std::string & strDBName, VecSlaveRecordsT & vecSlaveRecords)
+	{
+		MapMasterHandlersT::iterator iter = m_mapMasterHandlers.begin();
+		for (;iter != m_mapMasterHandlers.end();++iter)
+		{
+			MasterHandler * pHandler = iter->second;
+			if (pHandler)
+			{
+				SlaveRecord * pRecord = pHandler->GetSlaveRecord(strDBName);
+				if (pRecord)
+				{
+					vecSlaveRecords.push_back(pRecord);
+				}
+			}
+		}
+
+		if (vecSlaveRecords.size() > 0)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	CErrno DBMaster::Cleanup(void)
@@ -86,6 +137,7 @@ namespace Server
 		ThreadPool::ThreadPoolInterface::GetInstance().Cleanup();
 		return DBMasterInterface::Cleanup();
 	}
+
 
 	CErrno MasterListener::OnConnected(Msg::RpcInterface * pRpcInterface , INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)
 	{
@@ -96,28 +148,48 @@ namespace Server
 			{
 //				INT32 nMasterHandlerID = m_pDBMaster->CreateMasterHandler(nSessionID);
 			}
+			else if (strNetNodeName == g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSLAVE])
+			{
+				if (!bReconnect)
+				{
+					INT32 nMasterHandlerID = m_pDBMaster->CreateMasterHandler(nSessionID);
+					rpc_SyncMasterHandler(nSessionID, Msg::Object(0), Msg::Object(nMasterHandlerID), nMasterHandlerID);
+				}
+			}
 			else
 			{
 				std::string strCurNode;
 				std::vector<std::string> vals;
-				CUtil::tokenize(strNetNodeName, vals, "_", "", "\"");
+				CUtil::tokenize(strNetNodeName, vals, SLAVE_SPECIAL_SPLIT, "", "\"");
+				if (vals.size() < 2)
+				{
+					return CErrno::Failure(strCurNode);
+				}
+				INT32 nMasterID = CUtil::atoi(vals[1]);
+				
+				std::string strName = vals[0];
+				vals.clear();
+				CUtil::tokenize(strName, vals, "_", "", "\"");
 				if (vals.size() < 3)
 				{
 					return CErrno::Failure();
 				}
 				std::string strDBName = vals[2];
-
-				INT32 nMasterHandlerID = m_pDBMaster->CreateMasterHandler(nSessionID, strDBName);
-				rpc_SyncMasterHandler(nSessionID, Msg::Object(1), Msg::Object(nMasterHandlerID), nMasterHandlerID);
+				m_pDBMaster->CreateSlaveRecord(nMasterID , nSessionID , strDBName);
 			}
 		}
+		if (bReconnect == true)
+		{
+			gDebugStream("ReConnected from sessionID=" << nSessionID << ":node name=" << strNetNodeName);
+		}
+
 
 		return CErrno::Success();
 	}
 
 	CErrno MasterListener::OnDisconnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, INT32 nPeerSessionID)
 	{
-
+		gDebugStream("disconnected from sessionID=" << nPeerSessionID);
 		return CErrno::Success();
 	}
 

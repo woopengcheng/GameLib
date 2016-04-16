@@ -132,9 +132,6 @@ namespace Msg
 	//tool SlaveStartAuth declare here
 	RPC_DEFINE(SlaveStartAuth);
 
-	//tool SlaveSelectDB declare here
-	RPC_DEFINE(SlaveSelectDB);
-
 	//tool SlaveRequestSync declare here
 	RPC_DEFINE(SlaveRequestSync);
 

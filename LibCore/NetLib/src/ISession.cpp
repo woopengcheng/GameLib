@@ -20,6 +20,7 @@ namespace Net
 		, m_socket(socket)
 		, m_nSendBufSize(DEFAULT_SOCKET_BUFFER_SIZE)
 		, m_nRecvBufSize(DEFAULT_SOCKET_BUFFER_SIZE)
+		, m_bReconnectState(false)
 	{
 		m_objTimeout.Start(llTimeout);
 

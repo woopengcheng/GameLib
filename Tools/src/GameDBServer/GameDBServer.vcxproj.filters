@@ -29,9 +29,6 @@
     <ClCompile Include="src\rpc\MasterHandler_SlaveRequestSync_Proxy.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
-    <ClCompile Include="src\rpc\MasterHandler_SlaveSelectDB_Server.cpp">
-      <Filter>src\rpc</Filter>
-    </ClCompile>
     <ClCompile Include="src\rpc\MasterHandler_SlaveStartAuth_Proxy.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
@@ -179,19 +176,16 @@
     <ClCompile Include="src\rpc\SlaveHandler_SlaveRequestSync_Client.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
-    <ClCompile Include="src\rpc\SlaveHandler_SlaveSelectDB_Client.cpp">
-      <Filter>src\rpc</Filter>
-    </ClCompile>
     <ClCompile Include="src\rpc\SlaveHandler_SlaveStartAuth_Client.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
     <ClCompile Include="src\rpc\SlaveHandler_SyncDataToSlave_Server.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
-    <ClCompile Include="src\rpc\SlaveHandler_SyncMasterHandler_Server.cpp">
+    <ClCompile Include="src\rpc\SlaveHandler_testMulitServerNode_Server.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
-    <ClCompile Include="src\rpc\SlaveHandler_testMulitServerNode_Server.cpp">
+    <ClCompile Include="src\rpc\Slave_GRpc_SyncMasterHandler_Server.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,14 +6,19 @@ Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcServerProxy(INT32 nSession
 {
 	INT32 res = 0;
 
-	Server::SlaveRecord * pSlaveRecord = Server::DBMaster::GetInstance().GetSlaveRecord(dbname);
-	if (pSlaveRecord)
+	Server::DBMaster::VecSlaveRecordsT vecRecords;
+	bool bFound = Server::DBMaster::GetInstance().GetSlaveRecord(dbname , vecRecords);
+	if (bFound)
 	{
-		if(-1 == ProxySendMsg(pSlaveRecord->GetSlaveSessionID() , pSlaveRecord->GetSlaveID() , dbname , value))
+		Server::DBMaster::VecSlaveRecordsT::iterator iter = vecRecords.begin();
+		for (;iter != vecRecords.end();++iter)
 		{
-			Return(res);
+			Server::SlaveRecord * pSlaveRecord = *iter;
+			if (pSlaveRecord  && -1 == ProxySendMsg(pSlaveRecord->GetSlaveSessionID(), pSlaveRecord->GetSlaveID(), dbname, value))
+			{
+				continue;
+			}
 		}
-
 	}
 
 	std::cout << "SyncDataToSlave_RpcServerProxy" << std::endl;

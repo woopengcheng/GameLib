@@ -23,7 +23,8 @@ namespace Net
 		std::string strAddress;
 		std::string strCurNodeName;
 		std::string strRemoteNodeName;
-		bool		bReconect;
+		bool		bConected;
+		BOOL		bReconnectState;
 
 		SPeerInfo()
 		{
@@ -32,7 +33,7 @@ namespace Net
 
 		void Clear()
 		{
-			bReconect = false;
+			bConected = false;
 			usPeerPort = 0;
 			nSessionID = -1;
 			nPeerSessionID = -1;
@@ -50,6 +51,7 @@ namespace Net
 		char    szAddress[MAX_ADDRESS_LENGTH];
 		char	szNodeName[MAX_NAME_LENGTH];
 		char	szUUID[MAX_NAME_LENGTH];
+		bool	bReconnectState;
 
 		SPing()
 		{

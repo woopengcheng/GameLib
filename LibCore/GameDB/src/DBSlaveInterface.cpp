@@ -8,7 +8,8 @@
 
 namespace GameDB
 {  
-	DBSlaveInterface::DBSlaveInterface()   
+	DBSlaveInterface::DBSlaveInterface()
+		: m_objMasterID(0)
 	{  		
 	}
 
@@ -21,7 +22,8 @@ namespace GameDB
 		if (RpcInterface::Init(conf).IsFailure())
 			return CErrno::Failure();
 
-		return  InitDB(conf);
+		return CErrno::Success();
+//		return  InitDB(conf);
 	}
 	std::string&   replace_all(std::string&   str, const   std::string&   old_value, const   std::string&   new_value)
 	{
@@ -102,12 +104,15 @@ namespace GameDB
 		{     
 			tmpCmd = cmd;
 			std::string strDBName = databases[(INT32)i].asString(); 
-			objInfo.strDBName = strDBName;  
+			std::string strTmp = strDBName;
+			strTmp += SLAVE_SPECIAL_SPLIT;
+			strTmp += CUtil::itoa(m_objMasterID.m_llObjID);
+			objInfo.strDBName = strDBName;
 			OnCreateDatabase(objInfo);
 
 			if (m_pNetThread)
 			{
-				m_pNetThread->InsertClientsQueue(strDBName, strAddress , nPort);
+				m_pNetThread->InsertClientsQueue(strTmp, strAddress , nPort , TRUE);
 			}
 
 			tmpCmd += strDBName;

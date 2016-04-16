@@ -274,7 +274,7 @@ namespace Net
 			m_pNetReactor->AddNetHandler(pNetHandler);
 		}
 
-		SPeerKeey objCreateInfo;
+		SPeerKey objCreateInfo;
 		objCreateInfo.strAddress = pAddress;
 		objCreateInfo.strNodeName = strNodeName;
 		objCreateInfo.strUUID = strUUID;
@@ -287,7 +287,8 @@ namespace Net
 		objPeer.nState = PING_STATE_PINGING;
 		objPeer.strAddress = pAddress;
 		objPeer.strCurNodeName = strNodeName;
-		objPeer.bReconect = false;
+		objPeer.bConected = false;
+		objPeer.bReconnectState = pSession->GetReconnectState();
 
 		AddPeerSession(objCreateInfo , objPeer);
 		return pNetHandler;
@@ -315,7 +316,7 @@ namespace Net
 		return CErrno::Success();
 	}
 
-	CErrno NetThread::AddPeerSession(const SPeerKeey & objKey,const SPeerInfo & objPeerInfo)
+	CErrno NetThread::AddPeerSession(const SPeerKey & objKey,const SPeerInfo & objPeerInfo)
 	{
 		MapPeerSessionT::iterator iter = m_mapPeerSessions.find(objKey);
 		if (iter != m_mapPeerSessions.end())
@@ -332,7 +333,8 @@ namespace Net
 				}
 				iter->second.strRemoteNodeName = objPeerInfo.strRemoteNodeName;
 				iter->second.nState = PING_STATE_PINGED;
-				iter->second.bReconect = objPeerInfo.bReconect;
+				iter->second.bConected = objPeerInfo.bConected;
+				iter->second.bReconnectState |= objPeerInfo.bReconnectState;
 				m_queAceeptSessions.push(iter->second);
 			}
 		}
@@ -344,32 +346,38 @@ namespace Net
 		return CErrno::Success();
 	}
 
+	CErrno NetThread::InsertClientsQueue(const std::string & strNodeName, const std::string & strAddress, UINT16 usPort , BOOL bReconnect/* = FALSE*/)
+	{
+		char buf[256] = { 0 };
+		CUtil::GenerateUUIDBySys(buf);
+		std::string strUUID = buf;
+		m_queCreateClients.push(SCreateInfo(strNodeName , strUUID , strAddress , usPort , bReconnect));
+
+		return CErrno::Success();
+	}
+
 	CErrno NetThread::FetchClientsQueue()
 	{
-		SPeerKeey key;
-		while (m_queCreateClients.try_pop(key))
+		SCreateInfo objInfo;
+		while (m_queCreateClients.try_pop(objInfo))
 		{
-			INetHandlerPtr pNetHandler = CreateClientHandler(key.strNodeName, key.strUUID ,key.strAddress.c_str(), key.usPort);
+			INetHandlerPtr pNetHandler = CreateClientHandler(objInfo.strNodeName, objInfo.strUUID, objInfo.strAddress.c_str(), objInfo.usPort);
 			if (!pNetHandler)
 			{
 				continue;
+			}
+
+			ClientSession * pSession = dynamic_cast<ClientSession*>(pNetHandler->GetSession());			
+			if (pSession)
+			{
+				pSession->SetReconnect(objInfo.bReconnect);
 			}
 		}
 
 		return CErrno::Success();
 	}
 
-	CErrno NetThread::InsertClientsQueue(const std::string & strNodeName, const std::string & strAddress, UINT16 usPort)
-	{
-		char buf[256] = { 0 };
-		CUtil::GenerateUUIDBySys(buf);
-		std::string strUUID = buf;
-		m_queCreateClients.push(SPeerKeey(strNodeName , strUUID , strAddress , usPort));
-
-		return CErrno::Success();
-	}
-
-	SPeerInfo		NetThread::GetPeerInfo(const SPeerKeey & objInfo)
+	SPeerInfo		NetThread::GetPeerInfo(const SPeerKey & objInfo)
 	{
 		MapPeerSessionT::iterator iter = m_mapPeerSessions.find(objInfo);
 		if (iter != m_mapPeerSessions.end())
@@ -378,6 +386,22 @@ namespace Net
 		}
 
 		return SPeerInfo();
+	}
+
+	CErrno NetThread::RefreshPeerSession(const SPeerKey & objKey, ISession * pSession)
+	{
+		if (!pSession)
+		{
+			return CErrno::Failure();
+		}
+		MapPeerSessionT::iterator iter = m_mapPeerSessions.find(objKey);
+		if (iter != m_mapPeerSessions.end())
+		{
+			iter->second.bReconnectState |= pSession->GetReconnectState();
+			return CErrno::Success();
+		}
+
+		return CErrno::Failure();
 	}
 
 }

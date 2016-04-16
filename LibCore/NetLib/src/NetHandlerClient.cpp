@@ -13,6 +13,7 @@ extern "C"
 #include "NetLib/inc/NetReactorUDP.h"
 #include "NetLib/inc/NetReactorRakNet.h"
 #include "NetLib/inc/NetReactorEpollEx.h"
+#include "NetLib/inc/NetThread.h"
 #ifdef _LINUX
 #include <errno.h>
 #endif
@@ -373,6 +374,7 @@ namespace Net
 		if (m_pSession && ((Net::ClientSession *)m_pSession)->IsReconnect() &&
 			m_pSession->GetNetState() == NET_STATE_LOSTED && m_pSession->IsClosed())
 		{
+			m_pSession->SetReconnectState(TRUE);
 			OnReconnect();
 		}
 		return TRUE;
@@ -391,6 +393,15 @@ namespace Net
 
 				INetHandlerPtr pHandler = m_pNetReactor->GetNetHandlerByID(m_pSession->GetSessionID());
 				m_pNetReactor->AddNetHandler(pHandler);
+
+				SPeerKey objKey;
+				objKey.strAddress = m_pSession->GetAddress();
+				objKey.strNodeName = m_pSession->GetCurNodeName();
+				objKey.strUUID = m_pSession->GetPeerUUID();
+				objKey.usPort = m_pSession->GetPort();
+				m_pNetReactor->GetNetThread()->RefreshPeerSession(objKey , m_pSession);
+
+				gDebugStream("reconect node=" << objKey.strNodeName << ":address=" << objKey.strAddress << ":port=" << objKey.usPort << ":uuid=" << objKey.strUUID);
 				result = CErrno::Success();
 			}
 		}

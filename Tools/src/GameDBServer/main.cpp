@@ -30,7 +30,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if(argc > 1)
 		defaultConf = argv[1];
 	  
-	Json::Value root;
+	Json::Value root, objDBServer , objMaster , objSlave;
 	Json::JsonParase(defaultConf.c_str() , root); 
 	
 	std::string strRunMode = root.get("mode" , "master").asString(); 
@@ -39,17 +39,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	gDebugStream("run mode in " << strRunMode);
 	if (strRunMode.compare("master") == 0)
 	{
-		Json::Value objMaster = root.get("master", Json::Value());
+		objMaster = root.get("master", Json::Value());
 		Server::DBMaster::GetInstance().Init(objMaster);
 
-		Json::Value objDBServer = root.get("server", Json::Value());
+		objDBServer = root.get("server", Json::Value());
 		Server::DBServer::GetInstance().Init(objDBServer);
-
-//		static Server::MasterHandler  ObjMasterHandler(10000,&Server::DBMaster::GetInstance()); 
 	}
 	else if (strRunMode.compare("slave") == 0)
 	{
-		Json::Value objSlave = root.get("slave" , Json::Value());
+		objSlave = root.get("slave" , Json::Value());
 		Server::DBSlave::GetInstance().Init(objSlave);
 	}
 	else
@@ -59,6 +57,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	//5 等待slave连接成功,并且请求数据
+	bool bSlaveConnected = false;
 	if (strRunMode.compare("slave") == 0 )
 	{
 		std::vector<std::string> vecDBName;
@@ -72,12 +71,25 @@ int _tmain(int argc, _TCHAR* argv[])
 		gDebugStream("waiting slave connect master.");
 		while(1)
 		{
-			if (Server::DBSlave::GetInstance().GetMasterID() > 0)
+			if (!bSlaveConnected &&
+				Server::DBSlave::GetInstance().GetMasterID() > 0 &&
+				Server::DBSlave::GetInstance().GetRpcManager()->IsConnected(g_strGameDBNodes[NETNODE_DBSLAVE_TO_DBMASTER]))
+			{
+				bSlaveConnected = true;
+				Json::Value objSlave = root.get("slave", Json::Value());
+				Server::DBSlave::GetInstance().InitDB(objSlave);
+			}
+
+			if (bSlaveConnected&&
+				Server::DBSlave::GetInstance().GetMasterID() > 0)
 			{
 				bool bConnected = true;
 				for (iter = vecDBName.begin(); iter != end;++iter)
 				{
-					std::string strDBName = Msg::MsgHelper::GeneratePeerInfoKey(*iter, "dbmaster");
+					std::string strTmp = *iter;
+					strTmp += SLAVE_SPECIAL_SPLIT;
+					strTmp += CUtil::itoa(Server::DBSlave::GetInstance().GetMasterID().m_llObjID);
+					std::string strDBName = Msg::MsgHelper::GeneratePeerInfoKey(strTmp, "dbmaster");
 					if (!Server::DBSlave::GetInstance().GetRpcManager()->IsConnected(strDBName))
 					{
 						bConnected = false;

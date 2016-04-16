@@ -38,6 +38,7 @@ namespace Net
 				char pBuf[1024] = { 0 };
 				SPing * pPing = (SPing *)(pBuf + sizeof(MsgHeader));
 				pPing->usPeerPort = pNetThread->GetServerPort();
+				pPing->bReconnectState = !!m_pSession->GetReconnectState();
 				memcpy(pPing->szAddress, pNetThread->GetServerAddress().c_str(), pNetThread->GetServerAddress().length() + 1);
 				memcpy(pPing->szNodeName, m_pSession->GetCurNodeName().c_str(), m_pSession->GetCurNodeName().length() + 1);
 				memcpy(pPing->szUUID, m_pSession->GetPeerUUID().c_str(), m_pSession->GetPeerUUID().length() + 1);
@@ -97,7 +98,7 @@ namespace Net
 			NetThread * pThread = m_pNetReactor->GetNetThread();
 			if (pThread)
 			{
-				SPeerKeey objInfo;
+				SPeerKey objInfo;
 				objInfo.strAddress = pPing->szAddress;
 				objInfo.strNodeName = pPing->szNodeName;
 				objInfo.usPort = pPing->usPeerPort;
@@ -126,7 +127,8 @@ namespace Net
 						peerInfo.usPeerPort = pPing->usPeerPort;
 						peerInfo.strAddress = pPing->szAddress;
 						peerInfo.strRemoteNodeName = pPing->szNodeName;
-						peerInfo.bReconect = false;
+						peerInfo.bConected = false;
+						peerInfo.bReconnectState |= !!pPing->bReconnectState;
 
 						pSession->SetRemoteName(pPing->szNodeName );
 						pThread->AddPeerSession(objInfo, peerInfo);
@@ -144,7 +146,8 @@ namespace Net
 						peerInfo.usPeerPort = pPing->usPeerPort;
 						peerInfo.strAddress = pPing->szAddress;
 						peerInfo.strRemoteNodeName = pPing->szNodeName;
-						peerInfo.bReconect = true;
+						peerInfo.bConected = true;
+						peerInfo.bReconnectState |= !!pPing->bReconnectState;
 
 						pSession->SetRemoteName(pPing->szNodeName);
 						pThread->AddPeerSession(objInfo, peerInfo);
