@@ -548,7 +548,7 @@ namespace Msg
 		else
 		{
 			MapRpcsBySessionIDT &mapRpcs = iter->second;
-			mapRpcs.insert(std::make_pair(pRpc->GetSessionID(), pRpc));
+			mapRpcs.insert(std::make_pair(nSessionID, pRpc));
 			gErrorStream("InsertSendRpc error. same rpc." << pRpc->GetRpcMsgCall()->m_szMsgMethod << ":msgID=" << pRpc->GetRpcMsgCall()->m_ullMsgID);
 		}
 	}
