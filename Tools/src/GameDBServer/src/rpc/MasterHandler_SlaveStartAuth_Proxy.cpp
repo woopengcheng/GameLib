@@ -13,7 +13,7 @@ Msg::ObjectMsgCall * Server::MasterHandler::SlaveStartAuth_RpcServerProxy(INT32 
 	}
 	else
 	{
-		ReturnNULL;
+		Return(value);
 	}
 
 	if(-1 == ProxySendMsg(g_strGameDBNodes[NETNODE_DBMASTER_TO_DBSERVER], 1 , name , pwd))
@@ -22,7 +22,7 @@ Msg::ObjectMsgCall * Server::MasterHandler::SlaveStartAuth_RpcServerProxy(INT32 
 	}
 	
 	std::cout << "SlaveStartAuth_RpcServerProxy" << std::endl;
-	Return(value);
+	ReturnNULL;
 }
 
 Msg::ObjectMsgCall * Server::MasterHandler::SlaveStartAuth_RpcClientProxy(INT32 nSessionID , Msg::Object objSrc  , std_string &value/* = std::string()*/)

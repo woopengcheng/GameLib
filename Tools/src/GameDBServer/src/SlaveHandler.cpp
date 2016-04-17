@@ -92,7 +92,10 @@ namespace Server
 	{
 		if (m_pDBSlave)
 		{
-			Server::rpc_SlaveStartAuth(m_nMasterSessionID, m_pDBSlave->GetMasterID() , m_objID  , m_objSlaveInfo.strUser , m_objSlaveInfo.strPswd);
+			std::vector<Msg::Object> vec;
+			vec.push_back(m_pDBSlave->GetMasterID());
+			vec.push_back(10000);
+			Server::rpc_SlaveStartAuth(m_nMasterSessionID, vec, m_objID  , m_objSlaveInfo.strUser , m_objSlaveInfo.strPswd);
 		}
 	}
 

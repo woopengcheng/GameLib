@@ -17,6 +17,7 @@
 #include "DBSlave.h"
 #include "MasterHandler.h"
 #include "MsgLib/inc/RpcManager.h"
+#include "MsgLib/inc/Object.h"
 #include "SlaveHandler.h" 
 #include "ThreadPool/inc/ThreadPoolInterface.h"
 #include "GameDB/inc/RemoteNodeDefine.h"
@@ -41,6 +42,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		objMaster = root.get("master", Json::Value());
 		Server::DBMaster::GetInstance().Init(objMaster);
+
+		static Server::MasterHandler sMaster(Msg::Object(10000), &Server::DBMaster::GetInstance());
 
 		objDBServer = root.get("server", Json::Value());
 		Server::DBServer::GetInstance().Init(objDBServer);

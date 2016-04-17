@@ -63,6 +63,7 @@ namespace Msg
 			, m_objSyncResult(SYNC_RESULT_START_RETURN)
 			, m_nReturnType(RETURN_TYPE_DONE)  //5 默认完成.
 			, m_nProxySessionID(0)
+			, m_nRecvTargetCount(0)
 		{  
 			RefreshTargets();
 		}
@@ -116,6 +117,8 @@ namespace Msg
 		EMSG_SYNC_RESULT			GetSyncResult(void) { return m_objSyncResult; }
 		RpcCallbackPtr				GetCallback() { return m_pCallback; }
 		void						SetCallback(RpcCallbackPtr val) { m_pCallback = val; }
+		INT32						GetRecvTargetCount() const { return m_nRecvTargetCount; }
+		void						SetRecvTargetCount(INT32 val) { m_nRecvTargetCount = val; }
 
 	public: 
 		virtual CUtil::CStream &	marshal(CUtil::CStream & cs) const override;
@@ -135,6 +138,7 @@ namespace Msg
 		EMSG_SYNC_RESULT			m_objSyncResult;
 		CollectionTargetsT			m_setDelayTargets;
 		RpcCallbackPtr				m_pCallback;
+		INT32						m_nRecvTargetCount;	//5 这里处理client接收到多少个target的请求.然后进行释放.
 	};  
 
 }

@@ -210,6 +210,7 @@ namespace Msg
 
 				if (pReturnMsg)
 				{
+					SendMsg(nSessionID, pReturnMsg, FALSE);
 					SAFE_DELETE(pReturnMsg);
 				}
 			}
@@ -319,18 +320,23 @@ namespace Msg
 				MsgAssert_ReF(0, "客户端接受到错误的RPC包.");
 			}
 
-			SAFE_DELETE(iter->second);
-			result->second.erase(iter);
+			pTemp->SetRecvTargetCount(pTemp->GetRecvTargetCount() - 1);
+			if (pTemp->GetRecvTargetCount() <= 0)
+			{
+				SAFE_DELETE(iter->second);
+				result->second.erase(iter);
+
+				if (pTemp->GetSyncType() == SYNC_TYPE_NONSYNC) //5 同步的删除放在了调用处.
+				{
+					SAFE_DELETE(pTemp);
+				}
+			}
+
 			if (result->second.size() <= 0)
 			{
 				m_mapSendRpcs.erase(result);
 			}
 			vecObjectMsgCall.clear();
-
-			if (pTemp->GetSyncType() == SYNC_TYPE_NONSYNC)
-			{
-				SAFE_DELETE(pTemp);
-			}
 		}
 
 		return CErrno::Success();
@@ -543,11 +549,13 @@ namespace Msg
 		{
 			MapRpcsBySessionIDT mapRpcs;
 			mapRpcs.insert(std::make_pair(nSessionID, pRpc));
+			pRpc->GetRpcMsgCall()->SetRecvTargetCount(pRpc->GetRpcMsgCall()->GetTargetsCount());
 			m_mapSendRpcs.insert(std::make_pair(ullRpcMsgID , mapRpcs));
 		} 
 		else
 		{
 			MapRpcsBySessionIDT &mapRpcs = iter->second;
+			pRpc->GetRpcMsgCall()->SetRecvTargetCount(pRpc->GetRpcMsgCall()->GetTargetsCount());
 			mapRpcs.insert(std::make_pair(nSessionID, pRpc));
 			gErrorStream("InsertSendRpc error. same rpc." << pRpc->GetRpcMsgCall()->m_szMsgMethod << ":msgID=" << pRpc->GetRpcMsgCall()->m_ullMsgID);
 		}
