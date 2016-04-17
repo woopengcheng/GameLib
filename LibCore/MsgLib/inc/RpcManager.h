@@ -23,7 +23,8 @@ namespace Msg
 
 		typedef std_unordered_map<INT32, SPeerInfo>						CollectSessionsIDT;
 		typedef std_unordered_map<std::string, SPeerInfo>				CollectSessionsStringT;
-		typedef std_unordered_map<UINT64 , Rpc *> MapRpcsT;  
+		typedef std_unordered_map<INT32, Rpc *>							MapRpcsBySessionIDT;
+		typedef std_unordered_map<UINT64 , MapRpcsBySessionIDT>			MapRpcsT;
 
 	public:
 		RpcManager( RpcInterface * pRpcInterface)
@@ -65,10 +66,10 @@ namespace Msg
 		INT32						CheckAndHandlePostMsg(const std::string & strNodeName, RPCMsgCall * pMsg, BOOL bAddRpc);
 
 	public:
-		void						InsertSendRpc(UINT64 ullRpcMsgID, Rpc * pRpc);
 		RpcInterface		*		GetRpcInterface() { return m_pRpcInterface; }
-		Rpc					*		GetSendRpc(UINT64 ullMsgID);
-		void						InsertSendRpc(RPCMsgCall * pMsg);
+		void						InsertSendRpc(INT32 nSessionID, RPCMsgCall * pMsg);
+		void						InsertSendRpc(INT32 nSessionID, UINT64 ullRpcMsgID, Rpc * pRpc);
+		Rpc					*		GetSendRpc(UINT64 ullMsgID, INT32 nSessionID = -1);
 		MapRpcsT			&		GetSendRpcs(void) { return m_mapSendRpcs; }
 
 	protected:

@@ -232,7 +232,13 @@ namespace Msg
 		{
 			Rpc::VecObjectMsgCallT vecObjectMsgCall;
 
-			Rpc * objRpc = result->second;
+			MapRpcsBySessionIDT::iterator iter = result->second.find(nSessionID);
+			if (iter == result->second.end())
+			{
+				gErrorStream("HandleClientMsg error." << "msgName=" << pMsg->m_szMsgMethod << "no this session=" << nSessionID);
+				return CErrno::Failure();
+			}
+			Rpc * objRpc = iter->second;
 			RPCMsgCall * pTemp = objRpc->GetRpcMsgCall();
 			pTemp->CopyExcludeNetDatas(pMsg);
 
@@ -313,8 +319,12 @@ namespace Msg
 				MsgAssert_ReF(0, "客户端接受到错误的RPC包.");
 			}
 
-			SAFE_DELETE(result->second);
-			m_mapSendRpcs.erase(result);
+			SAFE_DELETE(iter->second);
+			result->second.erase(iter);
+			if (result->second.size() <= 0)
+			{
+				m_mapSendRpcs.erase(result);
+			}
 			vecObjectMsgCall.clear();
 
 			if (pTemp->GetSyncType() == SYNC_TYPE_NONSYNC)
@@ -333,25 +343,37 @@ namespace Msg
 		MapRpcsT::iterator iter = m_mapSendRpcs.begin();
 		for (; iter != m_mapSendRpcs.end();)
 		{
-			Rpc * objRpc = iter->second;
-			RPCMsgCall * pRpcMsgCall = objRpc->GetRpcMsgCall();
-			MsgAssert_ReF(pRpcMsgCall, "RpcMsg is NULL.");
-
-			if (objRpc->IsTimeout())
+			MapRpcsBySessionIDT::iterator iterID = iter->second.begin();
+			for (; iterID != iter->second.end();)
 			{
-				pRpcMsgCall->m_bClientRequest = TRUE;
-				pRpcMsgCall->SetRpcMsgCallType(RPCTYPE_TIMEOUT);
+				Rpc * objRpc = iterID->second;
+				RPCMsgCall * pRpcMsgCall = objRpc->GetRpcMsgCall();
+				MsgAssert_ReF(pRpcMsgCall, "RpcMsg is NULL.");
 
-				objRpc->OnTimeout(pRpcMsgCall, vecObjectMsgCall); //5 todo.这里也需要触发同步的协程resume
+				if (objRpc->IsTimeout())
+				{
+					pRpcMsgCall->m_bClientRequest = TRUE;
+					pRpcMsgCall->SetRpcMsgCallType(RPCTYPE_TIMEOUT);
 
-				SAFE_DELETE(pRpcMsgCall);
-				vecObjectMsgCall.clear();
-				SAFE_DELETE(iter->second);
+					objRpc->OnTimeout(pRpcMsgCall, vecObjectMsgCall); //5 todo.这里也需要触发同步的协程resume
+
+					SAFE_DELETE(pRpcMsgCall);
+					vecObjectMsgCall.clear();
+					SAFE_DELETE(iterID->second);
+					iter->second.erase(iterID++);
+				}
+				else
+				{
+					++iterID;
+				}
+			}
+			if (iter->second.size() == 0)
+			{
 				m_mapSendRpcs.erase(iter++);
 			}
 			else
 			{
-				++iter;
+				iter++;
 			}
 		}
 
@@ -512,27 +534,31 @@ namespace Msg
 		return std::string();
 	}
 
-	void RpcManager::InsertSendRpc(UINT64 ullRpcMsgID, Rpc * pRpc)
+	void RpcManager::InsertSendRpc(INT32 nSessionID , UINT64 ullRpcMsgID, Rpc * pRpc)
 	{ 
 		Assert(pRpc);
 
-		MapRpcsT::iterator result = m_mapSendRpcs.find(ullRpcMsgID);
-		if (result == m_mapSendRpcs.end())
+		MapRpcsT::iterator iter = m_mapSendRpcs.find(ullRpcMsgID);
+		if (iter == m_mapSendRpcs.end())
 		{
-			m_mapSendRpcs.insert(std::make_pair(ullRpcMsgID , pRpc));
+			MapRpcsBySessionIDT mapRpcs;
+			mapRpcs.insert(std::make_pair(nSessionID, pRpc));
+			m_mapSendRpcs.insert(std::make_pair(ullRpcMsgID , mapRpcs));
 		} 
 		else
 		{
+			MapRpcsBySessionIDT &mapRpcs = iter->second;
+			mapRpcs.insert(std::make_pair(pRpc->GetSessionID(), pRpc));
 			gErrorStream("InsertSendRpc error. same rpc." << pRpc->GetRpcMsgCall()->m_szMsgMethod << ":msgID=" << pRpc->GetRpcMsgCall()->m_ullMsgID);
 		}
 	}
 
-	void RpcManager::InsertSendRpc( RPCMsgCall * pMsg )
+	void RpcManager::InsertSendRpc(INT32 nSessionID, RPCMsgCall * pMsg )
 	{
 		Assert(pMsg);
 
 		Rpc * pRpc = new Rpc(this , pMsg->m_ullTimeout , DEFAULT_RPC_CALLABLE_ID , pMsg);
-		InsertSendRpc(pMsg->m_ullMsgID , pRpc);
+		InsertSendRpc(nSessionID , pMsg->m_ullMsgID , pRpc);
 	} 
 
 	INT32 RpcManager::SendMsg( INT32 nSessionID , RPCMsgCall * pRpcMsg, BOOL bAddRpc/* = TRUE*/, BOOL bCheck/* = TRUE*/)
@@ -573,7 +599,7 @@ namespace Msg
 				INT32 nResult = pNetThread->SendMsg(nSessionID, (const char *)objStream.Begin(), nMsgLength);
 				if (bAddRpc)
 				{
-					InsertSendRpc(pRpcMsg);
+					InsertSendRpc(nSessionID, pRpcMsg);
 				}
 				return nResult;
 			}
@@ -609,7 +635,15 @@ namespace Msg
 
 				if (bAddRpc)
 				{
-					InsertSendRpc(pMsg);
+					INT32 nSessionID = GetSessionIDByNode(strNodeName);
+					if (nSessionID > 0)
+					{
+						InsertSendRpc(nSessionID , pMsg);
+					}
+					else
+					{
+						gErrorStream("CheckAndHandlePostMsg error. name=" << strNodeName);
+					}
 				}
 				if (err.IsFailure())
 				{
@@ -661,12 +695,23 @@ namespace Msg
 		return FALSE;
 	}
 
-	Rpc * RpcManager::GetSendRpc(UINT64 ullMsgID)
+	Rpc * RpcManager::GetSendRpc(UINT64 ullMsgID , INT32 nSessionID/* = -1*/)
 	{
 		MapRpcsT::iterator iter = m_mapSendRpcs.find(ullMsgID);
 		if (iter != m_mapSendRpcs.end())
 		{
-			return iter->second;
+			if (nSessionID == -1 && iter->second.size() > 0)  //5 默认取第一个.基本上很难用到这个函数.
+			{
+				return iter->second.begin()->second;
+			}
+			else
+			{
+				MapRpcsBySessionIDT::iterator iterID = iter->second.find(nSessionID);
+				if (iterID != iter->second.end())
+				{
+					return iterID->second;
+				}
+			}
 		}
 
 		return NULL;
