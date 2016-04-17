@@ -12,6 +12,22 @@ namespace Net
 		return NetMsgQueue::Update();
 	}
 
+	CErrno NetHandlerPing::OnClose(void)
+	{
+		if (m_pNetReactor && m_pNetReactor->GetNetThread())
+		{
+			SPeerKey objKey;
+			objKey.strAddress = m_pSession->GetAddress();
+			objKey.strNodeName = m_pSession->GetCurNodeName();
+			objKey.strUUID = m_pSession->GetPeerUUID();
+			objKey.usPort = m_pSession->GetPort();
+
+			m_pNetReactor->GetNetThread()->ClearPeerSession(objKey);
+		}
+
+		return NetMsgQueue::OnClose();
+	}
+
 	CErrno NetHandlerPing::UpdatePing(void)
 	{
 		if (m_pNetReactor && m_pNetReactor->GetNetThread())

@@ -28,12 +28,12 @@ namespace Client
 	static time_t g_rpcDefaultParam_time_t = 0;
 	static SINT8 g_rpcDefaultParam_SINT8 = 0;
 	static UINT8 g_rpcDefaultParam_UINT8 = 0;
-	static INT16 g_rpcDefaultParam_INT16 = 0;
 	static UINT16 g_rpcDefaultParam_UINT16 = 0;
+	static INT16 g_rpcDefaultParam_INT16 = 0;
 	static UINT32 g_rpcDefaultParam_UINT32 = 0;
 	static INT32 g_rpcDefaultParam_INT32 = 0;
-	static UINT64 g_rpcDefaultParam_UINT64 = 0;
 	static INT64 g_rpcDefaultParam_INT64 = 0;
+	static UINT64 g_rpcDefaultParam_UINT64 = 0;
 	static float g_rpcDefaultParam_float = 0.0f;
 	static double g_rpcDefaultParam_double = 0.0f;
 	static std_string g_rpcDefaultParam_std_string = std::string();
@@ -519,7 +519,7 @@ namespace Client
 		//tool SlaveRequestSync generate default deliver and return check param here
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string);
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_INT32);
 			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SlaveRequestSync", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SlaveRequestSync", objReturnParams);
@@ -537,7 +537,7 @@ namespace Client
 		//tool SyncDataToSlave generate default deliver and return check param here
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_CUtilChunk);
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_CUtilChunk , g_rpcDefaultParam_INT32);
 			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SyncDataToSlave", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncDataToSlave", objReturnParams);

@@ -55,40 +55,40 @@ namespace Server
 		return rpc_SyncServerHandler( nSessionID ,vecTargets , objSrc  , pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SyncDataToSlave(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SyncDataToSlave(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
-		GEN_RPC_CALL_2((&(Server::DBServer::GetInstance())) , pSessionName , Msg::g_szSyncDataToSlave_RpcCall , dbname , value, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+		GEN_RPC_CALL_3((&(Server::DBServer::GetInstance())) , pSessionName , Msg::g_szSyncDataToSlave_RpcCall , dbname , value , last_pos, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
 	}
 
-	static INT32  rpc_SyncDataToSlave(const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SyncDataToSlave(const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
 		std::vector<Msg::Object> vecTargets;
 		vecTargets.push_back(objTarget);
-		return rpc_SyncDataToSlave( pSessionName ,vecTargets , objSrc , dbname , value, pCallback , usPriority , objSyncType);
+		return rpc_SyncDataToSlave( pSessionName ,vecTargets , objSrc , dbname , value , last_pos, pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SyncDataToSlave(const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SyncDataToSlave(const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
-		GEN_RPC_CALL_2((&(Server::DBServer::GetInstance())) , pSessionName , Msg::g_szSyncDataToSlave_RpcCall , dbname , value, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+		GEN_RPC_CALL_3((&(Server::DBServer::GetInstance())) , pSessionName , Msg::g_szSyncDataToSlave_RpcCall , dbname , value , last_pos, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
 	}
 
-	static INT32  rpc_SyncDataToSlave(const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		std::vector<Msg::Object> vecTargets;
-		vecTargets.push_back(objTarget);
-		return rpc_SyncDataToSlave( pSessionName ,vecTargets , objSrc , dbname , value, pCallback , usPriority , objSyncType);
-	}
-
-	static INT32  rpc_SyncDataToSlave(INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		GEN_RPC_CALL_2((&(Server::DBServer::GetInstance())) , nSessionID , Msg::g_szSyncDataToSlave_RpcCall , dbname , value, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
-	}
-
-	static INT32  rpc_SyncDataToSlave(INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SyncDataToSlave(const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
 		std::vector<Msg::Object> vecTargets;
 		vecTargets.push_back(objTarget);
-		return rpc_SyncDataToSlave( nSessionID ,vecTargets , objSrc , dbname , value , pCallback , usPriority , objSyncType);
+		return rpc_SyncDataToSlave( pSessionName ,vecTargets , objSrc , dbname , value , last_pos, pCallback , usPriority , objSyncType);
+	}
+
+	static INT32  rpc_SyncDataToSlave(INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	{
+		GEN_RPC_CALL_3((&(Server::DBServer::GetInstance())) , nSessionID , Msg::g_szSyncDataToSlave_RpcCall , dbname , value , last_pos, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+	}
+
+	static INT32  rpc_SyncDataToSlave(INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , CUtilChunk & value = CUtil::Chunk() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	{
+		std::vector<Msg::Object> vecTargets;
+		vecTargets.push_back(objTarget);
+		return rpc_SyncDataToSlave( nSessionID ,vecTargets , objSrc , dbname , value , last_pos , pCallback , usPriority , objSyncType);
 	}
 
 	static INT32  rpc_testParamsAndRpcDatas(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , TestRpcData & rpcData = TestRpcData() , TestRpcData2 & rpcData2 = TestRpcData2() , std::vector<INT32> & Vec = std::vector<INT32>(0) , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
@@ -271,40 +271,40 @@ namespace Server
 		return rpc_SlaveStartAuth( nSessionID ,vecTargets , objSrc , name , pwd , pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SlaveRequestSync(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SlaveRequestSync(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
-		GEN_RPC_CALL_1((&(Server::DBSlave::GetInstance())) , pSessionName , Msg::g_szSlaveRequestSync_RpcCall , dbname, vecTargets , objSrc , pCallback , usPriority , objSyncType , 3600);
+		GEN_RPC_CALL_2((&(Server::DBSlave::GetInstance())) , pSessionName , Msg::g_szSlaveRequestSync_RpcCall , dbname , last_pos, vecTargets , objSrc , pCallback , usPriority , objSyncType , 3600);
 	}
 
-	static INT32  rpc_SlaveRequestSync(const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SlaveRequestSync(const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
 		std::vector<Msg::Object> vecTargets;
 		vecTargets.push_back(objTarget);
-		return rpc_SlaveRequestSync( pSessionName ,vecTargets , objSrc , dbname, pCallback , usPriority , objSyncType);
+		return rpc_SlaveRequestSync( pSessionName ,vecTargets , objSrc , dbname , last_pos, pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SlaveRequestSync(const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SlaveRequestSync(const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
-		GEN_RPC_CALL_1((&(Server::DBSlave::GetInstance())) , pSessionName , Msg::g_szSlaveRequestSync_RpcCall , dbname, vecTargets , objSrc , pCallback , usPriority , objSyncType , 3600);
+		GEN_RPC_CALL_2((&(Server::DBSlave::GetInstance())) , pSessionName , Msg::g_szSlaveRequestSync_RpcCall , dbname , last_pos, vecTargets , objSrc , pCallback , usPriority , objSyncType , 3600);
 	}
 
-	static INT32  rpc_SlaveRequestSync(const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		std::vector<Msg::Object> vecTargets;
-		vecTargets.push_back(objTarget);
-		return rpc_SlaveRequestSync( pSessionName ,vecTargets , objSrc , dbname, pCallback , usPriority , objSyncType);
-	}
-
-	static INT32  rpc_SlaveRequestSync(INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
-	{
-		GEN_RPC_CALL_1((&(Server::DBSlave::GetInstance())) , nSessionID , Msg::g_szSlaveRequestSync_RpcCall , dbname, vecTargets , objSrc , pCallback , usPriority , objSyncType , 3600);
-	}
-
-	static INT32  rpc_SlaveRequestSync(INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	static INT32  rpc_SlaveRequestSync(const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
 	{
 		std::vector<Msg::Object> vecTargets;
 		vecTargets.push_back(objTarget);
-		return rpc_SlaveRequestSync( nSessionID ,vecTargets , objSrc , dbname , pCallback , usPriority , objSyncType);
+		return rpc_SlaveRequestSync( pSessionName ,vecTargets , objSrc , dbname , last_pos, pCallback , usPriority , objSyncType);
+	}
+
+	static INT32  rpc_SlaveRequestSync(INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc , std_string & dbname = std::string() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	{
+		GEN_RPC_CALL_2((&(Server::DBSlave::GetInstance())) , nSessionID , Msg::g_szSlaveRequestSync_RpcCall , dbname , last_pos, vecTargets , objSrc , pCallback , usPriority , objSyncType , 3600);
+	}
+
+	static INT32  rpc_SlaveRequestSync(INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc , std_string & dbname = std::string() , INT32 last_pos = -1 , Msg::RpcCallback * pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC)
+	{
+		std::vector<Msg::Object> vecTargets;
+		vecTargets.push_back(objTarget);
+		return rpc_SlaveRequestSync( nSessionID ,vecTargets , objSrc , dbname , last_pos , pCallback , usPriority , objSyncType);
 	}
 
 }

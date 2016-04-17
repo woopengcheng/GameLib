@@ -13,12 +13,29 @@ namespace Server
 {  
 	class MasterHandler;
 	class SlaveRecord;
+	
+	typedef std::vector<CUtil::Chunk>						VecSaveCachesT;
+	struct SSaveCaches
+	{
+		VecSaveCachesT	vecSaveCaches;
+		INT32			nLastPos;		//5 最后一次更新的位置.
+		INT32			nCurPos;		//5 从第一次开始记录的位置
+
+		SSaveCaches()
+			: nLastPos(0)
+			, nCurPos(0)
+		{
+			vecSaveCaches.clear();
+		}
+	};
 
 	class  DBMaster : public GameDB::DBMasterInterface  , ThreadPool::ThreadSustainTask
 	{ 
 	public:
 		typedef std::vector<SlaveRecord *>							VecSlaveRecordsT;
 		typedef std_unordered_map<INT32, MasterHandler *>			MapMasterHandlersT;
+		typedef std_unordered_map<std::string, SSaveCaches>			MapSaveCachesT;  //5 给每一数据库一个积存池.用来同步slave使用.
+
 
 	public:
 		DBMaster(void) ;
@@ -45,6 +62,9 @@ namespace Server
 		bool					GetSlaveRecord(const std::string & strDBName , VecSlaveRecordsT & vecSlaveRecords);
 		INT64					GetServerID() const { return m_llServerID; }
 		void					SetServerID(INT64 nID) { m_llServerID = nID; }
+		INT32					InsertSaveCache(const std::string & strDBName, CUtil::Chunk objValue);
+		BOOL					RefreshSaveCache(const std::string & strDBName);
+		BOOL					GetSaveCache(const std::string & strDBName, INT32 nSlaveID, INT32 nSessionID, INT32 nLastPos, VecSaveCachesT & vec);
 
 	private: 
 		CErrno					InitThread(Json::Value & conf);
@@ -53,7 +73,7 @@ namespace Server
 		INT64					m_llServerID;
 		INT32					m_nHandlerCount;
 		MapMasterHandlersT		m_mapMasterHandlers;
-
+		MapSaveCachesT			m_mapSaveCaches;
 	};  
 	 
 

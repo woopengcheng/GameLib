@@ -17,12 +17,14 @@ namespace Server
 
 	public:
 		CollectionObjectFuncsT m_stest;
+		
 	public:
 		SlaveHandler(Msg::Object objID , DBSlave * pDBSlave)
 			: Msg::IRpcMsgCallableObject(objID , pDBSlave->GetRpcManager())
 			, m_pDBSlave(pDBSlave)
 			, m_pDatabase(NULL)
 			, m_nMasterSessionID(-1)
+			, m_nLastPos(0)
 		{
 		}
 
@@ -36,7 +38,7 @@ namespace Server
 
 	public:
 		void					StartAuth();
-		void					RequestSyncData();
+		void					RequestSyncData(BOOL bRequestAll = FALSE);
 		DBSlave				*	GetDBSlave(){ return m_pDBSlave; }
 		bool					RecvFile(std::string strDir , std::string strFileName , std::string strDBName , INT32 nFileSize , INT32 nSendType , const CUtil::Chunk & objChunk);
 		bool					RecvFileEnd(std::string strDir , std::string strDBName );
@@ -44,11 +46,15 @@ namespace Server
 		GameDB::SDBSlaveInfo	GetSlaveInfo(){ return m_objSlaveInfo;}
 		void					SetMasterSessionID(INT32 nSessionID) { m_nMasterSessionID = nSessionID;  }
 		INT32					GetMasterSessionID() { return m_nMasterSessionID; }
+		INT32					GetLastPos() const { return m_nLastPos; }
+		void					SetLastPos(INT32 val) { m_nLastPos = val; }
+
 	private:
 		DBSlave				*	m_pDBSlave;
 		GameDB::Database	*	m_pDatabase; 
 		GameDB::SDBSlaveInfo	m_objSlaveInfo;
 		INT32					m_nMasterSessionID;
+		INT32					m_nLastPos;
 	}; 
 }
 

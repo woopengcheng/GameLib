@@ -858,6 +858,7 @@
 			
 			<Call >
 				<Param name="dbname" type="std_string" default=""/> 
+				<Param name="last_pos" type="INT32" default="-1"/> 
 			</Call>
 
 			<Return> 
@@ -886,7 +887,7 @@
 		
 		<Rpc name="SyncDataToSlave" syncType="1" timeout="10">
 			<Targets> 
-				<Client name="Server" include="ServerHandler.h" class="ServerHandler" />  
+				<Client name="Server" include="ServerHandler.h" class="ServerHandler" /> 
 				<Proxy name="Master" /> 
 				<Server name="Slave" include="SlaveHandler.h" class="SlaveHandler" /> 
 			</Targets>
@@ -894,6 +895,7 @@
 			<Call > 
 				<Param name="dbname" type="std_string"/>
 				<Param name="value" type="CUtilChunk"/>
+				<Param name="last_pos" type="INT32" default="-1"/>
 			</Call>
 
 			<Return>  

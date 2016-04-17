@@ -399,7 +399,19 @@ namespace Net
 				objKey.strNodeName = m_pSession->GetCurNodeName();
 				objKey.strUUID = m_pSession->GetPeerUUID();
 				objKey.usPort = m_pSession->GetPort();
-				m_pNetReactor->GetNetThread()->RefreshPeerSession(objKey , m_pSession);
+				
+				SPeerInfo objPeer;
+				objPeer.nSessionID = m_pSession->GetSessionID();
+				objPeer.nPeerSessionID = -1;
+				objPeer.usPeerPort = m_pSession->GetPort();
+				objPeer.nState = PING_STATE_PINGING;
+				objPeer.strAddress = m_pSession->GetAddress();
+				objPeer.strCurNodeName = m_pSession->GetCurNodeName();
+				objPeer.bConected = false;
+				objPeer.bReconnectState = m_pSession->GetReconnectState();
+
+				m_pNetReactor->GetNetThread()->AddPeerSession(objKey, objPeer);
+				//m_pNetReactor->GetNetThread()->RefreshPeerSession(objKey , m_pSession);
 
 				gDebugStream("reconect node=" << objKey.strNodeName << ":address=" << objKey.strAddress << ":port=" << objKey.usPort << ":uuid=" << objKey.strUUID);
 				result = CErrno::Success();
@@ -411,6 +423,13 @@ namespace Net
 	CErrno NetHandlerClient::Update(void)
 	{
 		Reconnect();
+
+// 		static INT32 nCount = 10000;
+// 		if (nCount-- == 0)
+// 		{
+// 			m_pSession->SetClosed(TRUE);
+// 			nCount = 10000;
+// 		}
 
 		return NetHandlerPing::Update();
 	}

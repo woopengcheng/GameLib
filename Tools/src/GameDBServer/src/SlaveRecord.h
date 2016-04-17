@@ -11,6 +11,7 @@ namespace Server
 			: m_pMaster(pHandler)
 			, m_objSlaveID(-1)
 			, m_nSlaveSessionID(0)
+			, m_nSaveCachePos(0)
 		{
 		}
 
@@ -27,7 +28,9 @@ namespace Server
 		void				SetDBName(std::string strName){ m_strDBName = strName; }
 		std::string			GetDBName( ){ return m_strDBName; }
 		void				SetUserAuth(GameDB::UserAuth & objUserInfo){ m_objAuthInfo = objUserInfo; }
-		GameDB::UserAuth	GetUserAuth( ){ return m_objAuthInfo; }
+		GameDB::UserAuth	GetUserAuth() { return m_objAuthInfo; }
+		INT32				GetSaveCachePos() const { return m_nSaveCachePos; }
+		void				SetSaveCachePos(INT32 val) { m_nSaveCachePos = val; }
 
 	private:
 		INT32				m_nSlaveSessionID;
@@ -35,6 +38,7 @@ namespace Server
 		MasterHandler	*	m_pMaster;
 		std::string			m_strDBName;
 		GameDB::UserAuth	m_objAuthInfo;		
+		INT32				m_nSaveCachePos;
 	}; 
 }
 

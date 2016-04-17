@@ -6,8 +6,7 @@ Msg::ObjectMsgCall * Server::SlaveHandler::SlaveStartAuth_RpcClient(INT32 nSessi
 {
 	if (value != "")
 	{
-		this->RequestSyncData();
-//		this->SelectDB();//5  不需要选择了.
+		this->RequestSyncData(TRUE);
 	}
 
 	std::cout << "SlaveStartAuth_RpcClient" << std::endl;

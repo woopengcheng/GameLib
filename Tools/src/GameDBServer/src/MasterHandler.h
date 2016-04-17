@@ -16,23 +16,7 @@ namespace Server
 	{ 
  		RPC_DEFINE_MasterHandler;
 	public:
-		typedef std::vector<CUtil::Chunk>						VecSaveCachesT;
-		struct SaveCaches
-		{
-			VecSaveCachesT	vecSaveCaches;
-			INT32			nCurPos;		//5 当前同步积存池的位置.
-			INT32			nLastPos;		//5 最后一次更新的位置.
-
-			SaveCaches()
-				: nCurPos(0)
-				, nLastPos(0)
-			{
-				vecSaveCaches.clear();
-			}
-		};
-
 		typedef std_unordered_map<std::string, SlaveRecord *>		MapSlaveRecordsT;
-		typedef std_unordered_map<std::string, SaveCaches>			MapSaveCachesT;  //5 给每一数据库一个积存池.用来同步slave使用.
 
 	public:
 		MasterHandler(Msg::Object objID , DBMaster * pDBMaster)
@@ -55,6 +39,7 @@ namespace Server
 		SlaveRecord				*	GetSlaveRecordBySlaveID(INT64 nSlaveID);
 		void						SetDBSlaveSessionID(INT32 nSessionID) { m_nDBSlaveSessionID = nSessionID; }
 		INT32						GetDBSlaveSessionID() { return m_nDBSlaveSessionID; }
+		BOOL						SyncDataToSlave(const std::string & strDBName);
 
 	private:
 		DBMaster				*	m_pDBMaster;

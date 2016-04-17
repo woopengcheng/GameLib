@@ -114,6 +114,7 @@ namespace Net
 		SPeerInfo			GetPeerInfo(const SPeerKey & objInfo);
 		CErrno				AddPeerSession(const SPeerKey & objKey, const SPeerInfo & objPeerInfo);
 		CErrno				RefreshPeerSession(const SPeerKey & objKey, ISession * pSession);
+		CErrno				ClearPeerSession(const SPeerKey & objKey);
 		CErrno				InsertClientsQueue(const std::string & strNodeName , const std::string & strAddress, UINT16 usPort, BOOL bReconnect = FALSE);
 
 	protected:

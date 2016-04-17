@@ -138,6 +138,102 @@ namespace Server
 		return DBMasterInterface::Cleanup();
 	}
 
+	INT32 DBMaster::InsertSaveCache(const std::string & strDBName, CUtil::Chunk objValue)
+	{
+		MapSaveCachesT::iterator iter = m_mapSaveCaches.find(strDBName);
+		if (iter != m_mapSaveCaches.end())
+		{
+			SSaveCaches & cache = iter->second;
+			cache.vecSaveCaches.push_back(objValue);
+			return (INT32)cache.vecSaveCaches.size() + cache.nCurPos;
+		}
+		else
+		{
+			SSaveCaches cache;
+			cache.vecSaveCaches.push_back(objValue);
+			m_mapSaveCaches.insert(std::make_pair(strDBName, cache));
+			return (INT32)cache.vecSaveCaches.size() + cache.nCurPos;
+		}
+
+		return -1;
+	}
+
+	BOOL DBMaster::RefreshSaveCache(const std::string & strDBName)
+	{
+		MapSaveCachesT::iterator iter = m_mapSaveCaches.find(strDBName);
+		if (iter != m_mapSaveCaches.end())
+		{
+			SSaveCaches & cache = iter->second;
+
+			INT32  nMinPos = 0x7FFFFFFF;
+			Server::DBMaster::VecSlaveRecordsT vecRecords;
+			bool bFound = Server::DBMaster::GetInstance().GetSlaveRecord(strDBName, vecRecords);
+			if (bFound)
+			{
+				INT32 nLastPos = cache.nLastPos;
+				Server::DBMaster::VecSlaveRecordsT::iterator iter = vecRecords.begin();
+				for (; iter != vecRecords.end(); ++iter)
+				{
+					Server::SlaveRecord * pSlaveRecord = *iter;
+					INT32 nPos = pSlaveRecord->GetSaveCachePos();
+					if (pSlaveRecord && nPos >= 0 && nPos <= nMinPos)
+					{
+						nMinPos = nPos;
+					}
+				}
+				if (nLastPos != nMinPos)
+				{
+					cache.nLastPos = nMinPos;
+					INT32 nDiff = nMinPos - nLastPos;
+					if (nDiff <= cache.vecSaveCaches.size())
+					{
+						cache.vecSaveCaches.erase(cache.vecSaveCaches.begin(), cache.vecSaveCaches.begin() + nDiff);
+						cache.nCurPos = nMinPos;
+						gDebugStream("RefreshSaveCache .name=" << strDBName << ":begin=" << nLastPos << ":end=" << nMinPos << ":diff=" << nDiff);
+					}
+					else
+					{
+						gErrorStream("RefreshSaveCache error. name=" << strDBName);
+					}
+				}
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	BOOL DBMaster::GetSaveCache(const std::string & strDBName, INT32 nSlaveID , INT32 nSessionID , INT32 nLastPos , VecSaveCachesT & vec)
+	{
+		MapSaveCachesT::iterator iter = m_mapSaveCaches.find(strDBName);
+		if (iter != m_mapSaveCaches.end())
+		{
+			SSaveCaches & cache = iter->second;
+
+			Server::DBMaster::VecSlaveRecordsT vecRecords;
+			bool bFound = Server::DBMaster::GetInstance().GetSlaveRecord(strDBName, vecRecords);
+			if (bFound)
+			{
+				Server::DBMaster::VecSlaveRecordsT::iterator iter = vecRecords.begin();
+				for (; iter != vecRecords.end(); ++iter)
+				{					
+					Server::SlaveRecord * pSlaveRecord = *iter;
+					if (pSlaveRecord && pSlaveRecord->GetSlaveID() == nSlaveID && 
+						pSlaveRecord->GetSlaveSessionID() == nSessionID &&
+						pSlaveRecord->GetSaveCachePos() == nLastPos)
+					{
+						INT32 nDiff = cache.nLastPos - nLastPos;
+						vec.assign(cache.vecSaveCaches.begin() + (nLastPos - cache.nCurPos) , cache.vecSaveCaches.begin() + (nLastPos - cache.nCurPos + nDiff));
+
+						return TRUE;
+					}
+				}
+			}
+		}
+
+		return FALSE;
+
+	}
 
 	CErrno MasterListener::OnConnected(Msg::RpcInterface * pRpcInterface , INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)
 	{
@@ -165,7 +261,7 @@ namespace Server
 				{
 					return CErrno::Failure(strCurNode);
 				}
-				INT32 nMasterID = CUtil::atoi(vals[1]);
+				INT32 nMasterID = (INT32)CUtil::atoi(vals[1]);
 				
 				std::string strName = vals[0];
 				vals.clear();

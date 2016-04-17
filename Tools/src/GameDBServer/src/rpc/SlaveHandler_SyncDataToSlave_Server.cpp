@@ -2,7 +2,7 @@
 #include "GameDB/inc/OperateRecord.h"
 #include "GameDB/inc/DBCommon.h"
 
-Msg::ObjectMsgCall * Server::SlaveHandler::SyncDataToSlave_RpcServer(INT32 nSessionID , Msg::Object objSrc ,std_string & dbname/* = std::string()*/ , CUtilChunk & value/* = CUtil::Chunk()*/)
+Msg::ObjectMsgCall * Server::SlaveHandler::SyncDataToSlave_RpcServer(INT32 nSessionID , Msg::Object objSrc ,std_string & dbname/* = std::string()*/ , CUtilChunk & value/* = CUtil::Chunk()*/, INT32 last_pos /*= 0*/)
 {
 	INT32 res = 0;
 	CUtil::CStream cs;
@@ -47,6 +47,7 @@ Msg::ObjectMsgCall * Server::SlaveHandler::SyncDataToSlave_RpcServer(INT32 nSess
 		}
 	}
 
+	m_nLastPos = last_pos;
 	std::cout << "SyncDataToSlave_RpcServer "<< std::endl;
 	Return(res);
 }

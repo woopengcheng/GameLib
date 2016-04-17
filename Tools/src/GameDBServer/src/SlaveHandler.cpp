@@ -99,11 +99,18 @@ namespace Server
 		}
 	}
 
-	void SlaveHandler::RequestSyncData()
+	void SlaveHandler::RequestSyncData(BOOL bRequestAll/* = FALSE*/)
 	{ 
 		if (m_pDBSlave)
 		{
-			Server::rpc_SlaveRequestSync(m_nMasterSessionID, m_pDBSlave->GetMasterID() , m_objID , m_objSlaveInfo.strDBName);
+			if (bRequestAll)
+			{
+				Server::rpc_SlaveRequestSync(m_nMasterSessionID, m_pDBSlave->GetMasterID(), m_objID, m_objSlaveInfo.strDBName);
+			}
+			else
+			{
+				Server::rpc_SlaveRequestSync(m_nMasterSessionID, m_pDBSlave->GetMasterID(), m_objID, m_objSlaveInfo.strDBName , m_nLastPos);
+			}
 		}
 	}
 }

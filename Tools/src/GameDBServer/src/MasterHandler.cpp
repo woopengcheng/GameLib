@@ -184,4 +184,15 @@ namespace Server
 		return NULL;
 	}
 
+	BOOL MasterHandler::SyncDataToSlave(const std::string & strDBName)
+	{
+		SlaveRecord	* pRecord = GetSlaveRecord(strDBName);
+		if (pRecord)
+		{
+			pRecord->GetSaveCachePos();
+		}
+
+		return FALSE;
+	}
+
 }

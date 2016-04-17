@@ -398,6 +398,24 @@ namespace Net
 		if (iter != m_mapPeerSessions.end())
 		{
 			iter->second.bReconnectState |= pSession->GetReconnectState();
+			iter->second.nSessionID = pSession->GetSessionID();
+			iter->second.usPeerPort = pSession->GetPort();
+			iter->second.strAddress = pSession->GetAddress();
+			iter->second.strCurNodeName = pSession->GetCurNodeName();
+
+			return CErrno::Success();
+		}
+
+		return CErrno::Failure();
+	}
+
+	CErrno NetThread::ClearPeerSession(const SPeerKey & objKey)
+	{
+		MapPeerSessionT::iterator iter = m_mapPeerSessions.find(objKey);
+		if (iter != m_mapPeerSessions.end())
+		{
+			//iter->second.Clear();
+			m_mapPeerSessions.erase(iter);
 			return CErrno::Success();
 		}
 
