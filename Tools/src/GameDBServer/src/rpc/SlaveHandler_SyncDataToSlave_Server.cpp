@@ -27,28 +27,36 @@ Msg::ObjectMsgCall * Server::SlaveHandler::SyncDataToSlave_RpcServer(INT32 nSess
 
 				GameDB::Status status = m_pDatabase->QuickWrite(GameDB::Slice(dbKey),GameDB::Slice(value));
 				gDebugStream("insert dbkey:" << dbKey << " dbVal: " << value);
-				MsgAssert_Re0(status.ok() , "slave write error.");
+				if (!status.ok())
+				{
+					gErrorStream("slave insert error.");
+				}
 			}
 			break;
 		case GameDB::OperateRecord::OPERATE_RECODE_DELETE:
 			{
-
 				std::string dbKey;
 				cs >> dbKey;
 
 				GameDB::Status status = m_pDatabase->QuickDel(GameDB::Slice(dbKey));
 				gDebugStream("delete dbkey:" << dbKey << " dbVal: " << value);
-				MsgAssert_Re0(status.ok() , "slave delete error.");
+				if (!status.ok())
+				{
+					gErrorStream("slave delete error.");
+				}
 			}
 			break;
 		default:
-			MsgAssert_Re0(0 , "unknown operator type.");
-			break;
+			{
+				res = -1;
+				gErrorStream("unknown operator type.");
+				break;
+			}
 		}
 	}
 
 	m_nLastPos = last_pos;
-	std::cout << "SyncDataToSlave_RpcServer "<< std::endl;
-	Return(res);
+	std::cout << "SyncDataToSlave_RpcServer m_nLastPos=" << m_nLastPos  << std::endl;
+	Return(res , m_nLastPos);
 }
 

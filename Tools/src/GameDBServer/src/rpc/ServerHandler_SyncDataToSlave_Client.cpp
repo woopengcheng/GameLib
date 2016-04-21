@@ -2,7 +2,7 @@
 
 
 
-Msg::ObjectMsgCall * Server::ServerHandler::SyncDataToSlave_RpcClient(INT32 nSessionID , Msg::Object objSrc , INT32 res/* = 0*/)
+Msg::ObjectMsgCall * Server::ServerHandler::SyncDataToSlave_RpcClient(INT32 nSessionID , Msg::Object objSrc , INT32 res/* = 0*/, INT32 master_id)
 {
 
 

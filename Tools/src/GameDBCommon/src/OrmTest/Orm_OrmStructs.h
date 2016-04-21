@@ -2,9 +2,9 @@
 FileName	:	OrmStructs.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.31.196
+IP			:	127.0.0.1
 Version		:	0.0.1
-Date		:	2016-02-09 11:26:27
+Date		:	2016-04-20 15:37:57
 Description	:	数据库中定义的数据.
 ************************************/
 #ifndef __Orm_orm_structs_h__

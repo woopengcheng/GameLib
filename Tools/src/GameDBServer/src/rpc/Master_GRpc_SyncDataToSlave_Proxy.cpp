@@ -19,23 +19,32 @@ Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcServerProxy(INT32 nSession
 			{
 				continue;
 			}
-			pSlaveRecord->SetSaveCachePos(nPos);
 		}
-		Server::DBMaster::GetInstance().RefreshSaveCache(dbname);
 	}
 
 	std::cout << "SyncDataToSlave_RpcServerProxy" << std::endl;
 	ReturnNULL;
 }
 
-Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcClientProxy(INT32 nSessionID , Msg::Object objSrc  ,INT32 res/* = 0*/)
+Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcClientProxy(INT32 nSessionID , Msg::Object objSrc  ,INT32 res/* = 0*/ , INT32 master_id)
 {
+	std::string dbname;
+	CUtil::Parameters * pParams = GetInParams();
+	if (pParams)
+	{
+		dbname = pParams->GetValue<std::string>(0);
+		INT32 last_pos = pParams->GetValue<INT32>(2);
 
-
-
-
+		Server::SlaveRecord * pSlaveRecord = Server::DBMaster::GetInstance().GetSlaveRecord(master_id , dbname);
+		if (pSlaveRecord && res == 0)
+		{
+			pSlaveRecord->SetSaveCachePos(last_pos);
+		}
+		Server::DBMaster::GetInstance().RefreshSaveCache(dbname);
+	}
+	
 	std::cout << "SyncDataToSlave_RpcClientProxy" << std::endl;
-	Return(res);
+	Return(res , res);
 }
 
 Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcTimeoutProxy(INT32 nSessionID , Msg::Object objSrc,std_string & dbname/* = std::string()*/ , CUtilChunk & value/* = CUtil::Chunk()*/, INT32 last_pos/* = -1*/)

@@ -900,6 +900,7 @@
 
 			<Return>  
 				<Param name="res" type="INT32" default="0"/> 
+				<Param name="master_id" type="INT32" default="0"/> 
 			</Return>
 		</Rpc>
 	</Rpcs>

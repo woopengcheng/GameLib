@@ -36,12 +36,12 @@ namespace Server
 	static UINT8 g_rpcDefaultParam_UINT8 = 0;
 	static UINT16 g_rpcDefaultParam_UINT16 = 0;
 	static INT16 g_rpcDefaultParam_INT16 = 0;
-	static UINT32 g_rpcDefaultParam_UINT32 = 0;
 	static INT32 g_rpcDefaultParam_INT32 = 0;
-	static INT64 g_rpcDefaultParam_INT64 = 0;
+	static UINT32 g_rpcDefaultParam_UINT32 = 0;
 	static UINT64 g_rpcDefaultParam_UINT64 = 0;
-	static float g_rpcDefaultParam_float = 0.0f;
+	static INT64 g_rpcDefaultParam_INT64 = 0;
 	static double g_rpcDefaultParam_double = 0.0f;
+	static float g_rpcDefaultParam_float = 0.0f;
 	static std_string g_rpcDefaultParam_std_string = std::string();
 	static CUtilChunk g_rpcDefaultParam_CUtilChunk = CUtil::Chunk();
 	static TestRpcData g_rpcDefaultParam_TestRpcData = TestRpcData();
@@ -480,7 +480,7 @@ namespace Server
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
 			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_CUtilChunk , g_rpcDefaultParam_INT32);
-			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SyncDataToSlave", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncDataToSlave", objReturnParams);
 			
@@ -900,7 +900,7 @@ namespace Server
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
 			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_CUtilChunk , g_rpcDefaultParam_INT32);
-			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SyncDataToSlave", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncDataToSlave", objReturnParams);
 			
@@ -1311,7 +1311,7 @@ namespace Server
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
 			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_CUtilChunk , g_rpcDefaultParam_INT32);
-			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SyncDataToSlave", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncDataToSlave", objReturnParams);
 			m_pRpcManager->RegisterFunc<SlaveHandler >(Msg::g_szSyncDataToSlave_RpcServer , &SlaveHandler::SyncDataToSlave_RpcServer); 

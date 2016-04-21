@@ -2,9 +2,9 @@
 FileName	:	Orm_TestSlaveCollection.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.31.196
+IP			:	127.0.0.1
 Version		:	0.0.1
-Date		:	2016-02-09 11:26:27
+Date		:	2016-04-20 15:37:57
 Description	:	针对orm子表操作的集合类.
 ************************************/
 #ifndef __Orm_Orm_TestSlave_collection_h__
