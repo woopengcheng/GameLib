@@ -474,8 +474,27 @@ def CheckAllData():
 				if bHasAutoIncrease != None:				
 					LogOutError("table's field has had AutoIncrease table_name: " , table.name , " field_name: " , field.name , " AutoIncrease : " , field.autoIncr )
 				else:
-					bHasAutoIncrease  = True
-				
+					if field.type.lower() == "int64".lower() or\
+						field.type.lower() == "int".lower() or\
+						field.type.lower() == "shor\t".lower() or\
+						field.type.lower() == "long".lower() or\
+						field.type.lower() == "char".lower() or\
+						field.type.lower() == "unsigned int".lower() or\
+						field.type.lower() == "unsigned shor\t".lower() or\
+						field.type.lower() == "unsigned long".lower() or\
+						field.type.lower() == "unsigned char".lower() or\
+						field.type.lower() == "time_t".lower() or\
+						field.type.lower() == "SINT8".lower() or\
+						field.type.lower() == "INT16".lower() or\
+						field.type.lower() == "INT32".lower() or\
+						field.type.lower() == "INT64".lower() or\
+						field.type.lower() == "UINT8".lower() or\
+						field.type.lower() == "UINT16".lower() or\
+						field.type.lower() == "UINT32".lower() or\
+						field.type.lower() == "UINT64".lower() :
+						bHasAutoIncrease  = True
+					else:
+						LogOutError("table's field has error type autoIncr " , table.name , " field_name: " , field.name , " AutoIncrease : " , field.autoIncr )
 				 								
 ################################生成对应文件#####################################
 
@@ -978,7 +997,7 @@ def GenerateOrmCppFields(fileOrm , table):
 			
 			fileOrm.write(oneTab + "BOOL " + table.name + "::Is" + field.name + "Include" + "(" + field.type + " & value)\n")
 			fileOrm.write(oneTab + "{\n")
-			fileOrm.write(twoTab + "return " + field.name + " & value;\n")  
+			fileOrm.write(twoTab + "return !!" + field.name + " & value;\n")  
 			fileOrm.write(oneTab + "}\n\n")
 				
 def GenerateOrmsCollectionHeadFile():
@@ -1283,7 +1302,7 @@ def GenerateOrmCollectionCppFromBson(fileOrm , collectionTable):
 	
 	fileOrm.write(twoTab + "std::string tmpbuf;\n") 
 	fileOrm.write(twoTab + "CUtil::Uncompress(compressedBuf.c_str(),(UINT32)compressedBuf.length(),tmpbuf);\n") 
-	fileOrm.write(twoTab + "this->FromBson(tmpbuf.c_str(),tmpbuf.length());\n")  
+	fileOrm.write(twoTab + "this->FromBson(tmpbuf.c_str(),(UINT32)tmpbuf.length());\n")  
 	
 	fileOrm.write(oneTab + "}\n\n")
 	

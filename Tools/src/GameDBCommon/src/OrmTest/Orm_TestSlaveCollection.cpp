@@ -100,7 +100,7 @@ namespace Orm
 	{
 		std::string tmpbuf;
 		CUtil::Uncompress(compressedBuf.c_str(),(UINT32)compressedBuf.length(),tmpbuf);
-		this->FromBson(tmpbuf.c_str(),tmpbuf.length());
+		this->FromBson(tmpbuf.c_str(),(UINT32)tmpbuf.length());
 	}
 
 	void TestSlaveCollection::FromBson(const char* buf,UINT32 len)

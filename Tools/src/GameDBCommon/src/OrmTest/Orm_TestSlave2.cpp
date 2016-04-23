@@ -214,7 +214,7 @@ namespace Orm
 
 	BOOL TestSlave2::Isid2Include(INT64 & value)
 	{
-		return id2 & value;
+		return !!id2 & value;
 	}
 
 	TestStruct TestSlave2::Getid3() const

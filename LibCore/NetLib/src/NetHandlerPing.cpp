@@ -121,6 +121,7 @@ namespace Net
 				objInfo.strUUID = pPing->szUUID;
 
 				SPeerInfo  peerInfo = pThread->GetPeerInfo(objInfo);
+				//gDebugStream("recv ping.address=" << pPing->szAddress << ":port=" << pPing->usPeerPort << ":nodeName=" << pPing->szNodeName << ":recv sessionID=" << pSession->GetSessionID() << ":peer=" << peerInfo.nPeerSessionID << ":cursession=" << peerInfo.nSessionID);
 				if (peerInfo.nState != PING_STATE_PINGED)
 				{
 					if (peerInfo.nState == PING_STATE_VALID)
@@ -132,8 +133,8 @@ namespace Net
 							return CErrno::Failure();
 						}
 					}
-					
-					if (peerInfo.nState == PING_STATE_PINGING)
+
+					//if (peerInfo.nState == PING_STATE_PINGING)
 					{
 						peerInfo.Clear();
 
@@ -146,7 +147,7 @@ namespace Net
 						peerInfo.bConected = false;
 						peerInfo.bReconnectState |= !!pPing->bReconnectState;
 
-						pSession->SetRemoteName(pPing->szNodeName );
+						pSession->SetRemoteName(pPing->szNodeName);
 						pThread->AddPeerSession(objInfo, peerInfo);
 					}
 				}

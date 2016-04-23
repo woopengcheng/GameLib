@@ -60,7 +60,7 @@ namespace Net
 
 	CErrno NetHandlerListener::Init( const char * pAddress , INT32 nPort , BOOL bResueAddr /*= TRUE */, INT32 nListenerCount /*= DEFAULT_LISTENER_COUNT*/ )
 	{ 
-		Assert_ReF(!Bind(pAddress , nPort));
+		Assert_ReF(!Bind(pAddress , nPort , bResueAddr));
 
 		if (Listen(nListenerCount) == 0)
 		{

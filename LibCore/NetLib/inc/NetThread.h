@@ -94,7 +94,7 @@ namespace Net
 		virtual CErrno		Init(Json::Value & conf);
 		virtual CErrno		Cleanup(void);
 		virtual CErrno		Update(void);
-		virtual CErrno		StartupServer(const std::string & strNetNodeName, const std::string & strType, const std::string & strAddress, INT32 nPort);
+		virtual CErrno		StartupServer(const std::string & strNetNodeName, const std::string & strType, const std::string & strAddress, INT32 nPort, BOOL bResueAddr = FALSE);
 		virtual CErrno		StartupClient(const Json::Value & clients);
 
 	public:

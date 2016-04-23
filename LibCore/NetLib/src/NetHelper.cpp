@@ -94,6 +94,89 @@ namespace Net
 			return (unsigned char)pPacket->data[0];
 	}
 
+#define		ANY_SIZE	 120
+#ifdef WIN32
+	BOOL NetHelper::IsSocketPortUsed(UINT32 nPort)
+	{
+		//连接信息结构体
+		typedef struct _MIB_TCPROW
+		{
+			DWORD dwState;							//TCP连接状态
+			DWORD dwLocalAddr;						//本地IP
+			DWORD dwLocalPort;						//本地端口
+			DWORD dwRemoteAddr;						//远程机器IP
+			DWORD dwRemotePort;						//远程机器端口
+		} MIB_TCPROW, *PMIB_TCPROW;
+
+		//TCP连接表
+		typedef struct _MIB_TCPTABLE
+		{
+			DWORD      dwNumEntries;				//当前包含MIB_TCPROW类型的总数
+			MIB_TCPROW table[ANY_SIZE];             //存放每个TCP连接的端口和IP
+		} MIB_TCPTABLE, *PMIB_TCPTABLE;
+
+		if (nPort < 1024 || nPort > 65000)
+			FALSE;
+
+		PMIB_TCPTABLE ptcptable = NULL;
+		DWORD dwSize = 0;
+
+		HINSTANCE hInst;		//动态链接库模块句柄
+		hInst = LoadLibraryA("iphlpapi.dll");		//动态加载iphlpapi.dll
+
+													//定义函数指针类型
+		typedef long(*ADDPROC) (PMIB_TCPTABLE pTcpTable, PDWORD pdwSize, BOOL bOrder);
+
+		//获取iphlpapi.dll导出函数
+		ADDPROC GetTcpTable = (ADDPROC)GetProcAddress(hInst, "GetTcpTable");
+
+		if (GetTcpTable(ptcptable, &dwSize, TRUE) == ERROR_INSUFFICIENT_BUFFER)		//pTcpTable空间不足
+		{
+			ptcptable = new MIB_TCPTABLE[dwSize];		//为pTcpTable申请足够的空间
+
+			if (GetTcpTable(ptcptable, &dwSize, TRUE) == NO_ERROR)     //GetTcpTable调用成功
+			{
+				//检测端口nPort是否在
+				for (UINT i = 0; i < ptcptable->dwNumEntries; i++)
+				{
+					if (nPort != ptcptable->table[i].dwLocalPort)
+						continue;
+
+					//释放资源
+					SAFE_DELETE_ARRAY(ptcptable);
+					FreeLibrary((HMODULE)hInst);
+
+					return TRUE;
+				}
+			}
+		}
+		//释放资源
+		SAFE_DELETE_ARRAY(ptcptable);
+		FreeLibrary((HMODULE)hInst);
+
+		return FALSE;
+	}
+#else
+	BOOL NetHelper::IsSocketPortUsed(UINT32 nPort)
+	{
+		const char * pAddress = "127.0.0.1";
+		sockaddr_in addr = { 0 };
+		addr.sin_family = AF_INET;
+		addr.sin_port = htons(nPort);
+		addr.sin_addr.S_un.S_addr = INADDR_ANY;
+		if (pAddress != 0 && strlen(pAddress) > 0)
+		{
+			addr.sin_addr.s_addr = inet_addr(ip);
+		}
+		NetSocket socket = NetHelper::CreateSocket(AF_INET, SOCK_STREAM, 0);
+		INT32 nValueTrue = 1;
+		setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&nValueTrue, sizeof(nValueTrue));
+		::bind(socket, (sockaddr*)&addr, sizeof(sockaddr_in));
+		CloseSocket(socket);
+		return TRUE;
+	}
+#endif
+
 	void NetHelper::SetSocket(NetSocket & socket)
 	{
 		linger s = {0};

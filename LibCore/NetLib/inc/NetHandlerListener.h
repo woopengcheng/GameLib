@@ -35,7 +35,7 @@ namespace Net
 		CErrno			OnMsgRecvingIOCP(void);
 		CErrno			OnMsgRecvingCommon(void);
 		INT32			Listen(INT32  nListenerCount = DEFAULT_LISTENER_COUNT);
-		INT32			Bind(const char * pAddress , INT32 nPort , BOOL bResueAddr = TRUE);
+		INT32			Bind(const char * pAddress , INT32 nPort , BOOL bResueAddr = FALSE);
 		CErrno			OnMsgRecvingRakNet();
 	};
 	DECLARE_BOOST_POINTERS( NetHandlerListener ); 

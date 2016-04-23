@@ -57,8 +57,9 @@ namespace Net
 			std::string strAddress = server.get("listen_address", "127.0.0.1").asCString();
 			INT32 nPort = server.get("listen_port", 8003).asInt();
 			std::string strNodeName = server.get("net_node_name", "").asCString();
+			BOOL		bResueAddr = server.get("resue_addr", FALSE).asInt();
 
-			StartupServer(strNodeName, strType, strAddress, nPort);
+			StartupServer(strNodeName, strType, strAddress, nPort , bResueAddr);
 
 			Json::Value clients = conf.get("clients", Json::Value());
 			StartupClient(clients);
@@ -171,7 +172,7 @@ namespace Net
 		return CErrno::Failure();
 	}
 
-	CErrno NetThread::StartupServer(const std::string & strNetNodeName , const std::string & strType , const std::string & strAddress , INT32 nPort)
+	CErrno NetThread::StartupServer(const std::string & strNetNodeName , const std::string & strType , const std::string & strAddress , INT32 nPort , BOOL bResueAddr)
 	{
 		m_usServerPort = nPort;
 		m_strNetNodeName = strNetNodeName;
@@ -180,7 +181,7 @@ namespace Net
 
 		Net::ISession * pSeesion = new Net::ServerSession(strAddress.c_str() , m_usServerPort , m_strNetNodeName);
 		NetHandlerListenerPtr pListener(new NetHandlerListener(m_pNetReactor , pSeesion));
-		if (CErrno::Failure() == pListener->Init(strAddress.c_str(), m_usServerPort))
+		if (CErrno::Failure() == pListener->Init(strAddress.c_str(), m_usServerPort , bResueAddr))
 		{
 			gErrorStream("NetHandlerListener init failure:" << m_strNetNodeName << ":address=" << strAddress << ":port=" << m_usServerPort);
 			return CErrno::Failure();

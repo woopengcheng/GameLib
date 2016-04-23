@@ -158,7 +158,7 @@
 		
 		<Table name = "Test_Oldname" ignore_reflection_define="" ignore_collection="" >    
 			<Field name="id" type="INT64" masterID="" oldName=""  value_type=""/>
-			<Field name="p1" type="std::string" oldName="" autoIncr="" value_type=""/>
+			<Field name="p1" type="std::string" oldName="" value_type=""/>
 		</Table>
 		<Table name = "Test_PrimaryKey">    
 			<Field name="id" type="INT64" primaryKey="" oldName="" autoIncr="" value_type=""/>

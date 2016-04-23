@@ -59,7 +59,7 @@ namespace Orm
 
 	void Test_Oldname::AutoIncrease(INT64 llKey)
 	{
-		p1 = llKey;
+		MsgAssert(false , "AutoIncrease key:" << llKey);
 	}
 
 	Test_Oldname * Test_Oldname::Clone()
