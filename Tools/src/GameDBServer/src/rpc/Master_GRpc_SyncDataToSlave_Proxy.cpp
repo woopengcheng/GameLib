@@ -6,6 +6,7 @@ Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcServerProxy(INT32 nSession
 {
 	INT32 res = 0;
 
+	bool bSync = false;
 	Server::DBMaster::VecSlaveRecordsT vecRecords;
 	bool bFound = Server::DBMaster::GetInstance().GetSlaveRecord(dbname , vecRecords);
 	if (bFound)
@@ -19,7 +20,12 @@ Msg::ObjectMsgCall * Server::GRpc::SyncDataToSlave_RpcServerProxy(INT32 nSession
 			{
 				continue;
 			}
+			bSync = true;
 		}
+	}
+	if (!bSync)
+	{
+		Return(res , res);
 	}
 
 	std::cout << "SyncDataToSlave_RpcServerProxy" << std::endl;

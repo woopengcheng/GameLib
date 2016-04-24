@@ -30,7 +30,7 @@ namespace Net
 
 	}
 
-	CErrno HttpServer::Init(const char * pAddress , INT32 nPort , BOOL bResueAddr /*= TRUE */, INT32 nListenerCount /*= DEFAULT_LISTENER_COUNT*/)
+	CErrno HttpServer::Init(const char * pAddress , INT32 nPort , BOOL bResueAddr /*= FALSE */, INT32 nListenerCount /*= DEFAULT_LISTENER_COUNT*/)
 	{
 		CErrno err;
 		if (m_pListener == NULL)

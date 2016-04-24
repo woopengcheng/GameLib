@@ -58,9 +58,15 @@ namespace Net
 		m_pSession->SetSocket(socket);
 	}
 
-	CErrno NetHandlerListener::Init( const char * pAddress , INT32 nPort , BOOL bResueAddr /*= TRUE */, INT32 nListenerCount /*= DEFAULT_LISTENER_COUNT*/ )
+	CErrno NetHandlerListener::Init( const char * pAddress , INT32 nPort , BOOL bResueAddr /*= FALSE */, INT32 nListenerCount /*= DEFAULT_LISTENER_COUNT*/ )
 	{ 
-		Assert_ReF(!Bind(pAddress , nPort , bResueAddr));
+		if (Bind(pAddress, nPort, bResueAddr) != 0)
+		{
+			m_pSession->SetClosed(TRUE);
+			m_pSession->SetNetState(NET_STATE_LOSTED);
+			gErrorStream("listener error may address used." << pAddress << ":port=" << nPort << ":resue=" << bResueAddr);
+			return CErrno::Failure();
+		}
 
 		if (Listen(nListenerCount) == 0)
 		{

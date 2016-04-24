@@ -4,6 +4,7 @@ namespace Orm
 {
 	TestSlave::TestSlave()
 		: id(0)
+		, value(0)
 	{
 	}
 
@@ -14,7 +15,8 @@ namespace Orm
 	bool TestSlave::IsEqual(const TestSlave & val)
 	{ 
 		if(
-			id == val.id)
+			id == val.id&&
+			value == val.value)
 		{
 			return true;
 		}
@@ -36,18 +38,16 @@ namespace Orm
 		std::string result;
 		result.reserve(64);
 
+		{
+			result.append(CUtil::itoa((INT64)id));
+		}
 		return result;
 	}
 
 	std::string TestSlave::GetKey()
 	{
-		std::string result;
-		result.reserve(64);
+		return this->GetRawKey();
 
-			{
-			result.append(CUtil::itoa((INT64)id));
-		}
-		return result;
 	}
 
 	std::string TestSlave::GetTableName()
@@ -89,6 +89,8 @@ namespace Orm
 		builder.append("_T",TableName());
 		if(id != 0)
 			builder.append("id",id);
+		if(value != 0)
+			builder.append("value",value);
 		obj = builder.obj();
 	}
 
@@ -112,6 +114,10 @@ namespace Orm
 
 	void TestSlave::FromBson(const char* pData,INT32 size)
 	{
+		if(size == 0 || strcmp(pData , "") == 0)
+		{
+			return;
+		}
 		mongo::BSONObj  obj(pData);
 		MsgAssert(obj.objsize() == size , "FromBson error.");
 		FromBson(obj);
@@ -135,6 +141,10 @@ namespace Orm
 				{
 					CUtil::BsonToCpp( id , be);
 				}break;
+			case 2324188493089: // value
+				{
+					CUtil::BsonToCpp( value , be);
+				}break;
 			}
 		}
 		__hash = HashMake(0);
@@ -145,6 +155,8 @@ namespace Orm
 		INT64 _result = seed;
 		_result = CUtil::CityHash(&id,sizeof(id),_result);
 		return _result;
+		_result = CUtil::CityHash(&value,sizeof(value),_result);
+		return _result;
 	}
 
 	INT64 TestSlave::Getid() const
@@ -152,9 +164,19 @@ namespace Orm
 		return id;
 	}
 
-	void TestSlave::Setid(INT64 & value)
+	void TestSlave::Setid(INT64 & xxValuexx)
 	{
-		id = value;
+		id = xxValuexx;
+	}
+
+	INT64 TestSlave::Getvalue() const
+	{
+		return value;
+	}
+
+	void TestSlave::Setvalue(INT64 & xxValuexx)
+	{
+		value = xxValuexx;
 	}
 
 }//Orm

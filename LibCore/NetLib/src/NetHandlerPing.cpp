@@ -134,7 +134,7 @@ namespace Net
 						}
 					}
 
-					//if (peerInfo.nState == PING_STATE_PINGING)
+					if (peerInfo.nState == PING_STATE_PINGING)
 					{
 						peerInfo.Clear();
 

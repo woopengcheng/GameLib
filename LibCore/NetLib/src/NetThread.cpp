@@ -179,6 +179,11 @@ namespace Net
 		m_strAddress = strAddress;
 		m_strRpcType = strType;
 
+		if (nPort == -1)
+		{
+			m_usServerPort = NetHelper::GetUnusedPort();
+		}
+
 		Net::ISession * pSeesion = new Net::ServerSession(strAddress.c_str() , m_usServerPort , m_strNetNodeName);
 		NetHandlerListenerPtr pListener(new NetHandlerListener(m_pNetReactor , pSeesion));
 		if (CErrno::Failure() == pListener->Init(strAddress.c_str(), m_usServerPort , bResueAddr))

@@ -37,7 +37,8 @@ namespace Net
 #endif
 
 const INT32 kMAX_EPOOL_WAIT_TIME_OUT = 25;
-
+const INT32 kSTART_RAND_UNUSED_PORT = 10000;
+const INT32 kEND_RAND_UNUSED_PORT = 20000;
 
 #define tbb_unordered_map tbb::concurrent_unordered_map 
 #define tbb_hash_map      tbb::concurrent_hash_map  

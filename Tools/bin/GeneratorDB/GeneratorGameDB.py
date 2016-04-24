@@ -7,6 +7,7 @@ import collections
 import xml.dom.minidom
 import time,datetime
 import socket  
+import traceback
 
 from xml.dom import minidom , Node 
 
@@ -55,6 +56,19 @@ g_paramTypeSTL = '0' #STL类型
 g_paramTypeSystem = '1' #系统类型
 g_paramTypeStruct = '2' #自定义类型
 g_tableMeta = "_T"
+
+g_ormPrefix = "Orm_"
+g_namespace = "Orm"
+
+oneTab = "\t"
+twoTab = oneTab + "\t"
+threeTab = twoTab + "\t"
+fourTab = threeTab + "\t"
+fiveTab = fourTab + "\t"
+sixTab = fiveTab + "\t"
+sevenTab = sixTab + "\t"
+eightTab = sevenTab + "\t"
+
 ################################类定义#####################################
 class ParentPoint:
 	def __init__(self, parentPoint): 
@@ -121,7 +135,7 @@ class Field(ParentPoint):
 		self.type = None
 		self.primaryKey = None
 		self.masterID = None
-		self.oldName = None
+		self.oldName = []
 		self.autoIncr =  None
 		self.bitmask = None
 		self.count = None
@@ -330,7 +344,10 @@ def handleTable(tables , xmData):
 	if IsHasSameData(tables , table.name):
 		LogOutError("Parase Table :" , table.name , "has same rpcName.") 
  
+	#LogOutDebug("Table :" , table.name , " slaveTable=" , table.slaveTable , " slaveFrom=" , table.slaveFrom) 
+	bHasSlaveFrom = False
 	if table.slaveFrom != None and table.slaveFrom != "" :
+		bHasSlaveFrom = True
 		if table.slaveFrom not in g_gameDB.tables.collectionTables:
 			ct = CollectionTable(tables)
 			ct.slaves[table.name] = table
@@ -340,8 +357,10 @@ def handleTable(tables , xmData):
 			if IsHasSameData(g_gameDB.tables.collectionTables[table.slaveFrom].slaves , table.name):
 				LogOutError("Parase Table :" , table.name , "has same slaveFrom.") 
 			g_gameDB.tables.collectionTables[table.slaveFrom].slaves[table.name] = table
-			
+						
+	bHasSlaveTable = False
 	if table.slaveTable != None and table.slaveTable != "":
+		bHasSlaveTable = True
 		if table.slaveTable not in g_gameDB.tables.collectionTables:
 			ct = CollectionTables(tables)
 			ct.name = table.slaveTable
@@ -351,6 +370,9 @@ def handleTable(tables , xmData):
 			if IsHasSameData(g_gameDB.tables.collectionTables[table.slaveTable].slaveTables , table.name):
 				LogOutError("Parase Table :" , table.name , "has same slaveTable.") 				
 			g_gameDB.tables.collectionTables[table.slaveTable].slaveTables[table.name] = table			
+				
+	if bHasSlaveFrom and bHasSlaveTable:
+		LogOutError("Table :" , table.name , " had slaveTable and has slaveFrom.") 
 				
 	for xmlData in iter(xmData.getchildren()): 
 		if xmlData.tag.lower() == "Field".lower():
@@ -369,8 +391,10 @@ def handleField(fields , xmData , table):
 			field.primaryKey = xmData.attrib[attr]
 		if attr.lower() == "masterID".lower():
 			field.masterID = xmData.attrib[attr]
-		if attr.lower() == "oldName".lower():
-			field.oldName = xmData.attrib[attr]
+		if attr.lower().find("oldName".lower()) != -1:
+			if len(xmData.attrib[attr]) == 0:
+				LogOutError("oldName error ,oldname temp .name=" ,  field.name)
+			field.oldName.append(xmData.attrib[attr])
 		if attr.lower() == "autoIncr".lower():
 			field.autoIncr = xmData.attrib[attr]
 		if attr.lower() == "bitmask".lower():
@@ -383,8 +407,13 @@ def handleField(fields , xmData , table):
 	if IsHasSameData(fields , field.name):
 		LogOutError("Parase fields :" , field.name , "has same field.") 
 		
-	fields[field.name] = field 
+	if (field.masterID != None) and (field.primaryKey != None ):
+		LogOutError("field can't has masterID and primaryKey in time.") 
 	 
+	fields[field.name] = field 
+	
+	#LogOutDebug("Table=" , table.name , ":slaveTable=" , table.slaveTable , " slaveFrom=" , table.slaveFrom , ":fields=" , field.name , ":masterid=" , field.masterID , ":primaryKey=" , field.primaryKey) 
+	
 def handleParams(params , xmlParam):
 	param = Param(params)
 	for attr in iter(xmlParam.attrib):
@@ -431,7 +460,7 @@ def CheckAllData():
 	for indexCollection, collectionTable in g_gameDB.tables.collectionTables.items():  
 		table = GetMasterTableFromName(indexCollection)
 		if table == None:
-			LogOutError("table slaveFrom error from Table_name: " , collectionTable.name) 
+			LogOutError("table =" , indexCollection , " slaveFrom error from Table_name: " , collectionTable.name) 
 		
 		collectionTable.slaves[table.name] = table
 		
@@ -450,33 +479,33 @@ def CheckAllData():
 		for indexFields , field in table.fields.items():
 			if field.masterID != None:
 				if bHasMasterID != None:				
-					LogOutError("table's field has had masterID table_name: " , table.name , " field_name: " , field.name , " masterID:" , field.masterID )
+					LogOutError("table's field has bad masterID table_name: " , table.name , " field_name: " , field.name , " masterID:" , field.masterID )
 				else:
 					bHasMasterID = True
 				
-				if not CheckMasterOrPrimaryIDRight(field.type):			
+				if not CheckMasterOrPrimaryIDRight(field.type , table.slaveTable , table.slaveFrom , table.name):			
 					LogOutError("table's field masterID type error: " , table.name , " field_type: " , field.type , " masterID:" , field.masterID )
 					
 			
 			if field.primaryKey != None:
 				if bHasPrimaryKey != None:				
-					LogOutError("table's field has had primaryKey table_name: " , table.name , " field_name: " , field.name , " primaryKey: " , field.primaryKey)
+					LogOutError("table's field has bad primaryKey table_name: " , table.name , " field_name: " , field.name , " primaryKey: " , field.primaryKey)
 				else:
 					bHasPrimaryKey = True
 				
-				if not CheckMasterOrPrimaryIDRight(field.type):			
+				if not (table.slaveTable != None and table.slaveTable != "") and not CheckMasterOrPrimaryIDRight(field.type , table.slaveTable , table.slaveFrom , table.name):			
 					LogOutError("table's field primaryKey type error: " , table.name , " field_type: " , field.type , " primaryKey:" , field.primaryKey )
 					
-			if bHasPrimaryKey != None and bHasMasterID != None :
-				LogOutError("table's field may has had primaryKey and masterID table_name: " , table.name , " field_name: " , field.name , " primaryKey: " , field.primaryKey , " masterID:" , field.masterID)
+			if bHasPrimaryKey != None and bHasMasterID != None and not(table.slaveTable != None and table.slaveTable != ""):
+				LogOutError("table's field may has bad primaryKey and masterID table_name: " , table.name , " field_name: " , field.name , " primaryKey: " , field.primaryKey , " masterID:" , field.masterID)
 			
 			if field.autoIncr != None:
 				if bHasAutoIncrease != None:				
-					LogOutError("table's field has had AutoIncrease table_name: " , table.name , " field_name: " , field.name , " AutoIncrease : " , field.autoIncr )
+					LogOutError("table's field has bad AutoIncrease table_name: " , table.name , " field_name: " , field.name , " AutoIncrease : " , field.autoIncr )
 				else:
 					if field.type.lower() == "int64".lower() or\
 						field.type.lower() == "int".lower() or\
-						field.type.lower() == "shor\t".lower() or\
+						field.type.lower() == "short".lower() or\
 						field.type.lower() == "long".lower() or\
 						field.type.lower() == "char".lower() or\
 						field.type.lower() == "unsigned int".lower() or\
@@ -495,20 +524,18 @@ def CheckAllData():
 						bHasAutoIncrease  = True
 					else:
 						LogOutError("table's field has error type autoIncr " , table.name , " field_name: " , field.name , " AutoIncrease : " , field.autoIncr )
-				 								
+		if (table.slaveTable != None and table.slaveTable != "") or (table.slaveFrom != None and table.slaveFrom != ""):
+			if not bHasMasterID:
+				LogOutError(table.name , " is slavetable ,but no masterID")
+		
+		if (table.slaveTable != None and table.slaveTable != ""):
+			if not bHasPrimaryKey:
+				LogOutError(table.name , " is slavetable ,but no PrimaryKey")	 								
 ################################生成对应文件#####################################
-
-oneTab = "\t"
-twoTab = oneTab + "\t"
-threeTab = twoTab + "\t"
-fourTab = threeTab + "\t"
-fiveTab = fourTab + "\t"
-g_ormPrefix = "Orm_"
-g_namespace = "Orm"
 
 def GenerateGameDB():
 	DeleteGameDBGenerateFiles() 
-	LogOutInfo("deleted all generate files finished.\n")
+	LogOutInfo("deleted all generate files finished.")
 	
 	CreateOutputPath() 
 	LogOutInfo("created OutputPath finished.\n")
@@ -526,10 +553,10 @@ def GenerateGameDB():
 #	LogOutInfo("generate RpcHandler.cpp file finished.\n")
 	
 	GenerateOrms()
-	LogOutInfo("generate Struct.h file finished.\n")
+	LogOutInfo("generate Struct.h file finished.")
 	
 	GenerateOrmStructs()
-	LogOutInfo("generate OrmStruct.h file finished.\n")
+	LogOutInfo("generate OrmStruct.h file finished.")
 	
 #	GenerateGameDBCallFuncs()
 #	LogOutInfo("generate RpcCallFuncs.h file finished.\n") 
@@ -571,7 +598,7 @@ def GenerateOrmsHeadFile():
 		fileOrm.write(threeTab + table.name + "* Clone();\n\n")
 		fileOrm.write(twoTab + "public:\n")
 		fileOrm.write(threeTab + "static const char* TableName() { return \"" + table.name + "\"; }\n")
-		fileOrm.write(threeTab + "static const INT64 meta_hash = " + GetBKDRHash(table.name) + ";\n")
+		fileOrm.write(threeTab + "static const INT64 TableHash = " + GetBKDRHash(table.name) + ";\n")
 		fileOrm.write(twoTab + "\n")
 		
 		fileOrm.write(twoTab + "public:\n")		
@@ -606,9 +633,9 @@ def GenerateOrmsHeadFile():
 		fileOrm.write(twoTab + "public:\n")
 		fileOrm.write(threeTab + "virtual void		AutoIncrease(INT64 llKey) override ; \n")
 		fileOrm.write(threeTab + "virtual void		SetMasterID(INT64 llID) override {" + GetMasterIDFieldNameINT64(table , 0) + " }\n")
-		fileOrm.write(threeTab + "virtual void		SetMasterID(const char* pID) override {" + GetMasterIDFieldNameString(table , 0) + " }\n")
+		fileOrm.write(threeTab + "virtual void		SetMasterID(const std::string & strID) override {" + GetMasterIDFieldNameString(table , 0) + " }\n")
 		fileOrm.write(threeTab + "virtual INT64		GetMasterID() override { " + GetMasterIDFieldNameINT64(table , 1) + "}\n")
-		fileOrm.write(threeTab + "virtual const char*	GetMasterStrID() override { " + GetMasterIDFieldNameString(table , 1) + "}\n")
+		fileOrm.write(threeTab + "virtual std::string	GetMasterStrID() override { " + GetMasterIDFieldNameString(table , 1) + "}\n")
 		fileOrm.write(twoTab + "\n")
 		
 		fileOrm.write(twoTab + "public:\n")
@@ -628,7 +655,7 @@ def GenerateOrmsHeadFile():
 		fileOrm.write("#endif\n")	  
 		fileOrm.close() 
 		
-		LogOutInfo("generate " + outputFilePath + " file finished.\n")
+		LogOutInfo("generate " + outputFilePath + " file finished.")
 			
 def  GenerateOrmHeader(fileOrm , table_name):
 	WriteFileDescription(fileOrm , g_ormPrefix + table_name + ".h" , "orm操作集合.") 
@@ -652,17 +679,19 @@ def  GenerateTableFeildDefine(fileOrm , fields):
 	
 def GenerateOrmHeadFields(fileOrm , table): 
 	for index , field in table.fields.items():  
+	
 		fileOrm.write(threeTab + field.type + " Get" + field.name + "() const;\n") 
-		fileOrm.write(threeTab + "void Set" + field.name + "(" + field.type + "& value);\n\n") 
+		if field.masterID == None: #如果是master的不需要用set方法.
+			fileOrm.write(threeTab + "void Set" + field.name + "(" + field.type + "& xxValuexx);\n\n") 			
 		
 		if field.count != None:					
-			fileOrm.write(threeTab + "void Plus" + field.name + "(" + field.type + " & value);\n")
-			fileOrm.write(threeTab + "void Minus" + field.name + "(" + field.type + " & value);\n")
+			fileOrm.write(threeTab + "void Plus" + field.name + "(" + field.type + " & xxValuexx);\n")
+			fileOrm.write(threeTab + "void Minus" + field.name + "(" + field.type + " & xxValuexx);\n")
 			
 		if field.bitmask != None:					
-			fileOrm.write(threeTab + "void " + field.name + "Include" + "(" + field.type + " & value);\n")	
-			fileOrm.write(threeTab + "BOOL Is" + field.name + "Include" + "(" + field.type + " & value);\n")		
-			fileOrm.write(threeTab + "void " + field.name + "Exclude" + "(" + field.type + " & value);\n")
+			fileOrm.write(threeTab + "void " + field.name + "Include" + "(" + field.type + " & xxValuexx);\n")	
+			fileOrm.write(threeTab + "BOOL Is" + field.name + "Include" + "(" + field.type + " & xxValuexx);\n")		
+			fileOrm.write(threeTab + "void " + field.name + "Exclude" + "(" + field.type + " & xxValuexx);\n")
 		
 def GenerateOrmsCPPFile():
 	outputPath = GetOutputPath()   
@@ -691,7 +720,7 @@ def GenerateOrmsCPPFile():
 		GenerateOrmCppFields(fileOrm , table)
 		
 		fileOrm.write("}//" + g_namespace + "\n\n")
-		LogOutInfo("generate " + outputFilePath + " file finished.\n")
+		LogOutInfo("generate " + outputFilePath + " file finished.")
 	
 def  GenerateOrmCppHeader(fileOrm , table_name):
 	fileOrm.write("#include \"" + g_ormPrefix + table_name + ".h\"\n\n")  
@@ -776,23 +805,34 @@ def GenerateOrmCppGetRawKey(fileOrm , table):
 def GenerateOrmCppGetKey(fileOrm , table): 
 	fileOrm.write(oneTab + "std::string " + table.name + "::GetKey()\n")
 	fileOrm.write(oneTab + "{\n")
-	 
+	
+	bSlaveTable = False
+	if table.slaveTable != None and table.slaveTable != "":
+		bSlaveTable = True
+		
 	bHasMasterID = None
 	for index , field in table.fields.items():
-		if field.masterID != None:
-			bHasMasterID = True
-			fileOrm.write(twoTab + "std::string result;\n")
-			fileOrm.write(twoTab + "result.reserve(64);\n\n")
-			
-			if field.type.lower() == "std::string".lower() or field.type.lower() == "std_string".lower():
-				fileOrm.write(twoTab + "result.append(" + field.name + ");\n")
-			elif GetParamType(field.type) == g_paramTypeSystem:
-				fileOrm.write(threeTab + "{\n") 
-				fileOrm.write(threeTab + "result.append(CUtil::itoa((INT64)" + field.name + "));\n") 
-				fileOrm.write(twoTab + "}\n")
+		if bSlaveTable:
+			if field.primaryKey== None:
+				continue
+		else:	
+			if field.masterID == None:
+				continue
+				
+		bHasMasterID = True
+		fileOrm.write(twoTab + "std::string result;\n")
+		fileOrm.write(twoTab + "result.reserve(64);\n\n")
+		
+		if field.type.lower() == "std::string".lower() or field.type.lower() == "std_string".lower():
+			fileOrm.write(twoTab + "result.append(" + field.name + ");\n")
+		elif GetParamType(field.type) == g_paramTypeSystem:
+			fileOrm.write(twoTab + "{\n") 
+			fileOrm.write(threeTab + "result.append(CUtil::itoa((INT64)" + field.name + "));\n") 
+			fileOrm.write(twoTab + "}\n")
 
-			fileOrm.write(twoTab + "return result;\n")
-	
+		fileOrm.write(twoTab + "return result;\n")
+		break
+
 	if bHasMasterID == None:
 		fileOrm.write(twoTab + "return this->GetRawKey();\n\n")
 	
@@ -802,7 +842,35 @@ def GenerateOrmCppGetTableName(fileOrm , table):
 	fileOrm.write(oneTab + "std::string " + table.name + "::GetTableName()\n")
 	fileOrm.write(oneTab + "{\n")
 
-	fileOrm.write(twoTab + "return " + table.name + "::TableName();\n")
+	bSlaveTable = False
+	if table.slaveTable != None and table.slaveTable != "":
+		bSlaveTable = True
+	else:
+		bSlaveTable = False
+	
+	if bSlaveTable:
+		for index , field in table.fields.items():
+			if field.masterID != None:
+				bHasMasterID = True
+				fileOrm.write(twoTab + "std::string result;\n")
+				fileOrm.write(twoTab + "result.reserve(64);\n")
+				fileOrm.write(twoTab + "result.append(" + table.name + "::TableName());\n")
+				fileOrm.write(twoTab + "result.append(\".\");\n")
+				fileOrm.write(twoTab + "{\n") 
+				
+				if field.type.lower() == "std::string".lower() or field.type.lower() == "std_string".lower():
+					fileOrm.write(threeTab + "result.append(" + field.name + ");\n")
+				elif GetParamType(field.type) == g_paramTypeSystem:
+					fileOrm.write(threeTab + "char tmpbuf[64] = \"\";\n")
+					fileOrm.write(threeTab + "CUtil::itoa(tmpbuf,(INT64)")
+					fileOrm.write(field.name + ");\n")
+					fileOrm.write(threeTab + "result.append(tmpbuf);\n")
+				fileOrm.write(twoTab + "}\n")
+
+				fileOrm.write(twoTab + "return result;\n")
+				bSlaveTable = True
+	else:
+		fileOrm.write(twoTab + "return " + table.name + "::TableName();\n")
 	
 	fileOrm.write(oneTab + "}\n\n")
 	
@@ -902,6 +970,11 @@ def GenerateOrmCppFromBson(fileOrm , table):
 	fileOrm.write(oneTab + "void " + table.name + "::FromBson(const char* pData,INT32 size)\n")
 	fileOrm.write(oneTab + "{\n")
 	
+	fileOrm.write(twoTab + "if(size == 0 || strcmp(pData , \"\") == 0)\n") 
+	fileOrm.write(twoTab + "{\n")
+	fileOrm.write(threeTab + "return;\n") 
+	fileOrm.write(twoTab + "}\n")
+	
 	fileOrm.write(twoTab + "mongo::BSONObj  obj(pData);\n") 
 	fileOrm.write(twoTab + "MsgAssert(obj.objsize() == size , \"FromBson error.\");\n") 
 	fileOrm.write(twoTab + "FromBson(obj);\n")  
@@ -928,6 +1001,9 @@ def GenerateOrmCppFromBson2(fileOrm , table):
 	fileOrm.write(fourTab + "}break;\n") 
 	
 	for index , field in table.fields.items():
+		if len(field.oldName) != 0:
+			for index , item in enumerate(field.oldName):	#读取每一列
+				fileOrm.write(threeTab + "case " + GetBKDRHash(item) + ": // oldName: " + item + "\n")
 		fileOrm.write(threeTab + "case " + GetBKDRHash(field.name) + ": // " + field.name + "\n")
 		fileOrm.write(fourTab + "{\n")
 		if IsUserDefineType(field.type):
@@ -968,36 +1044,37 @@ def GenerateOrmCppFields(fileOrm , table):
 		fileOrm.write(twoTab + "return " + field.name + ";\n")  
 		fileOrm.write(oneTab + "}\n\n")
 				
-		fileOrm.write(oneTab + "void " + table.name + "::Set" + field.name + "(" + field.type + " & value)\n")
-		fileOrm.write(oneTab + "{\n")
-		fileOrm.write(twoTab + field.name + " = value;\n")  
-		fileOrm.write(oneTab + "}\n\n")
+		if field.masterID == None:
+			fileOrm.write(oneTab + "void " + table.name + "::Set" + field.name + "(" + field.type + " & xxValuexx)\n")
+			fileOrm.write(oneTab + "{\n")
+			fileOrm.write(twoTab + field.name + " = xxValuexx;\n")  
+			fileOrm.write(oneTab + "}\n\n")
 		
 		if field.count != None:					
-			fileOrm.write(oneTab + "void " + table.name + "::Plus" + field.name + "(" + field.type + " & value)\n")
+			fileOrm.write(oneTab + "void " + table.name + "::Plus" + field.name + "(" + field.type + " & xxValuexx)\n")
 			fileOrm.write(oneTab + "{\n")
-			fileOrm.write(twoTab + field.name + " = " + field.name + " + value;\n")  
+			fileOrm.write(twoTab + field.name + " = " + field.name + " + xxValuexx;\n")  
 			fileOrm.write(oneTab + "}\n\n")
 			
-			fileOrm.write(oneTab + "void " + table.name + "::Minus" + field.name + "(" + field.type + " & value)\n")
+			fileOrm.write(oneTab + "void " + table.name + "::Minus" + field.name + "(" + field.type + " & xxValuexx)\n")
 			fileOrm.write(oneTab + "{\n")
-			fileOrm.write(twoTab + field.name + " = " + field.name + " - value;\n")  
+			fileOrm.write(twoTab + field.name + " = " + field.name + " - xxValuexx;\n")  
 			fileOrm.write(oneTab + "}\n\n")
 			
 		if field.bitmask != None:					
-			fileOrm.write(oneTab + "void " + table.name + "::" + field.name + "Include" + "(" + field.type + " & value)\n")
+			fileOrm.write(oneTab + "void " + table.name + "::" + field.name + "Include" + "(" + field.type + " & xxValuexx)\n")
 			fileOrm.write(oneTab + "{\n")
-			fileOrm.write(twoTab + field.name + " = " + field.name + " | value;\n")  
+			fileOrm.write(twoTab + field.name + " = " + field.name + " | xxValuexx;\n")  
 			fileOrm.write(oneTab + "}\n\n")
 			
-			fileOrm.write(oneTab + "void " + table.name + "::" + field.name + "Exclude" + "(" + field.type + " & value)\n")
+			fileOrm.write(oneTab + "void " + table.name + "::" + field.name + "Exclude" + "(" + field.type + " & xxValuexx)\n")
 			fileOrm.write(oneTab + "{\n")
-			fileOrm.write(twoTab + field.name + " = " + field.name + " & (~value);\n")  
+			fileOrm.write(twoTab + field.name + " = " + field.name + " & (~xxValuexx);\n")  
 			fileOrm.write(oneTab + "}\n\n")
 			
-			fileOrm.write(oneTab + "BOOL " + table.name + "::Is" + field.name + "Include" + "(" + field.type + " & value)\n")
+			fileOrm.write(oneTab + "BOOL " + table.name + "::Is" + field.name + "Include" + "(" + field.type + " & xxValuexx)\n")
 			fileOrm.write(oneTab + "{\n")
-			fileOrm.write(twoTab + "return !!" + field.name + " & value;\n")  
+			fileOrm.write(twoTab + "return !!" + field.name + " & xxValuexx;\n")  
 			fileOrm.write(oneTab + "}\n\n")
 				
 def GenerateOrmsCollectionHeadFile():
@@ -1026,6 +1103,8 @@ def GenerateOrmsCollectionHeadFile():
 		fileOrm.write(threeTab + "virtual void		ToBson(mongo::BSONObj  & objBson) override;\n")
 		fileOrm.write(threeTab + "virtual void		FromBson(std::string & compressedBuf) override;\n")
 		fileOrm.write(threeTab + "virtual void		FromBson(const char * pData , UINT32 nSize) override;\n")
+		fileOrm.write(threeTab + "virtual void		LoadBson(std::string & compressedBuf) override;\n")
+		fileOrm.write(threeTab + "virtual void		LoadBson(const char * pData , UINT32 nSize) override;\n")
 		fileOrm.write(twoTab + "\n")
 				
 		fileOrm.write(twoTab + "public:\n")
@@ -1049,7 +1128,7 @@ def GenerateOrmsCollectionHeadFile():
 		fileOrm.write("#endif\n")	  
 		fileOrm.close() 
 		
-		LogOutInfo("generate " + outputFilePath + " file finished.\n")
+		LogOutInfo("generate " + outputFilePath + " file finished.")
 			
 def  GenerateOrmCollectionHeader(fileOrm , collectionTable):
 	WriteFileDescription(fileOrm , g_ormPrefix + collectionTable.name + "Collection.h" , "针对orm子表操作的集合类.") 
@@ -1108,7 +1187,8 @@ def GenerateOrmSlaveTablesHead(fileOrm , collectionTable):
 			fileOrm.write(threeTab + table.name + " * Create" + table.name + "(BOOL bAddToManager = TRUE);\n") 
 			fileOrm.write(threeTab + "BOOL Delete" + table.name + "(" + table.name + " * pValue , bool bFree = false);\n")
 			fileOrm.write(threeTab + "void Load" + table.name + "(mongo::BSONObj & obj);\n")   	
-			fileOrm.write(threeTab + "void Save" + table.name + "(mongo::BSONArrayBuilder & bab);\n")		
+			fileOrm.write(threeTab + "void Save" + table.name + "(mongo::BSONArrayBuilder & bab);\n")	
+			fileOrm.write(threeTab + table.name + " * Get" + table.name + "(" + GetSlaveTableMasterKeyType(table) + " " + GetSlaveTableMasterKeyName(table) + ");\n") 	
 			
 def  GenerateSlaveTableDefine(fileOrm , collectionTable):  
 	for index , table in collectionTable.slaves.items():  
@@ -1152,14 +1232,18 @@ def GenerateOrmsCollectionCPPFile():
 		GenerateOrmCollectionCppToBson2(fileOrm , collectionTable)   
 		GenerateOrmCollectionCppFromBson(fileOrm , collectionTable) 
 		GenerateOrmCollectionCppFromBson2(fileOrm , collectionTable)  
+		GenerateOrmCollectionCppLoadBson(fileOrm , collectionTable) 
+		GenerateOrmCollectionCppLoadBson2(fileOrm , collectionTable)  
 		
 		fileOrm.write("}//" + g_namespace + "\n\n")
-		LogOutInfo("generate " + outputFilePath + " file finished.\n")
+		LogOutInfo("generate " + outputFilePath + " file finished.")
 			
 			
 def  GenerateOrmCollectionCppHeader(fileOrm , table_name):
-	fileOrm.write("#include \"" + g_ormPrefix + table_name + "Collection.h\"\n\n")  
-	  
+	fileOrm.write("#include \"" + g_ormPrefix + table_name + "Collection.h\"\n")  
+	fileOrm.write("#include \"" + g_ormPrefix + "Reflection.h\"\n")  
+	fileOrm.write("#include \"GameDB/inc/OrmHelper.h\"\n\n")  
+	
 	fileOrm.write("namespace " + g_namespace)   
 	fileOrm.write("\n{\n") 
 	
@@ -1192,7 +1276,10 @@ def GenerateOrmCollectionCppSlaves(fileOrm , collectionTable):
 			fileOrm.write(twoTab + "if(m_p" + slave.name + " == NULL)\n")
 			fileOrm.write(twoTab + "{\n")
 			fileOrm.write(threeTab + "m_p" + slave.name + " = new " + slave.name + "();\n")
-			fileOrm.write(threeTab + "m_p" + slave.name + "->SetMasterID( m_vMasterId );\n")
+			if collectionTable.name == slave.name:
+				fileOrm.write(threeTab + "m_p" + slave.name + "->Set" + GetTablePrimaryKeyName(slave) + "( m_vMasterId );\n")				
+			else:
+				fileOrm.write(threeTab + "m_p" + slave.name + "->SetMasterID( m_vMasterId );\n")
 			fileOrm.write(twoTab + "}\n")
 			fileOrm.write(twoTab + "return " + "m_p" + slave.name + ";\n")
 			
@@ -1205,7 +1292,7 @@ def GenerateOrmCollectionCppSlaves(fileOrm , collectionTable):
 			fileOrm.write(twoTab + "SAFE_DELETE(m_p" + slave.name + ");\n")
 			
 			fileOrm.write(oneTab + "}\n\n") 
-		
+				
 def GenerateOrmCollectionCppSlaveTables(fileOrm , collectionTable): 	
 	for index , slave in collectionTable.slaveTables.items():
 		if slave.ignore_collection == None:
@@ -1260,6 +1347,22 @@ def GenerateOrmCollectionCppSlaveTables(fileOrm , collectionTable):
 			
 			fileOrm.write(oneTab + "}\n\n") 
 		 
+			#获取单个
+			fileOrm.write(oneTab + slave.name + " * " + collectionTable.name + "Collection::Get" + slave.name  + "(" + GetSlaveTableMasterKeyType(slave) + " " + GetSlaveTableMasterKeyName(slave) + ")\n") 
+			fileOrm.write(oneTab + "{\n")
+			
+			fileOrm.write(twoTab + "GameDB::OrmVectorEx<" + slave.name + " *>::iterator iter = m_vec" + slave.name + ".begin();\n")
+			fileOrm.write(twoTab + "for (;iter != m_vec" + slave.name + ".end();++iter)" + "\n") 
+			fileOrm.write(twoTab + "{\n")
+			fileOrm.write(threeTab + "if ((*iter)->Get" + GetSlaveTableMasterKeyName(slave) + "() == " + GetSlaveTableMasterKeyName(slave) + ")	\n") 
+			fileOrm.write(threeTab + "{\n")
+			fileOrm.write(fourTab + "return *iter;\n")
+			fileOrm.write(threeTab + "}\n")
+			fileOrm.write(twoTab + "}\n")
+			fileOrm.write(twoTab + "return NULL;\n")
+			
+			fileOrm.write(oneTab + "}\n\n") 
+			
 def GenerateOrmCollectionCppToBson(fileOrm , collectionTable): 
 	fileOrm.write(oneTab + "void " + collectionTable.name + "Collection::ToBson(std::string & strBuf)\n") 
 	fileOrm.write(oneTab + "{\n")
@@ -1311,6 +1414,10 @@ def GenerateOrmCollectionCppFromBson2(fileOrm , collectionTable):
 	fileOrm.write(oneTab + "void " + collectionTable.name + "Collection::FromBson(const char* buf,UINT32 len)\n")
 	fileOrm.write(oneTab + "{\n")
 	
+	fileOrm.write(twoTab + "if(len == 0 || strcmp(buf , \"\") == 0)\n") 
+	fileOrm.write(twoTab + "{\n")
+	fileOrm.write(threeTab + "return;\n") 
+	fileOrm.write(twoTab + "}\n")
 	fileOrm.write(twoTab + "mongo::BSONObj obj(buf);\n") 
 	fileOrm.write(twoTab + "Assert(obj.objsize() == len);\n") 
 	fileOrm.write(twoTab + "mongo::BSONObjIterator  iter(obj); \n") 
@@ -1351,6 +1458,82 @@ def GenerateOrmCollectionCppFromBson2(fileOrm , collectionTable):
 	fileOrm.write(twoTab + "}\n")			
 	fileOrm.write(oneTab + "}\n\n")
 			
+def GenerateOrmCollectionCppLoadBson(fileOrm , collectionTable): 
+	fileOrm.write(oneTab + "void " + collectionTable.name + "Collection::LoadBson(std::string & compressedBuf)\n")
+	fileOrm.write(oneTab + "{\n")
+	
+	fileOrm.write(twoTab + "std::string tmpbuf;\n") 
+	fileOrm.write(twoTab + "CUtil::Uncompress(compressedBuf.c_str(),(UINT32)compressedBuf.length(),tmpbuf);\n") 
+	fileOrm.write(twoTab + "this->LoadBson(tmpbuf.c_str(),(UINT32)tmpbuf.length());\n")  
+	
+	fileOrm.write(oneTab + "}\n\n")
+	
+	
+def GenerateOrmCollectionCppLoadBson2(fileOrm , collectionTable): 
+	fileOrm.write(oneTab + "void " + collectionTable.name + "Collection::LoadBson(const char* buf,UINT32 len)\n")
+	fileOrm.write(oneTab + "{\n")
+	
+	fileOrm.write(twoTab + "if(len == 0 || strcmp(buf , \"\") == 0)\n") 
+	fileOrm.write(twoTab + "{\n")
+	fileOrm.write(threeTab + "return;\n") 
+	fileOrm.write(twoTab + "}\n")
+	fileOrm.write(twoTab + "mongo::BSONObj obj(buf);\n") 
+	fileOrm.write(twoTab + "Assert(obj.objsize() == len);\n") 
+#	fileOrm.write(twoTab + "mongo::BSONObjIterator  iter(obj); \n") 
+#	fileOrm.write(twoTab + "while(iter.more())\n") 
+	fileOrm.write(twoTab + "{\n") 
+	
+#	fileOrm.write(threeTab + "mongo::BSONElement be = iter.next();\n")
+	fileOrm.write(threeTab + "std::string metaname = GameDB::OrmHelper::GetTableNameFromBson(obj);\n")
+	fileOrm.write(threeTab + "INT64 hash = CUtil::BKDRHashSum(metaname.c_str());\n")
+	fileOrm.write(threeTab + "switch(hash)\n")
+	fileOrm.write(threeTab + "{\n")
+	
+	for index , slave in collectionTable.slaves.items():
+		if slave.ignore_collection == None:
+			fileOrm.write(threeTab + "case " + GetBKDRHash(slave.name) + ": // " + slave.name + "\n")
+			fileOrm.write(fourTab + "{\n")
+			
+			fileOrm.write(fiveTab + "Get" + slave.name +"()->FromBson(obj);\n") 
+			
+			fileOrm.write(fourTab + "}break;\n") 
+		
+	for index , slave in collectionTable.slaveTables.items():
+		if slave.ignore_collection == None:
+			fileOrm.write(threeTab + "case " + GetBKDRHash(slave.name) + ": // " + slave.name + "\n")
+			fileOrm.write(fourTab + "{\n")
+			
+			fileOrm.write(fiveTab + "INT64 iID = -1;\n") 
+			fileOrm.write(fiveTab + "std::string  strValue = \"\";\n") 
+			fileOrm.write(fiveTab + "Orm::GetSlaveTableMasterIDFromBson(obj, " + slave.name + "::TableName() ,\"" + GetSlaveTableMasterKeyName(slave) + "\",  iID, strValue);\n")
+			slaveMasterType = GetSlaveTableMasterKeyType(slave)
+			if slaveMasterType.lower() == "INT64".lower():
+				fileOrm.write(fiveTab + slave.name  + " * pTable = GetTestSlaveTable(iID);\n") 
+			if slaveMasterType.lower() == "std::string".lower() or slaveMasterType.lower() == "std_string".lower():
+				fileOrm.write(fiveTab + slave.name  + " * pTable = GetTestSlaveTable(strValue);\n") 
+				
+			fileOrm.write(fiveTab + "if(pTable)\n")
+			fileOrm.write(fiveTab + "{\n")
+			fileOrm.write(sixTab + "pTable->FromBson(obj);\n")
+			fileOrm.write(fiveTab + "}\n") 
+			fileOrm.write(fiveTab + "else\n")
+			fileOrm.write(fiveTab + "{\n")
+			fileOrm.write(sixTab + "pTable = CreateTestSlaveTable();\n")
+			fileOrm.write(sixTab + "pTable->FromBson(obj);\n")
+			fileOrm.write(fiveTab + "}\n") 
+			
+			fileOrm.write(fourTab + "}break;\n") 
+		
+	fileOrm.write(threeTab + "default:\n")
+	fileOrm.write(fourTab + "{\n")	
+	fileOrm.write(fiveTab + "MsgAssert(false , \" invalid table hash \");\n") 	
+	fileOrm.write(fourTab + "}break;\n") 
+	
+	fileOrm.write(threeTab + "}\n")	
+	fileOrm.write(threeTab + "\n") 
+	fileOrm.write(twoTab + "}\n")			
+	fileOrm.write(oneTab + "}\n\n")
+			
 					
 def GenerateOrmsReflectionHeadFile():
 	outputPath = GetOutputPath()   
@@ -1363,15 +1546,18 @@ def GenerateOrmsReflectionHeadFile():
 		fileOrm.write(oneTab + "extern const char * cst_slaves_of_" + collectionTable.name + "[];\n") 
 		fileOrm.write(oneTab + "extern INT64 cst_slaves_hash_of_" + collectionTable.name + "[];\n\n")   
 	   
-	fileOrm.write(oneTab + "extern GameDB::Orm * CreateObject(bson::bo & obj);\n") 
-	fileOrm.write(oneTab + "extern GameDB::Orm * CreateObject(const char * data,size_t size);\n")  
+	fileOrm.write(oneTab + "extern GameDB::Orm * CreateObject(bson::bo & obj , std::string & metaname);\n") 
+	fileOrm.write(oneTab + "extern GameDB::Orm * CreateObject(const char * data,size_t size , std::string & metaname);\n")  
+	fileOrm.write(oneTab + "extern GameDB::Orm * CreateObject(bson::bo & obj , std::string & metaname);\n") 
+	fileOrm.write(oneTab + "extern BOOL GetSlaveTableMasterIDFromBson(const char * data,size_t size , const std::string & strTableName ,const std::string & key , INT64 & intValue , std::string & strValue);\n")
+	fileOrm.write(oneTab + "extern BOOL GetSlaveTableMasterIDFromBson(bson::bo & obj , const std::string & strTableName ,const std::string & key , INT64 & intValue , std::string & strValue);\n")
 	fileOrm.write(oneTab + "\n")
 		 
 	fileOrm.write("}//" + g_namespace + "\n\n")
 	fileOrm.write("#endif\n")	  
 	fileOrm.close() 
 		
-	LogOutInfo("generate " + outputFilePath + " file finished.\n")
+	LogOutInfo("generate " + outputFilePath + " file finished.")
 			
 def  GenerateOrmReflectionHeader(fileOrm):
 	WriteFileDescription(fileOrm , g_ormPrefix + "Reflection.h" , "针对slave的类产生反射.") 
@@ -1387,14 +1573,17 @@ def GenerateOrmsReflectionCPPFile():
 	outputFilePath = outputPath + g_ormPrefix + "Reflection.cpp" 
 	fileOrm = open(outputFilePath , "a")
 	
-	fileOrm.write("#include \"" + g_ormPrefix + "Reflection.h\"\n\n")  	
+	fileOrm.write("#include \"GameDB/inc/OrmHelper.h\"\n")  
+	fileOrm.write("#include \"CUtil/inc/BsonToCpp.h\"\n")  
+	fileOrm.write("#include \"" + g_ormPrefix + "Reflection.h\"\n")  	
 	GenerateOrmReflectionCppHeader(fileOrm)
 	GenerateOrmReflectionCppSlaves(fileOrm) 
 	GenerateOrmReflectionCreateObject(fileOrm)  
+	GenerateOrmReflectionGetSlaveTableMasterIDFromBson(fileOrm)  
 	
 	fileOrm.write("}//" + g_namespace + "\n\n")
 	
-	LogOutInfo("generate " + outputFilePath + " file finished.\n")		
+	LogOutInfo("generate " + outputFilePath + " file finished.")		
 			
 def  GenerateOrmReflectionCppHeader(fileOrm):
 	for index , table in g_gameDB.tables.tables.items(): 
@@ -1425,16 +1614,16 @@ def GenerateOrmReflectionCppSlaves(fileOrm):
 		fileOrm.write(twoTab + "NULL \n" + oneTab + "};\n\n") 
 		
 def GenerateOrmReflectionCreateObject(fileOrm): 	
-	fileOrm.write(oneTab + "GameDB::Orm * CreateObject(const char * data,size_t size)\n")
+	fileOrm.write(oneTab + "GameDB::Orm * CreateObject(const char * data,size_t size , std::string & metaname)\n")
 	fileOrm.write(oneTab + "{\n")
 	fileOrm.write(twoTab + "mongo::BSONObj obj(data);\n")
 	fileOrm.write(twoTab + "MsgAssert_Re(obj.objsize() == size , NULL , \"\");\n")
-	fileOrm.write(twoTab + "return CreateObject(obj);\n")
+	fileOrm.write(twoTab + "return CreateObject(obj , metaname);\n")
 	fileOrm.write(oneTab + "}\n\n")
 	
-	fileOrm.write(oneTab + "GameDB::Orm * createObject(bson::bo& obj)\n")
+	fileOrm.write(oneTab + "GameDB::Orm * CreateObject(bson::bo& obj , std::string & metaname)\n")
 	fileOrm.write(oneTab + "{\n")
-	fileOrm.write(twoTab + "std::string metaname;\n")
+#	fileOrm.write(twoTab + "std::string metaname;\n")
 	fileOrm.write(twoTab + "mongo::BSONObjIterator iter(obj);\n")
 	fileOrm.write(twoTab + "while(iter.more())\n")
 	fileOrm.write(twoTab + "{\n")
@@ -1452,18 +1641,89 @@ def GenerateOrmReflectionCreateObject(fileOrm):
 	
 	for index , collectionTable in g_gameDB.tables.collectionTables.items():  
 		for index , slave in collectionTable.slaveTables.items():
-			if slave.name != collectionTable.name :
-				fileOrm.write(twoTab + "case " + g_namespace + "::" + slave.name + "::meta_hash" + ":\n")			
-				fileOrm.write(threeTab + "result = new " + g_namespace + "::" + slave.name + "();\n")				
-				fileOrm.write(twoTab + "break;\n")
-				 						
+#			if slave.name != collectionTable.name :
+			fileOrm.write(twoTab + "case " + g_namespace + "::" + slave.name + "::TableHash" + ":\n")			
+			fileOrm.write(threeTab + "result = new " + g_namespace + "::" + slave.name + "();\n")				
+			fileOrm.write(twoTab + "break;\n")
+				 	
+		for index , slave in collectionTable.slaves.items():
+#			if slave.name != collectionTable.name :
+			fileOrm.write(twoTab + "case " + g_namespace + "::" + slave.name + "::TableHash" + ":\n")			
+			fileOrm.write(threeTab + "result = new " + g_namespace + "::" + slave.name + "();\n")				
+			fileOrm.write(twoTab + "break;\n")			
+			
 	fileOrm.write(twoTab + "}\n\n") 	 			
 	fileOrm.write(twoTab + "if(result != NULL)\n") 
 	fileOrm.write(threeTab + "result->FromBson(obj);\n") 
 	fileOrm.write(twoTab + "return result;\n") 		
 	fileOrm.write(oneTab + "}\n") 	  
 			
+def GenerateOrmReflectionGetSlaveTableMasterIDFromBson(fileOrm): 
+	fileOrm.write(oneTab + "BOOL GetSlaveTableMasterIDFromBson(const char * data,size_t size, const std::string & strTableName ,const std::string & key , INT64 & intValue , std::string & strValue)\n")
+	fileOrm.write(oneTab + "{\n")
+	fileOrm.write(twoTab + "mongo::BSONObj obj(data);\n")
+	fileOrm.write(twoTab + "MsgAssert_Re(obj.objsize() == size , NULL , \"\");\n")
+	fileOrm.write(twoTab + "return GetSlaveTableMasterIDFromBson(obj , strTableName , key , intValue , strValue);\n")
+	fileOrm.write(oneTab + "}\n\n")
+				
+	fileOrm.write(oneTab + "BOOL GetSlaveTableMasterIDFromBson(bson::bo & obj , const std::string & strTableName ,const std::string & key , INT64 & intValue , std::string & strValue)\n")
+	fileOrm.write(oneTab + "{\n")
+	fileOrm.write(twoTab + "std::string strParaseTableName = GameDB::OrmHelper::GetTableNameFromBson(obj);\n")
+	fileOrm.write(twoTab + "if (strParaseTableName != strTableName)\n")
+	fileOrm.write(twoTab + "{\n")
+	fileOrm.write(threeTab + "return NULL;\n")
+	fileOrm.write(twoTab + "}\n")
+	fileOrm.write(twoTab + "mongo::BSONObjIterator  iter(obj); \n")
+	fileOrm.write(twoTab + "while(iter.more())\n")
+	fileOrm.write(twoTab + "{\n")
+	fileOrm.write(threeTab + "mongo::BSONElement be = iter.next();\n")
+	fileOrm.write(threeTab + "const char* fieldName = be.fieldName();\n")
+	fileOrm.write(threeTab + "INT64 hash = CUtil::BKDRHashSum(fieldName);\n")
+	fileOrm.write(threeTab + "INT64 keyHash = CUtil::BKDRHashSum(key.c_str());\n")
+	fileOrm.write(threeTab + "if(keyHash != hash){ continue; }\n")
+	fileOrm.write(threeTab + "switch(hash)\n")
+	fileOrm.write(threeTab + "{\n")
+
+	sameIndex = collections.OrderedDict()
+	for index , collectionTable in g_gameDB.tables.collectionTables.items():   
+		for index , slave in collectionTable.slaveTables.items():
+			slaveTableMasterName = GetSlaveTableMasterKeyName(slave)
+			slaveTableMasterType = GetSlaveTableMasterKeyType(slave)
+			hashName = GetBKDRHash(slaveTableMasterName)
+			if IsHasSameData(sameIndex , hashName):
+				continue
+			else:
+				sameIndex[hashName] = ""
+				
+			fileOrm.write(fourTab + "case " + hashName + ": // " + slave.name + "::" + slaveTableMasterName + "\n")
+			fileOrm.write(fourTab + "{\n")
+			if slaveTableMasterType.lower() == "INT64".lower():
+				fileOrm.write(fiveTab + "if (be.isNumber())\n") 
+				fileOrm.write(fiveTab + "{\n") 
+				fileOrm.write(sixTab + "CUtil::BsonToCpp( intValue , be);\n") 
+				fileOrm.write(fiveTab + "}\n") 
+				fileOrm.write(fiveTab + "else\n") 
+				fileOrm.write(fiveTab + "{\n") 
+				fileOrm.write(sixTab + "CUtil::BsonToCpp( strValue , be);\n") 
+				fileOrm.write(fiveTab + "}\n") 
+			if slaveTableMasterType.lower() == "std::string".lower() or slaveTableMasterType.lower() == "std_string".lower():
+				fileOrm.write(fiveTab + "if (be.isNumber())\n") 
+				fileOrm.write(fiveTab + "{\n") 
+				fileOrm.write(sixTab + "CUtil::BsonToCpp( strValue , be);\n") 
+				fileOrm.write(fiveTab + "}\n") 
+				fileOrm.write(fiveTab + "else\n") 
+				fileOrm.write(fiveTab + "{\n") 
+				fileOrm.write(sixTab + "CUtil::BsonToCpp( intValue , be);\n") 
+				fileOrm.write(fiveTab + "}\n") 
+			fileOrm.write(fiveTab + "return TRUE;\n") 	
 			
+			fileOrm.write(fourTab + "}break;\n") 
+							
+	fileOrm.write(threeTab + "}\n")   
+	fileOrm.write(twoTab + "}\n")   
+	fileOrm.write(twoTab + "return FALSE;\n") 		
+	fileOrm.write(oneTab + "}\n")   
+				
 
 def GenerateOrmStructs():		
 	outputPath = GetOutputPath()    
@@ -1613,8 +1873,7 @@ def WriteOrmStructunMarshal(fileOrm , ormStruct):
 
 def WriteParamHelper(namespace , fileOrm , ormStruct):
 	fileOrm.write(oneTab + "GEN_PARAMTER_HELPER(" + namespace + "::" + ormStruct.name + " , PARAMETER_TYPE_ORM_STRUCTS_USER_DEFINE_" + ormStruct.name + ");\n") 			
-			
-			 
+						 
 ################################流程无关函数处理#####################################
 def Usage():
     print('PyTest.py usage:')
@@ -1653,6 +1912,7 @@ def LogOutError(*string):
 	
 	print(longStr)
 	GetColor("reset")
+	traceback.print_stack() 
 	sys.exit()
 	
 def InitColor():
@@ -1729,7 +1989,7 @@ def GetMasterIDFieldNameString(table , type):
 	for index  , field in table.fields.items():
 		if field.masterID != None and (field.type.lower() == "std::string".lower() or field.type.lower() == "std_string".lower()):
 			if type == 0:
-				return field.name + " = pID;"
+				return field.name + " = strID;"
 			else:
 				return "return " + field.name + ";"
 
@@ -1738,6 +1998,19 @@ def GetMasterIDFieldNameString(table , type):
 	else:
 		return "return \"\";"
 	
+def  GetSlaveTableMasterKeyType(table): 
+	for index  , field in table.fields.items():
+		if field.masterID != None:
+			if (field.type.lower() == "INT64".lower() or field.type.lower() == "long long".lower()):
+				return "INT64"
+			else:
+				return "const std::string &"
+		
+def  GetSlaveTableMasterKeyName(table): 
+	for index  , field in table.fields.items():
+		if field.masterID != None:
+			return field.name
+
 def WriteFileDescription(fileOrm , file , desc):
 	fileOrm.write("/************************************" + "\n")
 	fileOrm.write("FileName	:	" + file + "\n")
@@ -1749,6 +2022,10 @@ def WriteFileDescription(fileOrm , file , desc):
 	fileOrm.write("Description	:	" + desc + "\n")
 	fileOrm.write("************************************/" + "\n")
 
+def GetTablePrimaryKeyName(table):	
+	for index  , field in table.fields.items():
+		if field.primaryKey != None:
+			return field.name
 
 #检查在RPCServerName中是否存在这样的服务器
 def CheckInRpcServerName(name):
@@ -2101,30 +2378,48 @@ def GetParamType(type):
 
 def GetMasterTableTypeFromName(name): 
 	for index , table in g_gameDB.tables.tables.items():
-		if table.name == name:
+		if table.name.lower() == name.lower():
 			for index2 , field in table.fields.items():
-				if field.masterID != None:
+				#if field.masterID != None:
+				#	return field.type
+				if field.primaryKey != None:
 					return field.type
 	
 	return None
 	
 def GetMasterTableFromName(name): 
 	for index , table in g_gameDB.tables.tables.items():
-		if table.name == name:
+		if table.name.lower() == name.lower():
 			for index2 , field in table.fields.items():
-				if field.masterID != None:
+				#if field.masterID != None:
+				#	return table
+				if field.primaryKey != None:
 					return table
 	
 	return None
 	
-def CheckMasterOrPrimaryIDRight(type):
-	if type.lower() == "std::string".lower() or\
+def CheckMasterOrPrimaryIDRight(type , slaveTable , slaveFrom , name):
+	if not (type.lower() == "std::string".lower() or\
 		type.lower() == "std_string".lower() or\
 		type.lower() == "INT64".lower() or\
-		type.lower() == "long long".lower():
-		return True
+		type.lower() == "long long".lower()):
+		return False
 	
-	return False
+	tableName = ""
+	if slaveTable != None and slaveTable != "":
+		tableName = slaveTable
+		
+	if slaveFrom != None and slaveFrom != "":
+		tableName = slaveFrom
+	
+	if tableName != "":
+		table=g_gameDB.tables.tables[tableName]
+		for indexFields , field in table.fields.items():
+			if field.masterID != None or field.primaryKey != None:
+				if GetParamType(field.type).lower() != GetParamType(type).lower():
+					LogOutError(name , "'s master type =" , type , " not match slaveTable'type=" , field.type , ". table=" , tableName , " please check it.")
+		
+	return True
 	 
 def IsHasSameData(dic , name):
 	for index , param in dic.items():

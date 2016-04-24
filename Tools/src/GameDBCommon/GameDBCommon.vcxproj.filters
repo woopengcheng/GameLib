@@ -9,22 +9,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\OrmHelper.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\OrmTest\Orm_OrmStructs.h">
+      <Filter>src\OrmTest</Filter>
     </ClInclude>
-    <ClInclude Include="src\Role.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\OrmTest\Orm_TestSlaveFrom.h">
+      <Filter>src\OrmTest</Filter>
     </ClInclude>
-    <ClInclude Include="src\RoleCollection.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RoleItems.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\OrmTest\Orm_TestSlaveTable.h">
+      <Filter>src\OrmTest</Filter>
     </ClInclude>
     <ClInclude Include="src\OrmTest\Orm_Reflection.h">
       <Filter>src\OrmTest</Filter>
     </ClInclude>
-    <ClInclude Include="src\OrmTest\Orm_Test_Oldname.h">
+    <ClInclude Include="src\OrmTest\Orm_Test_OldName.h">
       <Filter>src\OrmTest</Filter>
     </ClInclude>
     <ClInclude Include="src\OrmTest\Orm_Test_PrimaryKey.h">
@@ -33,48 +30,27 @@
     <ClInclude Include="src\OrmTest\Orm_TestSlave.h">
       <Filter>src\OrmTest</Filter>
     </ClInclude>
-    <ClInclude Include="src\OrmTest\Orm_TestSlave1.h">
-      <Filter>src\OrmTest</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OrmTest\Orm_TestSlave2.h">
-      <Filter>src\OrmTest</Filter>
-    </ClInclude>
     <ClInclude Include="src\OrmTest\Orm_TestSlaveCollection.h">
-      <Filter>src\OrmTest</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OrmTest\Orm_OrmStructs.h">
       <Filter>src\OrmTest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\OrmHelper.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\OrmTest\Orm_TestSlaveFrom.cpp">
+      <Filter>src\OrmTest</Filter>
     </ClCompile>
-    <ClCompile Include="src\Role.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="RoleCollection.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RoleItems.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\OrmTest\Orm_TestSlaveTable.cpp">
+      <Filter>src\OrmTest</Filter>
     </ClCompile>
     <ClCompile Include="src\OrmTest\Orm_Reflection.cpp">
       <Filter>src\OrmTest</Filter>
     </ClCompile>
-    <ClCompile Include="src\OrmTest\Orm_Test_Oldname.cpp">
+    <ClCompile Include="src\OrmTest\Orm_Test_OldName.cpp">
       <Filter>src\OrmTest</Filter>
     </ClCompile>
     <ClCompile Include="src\OrmTest\Orm_Test_PrimaryKey.cpp">
       <Filter>src\OrmTest</Filter>
     </ClCompile>
     <ClCompile Include="src\OrmTest\Orm_TestSlave.cpp">
-      <Filter>src\OrmTest</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OrmTest\Orm_TestSlave1.cpp">
-      <Filter>src\OrmTest</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OrmTest\Orm_TestSlave2.cpp">
       <Filter>src\OrmTest</Filter>
     </ClCompile>
     <ClCompile Include="src\OrmTest\Orm_TestSlaveCollection.cpp">

@@ -26,8 +26,8 @@ namespace Client
 	static unsigned char g_rpcDefaultParam_unsigned_char = 0;
 	static std::string g_rpcDefaultParam_std__string = std::string();
 	static time_t g_rpcDefaultParam_time_t = 0;
-	static SINT8 g_rpcDefaultParam_SINT8 = 0;
 	static UINT8 g_rpcDefaultParam_UINT8 = 0;
+	static SINT8 g_rpcDefaultParam_SINT8 = 0;
 	static UINT16 g_rpcDefaultParam_UINT16 = 0;
 	static INT16 g_rpcDefaultParam_INT16 = 0;
 	static INT32 g_rpcDefaultParam_INT32 = 0;

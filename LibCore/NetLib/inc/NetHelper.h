@@ -57,7 +57,8 @@ namespace Net
 		static std::string	GenerateRemoteName(const char * pNetType, const char * pAddress, UINT16 usPort, UINT16 usRemotePort);
 		static std::string	GenerateRemoteName(const char * pNetType, const char * pAddress, const char * pPort, const char * pRemotePort);
 		static UINT8		GetPacketIdentifier(RakNet::Packet * pPacket);
-		static BOOL			IsSocketPortUsed(UINT32 unPort);
+		static BOOL			IsSocketPortUsed(UINT32 unPort, NetSocket socket = -1);
+		static INT32		GetUnusedPort();
 
 #ifdef _WIN32
 		static INT32		WSARecv(INetHandler * pNetHandler);

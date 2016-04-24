@@ -159,5 +159,8 @@
     <ClInclude Include="src\DBClient.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\OrmHelper.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

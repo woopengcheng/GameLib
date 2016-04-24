@@ -31,8 +31,8 @@ namespace Msg
 
 	enum EMSG_SYNC_TYPE
 	{
-		SYNC_TYPE_SYNC = 0,
-		SYNC_TYPE_NONSYNC = 1,
+		SYNC_TYPE_SYNC = 0,			//5	同步
+		SYNC_TYPE_ASYNC = 1,		//5	异步
 	};
 
 	enum EMSG_SYNC_RESULT
@@ -59,7 +59,7 @@ namespace Msg
 			, m_ullTimeout(MAX_MSG_TIME_OUT)  
 			, m_objProxySrcID(DEFAULT_RPC_CALLABLE_ID)
 			, m_nRpcMsgCallType(RPCTYPE_ERROR)
-			, m_objSyncType(SYNC_TYPE_NONSYNC)
+			, m_objSyncType(SYNC_TYPE_ASYNC)
 			, m_objSyncResult(SYNC_RESULT_START_RETURN)
 			, m_nReturnType(RETURN_TYPE_DONE)  //5 默认完成.
 			, m_nProxySessionID(0)

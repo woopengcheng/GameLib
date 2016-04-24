@@ -39,9 +39,9 @@ namespace GameDB
 	public:
 		virtual void		AutoIncrease(INT64 llKey); 
 		virtual void		SetMasterID(INT64 llID);
-		virtual void		SetMasterID(const char* pID);
+		virtual void		SetMasterID(const std::string & pID);
 		virtual INT64		GetMasterID();
-		virtual const char*	GetMasterStrID();   
+		virtual std::string	GetMasterStrID();   
 
 	public:
 		const char* get_name() const;

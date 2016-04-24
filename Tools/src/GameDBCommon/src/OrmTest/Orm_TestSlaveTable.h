@@ -1,35 +1,35 @@
 /************************************
-FileName	:	Orm_TestSlave1.h
+FileName	:	Orm_TestSlaveTable.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-23 12:05:15
+Date		:	2016-04-25 00:28:58
 Description	:	orm²Ù×÷¼¯ºÏ.
 ************************************/
-#ifndef __Orm_Orm_TestSlave1_h__
-#define __Orm_Orm_TestSlave1_h__
+#ifndef __Orm_Orm_TestSlaveTable_h__
+#define __Orm_Orm_TestSlaveTable_h__
 #include "Orm_OrmStructs.h"
 #include "GameDB/inc/Orm.h"
 
 namespace Orm
 {
-	class TestSlave1 : public GameDB::Orm
+	class TestSlaveTable : public GameDB::Orm
 	{ 
 		public:
-			TestSlave1();
-			virtual ~TestSlave1();
+			TestSlaveTable();
+			virtual ~TestSlaveTable();
 		
 		private:
-			TestSlave1( const TestSlave1 &);
-			const TestSlave1& operator=( const TestSlave1 &);
+			TestSlaveTable( const TestSlaveTable &);
+			const TestSlaveTable& operator=( const TestSlaveTable &);
 		
 		public:
-			TestSlave1* Clone();
+			TestSlaveTable* Clone();
 
 		public:
-			static const char* TableName() { return "TestSlave1"; }
-			static const INT64 meta_hash = 4176497947260;
+			static const char* TableName() { return "TestSlaveTable"; }
+			static const INT64 TableHash = 6061817222949;
 		
 		public:
 			virtual std::string GetKey() override;
@@ -37,9 +37,9 @@ namespace Orm
 			virtual std::string GetTableName() override;
 		
 		public:
-			bool IsEqual(const TestSlave1 & val);
-			bool operator == (const TestSlave1 & val);
-			bool operator != (const TestSlave1 & val);
+			bool IsEqual(const TestSlaveTable & val);
+			bool operator == (const TestSlaveTable & val);
+			bool operator != (const TestSlaveTable & val);
 		
 		public:
 			virtual void		ToBson(std::string & strBuf) override;
@@ -58,17 +58,32 @@ namespace Orm
 		public:
 			virtual void		AutoIncrease(INT64 llKey) override ; 
 			virtual void		SetMasterID(INT64 llID) override {id = llID; }
-			virtual void		SetMasterID(const char* pID) override { }
+			virtual void		SetMasterID(const std::string & strID) override { }
 			virtual INT64		GetMasterID() override { return id;}
-			virtual const char*	GetMasterStrID() override { return "";}
+			virtual std::string	GetMasterStrID() override { return "";}
 		
 		public:
 			INT64 Getid() const;
-			void Setid(INT64& value);
+			std::string Getid2() const;
+			void Setid2(std::string& xxValuexx);
 
+			TestStruct Getid3() const;
+			void Setid3(TestStruct& xxValuexx);
+
+			INT64 Getid4() const;
+			void Setid4(INT64& xxValuexx);
+
+			void Plusid4(INT64 & xxValuexx);
+			void Minusid4(INT64 & xxValuexx);
+			void id4Include(INT64 & xxValuexx);
+			BOOL Isid4Include(INT64 & xxValuexx);
+			void id4Exclude(INT64 & xxValuexx);
 		
 		public:
 			INT64	id;
+			std::string	id2;
+			TestStruct	id3;
+			INT64	id4;
 		
 		private:
 			INT64			__hash;

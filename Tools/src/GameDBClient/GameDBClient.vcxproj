@@ -207,6 +207,7 @@
     <ClInclude Include="src\ClientCommands.h" />
     <ClInclude Include="src\DBClient.h" />
     <ClInclude Include="src\DBClientHttpServer.h" />
+    <ClInclude Include="src\OrmHelper.h" />
     <ClInclude Include="src\rpc\GRpc.h" />
     <ClInclude Include="src\rpc\MsgNameDefine.h" />
     <ClInclude Include="src\rpc\RPCCallFuncs.h" />

@@ -1,11 +1,10 @@
 #include "ClientCommands.h"
 #include "RPCCallFuncs.h"
 #include "GameDB/inc/User.h"
-#include "RoleCollection.h"
 #include "OrmTest/Orm_TestSlaveCollection.h"
 #include "OrmTest/Orm_TestSlave.h"
-#include "OrmTest/Orm_TestSlave2.h"
-#include "RoleItems.h"
+#include "OrmTest/Orm_TestSlaveTable.h"
+#include "OrmTest/Orm_TestSlaveFrom.h"
 #include "OrmHelper.h"
 #include "DBClient.h"
 
@@ -67,10 +66,11 @@ namespace Client
 
 		m_mapCommands["dump"] = &ClientCommands::pfnHandleDump;
 
-		m_mapCommands["hormset"] = &ClientCommands::pfnHandleOrmHSet;
-		m_mapCommands["hormcollectinsert"] = &ClientCommands::pfnHandleOrmCollectInsert;
-
-		m_mapCommands["testCollection"] = &ClientCommands::pfnHandleOrmCollection;
+		m_mapCommands["ormsetuser"] = &ClientCommands::pfnHandleOrmHSetUser;
+		m_mapCommands["oci"] = &ClientCommands::pfnHandleOrmCollectionInsert;
+		m_mapCommands["ocu"] = &ClientCommands::pfnHandleOrmCollectionUpdate;
+		m_mapCommands["ocd"] = &ClientCommands::pfnHandleOrmCollectionDelete;
+		m_mapCommands["ocq"] = &ClientCommands::pfnHandleOrmCollectionQuery;
 	} 
 
 	std::string ClientCommands::GetNearestCommand(const std::string & strCommand , INT32 nCount) const
@@ -480,7 +480,7 @@ namespace Client
 		gDebugStream("pfnHandleZRTop"); 
 	}
 
-	void ClientCommands::pfnHandleOrmHSet(DBClient * pClient ,  std::vector<std::string> & objParams)
+	void ClientCommands::pfnHandleOrmHSetUser(DBClient * pClient ,  std::vector<std::string> & objParams)
 	{
 		CHECK_ARGS_EQUAL_COUNT(3);
 
@@ -492,60 +492,87 @@ namespace Client
 		user.set_pswd(strPwd.c_str());
 		user.set_sysuser(true);
 
-		GameDB::OrmHelper::OrmInsert(&user);
+		Client::OrmInsert(&user);
 
 		gDebugStream( "pfnHandleOrmHSet");
 	}
 
-	void ClientCommands::pfnHandleOrmCollectInsert(DBClient * pClient ,  std::vector<std::string> & objParams)
+	static Orm::TestSlaveCollection * s_pCollection = NULL;
+	void ClientCommands::pfnHandleOrmCollectionUpdate(DBClient * pClient ,  std::vector<std::string> & objParams)
 	{
-		//		CHECK_ARGS_EQUAL_COUNT(3);
-
-		Orm::RoleCollection * pRoleCollection = new Orm::RoleCollection; 
-		pRoleCollection->SetMasterID(1);
-
-		Orm::Role * pRole = pRoleCollection->GetRole();
-		if (pRole)
+		if (!s_pCollection)
 		{
-			pRole->set_name("role");
-			pRole->set_name("role pwd");
-		}
-		GameDB::OrmHelper::OrmUpdate(pRole);
-
-		Orm::RoleItems * pRoleItems = pRoleCollection->NewRoleItems();
-		pRoleItems->set_name("roleitems");
-		pRoleItems->set_name("roleitems pwd");
-
-		GameDB::OrmVectorEx<Orm::RoleItems *> & objRoleItems = pRoleCollection->GetRoleItems(); 
-		for (int i = 0;i < objRoleItems.size();++i)
-		{
-			GameDB::OrmHelper::OrmInsert(objRoleItems[i]);
+			gErrorStream("pfnHandleOrmCollectionUpdate s_pCollection is NULL. please call pfnHandleOrmCollectionInsert first");
+			return;
 		}
 
-		pRoleCollection->GetRoleItems().Cleanup(TRUE);
-		gDebugStream( "pfnHandleOrmCollectInsert" );
+		//5 测试主slave
+		Orm::TestSlave * pTest = s_pCollection->GetTestSlave();
+		INT64 value = 123;
+		pTest->Setvalue(value);
+		Client::OrmUpdate(pTest);
+		gDebugStream("Insert TestSlave:id=" << pTest->Getid() << ":key=" << pTest->GetKey());
+		
+		//5 测试slaveFrom
+		Orm::TestSlaveFrom * pSlaveFrom = s_pCollection->GetTestSlaveFrom();
+		if (pSlaveFrom)
+		{
+			value = 456;
+			pSlaveFrom->Setvalue(value);
+			Client::OrmUpdate(pSlaveFrom);
+			std::string value;
+			pSlaveFrom->ToBson(value);
+			gDebugStream("update slavefrom:id=" << pSlaveFrom->Getid() << ":key=" << pSlaveFrom->GetKey() << ":value=" << value);
+		}
+
+		int id = 3;
+		GameDB::OrmVectorEx< Orm::TestSlaveTable *> & pTable = s_pCollection->GetTestSlaveTable();
+		GameDB::OrmVectorEx< Orm::TestSlaveTable *>::iterator iter = pTable.begin();
+		for (;iter != pTable.end();++iter)
+		{
+			Orm::TestSlaveTable * pNew = *iter;
+			if (pNew)
+			{
+				Orm::TestStruct id3;
+				id3.p1 = 1;
+				id3.p2 = 3;
+				id3.p3 = 2;
+				id3.p5.push_back(1);
+				id3.p5.push_back(3);
+				id3.p5.push_back(6);
+				pNew->Setid3(id3);
+			}
+		}
+
+		GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = s_pCollection->GetTestSlaveTable();
+		for (int i = 0; i < objItems.size(); ++i)
+		{
+			Client::OrmUpdate(objItems[i]);
+		}
+
+ 		gDebugStream( "pfnHandleOrmCollectionUpdate" );
 	}
 
-	void ClientCommands::pfnHandleOrmCollection(DBClient * pClient ,  std::vector<std::string> & objParams)
+	void ClientCommands::pfnHandleOrmCollectionInsert(DBClient * pClient ,  std::vector<std::string> & objParams)
 	{
-		Orm::TestSlaveCollection * pCollection = new Orm::TestSlaveCollection; 
-		pCollection->SetMasterID(1);
-
-		INT64 id = 2;
-		Orm::TestSlave * pTest = pCollection->GetTestSlave();
-		if (pTest)
+		INT64 id = 1;
+		if (!s_pCollection)
 		{
-			pTest->Setid(id);
+			s_pCollection = new Orm::TestSlaveCollection; //5 第一步需要创建对象收集器,并告诉收集器目前masterid是多少.因为如果需要创建新对象,需要将masterid传入.
+			s_pCollection->SetMasterID(id);
 		}
-		GameDB::OrmHelper::OrmUpdate(pTest);
 
-		Orm::TestSlave2 * pNew = pCollection->CreateTestSlave2();
+		//5 测试主slave
+		Orm::TestSlave * pTest = s_pCollection->GetTestSlave();
+		INT64 value = 123;
+		pTest->Setvalue(value);
+		Client::OrmInsert(pTest);
+		gDebugStream("Insert TestSlave:id=" << pTest->Getid() << ":key=" << pTest->GetKey());
 
+		//5 测试slavetable
+		Orm::TestSlaveTable * pNew = s_pCollection->CreateTestSlaveTable();				
 		id += 1;
-		pNew->Setid(id);
-		
-		id += 1;
-		pNew->Setid2(id);
+		pNew->Setid2(CUtil::itoa(id));
 
 		Orm::TestStruct id3;
 		id3.p1 = 1;
@@ -556,14 +583,115 @@ namespace Client
 		id3.p5.push_back(6);
 		pNew->Setid3(id3);
 
-		GameDB::OrmVectorEx<Orm::TestSlave2  *> & objItems = pCollection->GetTestSlave2(); 
+		GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = s_pCollection->GetTestSlaveTable();
 		for (int i = 0;i < objItems.size();++i)
 		{
-			GameDB::OrmHelper::OrmInsert(objItems[i]);
+			Client::OrmInsert(objItems[i]);
+			std::string value;
+			objItems[i]->ToBson(value);
+			gDebugStream("Insert TestSlaveTable:id=" << objItems[i]->Getid() << ":key=" << objItems[i]->GetKey() << ":value=" << value);
 		}
 
-		pCollection->GetTestSlave2().Cleanup(TRUE);
-		gDebugStream( "pfnHandleOrmCollection" );
+		//5 测试slaveFrom
+		Orm::TestSlaveFrom * pSlaveFrom = s_pCollection->GetTestSlaveFrom();
+		if (pSlaveFrom)
+		{
+			value = 456;
+			pSlaveFrom->Setvalue(value);
+			Client::OrmInsert(pSlaveFrom);
+			std::string value;
+			pSlaveFrom->ToBson(value);
+			gDebugStream("Insert slavefrom:id=" << pSlaveFrom->Getid() << ":key=" << pSlaveFrom->GetKey() << ":value=" << value);
+		}
+		gDebugStream( "pfnHandleOrmCollectionInsert" );
+	}
+
+	void ClientCommands::pfnHandleOrmCollectionDelete(DBClient * pClient, std::vector<std::string> & objParams)
+	{
+		if (!s_pCollection)
+		{
+			gErrorStream("pfnHandleOrmCollectionDelete s_pCollection is NULL. please call pfnHandleOrmCollectionInsert first");
+			return;
+		}
+
+		//5 测试主slave
+		Orm::TestSlave * pTest = s_pCollection->GetTestSlave();
+		Client::OrmDelete(pTest);
+
+		GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = s_pCollection->GetTestSlaveTable();
+		for (int i = 0; i < objItems.size(); ++i)
+		{
+			Client::OrmDelete(objItems[i]);
+		}
+
+		//5 测试slaveFrom
+		Orm::TestSlaveFrom * pSlaveFrom = s_pCollection->GetTestSlaveFrom();
+		if (pSlaveFrom)
+		{
+			Client::OrmDelete(pSlaveFrom);
+			gDebugStream("Delete slavefrom:id=" << pSlaveFrom->Getid() << ":key=" << pSlaveFrom->GetKey());
+		}
+		gDebugStream("pfnHandleOrmCollectionDelete");
+	}
+
+	void ClientCommands::pfnHandleOrmCollectionQuery(DBClient * pClient, std::vector<std::string> & objParams)
+	{
+		class TestSlaveQuery : public Msg::RpcCallback
+		{
+		public:
+			TestSlaveQuery()
+			{
+				m_pCollection = new Orm::TestSlaveCollection;
+				m_pCollection->SetMasterID(1);
+			}
+			~TestSlaveQuery()
+			{
+				SAFE_DELETE(m_pCollection);
+			}
+
+		public:
+			virtual INT32 OnCall(void * pContext)
+			{
+				STableKeyVal * pObj = (STableKeyVal *)pContext;
+				if (m_pCollection != NULL && pObj != NULL)
+				{
+					m_pCollection->LoadBson(pObj->strVal.c_str(), pObj->strVal.length());
+					gDebugStream("orm query testslave.TestSlave_id=" << m_pCollection->GetTestSlave()->Getvalue() << ":TestSlaveFrom_id=" << m_pCollection->GetTestSlaveFrom()->Getvalue());
+
+					GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = m_pCollection->GetTestSlaveTable();
+					for (int i = 0; i < objItems.size(); ++i)
+					{
+						gDebugStream("orm query slavetable_id=" << objItems[i]->Getid() << ":slavetable_id=" << objItems[i]->Getid2() << ":id3=" << objItems[i]->Getid3().p5[1] << ":slavetable_id4=" << objItems[i]->Getid4());
+					}
+				}
+				return 0;
+			}
+
+		public:
+			Orm::TestSlaveCollection * m_pCollection;
+		};
+		DECLARE_BOOST_POINTERS(TestSlaveQuery);
+		TestSlaveQueryPtr pCallback(new TestSlaveQuery);
+
+		//5 测试主slave
+		Orm::TestSlave * pTest = pCallback->m_pCollection->GetTestSlave();
+		Client::OrmQuery(pTest, pCallback);
+		Client::OrmQuery(pCallback->m_pCollection->GetTestSlaveFrom(), pCallback);
+// 
+// 		GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = s_pCollection->GetTestSlaveTable();
+// 		for (int i = 0; i < objItems.size(); ++i)
+// 		{
+// 			Client::OrmDelete(objItems[i]);
+// 		}
+// 
+// 		//5 测试slaveFrom
+// 		Orm::TestSlaveFrom * pSlaveFrom = s_pCollection->GetTestSlaveFrom();
+// 		if (pSlaveFrom)
+// 		{
+// 			Client::OrmDelete(pSlaveFrom);
+// 			gDebugStream("Delete slavefrom:id=" << pSlaveFrom->Getid() << ":key=" << pSlaveFrom->GetKey());
+// 		}
+		gDebugStream("pfnHandleOrmCollectionQuery");
 	}
 
 	void ClientCommands::pfnHandleZDel(DBClient * pClient ,  std::vector<std::string> & objParams)

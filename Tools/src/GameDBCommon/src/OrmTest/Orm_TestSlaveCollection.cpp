@@ -1,15 +1,34 @@
 #include "Orm_TestSlaveCollection.h"
+#include "Orm_Reflection.h"
+#include "GameDB/inc/OrmHelper.h"
 
 namespace Orm
 {
 	TestSlaveCollection::TestSlaveCollection()
 	{
+		m_pTestSlaveFrom = NULL;
 		m_pTestSlave = NULL;
 	}
 
 	TestSlaveCollection::~TestSlaveCollection()
 	{
+		SAFE_DELETE(m_pTestSlaveFrom);
 		SAFE_DELETE(m_pTestSlave);
+	}
+
+	TestSlaveFrom * TestSlaveCollection::GetTestSlaveFrom()
+	{
+		if(m_pTestSlaveFrom == NULL)
+		{
+			m_pTestSlaveFrom = new TestSlaveFrom();
+			m_pTestSlaveFrom->SetMasterID( m_vMasterId );
+		}
+		return m_pTestSlaveFrom;
+	}
+
+	void TestSlaveCollection::CleanupTestSlaveFrom()
+	{
+		SAFE_DELETE(m_pTestSlaveFrom);
 	}
 
 	TestSlave * TestSlaveCollection::GetTestSlave()
@@ -17,7 +36,7 @@ namespace Orm
 		if(m_pTestSlave == NULL)
 		{
 			m_pTestSlave = new TestSlave();
-			m_pTestSlave->SetMasterID( m_vMasterId );
+			m_pTestSlave->Setid( m_vMasterId );
 		}
 		return m_pTestSlave;
 	}
@@ -27,46 +46,59 @@ namespace Orm
 		SAFE_DELETE(m_pTestSlave);
 	}
 
-	TestSlave2 * TestSlaveCollection::CreateTestSlave2(BOOL bAddToManager /*= TRUE*/)
+	TestSlaveTable * TestSlaveCollection::CreateTestSlaveTable(BOOL bAddToManager /*= TRUE*/)
 	{
-		TestSlave2* pTestSlave2 = new TestSlave2;
-		pTestSlave2->SetMasterID(m_vMasterId);
+		TestSlaveTable* pTestSlaveTable = new TestSlaveTable;
+		pTestSlaveTable->SetMasterID(m_vMasterId);
 		if (bAddToManager)
 		{
-			m_vecTestSlave2.push_back( pTestSlave2);
+			m_vecTestSlaveTable.push_back( pTestSlaveTable);
 		}
 
-		return pTestSlave2;
+		return pTestSlaveTable;
 	}
 
-	BOOL TestSlaveCollection::DeleteTestSlave2(TestSlave2 * pValue , bool bFree /*= false*/)
+	BOOL TestSlaveCollection::DeleteTestSlaveTable(TestSlaveTable * pValue , bool bFree /*= false*/)
 	{
-		return m_vecTestSlave2.Remove(pValue , bFree);
+		return m_vecTestSlaveTable.Remove(pValue , bFree);
 	}
 
-	void TestSlaveCollection::LoadTestSlave2(mongo::BSONObj & obj)
+	void TestSlaveCollection::LoadTestSlaveTable(mongo::BSONObj & obj)
 	{
-		m_vecTestSlave2.Cleanup();
+		m_vecTestSlaveTable.Cleanup();
 		mongo::BSONObjIterator iter(obj);
 		while(iter.more())
 		{
 			mongo::BSONElement be = iter.next();
 			Assert(be.isABSONObj());
 
-			TestSlave2 * pTestSlave2 = CreateTestSlave2();
-			pTestSlave2->FromBson(be.Obj());
+			TestSlaveTable * pTestSlaveTable = CreateTestSlaveTable();
+			pTestSlaveTable->FromBson(be.Obj());
 		}
 	}
 
-	void TestSlaveCollection::SaveTestSlave2(mongo::BSONArrayBuilder & bab)
+	void TestSlaveCollection::SaveTestSlaveTable(mongo::BSONArrayBuilder & bab)
 	{
-		for (size_t i = 0;i < m_vecTestSlave2.size();++i)
+		for (size_t i = 0;i < m_vecTestSlaveTable.size();++i)
 		{
 			mongo::BSONObj obj;
-			TestSlave2 * pTestSlave2 = m_vecTestSlave2[i];
-			pTestSlave2->ToBson(obj);
+			TestSlaveTable * pTestSlaveTable = m_vecTestSlaveTable[i];
+			pTestSlaveTable->ToBson(obj);
 			bab.append(obj);
 		}
+	}
+
+	TestSlaveTable * TestSlaveCollection::GetTestSlaveTable(INT64 id)
+	{
+		GameDB::OrmVectorEx<TestSlaveTable *>::iterator iter = m_vecTestSlaveTable.begin();
+		for (;iter != m_vecTestSlaveTable.end();++iter)
+		{
+			if ((*iter)->Getid() == id)	
+			{
+				return *iter;
+			}
+		}
+		return NULL;
 	}
 
 	void TestSlaveCollection::ToBson(std::string & strBuf)
@@ -79,6 +111,13 @@ namespace Orm
 	void TestSlaveCollection::ToBson(mongo::BSONObj  & obj)
 	{
 		mongo::BSONObjBuilder builder(1 * 1024 * 1024);
+		if(m_pTestSlaveFrom != NULL)
+		{
+			mongo::BSONObj obj;
+			m_pTestSlaveFrom->ToBson(obj);
+			builder.append(TestSlaveFrom::TableName() , obj);
+		}
+
 		if(m_pTestSlave != NULL)
 		{
 			mongo::BSONObj obj;
@@ -88,8 +127,8 @@ namespace Orm
 
 		{
 			mongo::BSONArrayBuilder objBuilder;
-			this->SaveTestSlave2(objBuilder);
-			objBuilder.append(TestSlave2::TableName() , objBuilder.obj());
+			this->SaveTestSlaveTable(objBuilder);
+			objBuilder.append(TestSlaveTable::TableName() , objBuilder.obj());
 		}
 
 		obj = builder.obj();
@@ -105,6 +144,10 @@ namespace Orm
 
 	void TestSlaveCollection::FromBson(const char* buf,UINT32 len)
 	{
+		if(len == 0 || strcmp(buf , "") == 0)
+		{
+			return;
+		}
 		mongo::BSONObj obj(buf);
 		Assert(obj.objsize() == len);
 		mongo::BSONObjIterator  iter(obj); 
@@ -116,19 +159,76 @@ namespace Orm
 			INT64 hash = CUtil::BKDRHashSum(be.fieldName());
 			switch(hash)
 			{
+			case 5701140434439: // TestSlaveFrom
+				{
+					GetTestSlaveFrom()->FromBson(tmpobj);
+				}break;
 			case 3965202877593: // TestSlave
 				{
 					GetTestSlave()->FromBson(tmpobj);
 				}break;
-			case 4180792914557: // TestSlave2
+			case 6061817222949: // TestSlaveTable
 				{
-					LoadTestSlave2(tmpobj);
+					LoadTestSlaveTable(tmpobj);
 				}break;
 			default:
 				{
 					MsgAssert(false , " invalid table hash ");
 				}break;
 			}
+		}
+	}
+
+	void TestSlaveCollection::LoadBson(std::string & compressedBuf)
+	{
+		std::string tmpbuf;
+		CUtil::Uncompress(compressedBuf.c_str(),(UINT32)compressedBuf.length(),tmpbuf);
+		this->LoadBson(tmpbuf.c_str(),(UINT32)tmpbuf.length());
+	}
+
+	void TestSlaveCollection::LoadBson(const char* buf,UINT32 len)
+	{
+		if(len == 0 || strcmp(buf , "") == 0)
+		{
+			return;
+		}
+		mongo::BSONObj obj(buf);
+		Assert(obj.objsize() == len);
+		{
+			std::string metaname = GameDB::OrmHelper::GetTableNameFromBson(obj);
+			INT64 hash = CUtil::BKDRHashSum(metaname.c_str());
+			switch(hash)
+			{
+			case 5701140434439: // TestSlaveFrom
+				{
+					GetTestSlaveFrom()->FromBson(obj);
+				}break;
+			case 3965202877593: // TestSlave
+				{
+					GetTestSlave()->FromBson(obj);
+				}break;
+			case 6061817222949: // TestSlaveTable
+				{
+					INT64 iID = -1;
+					std::string  strValue = "";
+					Orm::GetSlaveTableMasterIDFromBson(obj, TestSlaveTable::TableName() ,"id",  iID, strValue);
+					TestSlaveTable * pTable = GetTestSlaveTable(iID);
+					if(pTable)
+					{
+						pTable->FromBson(obj);
+					}
+					else
+					{
+						pTable = CreateTestSlaveTable();
+						pTable->FromBson(obj);
+					}
+				}break;
+			default:
+				{
+					MsgAssert(false , " invalid table hash ");
+				}break;
+			}
+			
 		}
 	}
 

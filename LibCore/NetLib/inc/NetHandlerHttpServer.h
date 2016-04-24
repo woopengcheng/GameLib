@@ -107,7 +107,7 @@ namespace Net
 		virtual ~HttpServer( void );  
 
 	public:
-		virtual CErrno			Init(const char * pAddress , INT32 nPort , BOOL bResueAddr = TRUE , INT32  nListenerCount = DEFAULT_LISTENER_COUNT);
+		virtual CErrno			Init(const char * pAddress , INT32 nPort , BOOL bResueAddr = FALSE, INT32  nListenerCount = DEFAULT_LISTENER_COUNT);
 		virtual CErrno			Cleanup(); 
 		virtual void			OnAccept(NetSocket socket , sockaddr_in * addr);
 		virtual	CErrno			HttpHandler(HttpSession * pSession , HttpProtocol& request,HttpProtocol& response){ return CErrno::Success();}

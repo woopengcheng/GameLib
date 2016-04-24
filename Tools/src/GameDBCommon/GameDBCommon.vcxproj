@@ -35,31 +35,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\OrmHelper.h" />
     <ClInclude Include="src\OrmTest\Orm_OrmStructs.h" />
     <ClInclude Include="src\OrmTest\Orm_Reflection.h" />
     <ClInclude Include="src\OrmTest\Orm_TestSlave.h" />
-    <ClInclude Include="src\OrmTest\Orm_TestSlave1.h" />
-    <ClInclude Include="src\OrmTest\Orm_TestSlave2.h" />
     <ClInclude Include="src\OrmTest\Orm_TestSlaveCollection.h" />
-    <ClInclude Include="src\OrmTest\Orm_Test_Oldname.h" />
+    <ClInclude Include="src\OrmTest\Orm_TestSlaveFrom.h" />
+    <ClInclude Include="src\OrmTest\Orm_TestSlaveTable.h" />
+    <ClInclude Include="src\OrmTest\Orm_Test_OldName.h" />
     <ClInclude Include="src\OrmTest\Orm_Test_PrimaryKey.h" />
-    <ClInclude Include="src\Role.h" />
-    <ClInclude Include="src\RoleItems.h" />
-    <ClInclude Include="src\RoleCollection.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RoleCollection.cpp" />
-    <ClCompile Include="src\OrmHelper.cpp" />
     <ClCompile Include="src\OrmTest\Orm_Reflection.cpp" />
     <ClCompile Include="src\OrmTest\Orm_TestSlave.cpp" />
-    <ClCompile Include="src\OrmTest\Orm_TestSlave1.cpp" />
-    <ClCompile Include="src\OrmTest\Orm_TestSlave2.cpp" />
     <ClCompile Include="src\OrmTest\Orm_TestSlaveCollection.cpp" />
-    <ClCompile Include="src\OrmTest\Orm_Test_Oldname.cpp" />
+    <ClCompile Include="src\OrmTest\Orm_TestSlaveFrom.cpp" />
+    <ClCompile Include="src\OrmTest\Orm_TestSlaveTable.cpp" />
+    <ClCompile Include="src\OrmTest\Orm_Test_OldName.cpp" />
     <ClCompile Include="src\OrmTest\Orm_Test_PrimaryKey.cpp" />
-    <ClCompile Include="src\Role.cpp" />
-    <ClCompile Include="src\RoleItems.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5D817D7B-0D7C-449A-B647-A140D1529E60}</ProjectGuid>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-	使用方法:RPCMsgs包含了所有的RPC的消息.
+	使用方法:DBDIDL.GameDB Interface description language
 		DefaultParams和LongDefaultParams:
 			功能:
 				系统默认参数值.
@@ -24,81 +24,47 @@
 				specialType:
 					根据不同的规则生成不同的默认参数.
 					0代表的是标准库中的容器,默认是根据模板,加上后缀即可.
-					
-		Refers:
+		
+		Config:
 			功能:
-				函数参数是否是通过引用来使用.默认非基本类型的都是引用,除非有unfer
-			填写方法:
-				默认参数中的值在这里填写了引用,会在生成的时候默认带有引用类型.基本类型不能使用引用.去掉引用,在param中填写unrefer属性.值随便写.推荐写"!&"
-				 
-		RpcServerName:指的是作为RPC服务器的功能.
-			功能:
-				指定当前使用RPC功能包含的服务器
-			使用方法:
-				serverName: 
-					指的是当前服务器的名字.主要作用为作为client发起端,server接收端,proxy代理转发端.
-				include: 
-					需要包含的继承自RPCInterface的class的头文件包含路径.即:当前服务器的路径.
-				namespace:
-					指的是当前RPC服务器所使用的命名空间
-				rpcInterface:
-					指的是当前RPC服务器继承自RPCInterface的接口.
-				outputPath: 
-					当前的RPC服务器输出的文件位置.注意末尾加/				
-		RPCS:
-			功能:
-				定义各个服务器使用的所有的RPC			
-			RpcData:
-				功能:
-					RPC的参数类型可以传递RpcData.相当于定义一个结构体,传递消息时,大家可以共用一份.
-				使用方法:
-					同param参数.
-			Table: 
-				功能:
-					定义一个RPC
-				name:
-					RPC名字
-				syncType:
-					0代表同步.1代表异步,
-				timeout:
-					当前RPC最大超时时间,默认为15秒
-				以下功能为可以使用,也可以不使用的功能.他和Targets是重复的功能,两个只需要填一个即可.
-					server:					
-						当前RPC远程调用的服务器的功能是作为server
-					serverClass:
-						当前RPC远程调用的服务器对象使用的类
-					serverInclude:
-						当前RPC远程调用的服务器对象所在的头文件.
-					proxy:					
-						当前RPC远程调用的代理服务器的功能是作为proxy
-					proxyClass:
-						当前RPC远程调用的代理服务器对象使用的类
-					proxyInclude:
-						当前RPC远程调用的代理服务器对象所在的头文件.
-					client:					
-						当前RPC远程调用的服务器的功能是作为client
-					clientClass:
-						当前RPC远程调用的服务器对象使用的类
-					clientInclude:
-						当前RPC远程调用的服务器对象所在的头文件.
-					支持的服务器类型,必须和上面登记的一样.
-						client="Client" proxy="Proxy" server="Server"
-			call和Return:
-				功能:
-					call为一个RPC的发起调用.或者超时时调用的函数.
-					return为RPC从服务器返回的多个值.代码中使用RPCReturnXX方式返回
-				使用方法:
-					type:变量类型.
-					name:变量名字.
-					default:变量默认值
-			Targets:
-				功能:
-					定义当前RPC在哪些服务器中使用.
-				使用方法:
-					Client:为发起端调用.这里需要和ServerName对应.
-					Proxy:为代理转发.这里需要和ServerName对应.
-					Server:为服务器使用,这里需要和ServerName对应.
-					
+				用于配置一些数据库输出路径的.当然也可以添加一些其他的内容
+		Tables:
+			在这里定义各个表
+			struct:
+				定义一些结构体.用于数据库数据
+			table:
+				定义一张表和里面的字段
+				属性:
+					name:
+						表的名字
+					slaveTable:
+						作为某个表的从表数组存在
+					slaveFrom:
+						作为某个表唯一的从表存在
+					ignore_reflection_define:
+						会针对从表的情况会自动生成一张反射关系的代码.但是有时候又不需要这个反射.那么则不生成.建议生成.
+					ignore_collection:
+						会针对从表的情况会自动生成收集从表的代码.某些从表不想要在这个收集器里面.那么则不生成.
+				字段:
+					field:
+						代表这张表中的各个字段.
+						name:
+							字段的名字
+						type:
+							字段的类型.可以是默认类型,也可以是自定义的结构体类型.
+						masterID:
+							作为从表的主ID.如果是slaveFrom.那么则是master的ID.如果是slaveTable,那么还需要primaryKey.作为自己的ID.
+						primaryKey:
+							有这个的代表当前的field为主键.slavetable需要.一般的表也需要.slaveFrom不需要,在同一个field中.不能有primaryKey和masterID.
+						bitmask:
+							代表当前field是掩码操作.可以通过函数Is(id2(字段名字))Include的方式判断是否有这个掩码.Include(id2)增加掩码,exclude(id2)的方式去除掩码
+						count:
+							代表当前field是计数操作.可以通过函数Plus(id2)增加值,Minus(id2)的方式减去某个值
+						autoIncr:
+							表示自增字段,只能放在第一个字段，一个表只能有一个
+						oldName:
+							有时候需要给某个字段改名.可以通过oldName标明原有的名字是什么.且不要删除.可以添加多个.
+							
 	备注:
 		XML常用转义字符:
 			< 	&lt;	小于号 
@@ -156,24 +122,31 @@
 			<Param type="CUtilChunk" name="p13" /> 
 		</Struct>
 		
-		<Table name = "Test_Oldname" ignore_reflection_define="" ignore_collection="" >    
-			<Field name="id" type="INT64" masterID="" oldName=""  value_type=""/>
-			<Field name="p1" type="std::string" oldName="" value_type=""/>
+		<Table name = "Test_OldName" ignore_reflection_define="" ignore_collection="" >    
+			<Field name="id" type="INT64" masterID=""  />
+			<Field name="p1" type="std::string" oldName2="p3" oldName3="p4" />
 		</Table>
+		
 		<Table name = "Test_PrimaryKey">    
-			<Field name="id" type="INT64" primaryKey="" oldName="" autoIncr="" value_type=""/>
-			<Field name="p1" type="std::string" oldName="" value_type=""/>
+			<Field name="id" type="INT64" primaryKey="" autoIncr="" />
+			<Field name="p2" type="std::string" />
 		</Table>
+		
 		<Table name = "TestSlave">    
-			<Field name="id" type="INT64" masterID="" oldName="" value_type=""/> 
+			<Field name="id" type="INT64" primaryKey=""/> 
+			<Field name="value" type="INT64" /> 
 		</Table>
-		<Table name = "TestSlave1" slaveFrom="TestSlave" ignore_reflection_define="" ignore_collection="" >    
-			<Field name="id" type="INT64" masterID="" oldName="" value_type=""/> 
+		
+		<Table name = "TestSlaveFrom" slaveFrom="TestSlave" >    
+			<Field name="id" type="INT64" masterID="" /> 
+			<Field name="value" type="INT64" /> 
 		</Table>
-		<Table name = "TestSlave2" slaveTable="TestSlave">    
-			<Field name="id" type="INT64" masterID="" oldName="" value_type=""/>   
-			<Field name="id2" type="INT64" oldName="" bitmask="" count="" value_type=""/> 
-			<Field name="id3" type="TestStruct"  value_type=""/> 
+		
+		<Table name = "TestSlaveTable" slaveTable="TestSlave"> 
+			<Field name="id" type="INT64" masterID="" />   
+			<Field name="id2" type="std::string" primaryKey=""/> 
+			<Field name="id3" type="TestStruct"  /> 
+			<Field name="id4" type="INT64" bitmask="" count="" /> 
 		</Table>
 	</Tables>
 	

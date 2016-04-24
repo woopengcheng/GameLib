@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-23 12:05:15
+Date		:	2016-04-25 00:28:58
 Description	:	针对orm子表操作的集合类.
 ************************************/
 #ifndef __Orm_Orm_TestSlave_collection_h__
@@ -14,9 +14,9 @@ Description	:	针对orm子表操作的集合类.
 #include "GameDB/inc/OrmVector.h"
 #include "GameDB/inc/DBCommon.h"
 
-#include "Orm_TestSlave1.h"
+#include "Orm_TestSlaveFrom.h"
 #include "Orm_TestSlave.h"
-#include "Orm_TestSlave2.h"
+#include "Orm_TestSlaveTable.h"
 
 namespace Orm
 {
@@ -35,14 +35,19 @@ namespace Orm
 			virtual void		ToBson(mongo::BSONObj  & objBson) override;
 			virtual void		FromBson(std::string & compressedBuf) override;
 			virtual void		FromBson(const char * pData , UINT32 nSize) override;
+			virtual void		LoadBson(std::string & compressedBuf) override;
+			virtual void		LoadBson(const char * pData , UINT32 nSize) override;
 		
 		public:
 		template<class VISITOR,class PARAM> void visit(VISITOR visitor,PARAM& param)
 		{
+			if(!visitor(m_pTestSlaveFrom , param))
+				return ;
+		
 			if(!visitor(m_pTestSlave , param))
 				return ;
 		
-			for(GameDB::OrmVectorEx< TestSlave2 *>::iterator iter = m_vTestSlave2.begin(); iter != m_vTestSlave2.end(); ++iter)
+			for(GameDB::OrmVectorEx< TestSlaveTable *>::iterator iter = m_vTestSlaveTable.begin(); iter != m_vTestSlaveTable.end(); ++iter)
 			{
 				if(!visitor(*iter,param))
 					return ;
@@ -51,19 +56,23 @@ namespace Orm
 		}
 		
 		public:
+			TestSlaveFrom * GetTestSlaveFrom();
+			void CleanupTestSlaveFrom();
 			TestSlave * GetTestSlave();
 			void CleanupTestSlave();
 		
 		public:
-			GameDB::OrmVectorEx< TestSlave2 *> & GetTestSlave2(){ return m_vecTestSlave2; }
-			TestSlave2 * CreateTestSlave2(BOOL bAddToManager = TRUE);
-			BOOL DeleteTestSlave2(TestSlave2 * pValue , bool bFree = false);
-			void LoadTestSlave2(mongo::BSONObj & obj);
-			void SaveTestSlave2(mongo::BSONArrayBuilder & bab);
+			GameDB::OrmVectorEx< TestSlaveTable *> & GetTestSlaveTable(){ return m_vecTestSlaveTable; }
+			TestSlaveTable * CreateTestSlaveTable(BOOL bAddToManager = TRUE);
+			BOOL DeleteTestSlaveTable(TestSlaveTable * pValue , bool bFree = false);
+			void LoadTestSlaveTable(mongo::BSONObj & obj);
+			void SaveTestSlaveTable(mongo::BSONArrayBuilder & bab);
+			TestSlaveTable * GetTestSlaveTable(INT64 id);
 		
 		protected:
+			TestSlaveFrom	 * m_pTestSlaveFrom;
 			TestSlave	 * m_pTestSlave;
-			GameDB::OrmVectorEx<TestSlave2 *>	 m_vecTestSlave2;
+			GameDB::OrmVectorEx<TestSlaveTable *>	 m_vecTestSlaveTable;
 		
 	}; 
  

@@ -1,18 +1,18 @@
-#include "Orm_Test_Oldname.h"
+#include "Orm_Test_OldName.h"
 
 namespace Orm
 {
-	Test_Oldname::Test_Oldname()
+	Test_OldName::Test_OldName()
 		: id(0)
 		, p1(std::string())
 	{
 	}
 
-	Test_Oldname::~Test_Oldname()
+	Test_OldName::~Test_OldName()
 	{
 	}
 
-	bool Test_Oldname::IsEqual(const Test_Oldname & val)
+	bool Test_OldName::IsEqual(const Test_OldName & val)
 	{ 
 		if(
 			id == val.id&&
@@ -23,17 +23,17 @@ namespace Orm
 		return false;
 	} 
 
-	bool Test_Oldname::operator == (const Test_Oldname & val)
+	bool Test_OldName::operator == (const Test_OldName & val)
 	{ 
 		return IsEqual(val);
 	} 
 
-	bool  Test_Oldname::operator != (const Test_Oldname & val)
+	bool  Test_OldName::operator != (const Test_OldName & val)
 	{ 
 		return !IsEqual(val);
 	} 
 
-	std::string Test_Oldname::GetRawKey()
+	std::string Test_OldName::GetRawKey()
 	{
 		std::string result;
 		result.reserve(64);
@@ -41,51 +41,51 @@ namespace Orm
 		return result;
 	}
 
-	std::string Test_Oldname::GetKey()
+	std::string Test_OldName::GetKey()
 	{
 		std::string result;
 		result.reserve(64);
 
-			{
+		{
 			result.append(CUtil::itoa((INT64)id));
 		}
 		return result;
 	}
 
-	std::string Test_Oldname::GetTableName()
+	std::string Test_OldName::GetTableName()
 	{
-		return Test_Oldname::TableName();
+		return Test_OldName::TableName();
 	}
 
-	void Test_Oldname::AutoIncrease(INT64 llKey)
+	void Test_OldName::AutoIncrease(INT64 llKey)
 	{
 		MsgAssert(false , "AutoIncrease key:" << llKey);
 	}
 
-	Test_Oldname * Test_Oldname::Clone()
+	Test_OldName * Test_OldName::Clone()
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
-		Test_Oldname * pNew = new Test_Oldname();
+		Test_OldName * pNew = new Test_OldName();
 		pNew->FromBson(obj);
 		return pNew;
 	}
 
-	void Test_Oldname::ToCompress(std::string & strBuf)
+	void Test_OldName::ToCompress(std::string & strBuf)
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
 		CUtil::Compress(obj.objdata(),obj.objsize(),strBuf);
 	}
 
-	void Test_Oldname::ToBson(std::string & strBuf)
+	void Test_OldName::ToBson(std::string & strBuf)
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
 		strBuf = std::string(obj.objdata(),obj.objsize());
 	}
 
-	void Test_Oldname::ToBson(mongo::BSONObj  & obj)
+	void Test_OldName::ToBson(mongo::BSONObj  & obj)
 	{
 		mongo::BSONObjBuilder builder;
 		builder.append("_T",TableName());
@@ -96,7 +96,7 @@ namespace Orm
 		obj = builder.obj();
 	}
 
-	void Test_Oldname::FromCompress(const std::string& inbuf)
+	void Test_OldName::FromCompress(const std::string& inbuf)
 	{
 		std::string tmpbuf;
 		CUtil::Uncompress(inbuf.c_str(),(UINT32)inbuf.length(),tmpbuf);
@@ -105,7 +105,7 @@ namespace Orm
 		FromBson(obj);
 	}
 
-	void Test_Oldname::FromCompress(const char* pData,INT32 size)
+	void Test_OldName::FromCompress(const char* pData,INT32 size)
 	{
 		std::string tmpbuf;
 		CUtil::Uncompress(pData,size,tmpbuf);
@@ -114,14 +114,18 @@ namespace Orm
 		FromBson(obj);
 	}
 
-	void Test_Oldname::FromBson(const char* pData,INT32 size)
+	void Test_OldName::FromBson(const char* pData,INT32 size)
 	{
+		if(size == 0 || strcmp(pData , "") == 0)
+		{
+			return;
+		}
 		mongo::BSONObj  obj(pData);
 		MsgAssert(obj.objsize() == size , "FromBson error.");
 		FromBson(obj);
 	}
 
-	void Test_Oldname::FromBson(const mongo::BSONObj  & obj)
+	void Test_OldName::FromBson(const mongo::BSONObj  & obj)
 	{
 		mongo::BSONObjIterator  iter(obj); 
 		while(iter.more())
@@ -139,6 +143,8 @@ namespace Orm
 				{
 					CUtil::BsonToCpp( id , be);
 				}break;
+			case 704374651268: // oldName: p4
+			case 700079683971: // oldName: p3
 			case 691489749377: // p1
 				{
 					CUtil::BsonToCpp( p1 , be);
@@ -148,7 +154,7 @@ namespace Orm
 		__hash = HashMake(0);
 	}
 
-	INT64 Test_Oldname::HashMake(INT64 seed)
+	INT64 Test_OldName::HashMake(INT64 seed)
 	{
 		INT64 _result = seed;
 		_result = CUtil::CityHash(&id,sizeof(id),_result);
@@ -157,24 +163,19 @@ namespace Orm
 		return _result;
 	}
 
-	INT64 Test_Oldname::Getid() const
+	INT64 Test_OldName::Getid() const
 	{
 		return id;
 	}
 
-	void Test_Oldname::Setid(INT64 & value)
-	{
-		id = value;
-	}
-
-	std::string Test_Oldname::Getp1() const
+	std::string Test_OldName::Getp1() const
 	{
 		return p1;
 	}
 
-	void Test_Oldname::Setp1(std::string & value)
+	void Test_OldName::Setp1(std::string & xxValuexx)
 	{
-		p1 = value;
+		p1 = xxValuexx;
 	}
 
 }//Orm

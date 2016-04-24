@@ -272,15 +272,15 @@ Msg::ObjectMsgCall * FooHandler::testParamsAndRpcDatas_RpcServer(INT32 nSessionI
 
 class BarRpcInterface;
 
-static INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
+static INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objSrc, std_string & dbname = std::string(), CUtilChunk & value = CUtil::Chunk(), int value2 = 0, unsigned int value22 = 0, char valChar = char(0), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
 
 class BarHandler : public Msg::IRpcMsgCallableObject
 {
@@ -368,53 +368,53 @@ public:
 	virtual void				OnRegisterRpcs(void) override;
 };
 
-INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	GEN_RPC_CALL_5((&(BarRpcInterface::GetInstance())), pSessionName, Msg::g_sztestMulitServerNode_RpcCall, dbname, value, value2, value22, valChar, vecTargets, objSrc, pCallback, usPriority, objSyncType, 10);
 }
 
-INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	std::vector<Msg::Object> vecTargets;
 	vecTargets.push_back(objTarget);
 	return rpc_testMulitServerNode(pSessionName, vecTargets, objSrc, dbname, value, value2, value22, valChar, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(const char * pSessionName, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	return rpc_testMulitServerNode(pSessionName, 0, objSrc, dbname, value, value2, value22, valChar, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	GEN_RPC_CALL_5((&(BarRpcInterface::GetInstance())), pSessionName, Msg::g_sztestMulitServerNode_RpcCall, dbname, value, value2, value22, valChar, vecTargets, objSrc, pCallback, usPriority, objSyncType, 10);
 }
 
-INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	std::vector<Msg::Object> vecTargets;
 	vecTargets.push_back(objTarget);
 	return rpc_testMulitServerNode(pSessionName, vecTargets, objSrc, dbname, value, value2, value22, valChar, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(const std::string & pSessionName, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	return rpc_testMulitServerNode(pSessionName, 0, objSrc, dbname, value, value2, value22, valChar, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	GEN_RPC_CALL_5((&(BarRpcInterface::GetInstance())), nSessionID, Msg::g_sztestMulitServerNode_RpcCall, dbname, value, value2, value22, valChar, vecTargets, objSrc, pCallback, usPriority, objSyncType, 10);
 }
 
-INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	std::vector<Msg::Object> vecTargets;
 	vecTargets.push_back(objTarget);
 	return rpc_testMulitServerNode(nSessionID, vecTargets, objSrc, dbname, value, value2, value22, valChar, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallback * pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testMulitServerNode(INT32 nSessionID, Msg::Object objSrc, std_string & dbname , CUtilChunk & value , int value2 , unsigned int value22 , char valChar , Msg::RpcCallbackPtr pCallback , UINT16 usPriority , Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	return rpc_testMulitServerNode(nSessionID, 0, objSrc, dbname, value, value2, value22, valChar, pCallback, usPriority, objSyncType);
 }
@@ -429,15 +429,15 @@ Msg::ObjectMsgCall * BarHandler::testMulitServerNode_RpcServer(INT32 nSessionID,
 	Return(res);
 }
 
-static INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
-static INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallback * pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_NONSYNC);
+static INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
+static INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objSrc, TestRpcData & rpcData = TestRpcData(), TestRpcData2 & rpcData2 = TestRpcData2(), std::vector<INT32> & Vec = std::vector<INT32>(1), Msg::RpcCallbackPtr pCallback = NULL, UINT16 usPriority = 0, Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC);
 
 class ProxyRpcInterface;
 class ProxyHandler : public Msg::IRpcMsgCallableObject
@@ -516,7 +516,7 @@ public:
 				test1.p5.push_back(2);
 				TestRpcData2 test2;
 
-				ProxyCallback * pCallback = new ProxyCallback;
+				ProxyCallbackPtr pCallback(new ProxyCallback);
 				pCallback->m_nTest = 333;
 				INT32 nResult = rpc_testParamsAndRpcDatas(nSessionID, FOO_HANDLER_ID, fooHandler.GetObjectID(), test1, test2 ,std::vector<INT32>(1) ,pCallback);
 				EXPECT_EQ(nResult, -1);  //5 测试rpc_enable是否是关闭的.
@@ -527,7 +527,7 @@ public:
 					pMethod->m_bEnable = TRUE;
 				}
 
-				pCallback = new ProxyCallback;  //5 这里是因为发送错误后,释放掉了.
+//				pCallback = new ProxyCallback;  //5 这里是因为发送错误后,释放掉了.
 				pCallback->m_nTest = 333;
 				nResult = rpc_testParamsAndRpcDatas(nSessionID, FOO_HANDLER_ID, fooHandler.GetObjectID(), test1, test2, std::vector<INT32>(1), pCallback);
 				if (nResult == -1)
@@ -596,53 +596,53 @@ public:
 
 };
 
-INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	GEN_RPC_CALL_3((&(ProxyRpcInterface::GetInstance())), pSessionName, Msg::g_sztestParamsAndRpcDatas_RpcCall, rpcData, rpcData2, Vec, vecTargets, objSrc, pCallback, usPriority, objSyncType, 10);
 }
 
-INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	std::vector<Msg::Object> vecTargets;
 	vecTargets.push_back(objTarget);
 	return rpc_testParamsAndRpcDatas(pSessionName, vecTargets, objSrc, rpcData, rpcData2, Vec, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(const char * pSessionName, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	return rpc_testParamsAndRpcDatas(pSessionName, 0, objSrc, rpcData, rpcData2, Vec, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	GEN_RPC_CALL_3((&(ProxyRpcInterface::GetInstance())), pSessionName, Msg::g_sztestParamsAndRpcDatas_RpcCall, rpcData, rpcData2, Vec, vecTargets, objSrc, pCallback, usPriority, objSyncType, 10);
 }
 
-INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	std::vector<Msg::Object> vecTargets;
 	vecTargets.push_back(objTarget);
 	return rpc_testParamsAndRpcDatas(pSessionName, vecTargets, objSrc, rpcData, rpcData2, Vec, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(const std::string & pSessionName, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	return rpc_testParamsAndRpcDatas(pSessionName, 0, objSrc, rpcData, rpcData2, Vec, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::VecObjects & vecTargets, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	GEN_RPC_CALL_3((&(ProxyRpcInterface::GetInstance())), nSessionID, Msg::g_sztestParamsAndRpcDatas_RpcCall, rpcData, rpcData2, Vec, vecTargets, objSrc, pCallback, usPriority, objSyncType, 10);
 }
 
-INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objTarget, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	std::vector<Msg::Object> vecTargets;
 	vecTargets.push_back(objTarget);
 	return rpc_testParamsAndRpcDatas(nSessionID, vecTargets, objSrc, rpcData, rpcData2, Vec, pCallback, usPriority, objSyncType);
 }
 
-INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallback * pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
+INT32  rpc_testParamsAndRpcDatas(INT32 nSessionID, Msg::Object objSrc, TestRpcData & rpcData , TestRpcData2 & rpcData2 , std::vector<INT32> & Vec , Msg::RpcCallbackPtr pCallback , UINT16 usPriority, Msg::EMSG_SYNC_TYPE objSyncType)
 {
 	return rpc_testParamsAndRpcDatas(nSessionID, 0, objSrc, rpcData, rpcData2, Vec, pCallback, usPriority, objSyncType);
 }

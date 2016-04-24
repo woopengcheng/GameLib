@@ -186,7 +186,7 @@ namespace GameDB
 
 	}
 
-	void User::SetMasterID(const char* pID)
+	void User::SetMasterID(const std::string & pID)
 	{
 
 	}
@@ -196,7 +196,7 @@ namespace GameDB
 		return 0;
 	}
 
-	const char* User::GetMasterStrID()
+	std::string User::GetMasterStrID()
 	{
 		return "";
 	}

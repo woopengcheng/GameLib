@@ -1,35 +1,35 @@
 /************************************
-FileName	:	Orm_Test_Oldname.h
+FileName	:	Orm_Test_OldName.h
 Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-23 12:05:15
+Date		:	2016-04-25 00:28:58
 Description	:	orm²Ù×÷¼¯ºÏ.
 ************************************/
-#ifndef __Orm_Orm_Test_Oldname_h__
-#define __Orm_Orm_Test_Oldname_h__
+#ifndef __Orm_Orm_Test_OldName_h__
+#define __Orm_Orm_Test_OldName_h__
 #include "Orm_OrmStructs.h"
 #include "GameDB/inc/Orm.h"
 
 namespace Orm
 {
-	class Test_Oldname : public GameDB::Orm
+	class Test_OldName : public GameDB::Orm
 	{ 
 		public:
-			Test_Oldname();
-			virtual ~Test_Oldname();
+			Test_OldName();
+			virtual ~Test_OldName();
 		
 		private:
-			Test_Oldname( const Test_Oldname &);
-			const Test_Oldname& operator=( const Test_Oldname &);
+			Test_OldName( const Test_OldName &);
+			const Test_OldName& operator=( const Test_OldName &);
 		
 		public:
-			Test_Oldname* Clone();
+			Test_OldName* Clone();
 
 		public:
-			static const char* TableName() { return "Test_Oldname"; }
-			static const INT64 meta_hash = 5219606889433;
+			static const char* TableName() { return "Test_OldName"; }
+			static const INT64 TableHash = 5082095997049;
 		
 		public:
 			virtual std::string GetKey() override;
@@ -37,9 +37,9 @@ namespace Orm
 			virtual std::string GetTableName() override;
 		
 		public:
-			bool IsEqual(const Test_Oldname & val);
-			bool operator == (const Test_Oldname & val);
-			bool operator != (const Test_Oldname & val);
+			bool IsEqual(const Test_OldName & val);
+			bool operator == (const Test_OldName & val);
+			bool operator != (const Test_OldName & val);
 		
 		public:
 			virtual void		ToBson(std::string & strBuf) override;
@@ -58,16 +58,14 @@ namespace Orm
 		public:
 			virtual void		AutoIncrease(INT64 llKey) override ; 
 			virtual void		SetMasterID(INT64 llID) override {id = llID; }
-			virtual void		SetMasterID(const char* pID) override { }
+			virtual void		SetMasterID(const std::string & strID) override { }
 			virtual INT64		GetMasterID() override { return id;}
-			virtual const char*	GetMasterStrID() override { return "";}
+			virtual std::string	GetMasterStrID() override { return "";}
 		
 		public:
 			INT64 Getid() const;
-			void Setid(INT64& value);
-
 			std::string Getp1() const;
-			void Setp1(std::string& value);
+			void Setp1(std::string& xxValuexx);
 
 		
 		public:

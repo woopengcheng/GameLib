@@ -203,6 +203,7 @@ namespace Msg
 			pMsg->SetRpcMsgCallType(RPCTYPE_SERVER_PROXY);
 			objRpc.OnProxy(pMsg, vecObjectMsgCall);
 
+			bool bErase = false;
 			Rpc::VecObjectMsgCallT::iterator iter = vecObjectMsgCall.begin();
 			for (; iter != vecObjectMsgCall.end(); ++iter)
 			{
@@ -212,7 +213,12 @@ namespace Msg
 				{
 					SendMsg(nSessionID, pReturnMsg, FALSE);
 					SAFE_DELETE(pReturnMsg);
+					bErase = true;
 				}
+			}
+			if (bErase)
+			{
+				EraseSendRpc(pMsg->m_ullMsgID);
 			}
 		}
 		else
@@ -246,7 +252,7 @@ namespace Msg
 			objRpc->SetSessionID(nSessionID);
 			if (pMsg->m_bClientRequest)
 			{
-				if (pTemp->GetSyncType() == SYNC_TYPE_NONSYNC)
+				if (pTemp->GetSyncType() == SYNC_TYPE_ASYNC)
 				{
 					if (HasSimilarRegisterFunc(pMsg->m_szMsgMethod, RPCClient))
 					{
@@ -326,7 +332,7 @@ namespace Msg
 				SAFE_DELETE(iter->second);
 				result->second.erase(iter);
 
-				if (pTemp->GetSyncType() == SYNC_TYPE_NONSYNC) //5 同步的删除放在了调用处.
+				if (pTemp->GetSyncType() == SYNC_TYPE_ASYNC) //5 同步的删除放在了调用处.
 				{
 					SAFE_DELETE(pTemp);
 				}
@@ -439,6 +445,27 @@ namespace Msg
 
 			m_mapDelayMsgs.insert(std::make_pair(nSessionID, que));
 		}
+	}
+
+	BOOL RpcManager::EraseSendRpc(UINT64 ullMsgID)
+	{
+		MapRpcsT::iterator result = m_mapSendRpcs.find(ullMsgID);
+		if (result != m_mapSendRpcs.end())
+		{
+			MapRpcsBySessionIDT::iterator iter = result->second.begin();
+			for (;iter != result->second.end();++iter)
+			{
+				RPCMsgCall * pTemp = iter->second->GetRpcMsgCall();
+				if (pTemp->GetSyncType() == SYNC_TYPE_ASYNC) //5 同步的删除放在了调用处.
+				{
+					SAFE_DELETE(pTemp);
+				}
+			}
+			result->second.clear();
+			m_mapSendRpcs.erase(result);
+		}
+		
+		return TRUE;
 	}
 
 	void RpcManager::InsertPostMsg(INT32 nSessionID, RPCMsgCall * pMsg)

@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-23 12:05:15
+Date		:	2016-04-25 00:28:58
 Description	:	orm²Ù×÷¼¯ºÏ.
 ************************************/
 #ifndef __Orm_Orm_Test_PrimaryKey_h__
@@ -29,7 +29,7 @@ namespace Orm
 
 		public:
 			static const char* TableName() { return "Test_PrimaryKey"; }
-			static const INT64 meta_hash = 6649511737446;
+			static const INT64 TableHash = 6649511737446;
 		
 		public:
 			virtual std::string GetKey() override;
@@ -58,21 +58,21 @@ namespace Orm
 		public:
 			virtual void		AutoIncrease(INT64 llKey) override ; 
 			virtual void		SetMasterID(INT64 llID) override { }
-			virtual void		SetMasterID(const char* pID) override { }
+			virtual void		SetMasterID(const std::string & strID) override { }
 			virtual INT64		GetMasterID() override { return -1;}
-			virtual const char*	GetMasterStrID() override { return "";}
+			virtual std::string	GetMasterStrID() override { return "";}
 		
 		public:
 			INT64 Getid() const;
-			void Setid(INT64& value);
+			void Setid(INT64& xxValuexx);
 
-			std::string Getp1() const;
-			void Setp1(std::string& value);
+			std::string Getp2() const;
+			void Setp2(std::string& xxValuexx);
 
 		
 		public:
 			INT64	id;
-			std::string	p1;
+			std::string	p2;
 		
 		private:
 			INT64			__hash;

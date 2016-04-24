@@ -95,7 +95,7 @@ namespace Net
 	}
 
 #define		ANY_SIZE	 120
-#ifdef WIN32
+#if 0
 	BOOL NetHelper::IsSocketPortUsed(UINT32 nPort)
 	{
 		//连接信息结构体
@@ -157,7 +157,7 @@ namespace Net
 		return FALSE;
 	}
 #else
-	BOOL NetHelper::IsSocketPortUsed(UINT32 nPort)
+	BOOL NetHelper::IsSocketPortUsed(UINT32 nPort , NetSocket socket/* = -1*/)
 	{
 		const char * pAddress = "127.0.0.1";
 		sockaddr_in addr = { 0 };
@@ -166,15 +166,50 @@ namespace Net
 		addr.sin_addr.S_un.S_addr = INADDR_ANY;
 		if (pAddress != 0 && strlen(pAddress) > 0)
 		{
-			addr.sin_addr.s_addr = inet_addr(ip);
+			addr.sin_addr.s_addr = inet_addr(pAddress);
 		}
-		NetSocket socket = NetHelper::CreateSocket(AF_INET, SOCK_STREAM, 0);
-		INT32 nValueTrue = 1;
-		setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&nValueTrue, sizeof(nValueTrue));
-		::bind(socket, (sockaddr*)&addr, sizeof(sockaddr_in));
-		CloseSocket(socket);
-		return TRUE;
+
+		BOOL bRelease = FALSE;
+		if (socket == -1)
+		{
+			socket = NetHelper::CreateSocket(AF_INET, SOCK_STREAM, 0);
+			bRelease = TRUE;
+		}
+		INT32 nResult = ::bind(socket, (sockaddr*)&addr, sizeof(sockaddr_in));
+
+		if (bRelease)
+		{
+			CloseSocket(socket);
+		}
+
+		if (nResult == 0)
+		{
+			return TRUE;
+		}
+		return FALSE;
 	}
+
+	INT32 NetHelper::GetUnusedPort()
+	{
+		NetSocket socket = NetHelper::CreateSocket(AF_INET, SOCK_STREAM, 0);
+//		INT32 nValueTrue = 0;
+//		setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&nValueTrue, sizeof(nValueTrue));
+		
+		INT32 nPort = -1;
+		INT32 nCount = 100000;
+		while (--nCount)
+		{
+			nPort = CUtil::random(kSTART_RAND_UNUSED_PORT, kEND_RAND_UNUSED_PORT);
+	//		if (!IsSocketPortUsed(nPort , socket))
+			{
+				break;
+			}
+		}
+
+		CloseSocket(socket);
+		return nPort;
+	}
+
 #endif
 
 	void NetHelper::SetSocket(NetSocket & socket)

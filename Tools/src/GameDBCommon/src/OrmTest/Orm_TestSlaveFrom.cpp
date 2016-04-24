@@ -1,37 +1,39 @@
-#include "Orm_TestSlave1.h"
+#include "Orm_TestSlaveFrom.h"
 
 namespace Orm
 {
-	TestSlave1::TestSlave1()
+	TestSlaveFrom::TestSlaveFrom()
 		: id(0)
+		, value(0)
 	{
 	}
 
-	TestSlave1::~TestSlave1()
+	TestSlaveFrom::~TestSlaveFrom()
 	{
 	}
 
-	bool TestSlave1::IsEqual(const TestSlave1 & val)
+	bool TestSlaveFrom::IsEqual(const TestSlaveFrom & val)
 	{ 
 		if(
-			id == val.id)
+			id == val.id&&
+			value == val.value)
 		{
 			return true;
 		}
 		return false;
 	} 
 
-	bool TestSlave1::operator == (const TestSlave1 & val)
+	bool TestSlaveFrom::operator == (const TestSlaveFrom & val)
 	{ 
 		return IsEqual(val);
 	} 
 
-	bool  TestSlave1::operator != (const TestSlave1 & val)
+	bool  TestSlaveFrom::operator != (const TestSlaveFrom & val)
 	{ 
 		return !IsEqual(val);
 	} 
 
-	std::string TestSlave1::GetRawKey()
+	std::string TestSlaveFrom::GetRawKey()
 	{
 		std::string result;
 		result.reserve(64);
@@ -39,60 +41,62 @@ namespace Orm
 		return result;
 	}
 
-	std::string TestSlave1::GetKey()
+	std::string TestSlaveFrom::GetKey()
 	{
 		std::string result;
 		result.reserve(64);
 
-			{
+		{
 			result.append(CUtil::itoa((INT64)id));
 		}
 		return result;
 	}
 
-	std::string TestSlave1::GetTableName()
+	std::string TestSlaveFrom::GetTableName()
 	{
-		return TestSlave1::TableName();
+		return TestSlaveFrom::TableName();
 	}
 
-	void TestSlave1::AutoIncrease(INT64 llKey)
+	void TestSlaveFrom::AutoIncrease(INT64 llKey)
 	{
 		MsgAssert(false , "AutoIncrease key:" << llKey);
 	}
 
-	TestSlave1 * TestSlave1::Clone()
+	TestSlaveFrom * TestSlaveFrom::Clone()
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
-		TestSlave1 * pNew = new TestSlave1();
+		TestSlaveFrom * pNew = new TestSlaveFrom();
 		pNew->FromBson(obj);
 		return pNew;
 	}
 
-	void TestSlave1::ToCompress(std::string & strBuf)
+	void TestSlaveFrom::ToCompress(std::string & strBuf)
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
 		CUtil::Compress(obj.objdata(),obj.objsize(),strBuf);
 	}
 
-	void TestSlave1::ToBson(std::string & strBuf)
+	void TestSlaveFrom::ToBson(std::string & strBuf)
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
 		strBuf = std::string(obj.objdata(),obj.objsize());
 	}
 
-	void TestSlave1::ToBson(mongo::BSONObj  & obj)
+	void TestSlaveFrom::ToBson(mongo::BSONObj  & obj)
 	{
 		mongo::BSONObjBuilder builder;
 		builder.append("_T",TableName());
 		if(id != 0)
 			builder.append("id",id);
+		if(value != 0)
+			builder.append("value",value);
 		obj = builder.obj();
 	}
 
-	void TestSlave1::FromCompress(const std::string& inbuf)
+	void TestSlaveFrom::FromCompress(const std::string& inbuf)
 	{
 		std::string tmpbuf;
 		CUtil::Uncompress(inbuf.c_str(),(UINT32)inbuf.length(),tmpbuf);
@@ -101,7 +105,7 @@ namespace Orm
 		FromBson(obj);
 	}
 
-	void TestSlave1::FromCompress(const char* pData,INT32 size)
+	void TestSlaveFrom::FromCompress(const char* pData,INT32 size)
 	{
 		std::string tmpbuf;
 		CUtil::Uncompress(pData,size,tmpbuf);
@@ -110,14 +114,18 @@ namespace Orm
 		FromBson(obj);
 	}
 
-	void TestSlave1::FromBson(const char* pData,INT32 size)
+	void TestSlaveFrom::FromBson(const char* pData,INT32 size)
 	{
+		if(size == 0 || strcmp(pData , "") == 0)
+		{
+			return;
+		}
 		mongo::BSONObj  obj(pData);
 		MsgAssert(obj.objsize() == size , "FromBson error.");
 		FromBson(obj);
 	}
 
-	void TestSlave1::FromBson(const mongo::BSONObj  & obj)
+	void TestSlaveFrom::FromBson(const mongo::BSONObj  & obj)
 	{
 		mongo::BSONObjIterator  iter(obj); 
 		while(iter.more())
@@ -135,26 +143,37 @@ namespace Orm
 				{
 					CUtil::BsonToCpp( id , be);
 				}break;
+			case 2324188493089: // value
+				{
+					CUtil::BsonToCpp( value , be);
+				}break;
 			}
 		}
 		__hash = HashMake(0);
 	}
 
-	INT64 TestSlave1::HashMake(INT64 seed)
+	INT64 TestSlaveFrom::HashMake(INT64 seed)
 	{
 		INT64 _result = seed;
 		_result = CUtil::CityHash(&id,sizeof(id),_result);
 		return _result;
+		_result = CUtil::CityHash(&value,sizeof(value),_result);
+		return _result;
 	}
 
-	INT64 TestSlave1::Getid() const
+	INT64 TestSlaveFrom::Getid() const
 	{
 		return id;
 	}
 
-	void TestSlave1::Setid(INT64 & value)
+	INT64 TestSlaveFrom::Getvalue() const
 	{
-		id = value;
+		return value;
+	}
+
+	void TestSlaveFrom::Setvalue(INT64 & xxValuexx)
+	{
+		value = xxValuexx;
 	}
 
 }//Orm

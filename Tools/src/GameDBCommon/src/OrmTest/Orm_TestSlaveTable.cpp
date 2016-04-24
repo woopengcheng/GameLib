@@ -1,109 +1,121 @@
-#include "Orm_TestSlave2.h"
+#include "Orm_TestSlaveTable.h"
 
 namespace Orm
 {
-	TestSlave2::TestSlave2()
+	TestSlaveTable::TestSlaveTable()
 		: id(0)
-		, id2(0)
+		, id2(std::string())
 		, id3(TestStruct())
+		, id4(0)
 	{
 	}
 
-	TestSlave2::~TestSlave2()
+	TestSlaveTable::~TestSlaveTable()
 	{
 	}
 
-	bool TestSlave2::IsEqual(const TestSlave2 & val)
+	bool TestSlaveTable::IsEqual(const TestSlaveTable & val)
 	{ 
 		if(
 			id == val.id&&
 			id2 == val.id2&&
-			id3 == val.id3)
+			id3 == val.id3&&
+			id4 == val.id4)
 		{
 			return true;
 		}
 		return false;
 	} 
 
-	bool TestSlave2::operator == (const TestSlave2 & val)
+	bool TestSlaveTable::operator == (const TestSlaveTable & val)
 	{ 
 		return IsEqual(val);
 	} 
 
-	bool  TestSlave2::operator != (const TestSlave2 & val)
+	bool  TestSlaveTable::operator != (const TestSlaveTable & val)
 	{ 
 		return !IsEqual(val);
 	} 
 
-	std::string TestSlave2::GetRawKey()
+	std::string TestSlaveTable::GetRawKey()
 	{
 		std::string result;
 		result.reserve(64);
 
+		result.append(id2);
 		return result;
 	}
 
-	std::string TestSlave2::GetKey()
+	std::string TestSlaveTable::GetKey()
 	{
 		std::string result;
 		result.reserve(64);
 
-			{
-			result.append(CUtil::itoa((INT64)id));
+		result.append(id2);
+		return result;
+	}
+
+	std::string TestSlaveTable::GetTableName()
+	{
+		std::string result;
+		result.reserve(64);
+		result.append(TestSlaveTable::TableName());
+		result.append(".");
+		{
+			char tmpbuf[64] = "";
+			CUtil::itoa(tmpbuf,(INT64)id);
+			result.append(tmpbuf);
 		}
 		return result;
 	}
 
-	std::string TestSlave2::GetTableName()
-	{
-		return TestSlave2::TableName();
-	}
-
-	void TestSlave2::AutoIncrease(INT64 llKey)
+	void TestSlaveTable::AutoIncrease(INT64 llKey)
 	{
 		MsgAssert(false , "AutoIncrease key:" << llKey);
 	}
 
-	TestSlave2 * TestSlave2::Clone()
+	TestSlaveTable * TestSlaveTable::Clone()
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
-		TestSlave2 * pNew = new TestSlave2();
+		TestSlaveTable * pNew = new TestSlaveTable();
 		pNew->FromBson(obj);
 		return pNew;
 	}
 
-	void TestSlave2::ToCompress(std::string & strBuf)
+	void TestSlaveTable::ToCompress(std::string & strBuf)
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
 		CUtil::Compress(obj.objdata(),obj.objsize(),strBuf);
 	}
 
-	void TestSlave2::ToBson(std::string & strBuf)
+	void TestSlaveTable::ToBson(std::string & strBuf)
 	{
 		mongo::BSONObj  obj;
 		ToBson(obj);
 		strBuf = std::string(obj.objdata(),obj.objsize());
 	}
 
-	void TestSlave2::ToBson(mongo::BSONObj  & obj)
+	void TestSlaveTable::ToBson(mongo::BSONObj  & obj)
 	{
 		mongo::BSONObjBuilder builder;
 		builder.append("_T",TableName());
 		if(id != 0)
 			builder.append("id",id);
-		if(id2 != 0)
+		if(id2 != std::string())
 			builder.append("id2",id2);
 		if(id3 != TestStruct())
 		{
 			CUtil::Parameter p(id3);
 			builder.appendBinData("id3" , p.GetDataLen() , mongo::bdtParamter , (const char *)(p.GetStreamData())); 
 		}
+		if(id4 != 0)
+			builder.append("id4",id4);
 		obj = builder.obj();
 	}
 
-	void TestSlave2::FromCompress(const std::string& inbuf)
+	void TestSlaveTable::FromCompress(const std::string& inbuf)
 	{
 		std::string tmpbuf;
 		CUtil::Uncompress(inbuf.c_str(),(UINT32)inbuf.length(),tmpbuf);
@@ -112,7 +124,7 @@ namespace Orm
 		FromBson(obj);
 	}
 
-	void TestSlave2::FromCompress(const char* pData,INT32 size)
+	void TestSlaveTable::FromCompress(const char* pData,INT32 size)
 	{
 		std::string tmpbuf;
 		CUtil::Uncompress(pData,size,tmpbuf);
@@ -121,14 +133,18 @@ namespace Orm
 		FromBson(obj);
 	}
 
-	void TestSlave2::FromBson(const char* pData,INT32 size)
+	void TestSlaveTable::FromBson(const char* pData,INT32 size)
 	{
+		if(size == 0 || strcmp(pData , "") == 0)
+		{
+			return;
+		}
 		mongo::BSONObj  obj(pData);
 		MsgAssert(obj.objsize() == size , "FromBson error.");
 		FromBson(obj);
 	}
 
-	void TestSlave2::FromBson(const mongo::BSONObj  & obj)
+	void TestSlaveTable::FromBson(const mongo::BSONObj  & obj)
 	{
 		mongo::BSONObjIterator  iter(obj); 
 		while(iter.more())
@@ -156,12 +172,16 @@ namespace Orm
 					CUtil::BsonToCpp( p , be);
 					id3 = p;
 				}break;
+			case 1103808410129: // id4
+				{
+					CUtil::BsonToCpp( id4 , be);
+				}break;
 			}
 		}
 		__hash = HashMake(0);
 	}
 
-	INT64 TestSlave2::HashMake(INT64 seed)
+	INT64 TestSlaveTable::HashMake(INT64 seed)
 	{
 		INT64 _result = seed;
 		_result = CUtil::CityHash(&id,sizeof(id),_result);
@@ -170,61 +190,68 @@ namespace Orm
 		return _result;
 		_result = CUtil::CityHash(&id3,sizeof(id3),_result);
 		return _result;
+		_result = CUtil::CityHash(&id4,sizeof(id4),_result);
+		return _result;
 	}
 
-	INT64 TestSlave2::Getid() const
+	INT64 TestSlaveTable::Getid() const
 	{
 		return id;
 	}
 
-	void TestSlave2::Setid(INT64 & value)
-	{
-		id = value;
-	}
-
-	INT64 TestSlave2::Getid2() const
+	std::string TestSlaveTable::Getid2() const
 	{
 		return id2;
 	}
 
-	void TestSlave2::Setid2(INT64 & value)
+	void TestSlaveTable::Setid2(std::string & xxValuexx)
 	{
-		id2 = value;
+		id2 = xxValuexx;
 	}
 
-	void TestSlave2::Plusid2(INT64 & value)
-	{
-		id2 = id2 + value;
-	}
-
-	void TestSlave2::Minusid2(INT64 & value)
-	{
-		id2 = id2 - value;
-	}
-
-	void TestSlave2::id2Include(INT64 & value)
-	{
-		id2 = id2 | value;
-	}
-
-	void TestSlave2::id2Exclude(INT64 & value)
-	{
-		id2 = id2 & (~value);
-	}
-
-	BOOL TestSlave2::Isid2Include(INT64 & value)
-	{
-		return !!id2 & value;
-	}
-
-	TestStruct TestSlave2::Getid3() const
+	TestStruct TestSlaveTable::Getid3() const
 	{
 		return id3;
 	}
 
-	void TestSlave2::Setid3(TestStruct & value)
+	void TestSlaveTable::Setid3(TestStruct & xxValuexx)
 	{
-		id3 = value;
+		id3 = xxValuexx;
+	}
+
+	INT64 TestSlaveTable::Getid4() const
+	{
+		return id4;
+	}
+
+	void TestSlaveTable::Setid4(INT64 & xxValuexx)
+	{
+		id4 = xxValuexx;
+	}
+
+	void TestSlaveTable::Plusid4(INT64 & xxValuexx)
+	{
+		id4 = id4 + xxValuexx;
+	}
+
+	void TestSlaveTable::Minusid4(INT64 & xxValuexx)
+	{
+		id4 = id4 - xxValuexx;
+	}
+
+	void TestSlaveTable::id4Include(INT64 & xxValuexx)
+	{
+		id4 = id4 | xxValuexx;
+	}
+
+	void TestSlaveTable::id4Exclude(INT64 & xxValuexx)
+	{
+		id4 = id4 & (~xxValuexx);
+	}
+
+	BOOL TestSlaveTable::Isid4Include(INT64 & xxValuexx)
+	{
+		return !!id4 & xxValuexx;
 	}
 
 }//Orm

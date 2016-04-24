@@ -20,7 +20,7 @@ namespace Net
 		virtual ~NetHandlerListener( void ){}  
 
 	public:
-		virtual CErrno	Init(const char * pAddress , INT32 nPort , BOOL bResueAddr = TRUE , INT32  nListenerCount = DEFAULT_LISTENER_COUNT);
+		virtual CErrno	Init(const char * pAddress , INT32 nPort , BOOL bResueAddr = FALSE, INT32  nListenerCount = DEFAULT_LISTENER_COUNT);
 		virtual CErrno	Cleanup() override;
 		virtual CErrno	OnMsgRecving(void) override;
 		virtual void	OnAccept(NetSocket socket, sockaddr_in * addr);

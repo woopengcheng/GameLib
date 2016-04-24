@@ -76,6 +76,7 @@ namespace Msg
 		void						EraseAndInsertPeerSession(const SPeerInfo & objInfo);
 		void						InsertPostMsg(INT32 nSessionID, RPCMsgCall * pMsg);
 		void						InsertDelayMsg(INT32 nSessionID, RPCMsgCall * pMsg);
+		BOOL						EraseSendRpc(UINT64 ullMsgID);
 
 	protected:  
 		MapRpcsT					m_mapSendRpcs;   

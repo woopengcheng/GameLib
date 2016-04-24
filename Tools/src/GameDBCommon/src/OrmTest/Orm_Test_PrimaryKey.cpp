@@ -4,7 +4,7 @@ namespace Orm
 {
 	Test_PrimaryKey::Test_PrimaryKey()
 		: id(0)
-		, p1(std::string())
+		, p2(std::string())
 	{
 	}
 
@@ -16,7 +16,7 @@ namespace Orm
 	{ 
 		if(
 			id == val.id&&
-			p1 == val.p1)
+			p2 == val.p2)
 		{
 			return true;
 		}
@@ -89,8 +89,8 @@ namespace Orm
 		builder.append("_T",TableName());
 		if(id != 0)
 			builder.append("id",id);
-		if(p1 != std::string())
-			builder.append("p1",p1);
+		if(p2 != std::string())
+			builder.append("p2",p2);
 		obj = builder.obj();
 	}
 
@@ -114,6 +114,10 @@ namespace Orm
 
 	void Test_PrimaryKey::FromBson(const char* pData,INT32 size)
 	{
+		if(size == 0 || strcmp(pData , "") == 0)
+		{
+			return;
+		}
 		mongo::BSONObj  obj(pData);
 		MsgAssert(obj.objsize() == size , "FromBson error.");
 		FromBson(obj);
@@ -137,9 +141,9 @@ namespace Orm
 				{
 					CUtil::BsonToCpp( id , be);
 				}break;
-			case 691489749377: // p1
+			case 695784716674: // p2
 				{
-					CUtil::BsonToCpp( p1 , be);
+					CUtil::BsonToCpp( p2 , be);
 				}break;
 			}
 		}
@@ -151,7 +155,7 @@ namespace Orm
 		INT64 _result = seed;
 		_result = CUtil::CityHash(&id,sizeof(id),_result);
 		return _result;
-		_result = CUtil::CityHash(&p1,sizeof(p1),_result);
+		_result = CUtil::CityHash(&p2,sizeof(p2),_result);
 		return _result;
 	}
 
@@ -160,19 +164,19 @@ namespace Orm
 		return id;
 	}
 
-	void Test_PrimaryKey::Setid(INT64 & value)
+	void Test_PrimaryKey::Setid(INT64 & xxValuexx)
 	{
-		id = value;
+		id = xxValuexx;
 	}
 
-	std::string Test_PrimaryKey::Getp1() const
+	std::string Test_PrimaryKey::Getp2() const
 	{
-		return p1;
+		return p2;
 	}
 
-	void Test_PrimaryKey::Setp1(std::string & value)
+	void Test_PrimaryKey::Setp2(std::string & xxValuexx)
 	{
-		p1 = value;
+		p2 = xxValuexx;
 	}
 
 }//Orm
