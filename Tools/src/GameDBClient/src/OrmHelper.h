@@ -16,6 +16,7 @@ namespace Client
 	typedef INT32(*OrmHandleHSet)(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & table, std_string & key, std_string & value, Msg::RpcCallbackPtr pCallback/* = NULL*/, UINT16 usPriority/* = 0*/, Msg::EMSG_SYNC_TYPE objSyncType /*= Msg::SYNC_TYPE_SYNC*/);
 	typedef INT32(*OrmHandleHDel)(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & table, std_string & key, Msg::RpcCallbackPtr pCallback/* = NULL*/, UINT16 usPriority/* = 0*/, Msg::EMSG_SYNC_TYPE objSyncType/* = Msg::SYNC_TYPE_SYNC*/);
 	typedef INT32(*OrmHandleHGet)(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & table, std_string & key, Msg::RpcCallbackPtr pCallback/* = NULL*/, UINT16 usPriority/* = 0*/, Msg::EMSG_SYNC_TYPE objSyncType/* = Msg::SYNC_TYPE_SYNC*/);
+	typedef INT32(*OrmHandleHGetKeyVals)(const std::string & pSessionName, Msg::Object objTarget, Msg::Object objSrc, std_string & table, Msg::RpcCallbackPtr pCallback/* = NULL*/, UINT16 usPriority/* = 0*/, Msg::EMSG_SYNC_TYPE objSyncType/* = Msg::SYNC_TYPE_SYNC*/);
 
 	static CErrno OrmInsert(GameDB::Orm * obj, GameDB::EORM_MASK objMask = GameDB::ORM_NONE)
 	{
@@ -38,6 +39,23 @@ namespace Client
 		return GameDB::OrmHelper::OrmQuery<>(obj, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback , objMask);
 	}
 
+	static CErrno OrmQuery(std::string table , INT64 key, Msg::RpcCallbackPtr pCallback = NULL, GameDB::EORM_MASK objMask = GameDB::ORM_NONE)
+	{
+		OrmHandleHGetKeyVals pFunc = rpc_HandleHGetKeyVals;
+		std::string strTable = table;
+		strTable += SLAVE_TABLE_SPECIAL_ID_TAG;
+		strTable += CUtil::itoa(key);
+		return GameDB::OrmHelper::OrmQuery<>(strTable, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback, objMask);
+	}
+
+	static CErrno OrmQuery(std::string table, std::string key, Msg::RpcCallbackPtr pCallback = NULL, GameDB::EORM_MASK objMask = GameDB::ORM_NONE)
+	{
+		OrmHandleHGetKeyVals pFunc = rpc_HandleHGetKeyVals;
+		std::string strTable = table;
+		strTable += SLAVE_TABLE_SPECIAL_ID_TAG;
+		strTable += key;
+		return GameDB::OrmHelper::OrmQuery<>(strTable, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback, objMask);
+	}
 }
 
 

@@ -40,10 +40,11 @@ namespace GameDB
 		virtual void		LoadBson(const char * pData, UINT32 nSize) {};
 
 	public:
-		void SetMasterID(INT64 id) { m_vMasterId = id; }
+		void				SetMasterID(INT64 id) { m_vMasterId = id; }
+		INT64				GetMasterID() { return m_vMasterId; }
 
 	protected:
-		INT64 m_vMasterId;
+		INT64				m_vMasterId;
 	};
 
 	template<>
@@ -61,10 +62,11 @@ namespace GameDB
 		virtual void		FromBson(const char * pData, UINT32 nSize) {};
 
 	public:
-		void SetMasterID(std::string id) { m_vMasterId = id; }
+		void				SetMasterID(std::string id) { m_vMasterId = id; }
+		std::string			GetMasterID() { return m_vMasterId; }
 
 	protected:
-		std::string m_vMasterId;
+		std::string			m_vMasterId;
 	};
 
 

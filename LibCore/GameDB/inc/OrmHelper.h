@@ -103,6 +103,18 @@ namespace GameDB
 			return CErrno::Success();
 		}
 
+		template<typename FUNC, typename NodeName, typename Target, typename Source , typename QFUNC>
+		static CErrno OrmQuery(std::string Table, FUNC func, NodeName nodeName, Target target, Source src, QFUNC qfunc, EORM_MASK objMask = ORM_NONE)
+		{
+			std::string strTable;
+			strTable = Table;
+
+			//5 这里调试直接往服务器写.但是真实情况这么写就会出问题.因为这里会卡住.所以改为异步写
+			func(nodeName, target, src, strTable, qfunc, 0, Msg::SYNC_TYPE_ASYNC);
+
+			return CErrno::Success();
+		}
+
 		static std::string GetTableNameFromBson(const char * data, size_t size)
 		{
 			mongo::BSONObj obj(data);

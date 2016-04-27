@@ -1,4 +1,6 @@
 #include "GRpc.h"
+#include "MsgLib/inc/RPCMsgCall.h"
+#include "OrmHelper.h"
 
 Msg::ObjectMsgCall * Client::GRpc::HandleHGetKeyVals_RpcClient(INT32 nSessionID , Msg::Object objSrc , CUtilChunk & res/* = CUtil::Chunk()*/) 
 { 
@@ -10,12 +12,21 @@ Msg::ObjectMsgCall * Client::GRpc::HandleHGetKeyVals_RpcClient(INT32 nSessionID 
 		INT32 nCount = 0;
 		cs >> nCount;
 
+		Msg::RpcCallbackPtr rpcCallback = GetCallback();
 		std::string strKey;
 		std::string strVal;
 		for (INT32 i = 0;i < nCount;++i)
 		{
 			cs >> strKey >> strVal;
 			gOtherStream("i:" << i << "key:" << strKey << "value:" << strVal);
+			if (rpcCallback)
+			{
+				STableKeyVal obj;
+				obj.strTable = GetInParams()->GetValue<std::string>(0);
+				obj.strKey = strKey;
+				obj.strVal = strVal;
+				rpcCallback->OnCall(&obj);
+			}
 		}
 	}
 	else

@@ -11,7 +11,8 @@ const size_t MAX_DB_TEMP_BUFFER_LENGTH = (64*1024*1024);
 
 #define g_szSystemDatabase (".sys")
 #define g_szSystemUserTable ("user")
-#define SLAVE_SPECIAL_SPLIT	"%"
+#define SLAVE_SPECIAL_SPLIT	"%"				//5 用这个数来标明从数据库的masterID是多少,用来发送给master.
+#define SLAVE_TABLE_SPECIAL_ID_TAG  ","		//5 用来标记从表的数据的.
 
 namespace GameDB
 {	

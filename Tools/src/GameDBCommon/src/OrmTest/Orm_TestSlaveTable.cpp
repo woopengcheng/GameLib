@@ -60,7 +60,7 @@ namespace Orm
 		std::string result;
 		result.reserve(64);
 		result.append(TestSlaveTable::TableName());
-		result.append(".");
+		result.append(SLAVE_TABLE_SPECIAL_ID_TAG);
 		{
 			char tmpbuf[64] = "";
 			CUtil::itoa(tmpbuf,(INT64)id);

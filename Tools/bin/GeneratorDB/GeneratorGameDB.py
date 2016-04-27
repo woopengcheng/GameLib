@@ -855,7 +855,7 @@ def GenerateOrmCppGetTableName(fileOrm , table):
 				fileOrm.write(twoTab + "std::string result;\n")
 				fileOrm.write(twoTab + "result.reserve(64);\n")
 				fileOrm.write(twoTab + "result.append(" + table.name + "::TableName());\n")
-				fileOrm.write(twoTab + "result.append(\".\");\n")
+				fileOrm.write(twoTab + "result.append(SLAVE_TABLE_SPECIAL_ID_TAG);\n")
 				fileOrm.write(twoTab + "{\n") 
 				
 				if field.type.lower() == "std::string".lower() or field.type.lower() == "std_string".lower():

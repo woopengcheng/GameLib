@@ -677,6 +677,7 @@ namespace Client
 		Orm::TestSlave * pTest = pCallback->m_pCollection->GetTestSlave();
 		Client::OrmQuery(pTest, pCallback);
 		Client::OrmQuery(pCallback->m_pCollection->GetTestSlaveFrom(), pCallback);
+		Client::OrmQuery(Orm::TestSlaveTable::TableName(), pCallback->m_pCollection->GetMasterID() , pCallback);
 // 
 // 		GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = s_pCollection->GetTestSlaveTable();
 // 		for (int i = 0; i < objItems.size(); ++i)
