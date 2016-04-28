@@ -21,7 +21,7 @@ Msg::ObjectMsgCall * Client::GRpc::HandleHGetKeyVals_RpcClient(INT32 nSessionID 
 			gOtherStream("i:" << i << "key:" << strKey << "value:" << strVal);
 			if (rpcCallback)
 			{
-				STableKeyVal obj;
+				GameDB::STableKeyVal obj;
 				obj.strTable = GetInParams()->GetValue<std::string>(0);
 				obj.strKey = strKey;
 				obj.strVal = strVal;

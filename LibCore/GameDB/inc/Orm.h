@@ -8,14 +8,16 @@ namespace GameDB
 {
 	//5 Ä¬ÈÏhashÖÖ×Ó
 #define DEFAULT_HASH_SEED 0
-
+	
 	class DLL_EXPORT Orm
 	{
 	public:
-		Orm(){}
+		Orm()
+			: m_syncState(SYNC_STATE_INVALID)
+		{}
 		virtual ~Orm(){}
-
-	public: 
+				
+	public:
 		virtual std::string GetKey() = 0;
 		virtual std::string GetRawKey() = 0;
 		virtual std::string GetTableName() = 0;
@@ -40,6 +42,13 @@ namespace GameDB
 		virtual void		SetMasterID(const std::string & strID) = 0;
 		virtual INT64		GetMasterID() = 0;
 		virtual std::string	GetMasterStrID() = 0;  
+
+	public:
+		EORM_SYNC_STATE		GetSyncState() const { return m_syncState; }
+		void				SetSyncState(GameDB::EORM_SYNC_STATE val) { m_syncState = val; }
+
+	private:
+		EORM_SYNC_STATE		m_syncState;
 	};
 }
 

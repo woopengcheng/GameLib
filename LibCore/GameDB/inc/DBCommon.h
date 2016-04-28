@@ -44,6 +44,21 @@ namespace GameDB
 
 	//5 ***************************************************************
 
+	enum EORM_SYNC_STATE
+	{
+		SYNC_STATE_INVALID,
+		SYNC_STATE_START,
+		SYNC_STATE_SYNCING,
+		SYNC_STATE_END,
+
+	};
+
+	struct STableKeyVal
+	{
+		std::string strTable;
+		std::string strKey;
+		std::string strVal;
+	};
 
 	static void fnCustomCacheDeleter(const Slice& objKey,void* pValue) 
 	{

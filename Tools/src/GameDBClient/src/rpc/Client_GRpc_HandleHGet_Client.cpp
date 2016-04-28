@@ -9,7 +9,7 @@ Msg::ObjectMsgCall * Client::GRpc::HandleHGet_RpcClient(INT32 nSessionID , Msg::
 	Msg::RpcCallbackPtr rpcCallback = GetCallback();
 	if (rpcCallback)
 	{
-		STableKeyVal obj;
+		GameDB::STableKeyVal obj;
 		obj.strTable = GetInParams()->GetValue<std::string>(0);
 		obj.strKey = GetInParams()->GetValue<std::string>(1);
 		obj.strVal = value;

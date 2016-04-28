@@ -636,48 +636,14 @@ namespace Client
 
 	void ClientCommands::pfnHandleOrmCollectionQuery(DBClient * pClient, std::vector<std::string> & objParams)
 	{
-		class TestSlaveQuery : public Msg::RpcCallback
-		{
-		public:
-			TestSlaveQuery()
-			{
-				m_pCollection = new Orm::TestSlaveCollection;
-				m_pCollection->SetMasterID(1);
-			}
-			~TestSlaveQuery()
-			{
-				SAFE_DELETE(m_pCollection);
-			}
-
-		public:
-			virtual INT32 OnCall(void * pContext)
-			{
-				STableKeyVal * pObj = (STableKeyVal *)pContext;
-				if (m_pCollection != NULL && pObj != NULL)
-				{
-					m_pCollection->LoadBson(pObj->strVal.c_str(), pObj->strVal.length());
-					gDebugStream("orm query testslave.TestSlave_id=" << m_pCollection->GetTestSlave()->Getvalue() << ":TestSlaveFrom_id=" << m_pCollection->GetTestSlaveFrom()->Getvalue());
-
-					GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = m_pCollection->GetTestSlaveTable();
-					for (int i = 0; i < objItems.size(); ++i)
-					{
-						gDebugStream("orm query slavetable_id=" << objItems[i]->Getid() << ":slavetable_id=" << objItems[i]->Getid2() << ":id3=" << objItems[i]->Getid3().p5[1] << ":slavetable_id4=" << objItems[i]->Getid4());
-					}
-				}
-				return 0;
-			}
-
-		public:
-			Orm::TestSlaveCollection * m_pCollection;
-		};
-		DECLARE_BOOST_POINTERS(TestSlaveQuery);
-		TestSlaveQueryPtr pCallback(new TestSlaveQuery);
-
+		Orm::TestSlaveCollection * pCollection = new Orm::TestSlaveCollection; //5 第一步需要创建对象收集器,并告诉收集器目前masterid是多少.因为如果需要创建新对象,需要将masterid传入.
+		pCollection->SetMasterID(1);
+		
 		//5 测试主slave
-		Orm::TestSlave * pTest = pCallback->m_pCollection->GetTestSlave();
-		Client::OrmQuery(pTest, pCallback);
-		Client::OrmQuery(pCallback->m_pCollection->GetTestSlaveFrom(), pCallback);
-		Client::OrmQuery(Orm::TestSlaveTable::TableName(), pCallback->m_pCollection->GetMasterID() , pCallback);
+		Orm::TestSlave * pTest = pCollection->GetTestSlave();
+		Client::OrmQuery(pCollection , pTest);
+		Client::OrmQuery(pCollection, pCollection->GetTestSlaveFrom());
+		Client::OrmQuery(pCollection, Orm::TestSlaveTable::TableName(),pCollection->GetMasterID());
 // 
 // 		GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = s_pCollection->GetTestSlaveTable();
 // 		for (int i = 0; i < objItems.size(); ++i)
