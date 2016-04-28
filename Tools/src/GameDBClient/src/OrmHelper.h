@@ -30,7 +30,7 @@ namespace Client
 	}
 	static CErrno OrmQuery(GameDB::OrmCollectionBase * pCollection , GameDB::Orm * pObj, GameDB::EORM_MASK objMask = GameDB::ORM_NONE)
 	{
-		if (!pCollection || !pObj || (pObj->GetSyncState() != GameDB::SYNC_STATE_INVALID || pObj->GetSyncState() != GameDB::SYNC_STATE_END))
+		if (!pCollection || !pObj || (pObj->GetSyncState() != GameDB::SYNC_STATE_INVALID && pObj->GetSyncState() != GameDB::SYNC_STATE_END))
 		{
 			return CErrno::Failure();
 		}
@@ -78,18 +78,19 @@ namespace Client
 
 	static CErrno OrmQuery(GameDB::OrmCollectionBase * pCollection, GameDB::EORM_MASK objMask = GameDB::ORM_NONE)
 	{
-		if (!pCollection)
-		{
-			return CErrno::Failure();
-		}
-		pCollection->OrmQueryInsertTable(table);
-		GameDB::CollectionQueryPtr pCallback(new GameDB::CollectionQuery(pCollection));
-
-		OrmHandleHGetKeyVals pFunc = rpc_HandleHGetKeyVals;
-		std::string strTable = table;
-		strTable += SLAVE_TABLE_SPECIAL_ID_TAG;
-		strTable += key;
-		return GameDB::OrmHelper::OrmQuery<>(strTable, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback, objMask);
+		return CErrno::Failure();
+// 		if (!pCollection)
+// 		{
+// 			return CErrno::Failure();
+// 		}
+// 		pCollection->OrmQueryInsertTable(table);
+// 		GameDB::CollectionQueryPtr pCallback(new GameDB::CollectionQuery(pCollection));
+// 
+// 		OrmHandleHGetKeyVals pFunc = rpc_HandleHGetKeyVals;
+// 		std::string strTable = table;
+// 		strTable += SLAVE_TABLE_SPECIAL_ID_TAG;
+// 		strTable += key;
+// 		return GameDB::OrmHelper::OrmQuery<>(strTable, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback, objMask);
 	}
 }
 

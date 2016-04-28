@@ -71,6 +71,7 @@ namespace Client
 		m_mapCommands["ocu"] = &ClientCommands::pfnHandleOrmCollectionUpdate;
 		m_mapCommands["ocd"] = &ClientCommands::pfnHandleOrmCollectionDelete;
 		m_mapCommands["ocq"] = &ClientCommands::pfnHandleOrmCollectionQuery;
+		m_mapCommands["ocs"] = &ClientCommands::pfnHandleOrmCollectionShow;
 	} 
 
 	std::string ClientCommands::GetNearestCommand(const std::string & strCommand , INT32 nCount) const
@@ -636,29 +637,39 @@ namespace Client
 
 	void ClientCommands::pfnHandleOrmCollectionQuery(DBClient * pClient, std::vector<std::string> & objParams)
 	{
-		Orm::TestSlaveCollection * pCollection = new Orm::TestSlaveCollection; //5 第一步需要创建对象收集器,并告诉收集器目前masterid是多少.因为如果需要创建新对象,需要将masterid传入.
-		pCollection->SetMasterID(1);
+		INT64 id = 1;
+		if (!s_pCollection)
+		{
+			s_pCollection = new Orm::TestSlaveCollection; //5 第一步需要创建对象收集器,并告诉收集器目前masterid是多少.因为如果需要创建新对象,需要将masterid传入.
+			s_pCollection->SetMasterID(id);
+		} 
+		else
+		{
+			s_pCollection->CleanupTestSlave();
+			s_pCollection->CleanupTestSlaveFrom();
+			s_pCollection->GetTestSlaveTable().clear();
+		}
 		
 		//5 测试主slave
-		Orm::TestSlave * pTest = pCollection->GetTestSlave();
-		Client::OrmQuery(pCollection , pTest);
-		Client::OrmQuery(pCollection, pCollection->GetTestSlaveFrom());
-		Client::OrmQuery(pCollection, Orm::TestSlaveTable::TableName(),pCollection->GetMasterID());
-// 
-// 		GameDB::OrmVectorEx<Orm::TestSlaveTable  *> & objItems = s_pCollection->GetTestSlaveTable();
-// 		for (int i = 0; i < objItems.size(); ++i)
-// 		{
-// 			Client::OrmDelete(objItems[i]);
-// 		}
-// 
-// 		//5 测试slaveFrom
-// 		Orm::TestSlaveFrom * pSlaveFrom = s_pCollection->GetTestSlaveFrom();
-// 		if (pSlaveFrom)
-// 		{
-// 			Client::OrmDelete(pSlaveFrom);
-// 			gDebugStream("Delete slavefrom:id=" << pSlaveFrom->Getid() << ":key=" << pSlaveFrom->GetKey());
-// 		}
+		Orm::TestSlave * pTest = s_pCollection->GetTestSlave();
+		Client::OrmQuery(s_pCollection, pTest);
+		Client::OrmQuery(s_pCollection, s_pCollection->GetTestSlaveFrom());
+		Client::OrmQuery(s_pCollection, Orm::TestSlaveTable::TableName(), s_pCollection->GetMasterID());
+
 		gDebugStream("pfnHandleOrmCollectionQuery");
+	}
+
+	void ClientCommands::pfnHandleOrmCollectionShow(DBClient * pClient, std::vector<std::string> & objParams)
+	{
+		INT64 id = 1;
+		if (!s_pCollection)
+		{
+			s_pCollection = new Orm::TestSlaveCollection; //5 第一步需要创建对象收集器,并告诉收集器目前masterid是多少.因为如果需要创建新对象,需要将masterid传入.
+			s_pCollection->SetMasterID(id);
+		}
+		std::string strID = "2";
+		int value = s_pCollection->GetTestSlaveTable(strID) ? s_pCollection->GetTestSlaveTable(strID)->id3.p5.size() : -1;
+		gDebugStream("pfnHandleOrmCollectionShow,masterID=" << s_pCollection->GetMasterID() << "slaveFromValue=" << s_pCollection->GetTestSlaveFrom()->Getvalue() << ":testSlave=" << s_pCollection->GetTestSlave()->Getvalue() << ":slaveTable=" << value);
 	}
 
 	void ClientCommands::pfnHandleZDel(DBClient * pClient ,  std::vector<std::string> & objParams)

@@ -75,6 +75,8 @@ namespace Client
 		static void		pfnHandleOrmCollectionInsert(DBClient * pClient ,  std::vector<std::string> & objParams);
 		static void		pfnHandleOrmCollectionDelete(DBClient * pClient, std::vector<std::string> & objParams);
 		static void		pfnHandleOrmCollectionQuery(DBClient * pClient, std::vector<std::string> & objParams);
+		static void		pfnHandleOrmCollectionShow(DBClient * pClient, std::vector<std::string> & objParams);
+
 	private:
 		CollectionClientCommandsT m_mapCommands;
 	};

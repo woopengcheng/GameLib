@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-25 00:28:58
+Date		:	2016-04-29 00:32:33
 Description	:	orm²Ù×÷¼¯ºÏ.
 ************************************/
 #ifndef __Orm_Orm_TestSlaveTable_h__
@@ -67,7 +67,7 @@ namespace Orm
 			std::string Getid2() const;
 			void Setid2(std::string& xxValuexx);
 
-			TestStruct Getid3() const;
+			const TestStruct & Getid3() const;
 			void Setid3(TestStruct& xxValuexx);
 
 			INT64 Getid4() const;

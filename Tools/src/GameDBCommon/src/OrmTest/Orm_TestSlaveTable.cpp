@@ -209,7 +209,7 @@ namespace Orm
 		id2 = xxValuexx;
 	}
 
-	TestStruct TestSlaveTable::Getid3() const
+	const TestStruct & TestSlaveTable::Getid3() const
 	{
 		return id3;
 	}

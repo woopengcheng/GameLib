@@ -85,16 +85,8 @@ namespace Orm
 			if(keyHash != hash){ continue; }
 			switch(hash)
 			{
-				case 880468309535: // TestSlaveTable::id
+				case 1095218475535: // TestSlaveTable::id2
 				{
-					if (be.isNumber())
-					{
-						CUtil::BsonToCpp( intValue , be);
-					}
-					else
-					{
-						CUtil::BsonToCpp( strValue , be);
-					}
 					return TRUE;
 				}break;
 			}

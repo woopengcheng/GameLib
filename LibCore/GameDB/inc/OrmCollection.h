@@ -1,6 +1,7 @@
 #ifndef __gamedb_orm_collection_h__
 #define __gamedb_orm_collection_h__
 #include "GameDB/inc/DBCommon.h"
+#include "GameDB/inc/OrmHelper.h"
 #include "MsgLib/inc/RPCMsgCall.h"
 #include <string>
 #include "bson/bson.h"
@@ -91,7 +92,11 @@ namespace GameDB
 				if (m_pCollection != NULL && pObj != NULL)
 				{
 					m_pCollection->LoadBson(pObj->strVal.c_str(), (UINT32)pObj->strVal.length());
-					m_pCollection->OrmQueryDeleteTable(pObj->strTable);
+
+					mongo::BSONObj obj(pObj->strVal.c_str());
+					Assert_ReF1(obj.objsize() == pObj->strVal.length());
+					std::string metaname = GameDB::OrmHelper::GetTableNameFromBson(obj);
+					m_pCollection->OrmQueryDeleteTable(metaname);
 				}
 			}
 			return 0;

@@ -88,12 +88,12 @@ namespace Orm
 		}
 	}
 
-	TestSlaveTable * TestSlaveCollection::GetTestSlaveTable(INT64 id)
+	TestSlaveTable * TestSlaveCollection::GetTestSlaveTable(const std::string & id2)
 	{
 		GameDB::OrmVectorEx<TestSlaveTable *>::iterator iter = m_vecTestSlaveTable.begin();
 		for (;iter != m_vecTestSlaveTable.end();++iter)
 		{
-			if ((*iter)->Getid() == id)	
+			if ((*iter)->Getid2() == id2)	
 			{
 				return *iter;
 			}
@@ -211,8 +211,8 @@ namespace Orm
 				{
 					INT64 iID = -1;
 					std::string  strValue = "";
-					Orm::GetSlaveTableMasterIDFromBson(obj, TestSlaveTable::TableName() ,"id",  iID, strValue);
-					TestSlaveTable * pTable = GetTestSlaveTable(iID);
+					Orm::GetSlaveTableMasterIDFromBson(obj, TestSlaveTable::TableName() ,"id2",  iID, strValue);
+					TestSlaveTable * pTable = GetTestSlaveTable(strValue);
 					if(pTable)
 					{
 						pTable->FromBson(obj);

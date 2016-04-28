@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-25 00:28:58
+Date		:	2016-04-29 00:32:34
 Description	:	数据库中定义的数据.
 ************************************/
 #ifndef __Orm_orm_structs_h__

@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-25 00:28:58
+Date		:	2016-04-29 00:32:34
 Description	:	针对orm子表操作的集合类.
 ************************************/
 #ifndef __Orm_Orm_TestSlave_collection_h__
@@ -67,7 +67,7 @@ namespace Orm
 			BOOL DeleteTestSlaveTable(TestSlaveTable * pValue , bool bFree = false);
 			void LoadTestSlaveTable(mongo::BSONObj & obj);
 			void SaveTestSlaveTable(mongo::BSONArrayBuilder & bab);
-			TestSlaveTable * GetTestSlaveTable(INT64 id);
+			TestSlaveTable * GetTestSlaveTable(const std::string & id2);
 		
 		protected:
 			TestSlaveFrom	 * m_pTestSlaveFrom;
