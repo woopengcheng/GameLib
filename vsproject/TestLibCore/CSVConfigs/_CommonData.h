@@ -2,47 +2,25 @@
 /************************************
 FileName	:	_CommonData.h
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-04-11 23:20:11
+Date		:	2016-04-28 14:51:27
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config__CommonData_define_h__
 #define __Config__CommonData_define_h__
-#include "_CommonDataLoad.h"
-#include "../Condition.h"
-#include "CUtil/inc/CSVConfig.h"
+#include "_CommonDataBase.h"
+
 namespace Config
 {
 
-	struct S_CommonData
-	{
-		INT32							id;	//暂时无用
-		std::map<std::string , bool>		boolCommon;	//bool公用值
-		std::map<std::string , bool>		boolCommon2;	//bool公用值2
-		std::map<std::string , INT32>		intCommon;	//int公用值
-		std::map<std::string , INT64>		int64Common;	//int64公用值
-		std::map<std::string , double>		doubleCommon;	//double公用值
-		std::map<std::string , std::string>		stringCommon;	//string公用值
-		std::map<std::string , Timer::Date>		dateCommon;	//date公用值
-	};
-
-
-	class _CommonData: public CUtil::CSVConfig
+	class _CommonData: public _CommonDataBase
 	{
 	public:
-		typedef std_unordered_map<INT32 , S_CommonData> MapConfigsT;
-
-	public:
-		bool				LoadFrom(const std::string& filepath);
-		S_CommonData *	Get_CommonData(INT32 id , std::string strFilePath = "");
-
-	public:
-
-
+		virtual BOOL	OnLoad();
+		
 	private:
-		MapConfigsT m_mapConfigs;
 
 	};
 	extern _CommonData * g_p_CommonData;

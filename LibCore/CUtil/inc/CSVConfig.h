@@ -11,8 +11,10 @@ namespace CUtil
 			: m_bLoaded(false)
 		{}
 		virtual ~CSVConfig() {}
+
 	public:
 		bool			IsLoaded() { return m_bLoaded; }
+		virtual BOOL	OnLoad() { return FALSE; }
 
 	protected:
 		bool			m_bLoaded;

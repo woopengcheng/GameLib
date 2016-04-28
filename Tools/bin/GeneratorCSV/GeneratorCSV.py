@@ -96,6 +96,7 @@ g_notEqual = "!="
 
 g_csvFileSuffix = ".tabcsv"
 g_configPrefix = "S"
+g_configSuffix = "Base"
 g_loadConfigSuffix = "Load"
 g_xlsNamespace = "Config"
 g_conditionTag = "condition"
@@ -870,6 +871,8 @@ def GenerateCPPFiles(bServer):
 	for sheet , item in g_xlsRecords.items():
 		GenerateConfigLoadHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
 		GenerateConfigLoadCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+		GenerateConfigBaseHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+		GenerateConfigBaseCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
 		GenerateConfigHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
 		GenerateConfigCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
 	GenerateConfigManagerCPP(bServer)
@@ -948,7 +951,7 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css
 	WriteFileDescription(fileWrite , filename + ".h" , "csv配置文件")
 	fileWrite.write("#ifndef __" + filename + "_define_h__\n")
 	fileWrite.write("#define __" + filename + "_define_h__\n") 
-	fileWrite.write("#include \"CUtil/inc/Common.h \"\n\n") 
+	fileWrite.write("#include \"CUtil/inc/Common.h \"\n") 
 	fileWrite.write("#include \"Timer/inc/Date.h \"\n\n") 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n") 
@@ -1242,15 +1245,15 @@ def GenerateStructDateByType(childItem , bArray):
 		return GenerateStructDateByType(keyType , bArray)
 		
 	return strVal
-def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
+
+def GenerateConfigBaseHeader(bServer , filename , types , datas , comments , css):
 	if GetCPPFilePath(bServer) == "":
 		return
-	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".h"
-	if CheckNeedDelete(outputPath , types , datas ):
+	newFileName = filename + g_configSuffix
+	outputPath = GetCPPFilePath(bServer) + os.sep + newFileName + ".h"
+
+	if os.path.exists(outputPath): 
 		os.remove(outputPath)
-		#return
-	#if os.path.exists(outputPath): 
-	#	os.remove(outputPath)
 
 	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	
@@ -1259,13 +1262,18 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 
 	strTitle = MakeTitle(types , datas)
 	fileWrite.write(strTitle)	
-	WriteFileDescription(fileWrite , filename + ".h" , "csv读取文件")
-	fileWrite.write("#ifndef __" + g_xlsNamespace + "_" + filename + "_define_h__\n")
-	fileWrite.write("#define __" + g_xlsNamespace + "_" + filename +  "_define_h__\n") 
+	WriteFileDescription(fileWrite , newFileName + ".h" , "csv读取文件")
+	fileWrite.write("#ifndef __" + g_xlsNamespace + "_" + newFileName + "_define_h__\n")
+	fileWrite.write("#define __" + g_xlsNamespace + "_" + newFileName +  "_define_h__\n") 
 	fileWrite.write("#include \"" + loadConfig + ".h\"\n") 
 	fileWrite.write("#include \"../Condition.h\"\n") 
-	fileWrite.write("#include \"CUtil/inc/CSVConfig.h\"\n") 
+	fileWrite.write("#include \"CUtil/inc/CSVConfig.h\"\n\n") 
 
+
+	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
+	fileWrite.write("{\n\n") 
+
+	sameParaentName = collections.OrderedDict()
 	for index , item in enumerate(types):
 		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
 		if not CheckCSType(css[index] , bServer):
@@ -1275,17 +1283,18 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 			tmp = collections.OrderedDict()
 			MakeDicKeyUpper(g_xlsRecords , tmp)
 			parentName = GetDicKeyByUpper(g_xlsRecords , item)
-			fileWrite.write("#include \"" + parentName + ".h\"\n") 
-
-	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
-	fileWrite.write("{\n\n") 
+			if parentName not in sameParaentName:
+				fileWrite.write(oneTab + "struct " + g_configPrefix + parentName + ";\n")
+				sameParaentName[parentName] = parentName
+	
+	fileWrite.write("\n") 
 
 	fileWrite.write(oneTab + "struct " + dataConfig + "\n") 
 	fileWrite.write(oneTab + "{\n") 	 
 	GenerateStructData(bServer , fileWrite , types , datas , comments , css , False)
 	fileWrite.write(oneTab + "};\n\n\n") 
 			
-	fileWrite.write(oneTab + "class " + filename + ": public CUtil::CSVConfig\n") 
+	fileWrite.write(oneTab + "class " + newFileName + ": public CUtil::CSVConfig\n") 
 	fileWrite.write(oneTab + "{\n") 
 	
 	fileWrite.write(oneTab + "public:\n")
@@ -1295,10 +1304,10 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	fileWrite.write(twoTab + dataConfig + " *" + oneTab + "Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id , std::string strFilePath = \"\");\n\n")
 	GenerateConditionFunc(fileWrite , bServer , filename , types , datas , comments , css)
 	fileWrite.write(oneTab + "private:\n")
-	fileWrite.write(twoTab + "MapConfigsT m_mapConfigs;\n\n")
+	fileWrite.write(twoTab + "MapConfigsT			m_mapConfigs;\n\n")
 	
 	fileWrite.write(oneTab + "};\n") 			
-	fileWrite.write(oneTab + "extern " + filename + " * " + g_globaleNamePrefix + filename + ";\n") 
+#	fileWrite.write(oneTab + "extern " + filename + " * " + g_globaleNamePrefix + filename + ";\n") 
 
 
 	fileWrite.write("}\n\n" + "#endif// end" + "  __" + g_xlsNamespace + "_" + filename + "_define_h__\n") 
@@ -1318,12 +1327,13 @@ def GenerateConditionFunc(fileWrite , bServer , filename , types , datas , comme
 		fileWrite.write("\n\n")
 
 def GenerateExpressionFuncName(bCPP , fileWrite , filename , index , expressions):
+	newFileName = filename + g_configSuffix
 	objs = []
 	GetExpressionsObjects(expressions , objs)
 	if not bCPP:
 		fileWrite.write(twoTab + "bool" + fourTab + index + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id")
 	else:
-		fileWrite.write(oneTab + "bool " + filename + "::" + index + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id")
+		fileWrite.write(oneTab + "bool " + newFileName + "::" + index + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id")
 		
 	for objIndex , obj in enumerate(objs):
 		if len(obj.name) > 0:
@@ -1342,15 +1352,14 @@ def GenerateExpressionFuncName(bCPP , fileWrite , filename , index , expressions
 	else:
 		fileWrite.write(")\n")
 		
-def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
+def GenerateConfigBaseCpp(bServer , filename , types , datas , comments , css):
 	if GetCPPFilePath(bServer) == "":
 		return
-	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
-	if CheckNeedDelete(outputPath , types , datas ):
+
+	newFileName = filename + g_configSuffix
+	outputPath = GetCPPFilePath(bServer) + os.sep + newFileName + ".cpp"
+	if os.path.exists(outputPath): 
 		os.remove(outputPath)
-		#return
-	#if os.path.exists(outputPath): 
-	#	os.remove(outputPath)
 
 	loadConfig = filename + g_loadConfigSuffix
 	dataConfig = g_configPrefix + filename
@@ -1358,12 +1367,28 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	
 	strTitle = MakeTitle(types , datas)
 	fileWrite.write(strTitle)	
-	WriteFileDescription(fileWrite , filename + ".cpp" , "csv读取数据文件实现")
-	fileWrite.write("#include \"" + filename + ".h\"\n") 
-	fileWrite.write("#include \"LogLib/inc/Log.h\"\n\n") 
+	WriteFileDescription(fileWrite , newFileName + ".cpp" , "csv读取数据文件实现")
+	fileWrite.write("#include \"" + newFileName + ".h\"\n") 
+	fileWrite.write("#include \"LogLib/inc/Log.h\"\n") 
+
+	sameParaentName = collections.OrderedDict()
+	for index , item in enumerate(types):
+		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
+		if not CheckCSType(css[index] , bServer):
+			continue
+		item_type = GetType(item)
+		if item_type == g_configType:
+			tmp = collections.OrderedDict()
+			MakeDicKeyUpper(g_xlsRecords , tmp)
+			parentName = GetDicKeyByUpper(g_xlsRecords , item)
+			if parentName not in sameParaentName:
+				sameParaentName[parentName] = parentName
+				fileWrite.write("#include \"" + parentName + ".h\"\n") 
+	fileWrite.write("\n") 
+
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n") 
-	fileWrite.write(oneTab + "bool " + filename + "::LoadFrom(const std::string & filepath)\n") 
+	fileWrite.write(oneTab + "bool " + newFileName + "::LoadFrom(const std::string & filepath)\n") 
 	fileWrite.write(oneTab + "{\n") 
 	
 	fileWrite.write(twoTab + "if (m_bLoaded)\n") 
@@ -1441,7 +1466,7 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	fileWrite.write(twoTab + "return true;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 			
-	fileWrite.write(oneTab + dataConfig + " * " + filename + "::Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id , std::string strFilePath/* = \"\"*/)\n")
+	fileWrite.write(oneTab + dataConfig + " * " + newFileName + "::Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id , std::string strFilePath/* = \"\"*/)\n")
 	fileWrite.write(oneTab + "{\n") 
 	fileWrite.write(twoTab + "if (!m_bLoaded)\n") 
 	fileWrite.write(twoTab + "{\n") 
@@ -1458,7 +1483,7 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 
 	GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , comments , css)
 
-	fileWrite.write(oneTab + filename + " * " + g_globaleNamePrefix + filename + " = NULL;\n") 
+	#fileWrite.write(oneTab + filename + " * " + g_globaleNamePrefix + filename + " = NULL;\n") 
 	fileWrite.write("}\n\n") 
 	
 	fileWrite.close()
@@ -1507,6 +1532,97 @@ def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , co
 
 			fileWrite.write(twoTab + "return true;\n")
 			fileWrite.write(oneTab + "}\n\n") 
+
+def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
+	if GetCPPFilePath(bServer) == "":
+		return
+	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".h"
+	#if CheckNeedDelete(outputPath , types , datas ):
+	#	os.remove(outputPath)
+		#return
+	if os.path.exists(outputPath):
+		return
+
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
+	
+	loadConfig = filename + g_loadConfigSuffix
+	dataConfig = g_configPrefix + filename
+
+	strTitle = MakeTitle(types , datas)
+	fileWrite.write(strTitle)	
+	WriteFileDescription(fileWrite , filename + ".h" , "csv读取文件")
+	fileWrite.write("#ifndef __" + g_xlsNamespace + "_" + filename + "_define_h__\n")
+	fileWrite.write("#define __" + g_xlsNamespace + "_" + filename +  "_define_h__\n") 
+	#fileWrite.write("#include \"" + loadConfig + ".h\"\n") 
+	#fileWrite.write("#include \"../Condition.h\"\n") 
+	#fileWrite.write("#include \"CUtil/inc/CSVConfig.h\"\n\n") 
+	fileWrite.write("#include \"" + filename + g_configSuffix + ".h\"\n\n") 
+
+
+	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
+	fileWrite.write("{\n\n") 
+
+	fileWrite.write(oneTab + "class " + filename + ": public " + filename + g_configSuffix + "\n") 
+	fileWrite.write(oneTab + "{\n") 
+	
+	fileWrite.write(oneTab + "public:\n")
+	fileWrite.write(twoTab + "virtual BOOL	OnLoad();\n")
+	fileWrite.write(twoTab + "\n")
+	fileWrite.write(oneTab + "private:\n\n")
+	
+	fileWrite.write(oneTab + "};\n") 			
+	fileWrite.write(oneTab + "extern " + filename + " * " + g_globaleNamePrefix + filename + ";\n") 
+
+
+	fileWrite.write("}\n\n" + "#endif// end" + "  __" + g_xlsNamespace + "_" + filename + "_define_h__\n") 
+	
+	fileWrite.close()	 	
+
+def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
+	if GetCPPFilePath(bServer) == "":
+		return
+	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
+	#if CheckNeedDelete(outputPath , types , datas ):
+	#	os.remove(outputPath)
+		#return
+	if os.path.exists(outputPath):
+		return
+
+	loadConfig = filename + g_loadConfigSuffix
+	dataConfig = g_configPrefix + filename
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
+	
+	strTitle = MakeTitle(types , datas)
+	fileWrite.write(strTitle)	
+	WriteFileDescription(fileWrite , filename + ".cpp" , "csv读取数据文件实现")
+	fileWrite.write("#include \"" + filename + ".h\"\n") 
+	fileWrite.write("#include \"LogLib/inc/Log.h\"\n") 
+
+	sameParaentName = collections.OrderedDict()
+	for index , item in enumerate(types):
+		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
+		if not CheckCSType(css[index] , bServer):
+			continue
+		item_type = GetType(item)
+		if item_type == g_configType:
+			tmp = collections.OrderedDict()
+			MakeDicKeyUpper(g_xlsRecords , tmp)
+			parentName = GetDicKeyByUpper(g_xlsRecords , item)
+			if parentName not in sameParaentName:
+				sameParaentName[parentName] = parentName
+				fileWrite.write("#include \"" + parentName + ".h\"\n") 
+	fileWrite.write("\n") 
+
+	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
+	fileWrite.write("{\n") 
+	fileWrite.write(oneTab + "//tools after data load success , call OnLoad;\n") 
+	fileWrite.write(oneTab + "BOOL " + filename + "::OnLoad()\n") 
+	fileWrite.write(oneTab + "{\n") 
+	fileWrite.write(twoTab + "return FALSE;\n") 
+	fileWrite.write(oneTab + "}\n") 
+	fileWrite.write("}\n\n") 
+	
+	fileWrite.close()
 
 def GetExpressionsObjects(expressions , objs):
 	for indexExpression , expression in enumerate(expressions):

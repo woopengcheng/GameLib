@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	ConfigManager.cpp
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-04-11 23:20:11
+Date		:	2016-04-28 14:59:17
 Description	:	ConfigManager数据管理文件实现
 ************************************/
 #include "ConfigManager.h"

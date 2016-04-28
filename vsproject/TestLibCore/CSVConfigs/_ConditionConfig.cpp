@@ -2,10 +2,10 @@
 /************************************
 FileName	:	_ConditionConfig.cpp
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-04-11 23:20:11
+Date		:	2016-04-28 14:51:27
 Description	:	csv读取数据文件实现
 ************************************/
 #include "_ConditionConfig.h"
@@ -13,47 +13,10 @@ Description	:	csv读取数据文件实现
 
 namespace Config
 {
-	bool _ConditionConfig::LoadFrom(const std::string & filepath)
+	//tools after data load success , call OnLoad;
+	BOOL _ConditionConfig::OnLoad()
 	{
-		if (m_bLoaded)
-		{
-			return false;
-		}
-		Config::_ConditionConfigLoad loadConfig;
-		MsgAssert_Re0(loadConfig.LoadFrom(filepath + "_ConditionConfig.tabcsv") , "Error _ConditionConfigLoadFrom " << filepath + "_ConditionConfig.tabcsv");
-
-		for(size_t i = 0; i < loadConfig.Count(); ++i)
-		{
-			Config::S_ConditionConfigLoad& config = loadConfig.Get(i);
-			Config::S_ConditionConfig data;
-			data.nConditionID = config.nConditionID;
-			data.strServerCondition = config.strServerCondition;
-			data.strServerAction = config.strServerAction;
-			data.strClientCondition = config.strClientCondition;
-			data.strClientAction = config.strClientAction;
-			m_mapConfigs.insert(std::make_pair(data.nConditionID,data));
-		}
-
-		m_bLoaded = true;
-		return true;
+		return FALSE;
 	}
-
-	S_ConditionConfig * _ConditionConfig::Get_ConditionConfig(INT32 id , std::string strFilePath/* = ""*/)
-	{
-		if (!m_bLoaded)
-		{
-			LoadFrom(strFilePath);
-		}
-		MapConfigsT::iterator iter = m_mapConfigs.find(id);
-		if(iter == m_mapConfigs.end())
-		{
-			gWarniStream( "_ConditionConfig::Get_ConditionConfig NotFound " << id);
-			return NULL;
-		}
-
-		return &iter->second;
-	}
-
-	_ConditionConfig * g_p_ConditionConfig = NULL;
 }
 

@@ -1,20 +1,25 @@
-﻿/************************************
-FileName	:	ActivityConfigLoad.h
+﻿// attention dont't change this line:std::string ActivityId;std::string ActivityName;INT32 ActivityLevelHigh;bool IsShowEntrance;std::vector<std::string> EntranceIcon;bool IsShowInterface;std::vector<std::string> InterfaceIcon;INT32 StartTimeWeek;INT32 EndTimeWeek;INT32 StartTimeDate;INT32 EndTimeDate;std::string StartTime;std::string EndTime;INT32 Description;std::string RewardIcon;Timer::Date testdate;testDateStructTimer::Date begin;Timer::Date end;std_unordered_map<INT64 , SActionConfig *> actionConfig;std::vector<Timer::Date> dateArray;ActionConfig testConfig;ActionConfig testConfig2;std::map<std::string , INT64> dateCommon;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std::string test5;std_unordered_map<INT64 , SActionConfig *> test6;TestStructbool test1;INT64 test2;double test3;INT32 test4;std::string test6;std_unordered_map<INT64 , SActionConfig *> test7;
+/************************************
+FileName	:	ActivityConfigBase.h
 Author		:	generate by tools
 HostName	:	devuser-PC
 IP			:	10.236.40.128
 Version		:	0.0.1
 Date		:	2016-04-28 14:59:17
-Description	:	csv配置文件
+Description	:	csv读取文件
 ************************************/
-#ifndef __ActivityConfigLoad_define_h__
-#define __ActivityConfigLoad_define_h__
-#include "CUtil/inc/Common.h "
-#include "Timer/inc/Date.h "
+#ifndef __Config_ActivityConfigBase_define_h__
+#define __Config_ActivityConfigBase_define_h__
+#include "ActivityConfigLoad.h"
+#include "../Condition.h"
+#include "CUtil/inc/CSVConfig.h"
 
 namespace Config
 {
-	struct SActivityConfigLoad
+
+	struct SActionConfig;
+
+	struct SActivityConfig
 	{
 		std::string						ActivityId;	//活动id
 		std::string						ActivityName;	//活动名称
@@ -38,11 +43,11 @@ namespace Config
 		{
 			Timer::Date					begin;
 			Timer::Date					end;
-			INT64	actionConfig;
+			std_unordered_map<INT64 , SActionConfig *>	actionConfig;
 		}testDateStruct;
 		std::vector<Timer::Date>			dateArray;	//根据某些condition执行某些action;目前不支持括号和或.全部用&&(与)和!(非)表示满足一个条件可以执行多个action.可以写在一行(支持多个),或者多行.需要保证一个condition和至少一个action.如果没有也没啥.Action:调用玩家的或者帮会等的函数接口.
-		INT64		testConfig;	//测试时间
-		INT64		testConfig2;	//测试时间结构体.比如说活动开启结束时间
+		std_unordered_map<INT64 , SActionConfig *>		testConfig;	//测试时间
+		std_unordered_map<INT64 , SActionConfig *>		testConfig2;	//测试时间结构体.比如说活动开启结束时间
 		std::map<std::string , INT64>		dateCommon;	//测试时间数组
 
 		//嵌套表使用
@@ -53,7 +58,7 @@ namespace Config
 			double						test3;
 			INT32						test4;
 			std::string					test5;
-			INT64	test6;
+			std_unordered_map<INT64 , SActionConfig *>	test6;
 		};
 		std::vector<STestStructArray>		vecTestStructArray;
 
@@ -65,28 +70,29 @@ namespace Config
 			double						test3;
 			INT32						test4;
 			std::string					test6;
-			INT64	test7;
+			std_unordered_map<INT64 , SActionConfig *>	test7;
 		}TestStruct;
 	};
 
 
-	class ActivityConfigLoad
+	class ActivityConfigBase: public CUtil::CSVConfig
 	{
 	public:
-		typedef std::vector<SActivityConfigLoad> CollectionConfigsT;
+		typedef std_unordered_map<std::string , SActivityConfig> MapConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filename);
+		bool				LoadFrom(const std::string& filepath);
+		SActivityConfig *	GetActivityConfig(std::string id , std::string strFilePath = "");
 
 	public:
-		SActivityConfigLoad & Get(size_t row);
+		bool				RunUse(std::string id , CUtil::Player * pPlayer = NULL , CUtil::League * pLeague = NULL , CUtil::Team * pTeam = NULL);
+		bool				RunUse1(std::string id , CUtil::Player * pPlayer = NULL , CUtil::League * pLeague = NULL , CUtil::Team * pTeam = NULL);
 
-	public:
-		inline size_t Count(){ return m_vtConfigs.size(); }
 
 	private:
-		CollectionConfigsT m_vtConfigs;
+		MapConfigsT			m_mapConfigs;
+
 	};
 }
 
-#endif// end  __ActivityConfigLoad_define_h__
+#endif// end  __Config_ActivityConfig_define_h__
