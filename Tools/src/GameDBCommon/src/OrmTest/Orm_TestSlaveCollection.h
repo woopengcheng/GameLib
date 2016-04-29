@@ -1,10 +1,10 @@
 /************************************
 FileName	:	Orm_TestSlaveCollection.h
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-04-29 00:32:34
+Date		:	2016-04-29 17:20:53
 Description	:	针对orm子表操作的集合类.
 ************************************/
 #ifndef __Orm_Orm_TestSlave_collection_h__
@@ -31,12 +31,13 @@ namespace Orm
 			const TestSlaveCollection & operator=( const TestSlaveCollection &);
 		
 		public:
-			virtual void		ToBson(std::string & strBuf) override;
-			virtual void		ToBson(mongo::BSONObj  & objBson) override;
-			virtual void		FromBson(std::string & compressedBuf) override;
-			virtual void		FromBson(const char * pData , UINT32 nSize) override;
-			virtual void		LoadBson(std::string & compressedBuf) override;
-			virtual void		LoadBson(const char * pData , UINT32 nSize) override;
+			virtual void			ToBson(std::string & strBuf) override;
+			virtual void			ToBson(mongo::BSONObj  & objBson) override;
+			virtual void			FromBson(std::string & compressedBuf) override;
+			virtual void			FromBson(const char * pData , UINT32 nSize) override;
+			virtual void			LoadBson(std::string & compressedBuf) override;
+			virtual void			LoadBson(const char * pData , UINT32 nSize) override;
+			virtual GameDB::Orm * GetTable(const std::string & strTable) override;
 		
 		public:
 		template<class VISITOR,class PARAM> void visit(VISITOR visitor,PARAM& param)

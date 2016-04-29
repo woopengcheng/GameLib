@@ -8,6 +8,11 @@ namespace Orm
 	{
 		m_pTestSlaveFrom = NULL;
 		m_pTestSlave = NULL;
+	
+		m_vecTables.push_back("TestSlaveFrom");
+		m_vecTables.push_back("TestSlave");
+	
+		m_vecSlaveTables.push_back("TestSlaveTable");
 	}
 
 	TestSlaveCollection::~TestSlaveCollection()
@@ -230,6 +235,19 @@ namespace Orm
 			}
 			
 		}
+	}
+
+	GameDB::Orm * TestSlaveCollection::GetTable(const std::string & strTable)
+	{
+		if("TestSlaveFrom" == strTable )
+		{
+			return GetTestSlaveFrom();
+		}
+		if("TestSlave" == strTable )
+		{
+			return GetTestSlave();
+		}
+		return NULL;
 	}
 
 }//Orm

@@ -39,6 +39,7 @@ namespace Client
 			pObj->SetSyncState(GameDB::SYNC_STATE_START);
 		}
 
+		pCollection->OrmQueryInsertTable(pObj->GetTableName());
 		GameDB::CollectionQueryPtr pCallback(new GameDB::CollectionQuery(pCollection));
 		OrmHandleHGet pFunc = rpc_HandleHGet;
 		return GameDB::OrmHelper::OrmQuery<>(pObj, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback , objMask);
@@ -76,21 +77,72 @@ namespace Client
 		return GameDB::OrmHelper::OrmQuery<>(strTable, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback, objMask);
 	}
 
+	static CErrno OrmQuery(GameDB::OrmCollectionBase * pCollection, const std::string strTable , GameDB::EORM_MASK objMask = GameDB::ORM_NONE)
+	{
+		if (!pCollection)
+		{
+			return CErrno::Failure();
+		}
+		
+		GameDB::Orm * pTable = pCollection->GetTable(strTable);
+		if (pTable)
+		{
+			return OrmQuery(pCollection, pTable);
+		}
+
+		return CErrno::Failure();
+	}
+
 	static CErrno OrmQuery(GameDB::OrmCollectionBase * pCollection, GameDB::EORM_MASK objMask = GameDB::ORM_NONE)
 	{
-		return CErrno::Failure();
-// 		if (!pCollection)
-// 		{
-// 			return CErrno::Failure();
-// 		}
-// 		pCollection->OrmQueryInsertTable(table);
-// 		GameDB::CollectionQueryPtr pCallback(new GameDB::CollectionQuery(pCollection));
-// 
-// 		OrmHandleHGetKeyVals pFunc = rpc_HandleHGetKeyVals;
-// 		std::string strTable = table;
-// 		strTable += SLAVE_TABLE_SPECIAL_ID_TAG;
-// 		strTable += key;
-// 		return GameDB::OrmHelper::OrmQuery<>(strTable, pFunc, g_strGameDBNodes[NETNODE_DBCLIENT_TO_DBSERVER], DBClient::GetInstance().GetServerID(), Msg::Object(0), pCallback, objMask);
+		if (!pCollection)
+		{
+			return CErrno::Failure();
+		}
+
+		//5 查询子表
+		CErrno err;
+		const std::vector<std::string> & vec = pCollection->GetTables();
+		std::vector<std::string>::const_iterator iter = vec.begin();
+		for (; iter != vec.end(); ++iter)
+		{
+			std::string strTable = *iter;
+			GameDB::Orm * pTable = pCollection->GetTable(strTable);
+			if (pTable)
+			{
+				err = OrmQuery(pCollection, pTable);
+			}
+			if (err.IsFailure())
+			{
+				gErrorStream("query error. name=" << strTable);
+			}
+		}
+
+		//5 查询子表数组
+		const std::vector<std::string> & vecSlaves = pCollection->GetSlaveTables();
+		iter = vecSlaves.begin();
+		for (; iter != vecSlaves.end(); ++iter)
+		{
+			std::string strTable = *iter;
+
+			GameDB::OrmCollection<INT64> * pInt64 = dynamic_cast<GameDB::OrmCollection<INT64> *>(pCollection);
+			GameDB::OrmCollection<std::string> * pString = dynamic_cast<GameDB::OrmCollection<std::string> *>(pCollection);
+			if (pInt64)
+			{
+				err = OrmQuery(pCollection, strTable, pInt64->GetMasterID());
+			}
+			else if (pString)
+			{
+				err = OrmQuery(pCollection, strTable, pString->GetMasterID());
+			}
+
+			if (err.IsFailure())
+			{
+				gErrorStream("query error. name=" << strTable);
+			}
+		}
+	
+		return err;
 	}
 }
 

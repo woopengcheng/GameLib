@@ -1108,12 +1108,13 @@ def GenerateOrmsCollectionHeadFile():
 		fileOrm.write(twoTab + "\n")
 		
 		fileOrm.write(twoTab + "public:\n")  
-		fileOrm.write(threeTab + "virtual void		ToBson(std::string & strBuf) override;\n")
-		fileOrm.write(threeTab + "virtual void		ToBson(mongo::BSONObj  & objBson) override;\n")
-		fileOrm.write(threeTab + "virtual void		FromBson(std::string & compressedBuf) override;\n")
-		fileOrm.write(threeTab + "virtual void		FromBson(const char * pData , UINT32 nSize) override;\n")
-		fileOrm.write(threeTab + "virtual void		LoadBson(std::string & compressedBuf) override;\n")
-		fileOrm.write(threeTab + "virtual void		LoadBson(const char * pData , UINT32 nSize) override;\n")
+		fileOrm.write(threeTab + "virtual void			ToBson(std::string & strBuf) override;\n")
+		fileOrm.write(threeTab + "virtual void			ToBson(mongo::BSONObj  & objBson) override;\n")
+		fileOrm.write(threeTab + "virtual void			FromBson(std::string & compressedBuf) override;\n")
+		fileOrm.write(threeTab + "virtual void			FromBson(const char * pData , UINT32 nSize) override;\n")
+		fileOrm.write(threeTab + "virtual void			LoadBson(std::string & compressedBuf) override;\n")
+		fileOrm.write(threeTab + "virtual void			LoadBson(const char * pData , UINT32 nSize) override;\n")
+		fileOrm.write(threeTab + "virtual GameDB::Orm * GetTable(const std::string & strTable) override;\n")
 		fileOrm.write(twoTab + "\n")
 				
 		fileOrm.write(twoTab + "public:\n")
@@ -1242,8 +1243,9 @@ def GenerateOrmsCollectionCPPFile():
 		GenerateOrmCollectionCppFromBson(fileOrm , collectionTable) 
 		GenerateOrmCollectionCppFromBson2(fileOrm , collectionTable)  
 		GenerateOrmCollectionCppLoadBson(fileOrm , collectionTable) 
-		GenerateOrmCollectionCppLoadBson2(fileOrm , collectionTable)  
-		
+		GenerateOrmCollectionCppLoadBson2(fileOrm , collectionTable)  		
+		GenerateOrmCollectionCppGetTable(fileOrm , collectionTable)  
+
 		fileOrm.write("}//" + g_namespace + "\n\n")
 		LogOutInfo("generate " + outputFilePath + " file finished.")
 			
@@ -1263,7 +1265,16 @@ def GenerateOrmCollectionCppConstructor(fileOrm , collectionTable):
 	for index , slave in collectionTable.slaves.items():
 		if slave.ignore_collection == None:
 			fileOrm.write(twoTab + "m_p" + slave.name + " = NULL;\n")
+	fileOrm.write(oneTab + "\n")
+
+	for index , slave in collectionTable.slaves.items():
+		if slave.ignore_collection == None:
+			fileOrm.write(twoTab + "m_vecTables.push_back(\"" + slave.name + "\");\n") 
+	fileOrm.write(oneTab + "\n")
 	
+	for index , slave in collectionTable.slaveTables.items():
+		if slave.ignore_collection == None:
+			fileOrm.write(twoTab + "m_vecSlaveTables.push_back(\"" + slave.name + "\");\n") 
 	fileOrm.write(oneTab + "}\n\n")
 	
 def GenerateOrmCollectionCppDestructor(fileOrm , collectionTable): 
@@ -1542,8 +1553,24 @@ def GenerateOrmCollectionCppLoadBson2(fileOrm , collectionTable):
 	fileOrm.write(threeTab + "\n") 
 	fileOrm.write(twoTab + "}\n")			
 	fileOrm.write(oneTab + "}\n\n")
+				
+def GenerateOrmCollectionCppGetTable(fileOrm , collectionTable): 
+	fileOrm.write(oneTab + "GameDB::Orm * " + collectionTable.name + "Collection::GetTable(const std::string & strTable)\n")
+	fileOrm.write(oneTab + "{\n")
+		
+	for index , slave in collectionTable.slaves.items():
+		if slave.ignore_collection == None:
+			fileOrm.write(twoTab + "if(\"" + slave.name + "\" == strTable " + ")\n")
+			fileOrm.write(twoTab + "{\n")
 			
-					
+			fileOrm.write(threeTab + "return Get" + slave.name +"();\n") 
+			
+			fileOrm.write(twoTab + "}\n") 
+		
+			
+	fileOrm.write(twoTab + "return NULL;\n")	
+	fileOrm.write(oneTab + "}\n\n")
+			
 def GenerateOrmsReflectionHeadFile():
 	outputPath = GetOutputPath()   
 	outputFilePath = outputPath + g_ormPrefix + "Reflection.h" 
@@ -2458,7 +2485,7 @@ def handleArgs(argv):
 		Usage()
 		sys.exit(2) 
 	if len(argv) == 1: 
-		g_gameDBPath = "testRpc.xml"
+		g_gameDBPath = "DBDIDL.xml"
 		return
 	elif len(argv) == 2:  
 		g_gameDBPath = argv[1]

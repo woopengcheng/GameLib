@@ -1,10 +1,10 @@
 /************************************
 FileName	:	Orm_Reflection.h
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-04-29 00:32:34
+Date		:	2016-04-29 17:20:53
 Description	:	针对slave的类产生反射.
 ************************************/
 #ifndef __Orm_Orm__feflection_h__

@@ -13,6 +13,7 @@ namespace GameDB
 	{
 	public:
 		typedef std_unordered_map<std::string, GameDB::EORM_SYNC_STATE>	MapCollecteStatesT;
+		typedef std::vector<std::string>	VecTablesT;
 
 	public:
 		OrmCollectionBase()
@@ -21,17 +22,20 @@ namespace GameDB
 		}
 
 	public:
-		virtual void		ToBson(std::string & strBuf) {};
-		virtual void		ToBson(mongo::BSONObj  & objBson) {};
-		virtual void		FromBson(std::string & compressedBuf) {};
-		virtual void		FromBson(const char * pData, UINT32 nSize) {};
-		virtual void		LoadBson(std::string & compressedBuf) {};
-		virtual void		LoadBson(const char * pData, UINT32 nSize) {};
+		virtual void			ToBson(std::string & strBuf) {};
+		virtual void			ToBson(mongo::BSONObj  & objBson) {};
+		virtual void			FromBson(std::string & compressedBuf) {};
+		virtual void			FromBson(const char * pData, UINT32 nSize) {};
+		virtual void			LoadBson(std::string & compressedBuf) {};
+		virtual void			LoadBson(const char * pData, UINT32 nSize) {};
+		virtual	GameDB::Orm	*	GetTable(const std::string & strTable) { return NULL; };
 
 	public:
-		EORM_SYNC_STATE		GetSyncState() const { return m_syncState; }
-		void				SetSyncState(GameDB::EORM_SYNC_STATE val) { m_syncState = val; }
-		BOOL				IsTableInOrmQuery(const std::string & table)
+		const VecTablesT	&	GetTables() { return m_vecTables; }
+		const VecTablesT	&	GetSlaveTables() { return m_vecSlaveTables; }
+		EORM_SYNC_STATE			GetSyncState() const { return m_syncState; }
+		void					SetSyncState(GameDB::EORM_SYNC_STATE val) { m_syncState = val; }
+		BOOL					IsTableInOrmQuery(const std::string & table)
 		{
 			MapCollecteStatesT::iterator iter = m_mapCollectStates.find(table);
 			if (iter != m_mapCollectStates.end())
@@ -69,6 +73,8 @@ namespace GameDB
 	protected:
 		EORM_SYNC_STATE		m_syncState;
 		MapCollecteStatesT	m_mapCollectStates;
+		VecTablesT			m_vecTables;
+		VecTablesT			m_vecSlaveTables;
 	};
 
 
@@ -97,6 +103,11 @@ namespace GameDB
 					Assert_ReF1(obj.objsize() == pObj->strVal.length());
 					std::string metaname = GameDB::OrmHelper::GetTableNameFromBson(obj);
 					m_pCollection->OrmQueryDeleteTable(metaname);
+					GameDB::Orm * pOrm = m_pCollection->GetTable(metaname);
+					if (pOrm)
+					{
+						pOrm->SetSyncState(SYNC_STATE_END);
+					}
 				}
 			}
 			return 0;
@@ -126,17 +137,10 @@ namespace GameDB
 			: m_vMasterId(0)
 		{ 
 		}
-	public:
-		virtual void		ToBson(std::string & strBuf) {};
-		virtual void		ToBson(mongo::BSONObj  & objBson) {};
-		virtual void		FromBson(std::string & compressedBuf) {};
-		virtual void		FromBson(const char * pData, UINT32 nSize) {};
-		virtual void		LoadBson(std::string & compressedBuf) {};		//5 这个和FromBson的区别是可以读取独立的一个.
-		virtual void		LoadBson(const char * pData, UINT32 nSize) {};
 
 	public:
 		void				SetMasterID(INT64 id) { m_vMasterId = id; }
-		INT64				GetMasterID() { return m_vMasterId; }
+		INT64				GetMasterID() { return m_vMasterId; } 
 
 	protected:
 		INT64				m_vMasterId;
@@ -150,11 +154,6 @@ namespace GameDB
 			: m_vMasterId("")
 		{ 
 		}
-	public:
-		virtual void		ToBson(std::string & strBuf) {};
-		virtual void		ToBson(mongo::BSONObj  & objBson) {};
-		virtual void		FromBson(std::string & compressedBuf) {};
-		virtual void		FromBson(const char * pData, UINT32 nSize) {};
 
 	public:
 		void				SetMasterID(std::string id) { m_vMasterId = id; }
