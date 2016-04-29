@@ -155,15 +155,18 @@ sixTab = fiveTab + "\t"
 sevenTab = sixTab + "\t"
 eightTab = sevenTab + "\t"
 
+g_cellID = 0  	# 第一列为ID列
 g_rowComent = 0 # 注释行
 g_rowType = 1	# 类型行
 g_rowName = 2 	# 为类型名字行
-g_rowCS = 3   	# 第三行为是否是服务器还是客户端代码
-g_cellID = 0  	# 第一列为ID列
-g_conditionCellName = 0 	# 条件列的   条件名字
-g_conditionCellCS = 1 	# 条件列的   服务器还是客户端代码.
-g_conditionDataStart = 2 	# 条件列的   数据开始行.
-g_rowDataStart=4# 从这行开始就是数据了.
+g_rowCheck = 3 	# 第三行为检测数据正确性行,以及动态填写数据行.
+g_rowCS = 4   	# 第四行为是否是服务器还是客户端代码
+g_rowDataStart=5# 从这行开始就是数据了.
+
+g_conditionRowName = 0 	# 条件列的   条件名字
+g_conditionRowCheck = 1 		# 条件列的   保持数据兼容.填写NULL,
+g_conditionRowCS = 2 		# 条件列的   服务器还是客户端代码.
+g_conditionDataStart = 3 	# 条件列的   数据开始行.
 
 class Object(object):
 	"""docstring for Object"""
@@ -434,6 +437,8 @@ def CheckRecords():
 
 			elif row == g_rowComent:	
 				pass	
+			elif row == g_rowCheck:	
+				pass	
 			else:
 				#LogOutDebug("g_xlsRecords,[row = " + str(row) + ":" , g_xlsRecords[sheet][row])
 				for col , colItem in enumerate(rowItem):	#读取每一列
@@ -604,13 +609,13 @@ def HandleSheetCondition():
 			clientExpression = None
 			cellName = ""
 			#LogOutDebug("sheet:" , sheet)
-			csType = g_xlsConditionRecords[sheet][col][g_conditionCellCS]
+			csType = g_xlsConditionRecords[sheet][col][g_conditionRowCS]
 			bServer = CheckCSType(csType , True , True)
 			bClient = CheckCSType(csType , False , True)
 			for row , rowItem in enumerate(colItem):		# 读取每一行
 				item = RemoveSpecialWord(rowItem)
 				#LogOutDebug("condition row:" , str(row) )
-				if row == g_conditionCellName:
+				if row == g_conditionRowName:
 					cellName = g_expressionPrefix + rowItem
 					if bServer:
 						#LogOutDebug("cellName:" , cellName , "g_serverExpression[sheet]:" , g_serverExpression[sheet])
@@ -1541,6 +1546,7 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	#	os.remove(outputPath)
 		#return
 	if os.path.exists(outputPath):
+		os.remove(outputPath)
 		return
 
 	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
@@ -1586,7 +1592,8 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 	#	os.remove(outputPath)
 		#return
 	if os.path.exists(outputPath):
-		return
+		os.remove(outputPath)
+		#return
 
 	loadConfig = filename + g_loadConfigSuffix
 	dataConfig = g_configPrefix + filename
@@ -1615,6 +1622,7 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n") 
+	fileWrite.write(oneTab + filename + " * " + g_globaleNamePrefix + filename + " = NULL;\n\n") 
 	fileWrite.write(oneTab + "//tools after data load success , call OnLoad;\n") 
 	fileWrite.write(oneTab + "BOOL " + filename + "::OnLoad()\n") 
 	fileWrite.write(oneTab + "{\n") 
