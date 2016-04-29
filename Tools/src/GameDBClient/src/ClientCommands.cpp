@@ -651,10 +651,12 @@ namespace Client
 		}
 		
 		//5 ²âÊÔÖ÷slave
-		Orm::TestSlave * pTest = s_pCollection->GetTestSlave();
-		Client::OrmQuery(s_pCollection, pTest);
-		Client::OrmQuery(s_pCollection, s_pCollection->GetTestSlaveFrom());
-		Client::OrmQuery(s_pCollection, Orm::TestSlaveTable::TableName(), s_pCollection->GetMasterID());
+// 		Orm::TestSlave * pTest = s_pCollection->GetTestSlave();
+// 		Client::OrmQuery(s_pCollection, pTest);
+// 		Client::OrmQuery(s_pCollection, s_pCollection->GetTestSlaveFrom());
+// 		Client::OrmQuery(s_pCollection, Orm::TestSlaveTable::TableName(), s_pCollection->GetMasterID());
+
+		Client::OrmQuery(s_pCollection);
 
 		gDebugStream("pfnHandleOrmCollectionQuery");
 	}
