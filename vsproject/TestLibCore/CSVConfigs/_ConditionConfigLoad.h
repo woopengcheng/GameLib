@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	_ConditionConfigLoad.h
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv配置文件
 ************************************/
 #ifndef ___ConditionConfigLoad_define_h__
@@ -30,16 +30,23 @@ namespace Config
 		typedef std::vector<S_ConditionConfigLoad> CollectionConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filename);
+		bool				LoadFrom(const std::string& filename);
 
 	public:
-		S_ConditionConfigLoad & Get(size_t row);
+		S_ConditionConfigLoad &	Get(size_t row);
 
 	public:
-		inline size_t Count(){ return m_vtConfigs.size(); }
+		inline size_t		Count(){ return m_vtConfigs.size(); }
 
+	public:
+		BOOL				xxChecknConditionID(S_ConditionConfigLoad & conf);
+		BOOL				xxCheckstrServerCondition(S_ConditionConfigLoad & conf);
+		BOOL				xxCheckstrServerAction(S_ConditionConfigLoad & conf);
+		BOOL				xxCheckstrClientCondition(S_ConditionConfigLoad & conf);
+		BOOL				xxCheckstrClientAction(S_ConditionConfigLoad & conf);
+	
 	private:
-		CollectionConfigsT m_vtConfigs;
+		CollectionConfigsT	m_vtConfigs;
 	};
 }
 

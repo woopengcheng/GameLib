@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	_CommonDataLoad.cpp
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv读取文件实现
 ************************************/
 #include "_CommonDataLoad.h"
@@ -43,7 +43,7 @@ namespace Config
 		size_t index_dateCommon = csv.GetIndex("dateCommon", 2);
 		MsgAssert_Re0(index_dateCommon != (size_t)-1 , "error dateCommon");
 
-		for (size_t row = 4; row < csv.Count(); ++row)
+		for (size_t row = 5; row < csv.Count(); ++row)
 		{
 			S_CommonDataLoad conf;
 
@@ -104,6 +104,15 @@ namespace Config
 					conf.dateCommon.insert(std::make_pair(vals[0],Timer::Date(vals[1])));
 			}
 
+			MsgAssert_Re0(xxCheckid(conf) , "id check error.");
+			MsgAssert_Re0(xxCheckboolCommon(conf) , "boolCommon check error.");
+			MsgAssert_Re0(xxCheckboolCommon2(conf) , "boolCommon2 check error.");
+			MsgAssert_Re0(xxCheckintCommon(conf) , "intCommon check error.");
+			MsgAssert_Re0(xxCheckint64Common(conf) , "int64Common check error.");
+			MsgAssert_Re0(xxCheckdoubleCommon(conf) , "doubleCommon check error.");
+			MsgAssert_Re0(xxCheckstringCommon(conf) , "stringCommon check error.");
+			MsgAssert_Re0(xxCheckdateCommon(conf) , "dateCommon check error.");
+	
 			m_vtConfigs.push_back(conf);
 		}
 
@@ -115,5 +124,46 @@ namespace Config
 		return m_vtConfigs.at(row);
 	}
 
+	BOOL	_CommonDataLoad::xxCheckid(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_CommonDataLoad::xxCheckboolCommon(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_CommonDataLoad::xxCheckboolCommon2(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_CommonDataLoad::xxCheckintCommon(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_CommonDataLoad::xxCheckint64Common(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_CommonDataLoad::xxCheckdoubleCommon(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_CommonDataLoad::xxCheckstringCommon(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_CommonDataLoad::xxCheckdateCommon(S_CommonDataLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	
 }
 

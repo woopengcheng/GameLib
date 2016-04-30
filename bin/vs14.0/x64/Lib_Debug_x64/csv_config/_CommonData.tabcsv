@@ -1,6 +1,7 @@
 ﻿"暂时无用"	"bool公用值"	"bool公用值2"	"int公用值"	"int64公用值"	"double公用值"	"string公用值"	"date公用值"
 "int"	"map<string,bool>"	"map<string,bool>"	"map<string,int>"	"map<string,int64>"	"map<string,double>"	"map<string,string>"	"map<string,date>"
 "id"	"boolCommon"	"boolCommon2"	"intCommon"	"int64Common"	"doubleCommon"	"stringCommon"	"dateCommon"
+"NULL"	"NULL"	"NULL"	"NULL"	"NULL"	"NULL"	"NULL"	"NULL"
 "sc"	"cs"	"cs"	"cs"	"cs"	"cs"	"cs"	"cs"
 "1"	"BoolTest=1"	"BoolTest4=1"	"IntTest=2"	"int64Test=1231231"	"doubleTest=1221.123"	"stringTest=adfadf"	"dateTest=2016-3-28-3:15:10"
 "2"	"BoolTest2=1"	"BoolTest5=2"	"Int2Test=3"	"int642Test=1231232"	"double2Test=1221.124"	"string2Test=adfadf"	"date2Test=2016-3-28-3:15:11"

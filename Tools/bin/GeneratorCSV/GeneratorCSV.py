@@ -104,6 +104,11 @@ g_actionTag = "action"
 g_pointPrefix = "p"		#指针的前缀
 g_conditionSymbol = [">" , '=' , "<" , "(" , ")" , "&" , "|" , "!" , "+" , "-" , "*" , "/" , "%" , "^" , ","]
 
+#这里为每一列的条件表达式的
+g_serverCellExpression = collections.OrderedDict()
+g_clientCellExpression = collections.OrderedDict()
+
+
 g_serverType = "s".lower()
 g_clientType = "c".lower()
 g_bCheckCSTypeStrict = False	#检测CS条件的时候是否执行严格检测.即.服务器是否需要客户端数据.默认是需要的.
@@ -231,6 +236,7 @@ def start():
 	HandleCommondataConfig()
 	HandleSheetCondition()
 	CheckRepeatCommonData()
+	HandleSheetCellCondition()
 			
 	LogOutInfo("start generate CPP.\n")   	
 	GenerateCPP()
@@ -662,7 +668,80 @@ def HandleSheetCondition():
 					g_clientExpression[sheet][cellName].append(clientExpression)	
 					#LogOutDebug("clientExpression:" ,clientExpression.condition)
 
-def HandleConditionExpression(bServer , sheet , itemContent , expression):	
+def HandleSheetCellCondition():		
+	for sheet , item in g_xlsRecords.items():	
+		datas = item[g_rowName]	
+		g_serverCellExpression[sheet] = collections.OrderedDict()			# 为每一个sheet创建一系列的条件表达式
+		g_clientCellExpression[sheet] = collections.OrderedDict()			# 为每一个sheet创建一系列的条件表达式
+	
+		#LogOutDebug("sheet:" , sheet)
+		for index , col in enumerate(item[g_rowType]):		# 读取数据
+		
+			csType = item[g_rowCS][index]
+			bServer = CheckCSType(csType , True , True)
+			bClient = CheckCSType(csType , False , True)
+			#LogOutDebug("condition index:" , str(index) )
+			
+			cellName = ""
+			item_type = GetType(col)
+			if item_type == g_structType or item_type == g_structArrayType:
+				npos = datas[index].find('[')
+				cellName = datas[index][0 : npos]		
+			else:
+				cellName = datas[index]
+
+			serverExpression = None
+			clientExpression = None
+			if bServer:
+				#LogOutDebug("cellName:" , cellName , "g_serverExpression[sheet]:" , g_serverExpression[sheet])
+				g_serverCellExpression[sheet][cellName] = []	# 这里用来存每一个表达式
+			if bClient:
+				g_clientCellExpression[sheet][cellName] = []	# 这里用来存每一个表达式
+			
+			expressionContent = item[g_rowCheck][index]			# 获取这一列的表达式内容
+			if expressionContent == "NULL" or expressionContent == "":
+				continue
+			conditionContent = expressionContent.split("condition:".lower())
+			
+			#LogOutDebug("conditionContent:" , conditionContent)
+			for i , condition in enumerate(conditionContent):
+				if condition == "":
+					continue
+				actionContent = condition.split("action:".lower())
+				expressionCondition = actionContent[0]				# 这个一定是条件
+				if bServer:
+					serverExpression = Expression(None)
+					serverExpression = HandleConditionExpression(True , sheet , expressionCondition , serverExpression , True)
+					serverExpression.actions = []
+					#LogOutDebug("1.serverExpression:" , serverExpression.condition)
+				if bClient:
+					clientExpression = Expression(None)
+					clientExpression = HandleConditionExpression(False , sheet , expressionCondition , clientExpression , True)
+					clientExpression.actions = []
+					#LogOutDebug("2.clientExpression:" , clientExpression.condition)
+					
+				# 处理Action
+				for j , actionCall in enumerate(actionContent):
+					if j == 0:
+						continue
+					if bServer:
+						action = HandleExpressionAction(True , actionCall)
+						serverExpression.actions.append(action)
+						#LogOutDebug("S action=" , action)
+					if bClient:
+						action = HandleExpressionAction(False , actionCall)
+						clientExpression.actions.append(action) 
+						#LogOutDebug("C action=" , action)
+							
+				if cellName != "":
+					if bServer and serverExpression != None:
+						g_serverCellExpression[sheet][cellName].append(serverExpression)	
+						#LogOutDebug("cellName=" , cellName , ":serverExpression=" , g_serverCellExpression[sheet][cellName])
+					if bClient and clientExpression != None:
+						g_clientCellExpression[sheet][cellName].append(clientExpression)	
+						#LogOutDebug("cellName=" , cellName , ":clientExpression=" , g_serverCellExpression[sheet][cellName])
+
+def HandleConditionExpression(bServer , sheet , itemContent , expression , bCell = False):	
 	result = ""
 	start = 0
 	end = 0
@@ -675,7 +754,7 @@ def HandleConditionExpression(bServer , sheet , itemContent , expression):
 			if end != start: # 代表是一个符号					
 				keyWord = itemContent[start:end]
 				#LogOutDebug("keyWord:" , keyWord , "result:" , result)
-				value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , item , objs)
+				value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , item , objs, bCell)
 				result = result + value
 			if symbol == True:
 				result += item
@@ -683,8 +762,9 @@ def HandleConditionExpression(bServer , sheet , itemContent , expression):
 				symbol = True
 			start = i + 1			
 	keyWord = itemContent[start:]
+	#LogOutDebug("keyWord" , keyWord)
 	if len(keyWord) > 0:# 最后一个肯定不是符号.所以必然会有一个条件.
-		value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , "" , [])
+		value , symbol = ParaseConditionKeyWord(bServer , keyWord.upper() , sheet , "" , [] , bCell)
 		result = result + value
 	expression.condition.text = result
 	expression.condition.objs = objs
@@ -692,7 +772,7 @@ def HandleConditionExpression(bServer , sheet , itemContent , expression):
 
 	return expression	
 	
-def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol , objs):
+def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol , objs , bCell = False):
 	keys = keyWord.split(".")
 	last = keys[len(keys) - 1].upper()
 	result = ""	
@@ -744,11 +824,14 @@ def ParaseConditionKeyWord(bServer , keyWord , sheet , symbol , objs):
 			return GetConditionByCondition(bServer , condition , GetDicKeyByUpper(dicOrigCondition , last) , symbol , objs)
 
 	for index , rowName in enumerate(g_xlsRecords[sheet][g_rowName]):
-		#LogOutDebug("rowName:", rowName.upper() , " last:" , last) 
+		#LogOutDebug("rowName:", rowName.upper() , " last:" , last , ":cell=" , bCell) 
 		if rowName.upper() == last:
-			return "(" + "Get" + sheet + "(id)->" + rowName + ")" , True
-	
-	LogOutError("ParaseConditionKeyWord ERR." , keyWord , "not in commondata or condition or cur excel")
+			if not bCell:
+				return "(" + "Get" + sheet + "(id)->" + rowName + ")" , True
+			else:
+				return "conf." + rowName + "" , True
+				
+	#LogOutError("ParaseConditionKeyWord ERR." , keyWord , "not in commondata or condition or cur excel")
 
 def GetConditionByCondition(bServer , condition , last , symbol , objs):
 	needWriteSymbol = True
@@ -842,7 +925,7 @@ def CheckActionValue(bServer ,  value , objs , args):
 			result += GetDicKeyByUpper(g_clientActions , value.upper())
 		return result
 	else:
-		LogOutError("CheckActionValue error." , value , " g_serverActions:" , g_serverActions)
+		LogOutError("CheckActionValue error." , value , " tmp:" , tmp)
 	
 
 def GenerateCSV():
@@ -874,8 +957,8 @@ def GenerateCPP():
 def GenerateCPPFiles(bServer): 
 	GenerateConfigManagerHeader(bServer)
 	for sheet , item in g_xlsRecords.items():
-		GenerateConfigLoadHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
-		GenerateConfigLoadCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+		GenerateConfigLoadHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCheck] , item[g_rowCS])
+		GenerateConfigLoadCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCheck] , item[g_rowCS])
 		GenerateConfigBaseHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
 		GenerateConfigBaseCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
 		GenerateConfigHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
@@ -942,7 +1025,7 @@ def GenerateStructData(bServer , fileWrite , types , datas , comments , css , bL
 			fileWrite.write(twoTab + item_type + GetTypeTab(item) + oneTab + datas[index] + ";"  + oneTab)
 			fileWrite.write("//" + comments[index] + "\n") 
 
-def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css):
+def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , checks , css):
 	filename = filename + g_loadConfigSuffix
 	if GetCPPFilePath(bServer) == "":
 		return
@@ -971,40 +1054,54 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , css
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + "typedef std::vector<" + g_configPrefix + filename + "> CollectionConfigsT;\n\n")
 	fileWrite.write(oneTab + "public:\n")
-	fileWrite.write(twoTab + "bool LoadFrom(const std::string& filename);\n\n")
+	fileWrite.write(twoTab + "bool				LoadFrom(const std::string& filename);\n\n")
 	fileWrite.write(oneTab + "public:\n")
-	fileWrite.write(twoTab + g_configPrefix + filename + " & Get(size_t row);\n\n")
+	fileWrite.write(twoTab + g_configPrefix + filename + " &	Get(size_t row);\n\n")
 	fileWrite.write(oneTab + "public:\n")
-	fileWrite.write(twoTab + "inline size_t Count()")
+	fileWrite.write(twoTab + "inline size_t		Count()")
 	fileWrite.write("{ ")
 	fileWrite.write("return m_vtConfigs.size(); ")
 	fileWrite.write("}\n\n")
-	fileWrite.write(oneTab + "private:\n")
-	fileWrite.write(twoTab + "CollectionConfigsT m_vtConfigs;\n")	
-	fileWrite.write(oneTab + "};\n") 
 
+	#以下是生成导入数据动态检查和更改数据接口	
+	fileWrite.write(oneTab + "public:\n")
+	for index , item in enumerate(types):
+		if not CheckCSType(css[index] , bServer):
+			continue
+		item_type = GetType(item)
+		if item_type == g_structType or item_type == g_structArrayType:
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			fileWrite.write(twoTab + "BOOL				xxCheck" + structName + "(" + g_configPrefix + filename + " & conf);\n")			
+		else:
+			fileWrite.write(twoTab + "BOOL				xxCheck" + datas[index] + "(" + g_configPrefix + filename + " & conf);\n")
+	fileWrite.write(oneTab + "\n")
+
+	fileWrite.write(oneTab + "private:\n")
+	fileWrite.write(twoTab + "CollectionConfigsT	m_vtConfigs;\n")	
+	fileWrite.write(oneTab + "};\n") 
 
 	fileWrite.write("}\n\n" + "#endif// end" + "  __" + filename + "_define_h__\n") 
 
 	fileWrite.close()	  
 	
-def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
-	filename = filename + g_loadConfigSuffix
+def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , checks , css):
+	loadFileName = filename + g_loadConfigSuffix
 	if GetCPPFilePath(bServer) == "":
 		return
-	outputPath = GetCPPFilePath(bServer) + os.sep + filename + ".cpp"
+	outputPath = GetCPPFilePath(bServer) + os.sep + loadFileName + ".cpp"
 	if os.path.exists(outputPath): 
 		os.remove(outputPath)
 
 	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	
-	WriteFileDescription(fileWrite , filename + ".cpp" , "csv读取文件实现")
-	fileWrite.write("#include \"" + filename + ".h\"\n") 
+	WriteFileDescription(fileWrite , loadFileName + ".cpp" , "csv读取文件实现")
+	fileWrite.write("#include \"" + loadFileName + ".h\"\n") 
 	fileWrite.write("#include \"CUtil/inc/CUtil.h\"\n") 
 	fileWrite.write("#include \"CUtil/inc/CSVReader.h\"\n\n") 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n") 
-	fileWrite.write(oneTab + "bool " + filename + "::LoadFrom(const std::string & filepath)\n") 
+	fileWrite.write(oneTab + "bool " + loadFileName + "::LoadFrom(const std::string & filepath)\n") 
 	fileWrite.write(oneTab + "{\n") 
 	
 	fileWrite.write(twoTab + "CUtil::CSVReader csv;\n") 
@@ -1031,25 +1128,111 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , css):
 
 	fileWrite.write(twoTab + "for (size_t row = " + str(g_rowDataStart) + "; row < csv.Count(); ++row)\n") 
 	fileWrite.write(twoTab + "{\n") 
-	fileWrite.write(threeTab + g_configPrefix + filename + " conf;\n\n") 
+	fileWrite.write(threeTab + g_configPrefix + loadFileName + " conf;\n\n") 
 	for index , item in enumerate(types):
 		if not CheckCSType(css[index] , bServer):
 			continue
-		GenerateLoadCppData(fileWrite , item , datas , index , filename)
+		GenerateLoadCppData(fileWrite , item , datas , index , loadFileName)
+
+	#生成检查函数
+	for index , item in enumerate(types):
+		if not CheckCSType(css[index] , bServer):
+			continue
+		item_type = GetType(item)
+		if item_type == g_structType or item_type == g_structArrayType:
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			fileWrite.write(threeTab + "MsgAssert_Re0(xxCheck" + structName + "(conf) , \"" + structName + " check error.\");\n")			
+		else:
+			fileWrite.write(threeTab + "MsgAssert_Re0(xxCheck" + datas[index] + "(conf) , \"" + datas[index] + " check error.\");\n")
+	fileWrite.write(oneTab + "\n")
 
 	fileWrite.write(threeTab + "m_vtConfigs.push_back(conf);\n") 
 	fileWrite.write(twoTab + "}\n\n") 
 	fileWrite.write(twoTab + "return true;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 			
-	fileWrite.write(oneTab + g_configPrefix + filename + " & " + filename + "::Get(size_t row)\n") 
+	fileWrite.write(oneTab + g_configPrefix + loadFileName + " & " + loadFileName + "::Get(size_t row)\n") 
 	fileWrite.write(oneTab + "{\n") 
 	fileWrite.write(twoTab + "return m_vtConfigs.at(row);\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 
+	GenerateLoadCppChecks(fileWrite , bServer , filename , types , datas , comments , checks , css)
+
+	fileWrite.write(oneTab + "\n") 
 	fileWrite.write("}\n\n") 
 	
 	fileWrite.close()	
+
+def GenerateLoadCppChecks(fileWrite , bServer , filename , types , datas , comments , checks , css):
+	for index , item in enumerate(types):
+		if not CheckCSType(css[index] , bServer):
+			continue
+		GenerateLoadCppCheckFunc(fileWrite , bServer , filename , index , types , datas , checks)
+
+def GenerateLoadCppCheckFunc(fileWrite , bServer , filename , index , types , datas , checks):
+	loadFileName = filename + g_loadConfigSuffix
+	item = types[index]
+	item_type = GetType(item)
+	if item_type == g_structType or item_type == g_structArrayType:
+		npos = datas[index].find('[')
+		structName = datas[index][0 : npos]
+		fileWrite.write(oneTab + "BOOL	" + loadFileName + "::xxCheck" + structName + "(" + g_configPrefix + loadFileName + " & conf)\n")			
+	else:
+		fileWrite.write(oneTab + "BOOL	" + loadFileName + "::xxCheck" + datas[index] + "(" + g_configPrefix + loadFileName + " & conf)\n")
+
+	fileWrite.write(oneTab + "{\n") 
+	GenerateLoadCppCheckConditionFunc(fileWrite , bServer , filename , index , types , datas , checks)
+	fileWrite.write(twoTab + "return TRUE;\n") 
+	fileWrite.write(oneTab + "}\n") 
+
+	fileWrite.write(oneTab + "\n")
+
+def GenerateLoadCppCheckConditionFunc(fileWrite , bServer , filename , index , types , datas , checks):
+	loadFileName = filename + g_loadConfigSuffix
+	cellName = ""
+	item = types[index]
+	item_type = GetType(item)
+	if item_type == g_structType or item_type == g_structArrayType:
+		npos = datas[index].find('[')
+		cellName = datas[index][0 : npos]
+	else:
+		cellName = datas[index]
+
+	eachExpressions = None
+	if bServer and filename in g_serverCellExpression and cellName in g_serverCellExpression[filename]:
+		eachExpressions = g_serverCellExpression[filename][cellName]
+	elif not bServer and filename in g_clientCellExpression and cellName in g_clientCellExpression[filename]:
+		eachExpressions = g_clientCellExpression[filename][cellName]
+	if eachExpressions != None and len(eachExpressions) > 0:		
+		#LogOutDebug(":filename=" , filename , ":cellName=" , cellName , ":eachExpressions=" , eachExpressions)	
+		for indexExpression , expression in enumerate(eachExpressions):
+			objs = []
+			GetExpressionObjects(expression , objs)
+
+#			fileWrite.write(twoTab + "if (")
+#			for objIndex , obj in enumerate(objs):
+#				fileWrite.write(g_pointPrefix + obj.name + " != NULL")
+#				if len(objs) - 1 != objIndex:				
+#					fileWrite.write(" && ")
+#				else:			
+#					fileWrite.write(")\n")
+#			fileWrite.write(twoTab + "{\n")
+
+			fileWrite.write(twoTab + "if (" + expression.condition.text + ")\n")
+			fileWrite.write(twoTab + "{\n")
+			for actionIndex , action in enumerate(expression.actions):
+				fileWrite.write(threeTab + action.name + "(" )
+				for argIndex , arg in enumerate(action.args):
+					fileWrite.write(arg)
+					if len(action.args) - 1 != argIndex:
+						fileWrite.write(" , ")
+				fileWrite.write(");\n")
+			fileWrite.write(twoTab + "}\n")
+#			fileWrite.write(twoTab + "}\n\n")
+
+		#fileWrite.write(oneTab + "}\n\n") 
+
 
 def GenerateLoadCppData(fileWrite , item , datas , index , filename):
 	Str = GetTypeFunc(item)
@@ -1506,7 +1689,7 @@ def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , co
 			fileWrite.write(oneTab + "{\n")
 			fileWrite.write(twoTab + "if (Get" + filename +"(id) == NULL)\n")
 			fileWrite.write(twoTab + "{\n")
-			fileWrite.write(threeTab + "gErrorStream(\"RunUse error. " + filename + "  no this id.id=\" << id);\n")
+			fileWrite.write(threeTab + "gErrorStream(\"" + g_expressionPrefix + "Use error. " + filename + "  no this id.id=\" << id);\n")
 			fileWrite.write(threeTab + "return false;\n")
 			fileWrite.write(twoTab + "}\n\n")
 
@@ -1547,7 +1730,7 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 		#return
 	if os.path.exists(outputPath):
 		os.remove(outputPath)
-		return
+		#return
 
 	fileWrite = open(outputPath , "a" , encoding='utf_8_sig')
 	

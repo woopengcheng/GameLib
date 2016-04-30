@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	ActivityConfigLoad.h
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv配置文件
 ************************************/
 #ifndef __ActivityConfigLoad_define_h__
@@ -18,6 +18,7 @@ namespace Config
 	{
 		std::string						ActivityId;	//活动id
 		std::string						ActivityName;	//活动名称
+		INT32							ActivityLevelLow;	//显示等级下限,不到等级（不包括自身）不显示
 		INT32							ActivityLevelHigh;	//显示等级上限，超过等级（不包括自身）不显示
 		bool							IsShowEntrance;	//是否显示入口图标，入口图标和界面图标是互斥的；入口图标的形式适合单独放在外面的活动，界面图标就是通用活动中的图标
 		std::vector<std::string>		EntranceIcon;	//入口图标
@@ -76,16 +77,42 @@ namespace Config
 		typedef std::vector<SActivityConfigLoad> CollectionConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filename);
+		bool				LoadFrom(const std::string& filename);
 
 	public:
-		SActivityConfigLoad & Get(size_t row);
+		SActivityConfigLoad &	Get(size_t row);
 
 	public:
-		inline size_t Count(){ return m_vtConfigs.size(); }
+		inline size_t		Count(){ return m_vtConfigs.size(); }
 
+	public:
+		BOOL				xxCheckActivityId(SActivityConfigLoad & conf);
+		BOOL				xxCheckActivityName(SActivityConfigLoad & conf);
+		BOOL				xxCheckActivityLevelLow(SActivityConfigLoad & conf);
+		BOOL				xxCheckActivityLevelHigh(SActivityConfigLoad & conf);
+		BOOL				xxCheckIsShowEntrance(SActivityConfigLoad & conf);
+		BOOL				xxCheckEntranceIcon(SActivityConfigLoad & conf);
+		BOOL				xxCheckIsShowInterface(SActivityConfigLoad & conf);
+		BOOL				xxCheckInterfaceIcon(SActivityConfigLoad & conf);
+		BOOL				xxCheckStartTimeWeek(SActivityConfigLoad & conf);
+		BOOL				xxCheckEndTimeWeek(SActivityConfigLoad & conf);
+		BOOL				xxCheckStartTimeDate(SActivityConfigLoad & conf);
+		BOOL				xxCheckEndTimeDate(SActivityConfigLoad & conf);
+		BOOL				xxCheckStartTime(SActivityConfigLoad & conf);
+		BOOL				xxCheckEndTime(SActivityConfigLoad & conf);
+		BOOL				xxCheckDescription(SActivityConfigLoad & conf);
+		BOOL				xxCheckRewardIcon(SActivityConfigLoad & conf);
+		BOOL				xxChecktestdate(SActivityConfigLoad & conf);
+		BOOL				xxChecktestDateStruct(SActivityConfigLoad & conf);
+		BOOL				xxCheckdateArray(SActivityConfigLoad & conf);
+		BOOL				xxChecktestConfig(SActivityConfigLoad & conf);
+		BOOL				xxChecktestConfig2(SActivityConfigLoad & conf);
+		BOOL				xxCheckdateCommon(SActivityConfigLoad & conf);
+		BOOL				xxCheckTestStructArray(SActivityConfigLoad & conf);
+		BOOL				xxCheckTestStruct(SActivityConfigLoad & conf);
+	
 	private:
-		CollectionConfigsT m_vtConfigs;
+		CollectionConfigsT	m_vtConfigs;
 	};
 }
 

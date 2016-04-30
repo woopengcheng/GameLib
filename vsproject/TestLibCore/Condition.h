@@ -102,6 +102,9 @@ namespace CUtil
 		ACTION_TRIGER_TASK,
 		ACTION_MAIL,
 		ACTION_SAY,
+		ACTION_CHANGE_VALUE,
+		ACTION_MIN_VALUE,
+		ACTION_ADD_VALUE,
 	};
 	template<EActionType type>
 	class Action;
@@ -125,6 +128,20 @@ namespace CUtil
 	{
 	public:
 		INT32 operator ()(Player * pPlayer , INT32 nMailID)
+		{
+			if (pPlayer)
+			{
+				return pPlayer->GetPlayerLevel();
+			}
+			return -1;
+		}
+	};
+
+	template<>
+	class Action<ACTION_CHANGE_VALUE>
+	{
+	public:
+		INT32 operator ()(double dValue)
 		{
 			if (pPlayer)
 			{

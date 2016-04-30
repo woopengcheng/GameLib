@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	_CommonDataLoad.h
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv配置文件
 ************************************/
 #ifndef ___CommonDataLoad_define_h__
@@ -33,16 +33,26 @@ namespace Config
 		typedef std::vector<S_CommonDataLoad> CollectionConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filename);
+		bool				LoadFrom(const std::string& filename);
 
 	public:
-		S_CommonDataLoad & Get(size_t row);
+		S_CommonDataLoad &	Get(size_t row);
 
 	public:
-		inline size_t Count(){ return m_vtConfigs.size(); }
+		inline size_t		Count(){ return m_vtConfigs.size(); }
 
+	public:
+		BOOL				xxCheckid(S_CommonDataLoad & conf);
+		BOOL				xxCheckboolCommon(S_CommonDataLoad & conf);
+		BOOL				xxCheckboolCommon2(S_CommonDataLoad & conf);
+		BOOL				xxCheckintCommon(S_CommonDataLoad & conf);
+		BOOL				xxCheckint64Common(S_CommonDataLoad & conf);
+		BOOL				xxCheckdoubleCommon(S_CommonDataLoad & conf);
+		BOOL				xxCheckstringCommon(S_CommonDataLoad & conf);
+		BOOL				xxCheckdateCommon(S_CommonDataLoad & conf);
+	
 	private:
-		CollectionConfigsT m_vtConfigs;
+		CollectionConfigsT	m_vtConfigs;
 	};
 }
 

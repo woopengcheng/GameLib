@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	ActivityConfigLoad.cpp
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv读取文件实现
 ************************************/
 #include "ActivityConfigLoad.h"
@@ -24,6 +24,9 @@ namespace Config
 
 		size_t index_ActivityName = csv.GetIndex("ActivityName", 2);
 		MsgAssert_Re0(index_ActivityName != (size_t)-1 , "error ActivityName");
+
+		size_t index_ActivityLevelLow = csv.GetIndex("ActivityLevelLow", 2);
+		MsgAssert_Re0(index_ActivityLevelLow != (size_t)-1 , "error ActivityLevelLow");
 
 		size_t index_ActivityLevelHigh = csv.GetIndex("ActivityLevelHigh", 2);
 		MsgAssert_Re0(index_ActivityLevelHigh != (size_t)-1 , "error ActivityLevelHigh");
@@ -88,12 +91,13 @@ namespace Config
 		size_t index_TestStruct = csv.GetIndex("TestStruct[test1,test2,test3,test4,test6,test7]", 2);
 		MsgAssert_Re0(index_TestStruct != (size_t)-1 , "error TestStruct[test1,test2,test3,test4,test6,test7]");
 
-		for (size_t row = 4; row < csv.Count(); ++row)
+		for (size_t row = 5; row < csv.Count(); ++row)
 		{
 			SActivityConfigLoad conf;
 
 			conf.ActivityId = csv.GetString(row , index_ActivityId);
 			conf.ActivityName = csv.GetString(row , index_ActivityName);
+			conf.ActivityLevelLow = csv.GetInt32(row , index_ActivityLevelLow);
 			conf.ActivityLevelHigh = csv.GetInt32(row , index_ActivityLevelHigh);
 			conf.IsShowEntrance = csv.GetBool(row , index_IsShowEntrance);
 			{
@@ -247,6 +251,31 @@ namespace Config
 				}
 			}
 
+			MsgAssert_Re0(xxCheckActivityId(conf) , "ActivityId check error.");
+			MsgAssert_Re0(xxCheckActivityName(conf) , "ActivityName check error.");
+			MsgAssert_Re0(xxCheckActivityLevelLow(conf) , "ActivityLevelLow check error.");
+			MsgAssert_Re0(xxCheckActivityLevelHigh(conf) , "ActivityLevelHigh check error.");
+			MsgAssert_Re0(xxCheckIsShowEntrance(conf) , "IsShowEntrance check error.");
+			MsgAssert_Re0(xxCheckEntranceIcon(conf) , "EntranceIcon check error.");
+			MsgAssert_Re0(xxCheckIsShowInterface(conf) , "IsShowInterface check error.");
+			MsgAssert_Re0(xxCheckInterfaceIcon(conf) , "InterfaceIcon check error.");
+			MsgAssert_Re0(xxCheckStartTimeWeek(conf) , "StartTimeWeek check error.");
+			MsgAssert_Re0(xxCheckEndTimeWeek(conf) , "EndTimeWeek check error.");
+			MsgAssert_Re0(xxCheckStartTimeDate(conf) , "StartTimeDate check error.");
+			MsgAssert_Re0(xxCheckEndTimeDate(conf) , "EndTimeDate check error.");
+			MsgAssert_Re0(xxCheckStartTime(conf) , "StartTime check error.");
+			MsgAssert_Re0(xxCheckEndTime(conf) , "EndTime check error.");
+			MsgAssert_Re0(xxCheckDescription(conf) , "Description check error.");
+			MsgAssert_Re0(xxCheckRewardIcon(conf) , "RewardIcon check error.");
+			MsgAssert_Re0(xxChecktestdate(conf) , "testdate check error.");
+			MsgAssert_Re0(xxChecktestDateStruct(conf) , "testDateStruct check error.");
+			MsgAssert_Re0(xxCheckdateArray(conf) , "dateArray check error.");
+			MsgAssert_Re0(xxChecktestConfig(conf) , "testConfig check error.");
+			MsgAssert_Re0(xxChecktestConfig2(conf) , "testConfig2 check error.");
+			MsgAssert_Re0(xxCheckdateCommon(conf) , "dateCommon check error.");
+			MsgAssert_Re0(xxCheckTestStructArray(conf) , "TestStructArray check error.");
+			MsgAssert_Re0(xxCheckTestStruct(conf) , "TestStruct check error.");
+	
 			m_vtConfigs.push_back(conf);
 		}
 
@@ -258,5 +287,138 @@ namespace Config
 		return m_vtConfigs.at(row);
 	}
 
+	BOOL	ActivityConfigLoad::xxCheckActivityId(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckActivityName(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckActivityLevelLow(SActivityConfigLoad & conf)
+	{
+		if (conf.ActivityLevelLow>2)
+		{
+			ChangeValue(12);
+		}
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckActivityLevelHigh(SActivityConfigLoad & conf)
+	{
+		if (conf.ActivityLevelLow>3)
+		{
+			pCUtil->AddValue(12);
+		}
+		if (conf.ActivityLevelLow<4)
+		{
+			pCUtil->MinValue(12);
+		}
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckIsShowEntrance(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckEntranceIcon(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckIsShowInterface(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckInterfaceIcon(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckStartTimeWeek(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckEndTimeWeek(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckStartTimeDate(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckEndTimeDate(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckStartTime(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckEndTime(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckDescription(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckRewardIcon(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxChecktestdate(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxChecktestDateStruct(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckdateArray(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxChecktestConfig(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxChecktestConfig2(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckdateCommon(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckTestStructArray(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActivityConfigLoad::xxCheckTestStruct(SActivityConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	
 }
 

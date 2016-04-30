@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	ActionConfigLoad.h
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv配置文件
 ************************************/
 #ifndef __ActionConfigLoad_define_h__
@@ -54,16 +54,28 @@ namespace Config
 		typedef std::vector<SActionConfigLoad> CollectionConfigsT;
 
 	public:
-		bool LoadFrom(const std::string& filename);
+		bool				LoadFrom(const std::string& filename);
 
 	public:
-		SActionConfigLoad & Get(size_t row);
+		SActionConfigLoad &	Get(size_t row);
 
 	public:
-		inline size_t Count(){ return m_vtConfigs.size(); }
+		inline size_t		Count(){ return m_vtConfigs.size(); }
 
+	public:
+		BOOL				xxCheckcurve_id(SActionConfigLoad & conf);
+		BOOL				xxCheckvalidStages(SActionConfigLoad & conf);
+		BOOL				xxCheckwrapMode(SActionConfigLoad & conf);
+		BOOL				xxCheckInterfaceIcon(SActionConfigLoad & conf);
+		BOOL				xxCheckattr_mod_val(SActionConfigLoad & conf);
+		BOOL				xxCheckstart_x(SActionConfigLoad & conf);
+		BOOL				xxCheckcol_1(SActionConfigLoad & conf);
+		BOOL				xxCheckisLocal(SActionConfigLoad & conf);
+		BOOL				xxCheckTestStruct(SActionConfigLoad & conf);
+		BOOL				xxCheckTestStructArray(SActionConfigLoad & conf);
+	
 	private:
-		CollectionConfigsT m_vtConfigs;
+		CollectionConfigsT	m_vtConfigs;
 	};
 }
 

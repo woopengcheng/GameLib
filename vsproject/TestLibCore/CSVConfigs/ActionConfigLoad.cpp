@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	ActionConfigLoad.cpp
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv读取文件实现
 ************************************/
 #include "ActionConfigLoad.h"
@@ -49,7 +49,7 @@ namespace Config
 		size_t index_TestStructArray = csv.GetIndex("TestStructArray[test1,test2,test3,test4,test5]", 2);
 		MsgAssert_Re0(index_TestStructArray != (size_t)-1 , "error TestStructArray[test1,test2,test3,test4,test5]");
 
-		for (size_t row = 4; row < csv.Count(); ++row)
+		for (size_t row = 5; row < csv.Count(); ++row)
 		{
 			SActionConfigLoad conf;
 
@@ -158,6 +158,17 @@ namespace Config
 				}
 			}
 
+			MsgAssert_Re0(xxCheckcurve_id(conf) , "curve_id check error.");
+			MsgAssert_Re0(xxCheckvalidStages(conf) , "validStages check error.");
+			MsgAssert_Re0(xxCheckwrapMode(conf) , "wrapMode check error.");
+			MsgAssert_Re0(xxCheckInterfaceIcon(conf) , "InterfaceIcon check error.");
+			MsgAssert_Re0(xxCheckattr_mod_val(conf) , "attr_mod_val check error.");
+			MsgAssert_Re0(xxCheckstart_x(conf) , "start_x check error.");
+			MsgAssert_Re0(xxCheckcol_1(conf) , "col_1 check error.");
+			MsgAssert_Re0(xxCheckisLocal(conf) , "isLocal check error.");
+			MsgAssert_Re0(xxCheckTestStruct(conf) , "TestStruct check error.");
+			MsgAssert_Re0(xxCheckTestStructArray(conf) , "TestStructArray check error.");
+	
 			m_vtConfigs.push_back(conf);
 		}
 
@@ -169,5 +180,56 @@ namespace Config
 		return m_vtConfigs.at(row);
 	}
 
+	BOOL	ActionConfigLoad::xxCheckcurve_id(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckvalidStages(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckwrapMode(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckInterfaceIcon(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckattr_mod_val(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckstart_x(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckcol_1(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckisLocal(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckTestStruct(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	ActionConfigLoad::xxCheckTestStructArray(SActionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	
 }
 

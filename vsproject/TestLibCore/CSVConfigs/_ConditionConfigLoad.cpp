@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	_ConditionConfigLoad.cpp
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-04-28 14:59:17
+Date		:	2016-04-30 02:32:23
 Description	:	csv读取文件实现
 ************************************/
 #include "_ConditionConfigLoad.h"
@@ -34,7 +34,7 @@ namespace Config
 		size_t index_strClientAction = csv.GetIndex("strClientAction", 2);
 		MsgAssert_Re0(index_strClientAction != (size_t)-1 , "error strClientAction");
 
-		for (size_t row = 4; row < csv.Count(); ++row)
+		for (size_t row = 5; row < csv.Count(); ++row)
 		{
 			S_ConditionConfigLoad conf;
 
@@ -43,6 +43,12 @@ namespace Config
 			conf.strServerAction = csv.GetString(row , index_strServerAction);
 			conf.strClientCondition = csv.GetString(row , index_strClientCondition);
 			conf.strClientAction = csv.GetString(row , index_strClientAction);
+			MsgAssert_Re0(xxChecknConditionID(conf) , "nConditionID check error.");
+			MsgAssert_Re0(xxCheckstrServerCondition(conf) , "strServerCondition check error.");
+			MsgAssert_Re0(xxCheckstrServerAction(conf) , "strServerAction check error.");
+			MsgAssert_Re0(xxCheckstrClientCondition(conf) , "strClientCondition check error.");
+			MsgAssert_Re0(xxCheckstrClientAction(conf) , "strClientAction check error.");
+	
 			m_vtConfigs.push_back(conf);
 		}
 
@@ -54,5 +60,31 @@ namespace Config
 		return m_vtConfigs.at(row);
 	}
 
+	BOOL	_ConditionConfigLoad::xxChecknConditionID(S_ConditionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_ConditionConfigLoad::xxCheckstrServerCondition(S_ConditionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_ConditionConfigLoad::xxCheckstrServerAction(S_ConditionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_ConditionConfigLoad::xxCheckstrClientCondition(S_ConditionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	BOOL	_ConditionConfigLoad::xxCheckstrClientAction(S_ConditionConfigLoad & conf)
+	{
+		return TRUE;
+	}
+	
+	
 }
 
