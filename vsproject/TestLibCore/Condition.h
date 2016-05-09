@@ -150,6 +150,8 @@ namespace CUtil
 			return -1;
 		}
 	};
+
+
 }
 
 #endif

@@ -177,7 +177,7 @@ class Object(object):
 	"""docstring for Object"""
 	def __init__(self, arg):
 		super(Object, self).__init__()
-		self.name = ""
+		self.name = None # 是否有对象,或者静态函数没有对象
 		self.namespace = []
 
 class Action(object):
@@ -474,7 +474,7 @@ def HandleConditionFromItem(conditions , colItem):
 		args = condition[1]
 	
 	# 处理名字.包括命名空间
-	names = condition[0].split('.')
+	names = condition[0].split('::')
 	name = names[len(names) - 1]			# 这个肯定是名字
 	if name not in conditions:
 		conditions[name] = Condition(None)
@@ -482,7 +482,7 @@ def HandleConditionFromItem(conditions , colItem):
 	for index , obj in enumerate(names):
 		if index != len(names) - 1:
 			conditions[name].conditionName.namespace.append(obj)
-	
+		
 	#处理条件的参数
 	if len(args) > 0:
 		args = args.replace(")" , "").split(',')
@@ -491,7 +491,7 @@ def HandleConditionFromItem(conditions , colItem):
 		args = []		
 		#LogOutDebug("args2:" , args)
 	for index , arg in enumerate(args):
-		argNames = arg.split('.')
+		argNames = arg.split('::')
 		argObject = Object(None)
 		if len(argNames) > 0:
 			argName = argNames[len(argNames) - 1]			# 这个肯定是名字
@@ -510,14 +510,29 @@ def HandleActionFromItem(actions , colItem):
 	
 	# 处理名字.包括命名空间
 	names = action[0].split('.')
-	name = names[len(names) - 1]			# 这个肯定是名字
+	if len(names) != 1 and len(names) != 2:
+		LogOutError("HandleActionFromItem name=" , action[0] , " has multi object or no object.")
+		
+	objName = None
+	name = None
+	namespaces = None
+	if len(names) == 1:
+		namespaces = action[0].split('::')	
+		if len(namespaces) == 1:
+			LogOutError("HandleActionFromItem name=" , colItem , " error. namespace or obj error.")
+		else:
+			name = namespaces[len(namespaces) - 1]			# 这个肯定是名字
+	else:
+		name = names[1]			# 这个肯定是名字
+		namespaces = names[0].split('::')
+		objName = namespaces[len(namespaces) - 1]			# 这个肯定是对象名字	
+	
+	namespaces = names[0].split('::')
 	if name not in actions:
 		actions[name] = Action(None)
-		#actions[name].actionName.name = name
-	for index , obj in enumerate(names):
-		if index == len(names) - 2:	  # 对于action而言.括号前的倒数第二个参数代表对象.CUtil.Player.Mail(CUtil.League , CUtil.Player)
-			actions[name].actionName.name = obj
-		elif index != len(names) - 1:
+		actions[name].actionName.name = objName
+	for index , obj in enumerate(namespaces):
+		if index != len(namespaces) - 1:	  # 对于action而言.括号前的倒数第1个参数代表对象或者是函数名字.CUtil::Player.Mail(CUtil.League , CUtil.Player) or CUtil::MinValue
 			actions[name].actionName.namespace.append(obj)
 	
 	#处理条件的参数
@@ -528,7 +543,7 @@ def HandleActionFromItem(actions , colItem):
 		args = []		
 		#LogOutDebug("args2:" , args)
 	for index , arg in enumerate(args):
-		argNames = arg.split('.')
+		argNames = arg.split('::')
 		argObject = Object(None)
 		if len(argNames) > 0:
 			argName = argNames[len(argNames) - 1]			# 这个肯定是名字
@@ -895,7 +910,7 @@ def CheckActionValue(bServer ,  value , objs , args):
 	if value.upper() in tmp:
 		result = ""
 		name = tmp[value.upper()].actionName.name
-		if len(name) > 0:
+		if name != None and len(name) > 0:
 			result += g_pointPrefix
 			result += name
 			result += "->"
@@ -918,7 +933,11 @@ def CheckActionValue(bServer ,  value , objs , args):
 						bIn = True
 				if not bIn:
 					objs.append(arg)
-				
+		elif name == None:
+			for index , namespace in enumerate(tmp[value.upper()].actionName.namespace):
+				result += namespace				
+				result += "::"
+			
 		if bServer:
 			result += GetDicKeyByUpper(g_serverActions , value.upper())
 		else:
