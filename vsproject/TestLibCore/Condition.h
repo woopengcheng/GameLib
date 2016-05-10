@@ -143,13 +143,31 @@ namespace CUtil
 	public:
 		INT32 operator ()(double dValue)
 		{
-			if (pPlayer)
-			{
-				return pPlayer->GetPlayerLevel();
-			}
 			return -1;
 		}
 	};
+
+	template<typename type>
+	static void ChangeValue(type param1 , type value)
+	{
+		param1 = value;
+	}
+
+	static void ChangeValue(std::string param1, const char * value)
+	{
+		param1 = value;
+	}
+
+	template<typename type>
+	static void AddValue(type param1, type value)
+	{
+		param1 += value;
+	}
+	template<typename type>
+	static void MinValue(type param1, type value)
+	{
+		param1 -= value;
+	}
 
 
 }

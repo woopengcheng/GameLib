@@ -1,13 +1,14 @@
 ﻿/************************************
 FileName	:	ActionConfigLoad.cpp
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-05-09 23:54:53
+Date		:	2016-05-10 12:12:16
 Description	:	csv读取文件实现
 ************************************/
 #include "ActionConfigLoad.h"
+#include "../Condition.h"
 #include "CUtil/inc/CUtil.h"
 #include "CUtil/inc/CSVReader.h"
 
