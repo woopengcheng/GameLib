@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	devuser-PC
 IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-04-29 17:20:53
+Date		:	2016-05-10 11:46:14
 Description	:	数据库中定义的数据.
 ************************************/
 #ifndef __Orm_orm_structs_h__

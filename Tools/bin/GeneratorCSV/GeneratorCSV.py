@@ -94,6 +94,7 @@ g_lessEqual = "<="
 g_equal = "=="
 g_notEqual = "!="
 
+g_checkFuncPrefix = "xxCheck"
 g_csvFileSuffix = ".tabcsv"
 g_configPrefix = "S"
 g_configSuffix = "Base"
@@ -714,7 +715,7 @@ def HandleSheetCellCondition():
 				g_clientCellExpression[sheet][cellName] = []	# 这里用来存每一个表达式
 			
 			expressionContent = item[g_rowCheck][index]			# 获取这一列的表达式内容
-			if expressionContent == "NULL" or expressionContent == "":
+			if expressionContent.upper() == "NULL" or expressionContent.upper() == "":
 				continue
 			conditionContent = expressionContent.split("condition:".lower())
 			
@@ -1091,9 +1092,9 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , che
 		if item_type == g_structType or item_type == g_structArrayType:
 			npos = datas[index].find('[')
 			structName = datas[index][0 : npos]
-			fileWrite.write(twoTab + "BOOL				xxCheck" + structName + "(" + g_configPrefix + filename + " & conf);\n")			
+			fileWrite.write(twoTab + "BOOL				" + g_checkFuncPrefix + structName + "(" + g_configPrefix + filename + " & conf);\n")			
 		else:
-			fileWrite.write(twoTab + "BOOL				xxCheck" + datas[index] + "(" + g_configPrefix + filename + " & conf);\n")
+			fileWrite.write(twoTab + "BOOL				" + g_checkFuncPrefix + datas[index] + "(" + g_configPrefix + filename + " & conf);\n")
 	fileWrite.write(oneTab + "\n")
 
 	fileWrite.write(oneTab + "private:\n")
@@ -1116,6 +1117,7 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , checks
 	
 	WriteFileDescription(fileWrite , loadFileName + ".cpp" , "csv读取文件实现")
 	fileWrite.write("#include \"" + loadFileName + ".h\"\n") 
+	fileWrite.write("#include \"../Condition.h\"\n") 
 	fileWrite.write("#include \"CUtil/inc/CUtil.h\"\n") 
 	fileWrite.write("#include \"CUtil/inc/CSVReader.h\"\n\n") 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
@@ -1161,9 +1163,9 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , checks
 		if item_type == g_structType or item_type == g_structArrayType:
 			npos = datas[index].find('[')
 			structName = datas[index][0 : npos]
-			fileWrite.write(threeTab + "MsgAssert_Re0(xxCheck" + structName + "(conf) , \"" + structName + " check error.\");\n")			
+			fileWrite.write(threeTab + "MsgAssert_Re0(" + g_checkFuncPrefix  + structName + "(conf) , \"" + structName + " check error.\");\n")			
 		else:
-			fileWrite.write(threeTab + "MsgAssert_Re0(xxCheck" + datas[index] + "(conf) , \"" + datas[index] + " check error.\");\n")
+			fileWrite.write(threeTab + "MsgAssert_Re0(" + g_checkFuncPrefix + datas[index] + "(conf) , \"" + datas[index] + " check error.\");\n")
 	fileWrite.write(oneTab + "\n")
 
 	fileWrite.write(threeTab + "m_vtConfigs.push_back(conf);\n") 
@@ -1196,9 +1198,9 @@ def GenerateLoadCppCheckFunc(fileWrite , bServer , filename , index , types , da
 	if item_type == g_structType or item_type == g_structArrayType:
 		npos = datas[index].find('[')
 		structName = datas[index][0 : npos]
-		fileWrite.write(oneTab + "BOOL	" + loadFileName + "::xxCheck" + structName + "(" + g_configPrefix + loadFileName + " & conf)\n")			
+		fileWrite.write(oneTab + "BOOL	" + loadFileName + "::" + g_checkFuncPrefix + structName + "(" + g_configPrefix + loadFileName + " & conf)\n")			
 	else:
-		fileWrite.write(oneTab + "BOOL	" + loadFileName + "::xxCheck" + datas[index] + "(" + g_configPrefix + loadFileName + " & conf)\n")
+		fileWrite.write(oneTab + "BOOL	" + loadFileName + "::" + g_checkFuncPrefix + datas[index] + "(" + g_configPrefix + loadFileName + " & conf)\n")
 
 	fileWrite.write(oneTab + "{\n") 
 	GenerateLoadCppCheckConditionFunc(fileWrite , bServer , filename , index , types , datas , checks)
@@ -1242,8 +1244,16 @@ def GenerateLoadCppCheckConditionFunc(fileWrite , bServer , filename , index , t
 			fileWrite.write(twoTab + "{\n")
 			for actionIndex , action in enumerate(expression.actions):
 				fileWrite.write(threeTab + action.name + "(" )
-				for argIndex , arg in enumerate(action.args):
-					fileWrite.write(arg)
+				for argIndex , arg in enumerate(action.args):	
+					argName = arg
+					#LogOutDebug("filename:", filename.upper() , " arg:" , arg) 
+					for index , rowName in enumerate(g_xlsRecords[filename][g_rowName]): # 这里如果是表中的名字,则需要加上conf.
+						if rowName.upper() == arg.upper():
+							LogOutDebug("rowName:", rowName.upper() , " arg:" , arg) 
+							argName = "conf." + rowName + "" 
+							break
+								
+					fileWrite.write(argName)
 					if len(action.args) - 1 != argIndex:
 						fileWrite.write(" , ")
 				fileWrite.write(");\n")

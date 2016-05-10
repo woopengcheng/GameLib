@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	devuser-PC
 IP			:	10.236.40.128
 Version		:	0.0.1
-Date		:	2016-04-29 17:20:53
+Date		:	2016-05-10 11:46:14
 Description	:	orm²Ù×÷¼¯ºÏ.
 ************************************/
 #ifndef __Orm_Orm_TestSlave_h__
