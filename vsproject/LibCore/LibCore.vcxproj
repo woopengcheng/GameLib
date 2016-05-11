@@ -363,6 +363,7 @@
     <ClInclude Include="..\..\LibCore\LogLib\inc\LogAdapter.h" />
     <ClInclude Include="..\..\LibCore\LogLib\inc\LogCommon.h" />
     <ClInclude Include="..\..\LibCore\LogLib\inc\LogInterface.h" />
+    <ClInclude Include="..\..\LibCore\Lua\ILua.h" />
     <ClInclude Include="..\..\LibCore\Lua\lua_tinker.h" />
     <ClInclude Include="..\..\LibCore\Lua\lua_tinker_stackobj.h" />
     <ClInclude Include="..\..\LibCore\Lua\type_traits_ext.h" />

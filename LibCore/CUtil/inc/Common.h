@@ -15,6 +15,9 @@
 #include <unordered_set>  
 #include <iostream>
 #include <deque>
+#include <functional>
+#include <type_traits>
+#include <utility>
 
 #include "CUtil/inc/MsgAssert.h" 
 #include "CUtil/inc/ClassTypeID.h"

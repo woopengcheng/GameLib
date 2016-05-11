@@ -10,6 +10,7 @@
 #include<utility>
 #include<assert.h>
 #include<memory>
+#include "Lua/ILua.h"
 
 #define export_lua
 
@@ -199,6 +200,13 @@ public:
 		return p != NULL;
 	}
 
+};
+
+class TestILua : public ILua
+{
+public:
+protected:
+private:
 };
 
 export_lua ff* get_gff_ptr();

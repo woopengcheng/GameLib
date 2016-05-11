@@ -714,6 +714,9 @@
     <ClInclude Include="..\..\LibCore\Test\LuaTest\test.h">
       <Filter>Test\LuaTest</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\LibCore\Lua\ILua.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
