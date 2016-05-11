@@ -7,7 +7,7 @@
 #include "NetLib/inc/NetHelper.h"
 #include "CSVConfigs/ActionConfig.h"
 #include "CSVConfigs/ActivityConfig.h"
-
+#include "Test/LuaTest/test.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {   
@@ -18,6 +18,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	gDebugStream(Config::g_pActionConfig->GetActionConfig(1)->TestStruct.test1);
 	gDebugStream(Config::g_pActivityConfig->GetActivityConfig("1")->testdate.GetDateStr());
+
+
+	test_lua_main();
 	while (true)
 	{
 

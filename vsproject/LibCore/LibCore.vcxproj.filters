@@ -115,6 +115,15 @@
     <Filter Include="MongoBson\Mongo">
       <UniqueIdentifier>{7a900a46-1059-42bb-8920-55d30e70f472}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{3cde2836-5e41-40df-ac9e-ece3a664ec8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua\lua_tinker">
+      <UniqueIdentifier>{5bbac51b-6272-4dab-932c-5a157907df24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\LuaTest">
+      <UniqueIdentifier>{8251b7d0-1848-45ff-a149-b9c7b229dd7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -693,6 +702,18 @@
     <ClInclude Include="..\..\LibCore\GameDB\inc\OrmHelper.h">
       <Filter>GameDB\inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\LibCore\Lua\lua_tinker.h">
+      <Filter>Lua\lua_tinker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Lua\lua_tinker_stackobj.h">
+      <Filter>Lua\lua_tinker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Lua\type_traits_ext.h">
+      <Filter>Lua\lua_tinker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Test\LuaTest\test.h">
+      <Filter>Test\LuaTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1009,6 +1030,72 @@
     </ClCompile>
     <ClCompile Include="..\..\LibCore\NetLib\src\NetReactorEpollEx.cpp">
       <Filter>NetLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Lua\lua_tinker.cpp">
+      <Filter>Lua\lua_tinker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\auto_export_lua.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_class_member.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_default_params.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_extend_class_in_lua.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_function_obj.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_function_overload.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_get_global.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_gloabl_function.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_inherit.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_inherit_in_lua.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_inner_class.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_int64.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_lua_function_ref.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_member_function.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_multireturn.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_namespace.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_operators.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_shared_ptr.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_stl_container.cpp">
+      <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LuaTest\test_string.cpp">
+      <Filter>Test\LuaTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
