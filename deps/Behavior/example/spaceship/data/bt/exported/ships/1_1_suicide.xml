@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: ships\1_1_suicide.xml-->
+<behavior name="ships/1_1_suicide" agenttype="framework::Ship" version="4">
+  <pars>
+    <par name="par_b" type="int" value="0" />
+  </pars>
+  <node class="Selector" id="1">
+    <node class="DecoratorLoopUntil" id="2">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="false" />
+      <property Until="false" />
+      <node class="Parallel" id="3">
+        <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+        <property ExitPolicy="EXIT_NONE" />
+        <property FailurePolicy="FAIL_ON_ONE" />
+        <property SuccessPolicy="SUCCEED_ON_ALL" />
+        <node class="Condition" id="4">
+          <property Operator="Greater" />
+          <property Opl="uint Self.framework::GameObject::HP" />
+          <property Opr="uint framework::WorldState.framework::WorldState::HealthHP" />
+        </node>
+        <node class="Sequence" id="5">
+          <node class="Action" id="6">
+            <property Method="Self.framework::Ship::Fire()" />
+            <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+            <property ResultOption="BT_INVALID" />
+          </node>
+          <node class="Wait" id="7">
+            <property Time="Self.framework::Ship::GetConstFloatValue()" />
+          </node>
+        </node>
+      </node>
+    </node>
+    <node class="ReferencedBehavior" id="8">
+      <property ReferenceBehavior="const string &quot;base/homing&quot;" />
+    </node>
+  </node>
+</behavior>

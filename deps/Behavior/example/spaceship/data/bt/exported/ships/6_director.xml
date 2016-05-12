@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: ships\6_director.xml-->
+<behavior name="ships/6_director" agenttype="framework::WorldState" version="4">
+  <node class="DecoratorLoop" id="1">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="Sequence" id="2">
+      <node class="Action" id="3">
+        <property Method="Self.framework::WorldState::SpawnShip(3)" />
+        <property ResultOption="BT_SUCCESS" />
+      </node>
+      <node class="DecoratorLoopUntil" id="4">
+        <property Count="const int -1" />
+        <property DecorateWhenChildEnds="false" />
+        <property Until="true" />
+        <node class="Condition" id="5">
+          <property Operator="Equal" />
+          <property Opl="Self.framework::WorldState::NextWave()" />
+          <property Opr="const bool true" />
+        </node>
+      </node>
+      <node class="Action" id="6">
+        <property Method="Self.framework::WorldState::SpawnShip(4)" />
+        <property ResultOption="BT_SUCCESS" />
+      </node>
+      <node class="DecoratorLoopUntil" id="7">
+        <property Count="const int -1" />
+        <property DecorateWhenChildEnds="false" />
+        <property Until="true" />
+        <node class="Condition" id="8">
+          <property Operator="Equal" />
+          <property Opl="Self.framework::WorldState::NextWave()" />
+          <property Opr="const bool true" />
+        </node>
+      </node>
+      <node class="Action" id="9">
+        <property Method="Self.framework::WorldState::SpawnShip(5)" />
+        <property ResultOption="BT_SUCCESS" />
+      </node>
+      <node class="DecoratorLoopUntil" id="10">
+        <property Count="const int -1" />
+        <property DecorateWhenChildEnds="false" />
+        <property Until="true" />
+        <node class="Condition" id="11">
+          <property Operator="Equal" />
+          <property Opl="Self.framework::WorldState::NextWave()" />
+          <property Opr="const bool true" />
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

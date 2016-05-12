@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: ships\1_3_suicide.xml-->
+<behavior name="ships/1_3_suicide" agenttype="framework::Ship" version="4">
+  <node class="SelectorLoop" id="1">
+    <node class="WithPrecondition" id="2">
+      <node class="Condition" id="3">
+        <property Operator="LessEqual" />
+        <property Opl="uint Self.framework::GameObject::HP" />
+        <property Opr="uint framework::WorldState.framework::WorldState::HealthHP" />
+      </node>
+      <node class="ReferencedBehavior" id="4">
+        <property ReferenceBehavior="const string &quot;base/homing&quot;" />
+      </node>
+    </node>
+    <node class="WithPrecondition" id="5">
+      <node class="True" id="6" />
+      <node class="DecoratorLoop" id="0">
+        <property Count="const int -1" />
+        <property DecorateWhenChildEnds="true" />
+        <node class="Sequence" id="7">
+          <node class="Action" id="8">
+            <property Method="Self.framework::Ship::Fire()" />
+            <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+            <property ResultOption="BT_INVALID" />
+          </node>
+          <node class="Wait" id="9">
+            <property Time="const float 1000" />
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_SafeWander.xml-->
+<behavior name="Tank_SafeWander" agenttype="Player" version="4">
+  <pars>
+    <par name="parT_SafeMoveDirection" type="eMapDirection" value="UNKNOWN" />
+  </pars>
+  <node class="DecoratorAlwaysRunning" id="0">
+    <property DecorateWhenChildEnds="false" />
+    <node class="Sequence" id="1">
+      <node class="Assignment" id="2">
+        <property Opl="eMapDirection Self.Player::parT_SafeMoveDirection" />
+        <property Opr="Self.GameActor::getBestMoveDirection(UNKNOWN)" />
+      </node>
+      <node class="Action" id="3">
+        <property Method="Self.GameActor::moveToDirection(eMapDirection Self.Player::parT_SafeMoveDirection)" />
+        <property ResultOption="BT_INVALID" />
+      </node>
+    </node>
+  </node>
+</behavior>

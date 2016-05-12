@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_Wander.xml-->
+<behavior name="Tank_Wander" agenttype="Player" version="4">
+  <pars>
+    <par name="parIn_Self" type="Player" value="null" />
+    <par name="parT_RotateAngle" type="float" value="0" />
+  </pars>
+  <node class="DecoratorLoop" id="6">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="SelectorProbability" id="2">
+      <node class="DecoratorWeight" id="0">
+        <property DecorateWhenChildEnds="false" />
+        <property Weight="const int 70" />
+        <node class="Action" id="7">
+          <property Method="Self.GameActor::moveForward()" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+      </node>
+      <node class="DecoratorWeight" id="8">
+        <property DecorateWhenChildEnds="false" />
+        <property Weight="const int 30" />
+        <node class="Sequence" id="9">
+          <node class="Assignment" id="11">
+            <property Opl="float Self.Player::parT_RotateAngle" />
+            <property Opr="GameLevel.GameLevelCommon::getAvailabeMoveDirection(Player Self.Player::parIn_Self,UNKNOWN)" />
+          </node>
+          <node class="Sequence" id="10">
+            <node class="Condition" id="3">
+              <property Operator="GreaterEqual" />
+              <property Opl="float Self.Player::parT_RotateAngle" />
+              <property Opr="const float 0" />
+            </node>
+            <node class="Action" id="4">
+              <property Method="Self.GameActor::rotateToAngle(float Self.Player::parT_RotateAngle)" />
+              <property ResultOption="BT_INVALID" />
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

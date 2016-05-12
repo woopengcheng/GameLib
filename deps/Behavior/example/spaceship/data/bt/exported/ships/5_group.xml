@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: ships\5_group.xml-->
+<behavior name="ships/5_group" agenttype="framework::Ship" version="4">
+  <node class="Parallel" id="1">
+    <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+    <property ExitPolicy="EXIT_NONE" />
+    <property FailurePolicy="FAIL_ON_ONE" />
+    <property SuccessPolicy="SUCCEED_ON_ALL" />
+    <node class="DecoratorLoop" id="2">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Sequence" id="3">
+        <node class="Action" id="4">
+          <property Method="Self.framework::Ship::GotoPointRelative(10,0,0.5)" />
+          <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Action" id="5">
+          <property Method="Self.framework::Ship::GotoPointRelative(0,10,0.5)" />
+          <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Action" id="6">
+          <property Method="Self.framework::Ship::GotoPointRelative(-10,0,0.5)" />
+          <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Action" id="7">
+          <property Method="Self.framework::Ship::GotoPointRelative(0,-10,0.5)" />
+          <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+      </node>
+    </node>
+    <node class="DecoratorLoop" id="8">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="SelectorProbability" id="9">
+        <node class="DecoratorWeight" id="10">
+          <property DecorateWhenChildEnds="false" />
+          <property Weight="const int 1" />
+          <node class="Action" id="11">
+            <property Method="Self.framework::Ship::Fire()" />
+            <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+            <property ResultOption="BT_INVALID" />
+          </node>
+        </node>
+        <node class="DecoratorWeight" id="12">
+          <property DecorateWhenChildEnds="false" />
+          <property Weight="const int 10" />
+          <node class="Wait" id="0">
+            <property Time="const float 500" />
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

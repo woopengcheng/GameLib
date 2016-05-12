@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: ships\3_basic_move.xml-->
+<behavior name="ships/3_basic_move" agenttype="framework::Ship" version="4">
+  <node class="Parallel" id="1">
+    <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+    <property ExitPolicy="EXIT_NONE" />
+    <property FailurePolicy="FAIL_ON_ONE" />
+    <property SuccessPolicy="SUCCEED_ON_ALL" />
+    <node class="DecoratorLoop" id="2">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Sequence" id="3">
+        <node class="Condition" id="4">
+          <property Operator="Equal" />
+          <property Opl="Self.framework::GameObject::alignedWithPlayer()" />
+          <property Opr="const bool true" />
+        </node>
+        <node class="Action" id="5">
+          <property Method="Self.framework::Ship::Fire()" />
+          <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Wait" id="0">
+          <property Time="const float 500" />
+        </node>
+      </node>
+    </node>
+    <node class="Action" id="7">
+      <property Method="Self.framework::GameObject::TurnTowardsTarget(5)" />
+      <property ResultOption="BT_RUNNING" />
+    </node>
+    <node class="DecoratorLoop" id="8">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Sequence" id="9">
+        <node class="Condition" id="10">
+          <property Operator="Equal" />
+          <property Opl="Self.framework::GameObject::playerIsAligned()" />
+          <property Opr="const bool true" />
+        </node>
+        <node class="SelectorProbability" id="11">
+          <node class="DecoratorWeight" id="12">
+            <property DecorateWhenChildEnds="false" />
+            <property Weight="const int 1" />
+            <node class="Action" id="13">
+              <property Method="Self.framework::Ship::GotoPointRelative(-100,0,0.2)" />
+              <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+              <property ResultOption="BT_INVALID" />
+            </node>
+          </node>
+          <node class="DecoratorWeight" id="14">
+            <property DecorateWhenChildEnds="false" />
+            <property Weight="const int 1" />
+            <node class="Action" id="15">
+              <property Method="Self.framework::Ship::GotoPointRelative(100,0,0.2)" />
+              <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+              <property ResultOption="BT_INVALID" />
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

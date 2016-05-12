@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<workspace name="BattleCity" xmlmetafolder="xmlmeta" folder="behaviors" export="..\..\Resources\behaviac\exported">
+  <xmlmeta>BattleCityMeta.xml</xmlmeta>
+  <export>
+    <bson>
+      <isexported>True</isexported>
+    </bson>
+    <cpp>
+      <isexported>False</isexported>
+      <exportunifiedfile>True</exportunifiedfile>
+    </cpp>
+    <cs>
+      <isexported>True</isexported>
+      <exportunifiedfile>True</exportunifiedfile>
+      <folder>../../../Scripts</folder>
+    </cs>
+  </export>
+</workspace>

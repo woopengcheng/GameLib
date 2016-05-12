@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="Player" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <Parameters>
+      <Parameter Name="parT_EnemyAzimuth" Type="System.Single" DefaultValue="0" DisplayName="parT_EnemyAzimuth" Desc="Player::parT_EnemyAzimuth" Display="true" />
+    </Parameters>
+    <DescriptorRefs value="0:" />
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.DecoratorLoop" Count="const int -1" DecorateWhenChildEnds="true" Enable="true" HasOwnPrefabData="false" Id="5" PrefabName="" PrefabNodeId="-1">
+        <Comment Background="NoColor" Text="" />
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.Sequence" HasOwnPrefabData="false" Id="6" PrefabName="../Prefabs/Prefab_检测并攻击敌人" PrefabNodeId="6">
+            <Comment Background="Gray" Text="检测并攻击敌人" />
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>

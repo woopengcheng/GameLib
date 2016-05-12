@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: npc.xml-->
+<behavior name="npc" agenttype="NPC" version="4">
+  <node class="Sequence" id="1">
+    <node class="Action" id="0">
+      <property Method="Self.NPC::setLeveUpScore(1,30)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="Action" id="2">
+      <property Method="Self.NPC::setLeveUpScore(2,200)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="Action" id="3">
+      <property Method="Self.NPC::setLeveUpScore(3,500)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="Action" id="4">
+      <property Method="Self.NPC::setLeveUpScore(4,800)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="DecoratorLoop" id="5">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Parallel" id="9">
+        <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+        <property ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" />
+        <property FailurePolicy="FAIL_ON_ONE" />
+        <property SuccessPolicy="SUCCEED_ON_ALL" />
+        <node class="Sequence" id="7">
+          <node class="Action" id="6">
+            <property Method="Self.NPC::spawnEnemy()" />
+            <property ResultOption="BT_SUCCESS" />
+          </node>
+          <node class="WaitFrames" id="8">
+            <property Frames="int Self.NPC::delayTime[int Self.NPC::m_level]" />
+          </node>
+        </node>
+        <node class="Sequence" id="10">
+          <node class="Assignment" id="11">
+            <property Opl="bool Self.NPC::m_canBossRefresh" />
+            <property Opr="const bool true" />
+          </node>
+          <node class="WaitFrames" id="12">
+            <property Frames="const int 50" />
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

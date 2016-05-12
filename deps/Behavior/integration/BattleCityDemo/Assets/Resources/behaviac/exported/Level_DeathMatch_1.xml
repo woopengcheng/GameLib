@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Level_DeathMatch_1.xml-->
+<behavior name="Level_DeathMatch_1" agenttype="GameLevelCommon" version="4">
+  <pars>
+    <par name="parT_PlayerIDs" type="vector&lt;int&gt;" value="4:10|11|12|13" />
+    <par name="parT_ID" type="int" value="0" />
+    <par name="parT_Life" type="int" value="0" />
+    <par name="parT_PlayerIndex" type="int" value="0" />
+    <par name="parT_LifeCounts" type="vector&lt;int&gt;" value="4:1|1|1|1" />
+    <par name="parT_EnemyCount" type="int" value="0" />
+    <par name="parT_AwardX" type="int" value="0" />
+    <par name="parT_AwardY" type="int" value="0" />
+    <par name="parT_AwardType" type="int" value="0" />
+    <par name="parT_ForceColors" type="vector&lt;UnityEngine::Color&gt;" value="4:{a=1;b=0;g=0;r=1;}|{a=1;b=1;g=0;r=0;}|{a=1;b=0;g=1;r=1;}|{a=1;b=0;g=1;r=0;}" />
+    <par name="parT_Forces" type="vector&lt;eGameForce&gt;" value="4:BLUE_FORCE|BLUE_FORCE|BLUE_FORCE|RED_FORCE" />
+    <par name="parT_ActorForce" type="eGameForce" value="BLUE_FORCE" />
+    <par name="parT_ActorColor" type="UnityEngine::Color" value="{a=0;b=0;g=0;r=0;}" />
+    <par name="parT_RedForceID" type="int" value="0" />
+    <par name="parT_ActorCount" type="int" value="4" />
+    <par name="parT_BehaviorTree" type="vector&lt;string&gt;" value="4:&quot;Tank_SafeWander_RandomFire&quot;|&quot;Tank_SafeWander_RandomFire&quot;|&quot;Tank_SafeWander_RandomFire&quot;|&quot;Tank_Agressive&quot;" />
+    <par name="parT_Tree" type="string" value="" />
+  </pars>
+  <node class="Selector" id="3">
+    <node class="DecoratorLoopUntil" id="10">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <property Until="false" />
+      <node class="Sequence" id="17">
+        <node class="Condition" id="4">
+          <property Operator="Less" />
+          <property Opl="int Self.GameLevelCommon::parT_PlayerIndex" />
+          <property Opr="int Self.GameLevelCommon::parT_ActorCount" />
+        </node>
+        <node class="Assignment" id="12">
+          <property Opl="int Self.GameLevelCommon::parT_ID" />
+          <property Opr="Self.GameLevelCommon::getIntArrayElement(vector&lt;int&gt; Self.GameLevelCommon::parT_PlayerIDs,int Self.GameLevelCommon::parT_PlayerIndex)" />
+        </node>
+        <node class="Assignment" id="13">
+          <property Opl="int Self.GameLevelCommon::parT_Life" />
+          <property Opr="Self.GameLevelCommon::getIntArrayElement(vector&lt;int&gt; Self.GameLevelCommon::parT_LifeCounts,int Self.GameLevelCommon::parT_PlayerIndex)" />
+        </node>
+        <node class="Action" id="15">
+          <property Method="Self.GameLevelCommon::setActorLifeCount(int Self.GameLevelCommon::parT_ID,int Self.GameLevelCommon::parT_Life)" />
+          <property ResultOption="BT_SUCCESS" />
+        </node>
+        <node class="Assignment" id="51">
+          <property Opl="eGameForce Self.GameLevelCommon::parT_ActorForce" />
+          <property Opr="Self.GameLevelCommon::getGameForceArrayElement(vector&lt;eGameForce&gt; Self.GameLevelCommon::parT_Forces,int Self.GameLevelCommon::parT_PlayerIndex)" />
+        </node>
+        <node class="DecoratorAlwaysSuccess" id="53">
+          <property DecorateWhenChildEnds="false" />
+          <node class="Sequence" id="54">
+            <node class="Condition" id="52">
+              <property Operator="Equal" />
+              <property Opl="eGameForce Self.GameLevelCommon::parT_ActorForce" />
+              <property Opr="const eGameForce RED_FORCE" />
+            </node>
+            <node class="Assignment" id="55">
+              <property Opl="int Self.GameLevelCommon::parT_RedForceID" />
+              <property Opr="int Self.GameLevelCommon::parT_ID" />
+            </node>
+            <node class="Action" id="26">
+              <property Method="Self.GameLevelCommon::setMainCharID(int Self.GameLevelCommon::parT_RedForceID)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+          </node>
+        </node>
+        <node class="Compute" id="16">
+          <property Operator="Add" />
+          <property Opl="int Self.GameLevelCommon::parT_PlayerIndex" />
+          <property Opr1="int Self.GameLevelCommon::parT_PlayerIndex" />
+          <property Opr2="const int 1" />
+        </node>
+      </node>
+    </node>
+    <node class="Sequence" id="6">
+      <node class="Wait" id="47">
+        <property Time="const float 2000" />
+      </node>
+      <node class="DecoratorLoop" id="50">
+        <property Count="const int -1" />
+        <property DecorateWhenChildEnds="true" />
+        <node class="Parallel" id="14">
+          <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+          <property ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" />
+          <property FailurePolicy="FAIL_ON_ALL" />
+          <property SuccessPolicy="SUCCEED_ON_ALL" />
+          <node class="Sequence" id="11">
+            <node class="DecoratorAlwaysSuccess" id="18">
+              <property DecorateWhenChildEnds="false" />
+              <node class="Sequence" id="8">
+                <node class="Condition" id="9">
+                  <property Operator="Equal" />
+                  <property Opl="int Self.GameLevelCommon::parT_PlayerIndex" />
+                  <property Opr="int Self.GameLevelCommon::parT_ActorCount" />
+                </node>
+                <node class="Assignment" id="19">
+                  <property Opl="int Self.GameLevelCommon::parT_PlayerIndex" />
+                  <property Opr="const int 0" />
+                </node>
+              </node>
+            </node>
+            <node class="Assignment" id="20">
+              <property Opl="int Self.GameLevelCommon::parT_ID" />
+              <property Opr="Self.GameLevelCommon::getIntArrayElement(vector&lt;int&gt; Self.GameLevelCommon::parT_PlayerIDs,int Self.GameLevelCommon::parT_PlayerIndex)" />
+            </node>
+            <node class="DecoratorAlwaysSuccess" id="21">
+              <property DecorateWhenChildEnds="false" />
+              <node class="Sequence" id="29">
+                <node class="DecoratorNot" id="36">
+                  <property DecorateWhenChildEnds="false" />
+                  <node class="Action" id="7">
+                    <property Method="Self.GameLevelCommon::isActorAlive(int Self.GameLevelCommon::parT_ID)" />
+                    <property ResultOption="BT_INVALID" />
+                  </node>
+                </node>
+                <node class="Assignment" id="39">
+                  <property Opl="int Self.GameLevelCommon::parT_Life" />
+                  <property Opr="Self.GameLevelCommon::getActorLifeCount(int Self.GameLevelCommon::parT_ID)" />
+                </node>
+                <node class="Condition" id="37">
+                  <property Operator="Greater" />
+                  <property Opl="int Self.GameLevelCommon::parT_Life" />
+                  <property Opr="const int 0" />
+                </node>
+                <node class="Assignment" id="40">
+                  <property Opl="eGameForce Self.GameLevelCommon::parT_ActorForce" />
+                  <property Opr="Self.GameLevelCommon::getGameForceArrayElement(vector&lt;eGameForce&gt; Self.GameLevelCommon::parT_Forces,int Self.GameLevelCommon::parT_PlayerIndex)" />
+                </node>
+                <node class="Assignment" id="48">
+                  <property Opl="UnityEngine::Color Self.GameLevelCommon::parT_ActorColor" />
+                  <property Opr="Self.GameLevelCommon::getColorArrayElement(vector&lt;UnityEngine::Color&gt; Self.GameLevelCommon::parT_ForceColors,int Self.GameLevelCommon::parT_PlayerIndex)" />
+                </node>
+                <node class="Assignment" id="25">
+                  <property Opl="string Self.GameLevelCommon::parT_Tree" />
+                  <property Opr="Self.GameLevelCommon::getStringArrayElement(vector&lt;string&gt; Self.GameLevelCommon::parT_BehaviorTree,int Self.GameLevelCommon::parT_PlayerIndex)" />
+                </node>
+                <node class="Action" id="49">
+                  <property Method="Self.GameLevelCommon::spawnGameActor(eGameForce Self.GameLevelCommon::parT_ActorForce,10,string Self.GameLevelCommon::parT_Tree,1500,500,1,3,180,360,int Self.GameLevelCommon::parT_PlayerIndex,UnityEngine::Color Self.GameLevelCommon::parT_ActorColor,int Self.GameLevelCommon::parT_ID)" />
+                  <property ResultOption="BT_SUCCESS" />
+                </node>
+                <node class="Compute" id="41">
+                  <property Operator="Sub" />
+                  <property Opl="int Self.GameLevelCommon::parT_Life" />
+                  <property Opr1="int Self.GameLevelCommon::parT_Life" />
+                  <property Opr2="const int 1" />
+                </node>
+                <node class="Action" id="35">
+                  <property Method="Self.GameLevelCommon::setActorLifeCount(int Self.GameLevelCommon::parT_ID,int Self.GameLevelCommon::parT_Life)" />
+                  <property ResultOption="BT_SUCCESS" />
+                </node>
+              </node>
+            </node>
+            <node class="Compute" id="0">
+              <property Operator="Add" />
+              <property Opl="int Self.GameLevelCommon::parT_PlayerIndex" />
+              <property Opr1="int Self.GameLevelCommon::parT_PlayerIndex" />
+              <property Opr2="const int 1" />
+            </node>
+          </node>
+          <node class="Selector" id="2">
+            <node class="Sequence" id="38">
+              <node class="Action" id="5">
+                <property Method="Self.GameLevelCommon::isAllEnemyDeadForever()" />
+                <property ResultOption="BT_INVALID" />
+              </node>
+              <node class="Wait" id="1">
+                <property Time="const float 2000" />
+              </node>
+              <node class="Action" id="30">
+                <property Method="Self.GameLevelCommon::showCredit()" />
+                <property ResultOption="BT_INVALID" />
+              </node>
+              <node class="Wait" id="32">
+                <property Time="const float 6000" />
+              </node>
+              <node class="Action" id="23">
+                <property Method="Self.GameLevelCommon::stopGame(true)" />
+                <property ResultOption="BT_SUCCESS" />
+              </node>
+            </node>
+            <node class="Sequence" id="24">
+              <node class="Action" id="22">
+                <property Method="Self.GameLevelCommon::isPlayerDeadForever()" />
+                <property ResultOption="BT_INVALID" />
+              </node>
+              <node class="Wait" id="28">
+                <property Time="const float 2000" />
+              </node>
+              <node class="Action" id="33">
+                <property Method="Self.GameLevelCommon::showCredit()" />
+                <property ResultOption="BT_INVALID" />
+              </node>
+              <node class="Wait" id="56">
+                <property Time="const float 6000" />
+              </node>
+              <node class="Action" id="27">
+                <property Method="Self.GameLevelCommon::stopGame(false)" />
+                <property ResultOption="BT_SUCCESS" />
+              </node>
+            </node>
+          </node>
+          <node class="Sequence" id="34">
+            <node class="Wait" id="31">
+              <property Time="const float 8000" />
+            </node>
+            <node class="Assignment" id="42">
+              <property Opl="int Self.GameLevelCommon::parT_AwardType" />
+              <property Opr="Self.GameLevelCommon::randomNumberInt(0,4)" />
+            </node>
+            <node class="Assignment" id="43">
+              <property Opl="int Self.GameLevelCommon::parT_AwardX" />
+              <property Opr="Self.GameLevelCommon::randomNumberInt(5,20)" />
+            </node>
+            <node class="Assignment" id="44">
+              <property Opl="int Self.GameLevelCommon::parT_AwardY" />
+              <property Opr="Self.GameLevelCommon::randomNumberInt(5,20)" />
+            </node>
+            <node class="Action" id="45">
+              <property Method="Self.GameLevelCommon::spawnAward(int Self.GameLevelCommon::parT_AwardType,int Self.GameLevelCommon::parT_AwardX,int Self.GameLevelCommon::parT_AwardY,20)" />
+              <property ResultOption="BT_INVALID" />
+            </node>
+            <node class="Wait" id="46">
+              <property Time="const float 2000" />
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

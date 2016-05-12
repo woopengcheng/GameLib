@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_WalkUtilCollision_2Agents.xml-->
+<behavior name="Tank_WalkUtilCollision_2Agents" agenttype="Player" version="4">
+  <pars>
+    <par name="parT_moveTarget" type="UnityEngine::Vector3" value="{x=0;y=0;z=0;}" />
+    <par name="par_index" type="int" value="0" />
+    <par name="par_w" type="float" value="0" />
+  </pars>
+  <node class="Sequence" id="3">
+    <node class="Action" id="5">
+      <property Method="Self.Player::getTarget(UnityEngine::Vector3 Self.Player::parT_moveTarget)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="Action" id="2">
+      <property Method="Self.Player::getInfo(float Self.Player::par_w,int Self.Player::par_index)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="DecoratorLoop" id="0">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Sequence" id="1">
+        <node class="Action" id="6">
+          <property Method="Self.Player::printf(float Self.Player::par_w,int Self.Player::par_index)" />
+          <property ResultOption="BT_SUCCESS" />
+        </node>
+        <node class="Action" id="4">
+          <property Method="Self.Player::moveto(UnityEngine::Vector3 Self.Player::parT_moveTarget)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

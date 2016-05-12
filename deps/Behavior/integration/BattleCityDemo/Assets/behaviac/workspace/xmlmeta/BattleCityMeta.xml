@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<metas version="3.0" language="cs">
+  <types>
+    <enumtype Type="behaviac::EBTStatus" DisplayName="" Desc="">
+      <enum NativeValue="behaviac::BT_INVALID" Value="BT_INVALID" DisplayName="BT_INVALID" Desc="BT_INVALID" />
+      <enum NativeValue="behaviac::BT_SUCCESS" Value="BT_SUCCESS" DisplayName="BT_SUCCESS" Desc="BT_SUCCESS" />
+      <enum NativeValue="behaviac::BT_FAILURE" Value="BT_FAILURE" DisplayName="BT_FAILURE" Desc="BT_FAILURE" />
+      <enum NativeValue="behaviac::BT_RUNNING" Value="BT_RUNNING" DisplayName="BT_RUNNING" Desc="BT_RUNNING" />
+    </enumtype>
+    <enumtype Type="eGameForce" DisplayName="eGameForce" Desc="eGameForce">
+      <enum NativeValue="RED_FORCE" Value="RED_FORCE" DisplayName="RED_FORCE" Desc="RED_FORCE" />
+      <enum NativeValue="BLUE_FORCE" Value="BLUE_FORCE" DisplayName="BLUE_FORCE" Desc="BLUE_FORCE" />
+      <enum NativeValue="UNKNOWN_FORCE" Value="UNKNOWN_FORCE" DisplayName="UNKNOWN_FORCE" Desc="UNKNOWN_FORCE" />
+    </enumtype>
+    <enumtype Type="eMapDirection" DisplayName="eMapDirection" Desc="eMapDirection">
+      <enum NativeValue="TOP" Value="TOP" DisplayName="TOP" Desc="TOP" />
+      <enum NativeValue="RIGHT" Value="RIGHT" DisplayName="RIGHT" Desc="RIGHT" />
+      <enum NativeValue="BOTTOM" Value="BOTTOM" DisplayName="BOTTOM" Desc="BOTTOM" />
+      <enum NativeValue="LEFT" Value="LEFT" DisplayName="LEFT" Desc="LEFT" />
+      <enum NativeValue="TOTAL" Value="TOTAL" DisplayName="TOTAL" Desc="TOTAL" />
+      <enum NativeValue="UNKNOWN" Value="UNKNOWN" DisplayName="UNKNOWN" Desc="UNKNOWN" />
+    </enumtype>
+    <enumtype Type="eBrickType" DisplayName="eBrickType" Desc="eBrickType">
+      <enum NativeValue="EMPTY" Value="EMPTY" DisplayName="EMPTY" Desc="EMPTY" />
+      <enum NativeValue="TREE" Value="TREE" DisplayName="TREE" Desc="TREE" />
+      <enum NativeValue="AWARD" Value="AWARD" DisplayName="AWARD" Desc="AWARD" />
+      <enum NativeValue="ICE" Value="ICE" DisplayName="ICE" Desc="ICE" />
+      <enum NativeValue="SOIL" Value="SOIL" DisplayName="SOIL" Desc="SOIL" />
+      <enum NativeValue="ACTOR" Value="ACTOR" DisplayName="ACTOR" Desc="ACTOR" />
+      <enum NativeValue="HEADQUATER" Value="HEADQUATER" DisplayName="HEADQUATER" Desc="HEADQUATER" />
+      <enum NativeValue="STEEL" Value="STEEL" DisplayName="STEEL" Desc="STEEL" />
+      <enum NativeValue="OCEAN" Value="OCEAN" DisplayName="OCEAN" Desc="OCEAN" />
+      <enum NativeValue="OBSTACLE" Value="OBSTACLE" DisplayName="OBSTACLE" Desc="OBSTACLE" />
+      <enum NativeValue="PATHRESULT" Value="PATHRESULT" DisplayName="PATHRESULT" Desc="PATHRESULT" />
+      <enum NativeValue="TOTAL" Value="TOTAL" DisplayName="TOTAL" Desc="TOTAL" />
+    </enumtype>
+    <struct Type="System::Object" DisplayName="Object" Desc="Object" IsRefType="true" />
+    <struct Type="UnityEngine::Vector3" DisplayName="Vector3" Desc="Vector3" IsRefType="false">
+      <Member Name="kEpsilon" DisplayName="kEpsilon" Desc="kEpsilon" Type="float" Class="UnityEngine::Vector3" Readonly="true" Static="true" Public="true" />
+      <Member Name="x" DisplayName="x" Desc="x" Type="float" Class="UnityEngine::Vector3" Public="true" />
+      <Member Name="y" DisplayName="y" Desc="y" Type="float" Class="UnityEngine::Vector3" Public="true" />
+      <Member Name="z" DisplayName="z" Desc="z" Type="float" Class="UnityEngine::Vector3" Public="true" />
+    </struct>
+    <struct Type="UnityEngine::Color" DisplayName="Color" Desc="Color" IsRefType="false">
+      <Member Name="r" DisplayName="r" Desc="r" Type="float" Class="UnityEngine::Color" Public="true" />
+      <Member Name="g" DisplayName="g" Desc="g" Type="float" Class="UnityEngine::Color" Public="true" />
+      <Member Name="b" DisplayName="b" Desc="b" Type="float" Class="UnityEngine::Color" Public="true" />
+      <Member Name="a" DisplayName="a" Desc="a" Type="float" Class="UnityEngine::Color" Public="true" />
+    </struct>
+    <struct Type="UnityEngine::Transform" DisplayName="Transform" Desc="Transform" IsRefType="true" />
+  </types>
+  <agents>
+    <agent classfullname="behaviac::Agent" DisplayName="behaviac.Agent" Desc="behaviac.Agent" IsRefType="true">
+      <Method Name="VectorLength" DisplayName="" Desc="" ReturnType="int" Class="behaviac::Agent" Static="true" Public="true">
+        <Param DisplayName="vector" Desc="vector" Type="System.Collections.IList" />
+      </Method>
+      <Method Name="VectorAdd" DisplayName="" Desc="" ReturnType="void" Class="behaviac::Agent" Static="true" Public="true">
+        <Param DisplayName="vector" Desc="vector" Type="System.Collections.IList&amp;" IsRef="true" />
+        <Param DisplayName="element" Desc="element" Type="System::Object*" />
+      </Method>
+      <Method Name="VectorRemove" DisplayName="" Desc="" ReturnType="void" Class="behaviac::Agent" Static="true" Public="true">
+        <Param DisplayName="vector" Desc="vector" Type="System.Collections.IList&amp;" IsRef="true" />
+        <Param DisplayName="element" Desc="element" Type="System::Object*" />
+      </Method>
+      <Method Name="VectorContains" DisplayName="" Desc="" ReturnType="bool" Class="behaviac::Agent" Static="true" Public="true">
+        <Param DisplayName="vector" Desc="vector" Type="System.Collections.IList&amp;" IsRef="true" />
+        <Param DisplayName="element" Desc="element" Type="System::Object*" />
+      </Method>
+      <Method Name="VectorClear" DisplayName="" Desc="" ReturnType="void" Class="behaviac::Agent" Static="true" Public="true">
+        <Param DisplayName="vector" Desc="vector" Type="System.Collections.IList&amp;" IsRef="true" />
+      </Method>
+    </agent>
+    <agent classfullname="GameActor" base="behaviac::Agent" DisplayName="GameActor" Desc="GameActor -&gt; Agent" IsRefType="true">
+      <Member Name="currentOrientation" DisplayName="" Desc="" Type="float" Class="GameActor" Public="true" />
+      <Member Name="force" DisplayName="" Desc="" Type="eGameForce" Class="GameActor" Public="true" />
+      <Member Name="gameScore" DisplayName="" Desc="" Type="int" Class="GameActor" Public="true" />
+      <Method Name="moveForward" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameActor" Public="true" />
+      <Method Name="getBestMoveDirection" DisplayName="" Desc="" ReturnType="eMapDirection" Class="GameActor" Public="true">
+        <Param DisplayName="tendencyDirection" Desc="tendencyDirection" Type="eMapDirection" />
+      </Method>
+      <Method Name="moveToDirection" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameActor" Public="true">
+        <Param DisplayName="direction" Desc="direction" Type="eMapDirection" />
+      </Method>
+      <Method Name="rotateToAngle" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameActor" Public="true">
+        <Param DisplayName="angle" Desc="angle" Type="float" />
+      </Method>
+      <Method Name="navigate" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameActor" Public="true" />
+      <Method Name="findPath" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameActor" Public="true">
+        <Param DisplayName="dest" Desc="dest" Type="UnityEngine::Vector3" />
+        <Param DisplayName="walkLevel" Desc="walkLevel" Type="int" />
+      </Method>
+      <Method Name="getPathDistance" DisplayName="" Desc="" ReturnType="int" Class="GameActor" Public="true" />
+    </agent>
+    <agent classfullname="GameLevelCommon" base="behaviac::Agent" DisplayName="GameLevelCommon" Desc="GameLevelCommon -&gt; Agent" IsRefType="true">
+      <Member Name="defaultWalkLevel" DisplayName="" Desc="" Type="int" Class="GameLevelCommon" Static="true" Public="true" />
+      <Member Name="actorWalkLevel" DisplayName="" Desc="" Type="int" Class="GameLevelCommon" Static="true" Public="true" />
+      <Member Name="bulletWalkLevel" DisplayName="" Desc="" Type="int" Class="GameLevelCommon" Static="true" Public="true" />
+      <Member Name="allWalkLevel" DisplayName="" Desc="" Type="int" Class="GameLevelCommon" Static="true" Public="true" />
+      <Member Name="soilWalkLevel" DisplayName="" Desc="" Type="int" Class="GameLevelCommon" Static="true" Public="true" />
+      <Member Name="soilSteelWalkLevel" DisplayName="" Desc="" Type="int" Class="GameLevelCommon" Static="true" Public="true" />
+      <Member Name="soilSteelOceanWalkLevel" DisplayName="" Desc="" Type="int" Class="GameLevelCommon" Static="true" Public="true" />
+      <Member Name="isPlayerAlive" DisplayName="" Desc="" Type="bool" Class="GameLevelCommon" Public="true" />
+      <Method Name="setActorLifeCount" DisplayName="" Desc="" ReturnType="void" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="id" Desc="id" Type="int" />
+        <Param DisplayName="life" Desc="life" Type="int" />
+      </Method>
+      <Method Name="setMainCharID" DisplayName="" Desc="" ReturnType="void" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="id" Desc="id" Type="int" />
+      </Method>
+      <Method Name="getActorLifeCount" DisplayName="" Desc="" ReturnType="int" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="id" Desc="id" Type="int" />
+      </Method>
+      <Method Name="isAllEnemyDeadForever" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameLevelCommon" Public="true" />
+      <Method Name="isPlayerDeadForever" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameLevelCommon" Public="true" />
+      <Method Name="getBrickType" DisplayName="" Desc="" ReturnType="eBrickType" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="p_" Desc="p_" Type="GameActor*" />
+        <Param DisplayName="dir_" Desc="dir_" Type="eMapDirection" />
+        <Param DisplayName="step" Desc="step" Type="int" />
+      </Method>
+      <Method Name="getAvailabeMoveDirection" DisplayName="" Desc="" ReturnType="float" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="p_" Desc="p_" Type="GameActor*" />
+        <Param DisplayName="defaultDirection" Desc="defaultDirection" Type="eMapDirection" />
+      </Method>
+      <Method Name="isPointWakable" DisplayName="" Desc="" ReturnType="bool" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="x" Desc="x" Type="int" />
+        <Param DisplayName="y" Desc="y" Type="int" />
+        <Param DisplayName="walkLevel" Desc="walkLevel" Type="int" />
+      </Method>
+      <Method Name="isBrickTypeWakable" DisplayName="" Desc="" ReturnType="bool" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="t" Desc="t" Type="eBrickType" />
+        <Param DisplayName="walkLevel" Desc="walkLevel" Type="int" />
+      </Method>
+      <Method Name="getPlayer" DisplayName="" Desc="" ReturnType="behaviac::Agent*" Class="GameLevelCommon" Public="true" />
+      <Method Name="randomNumberInt" DisplayName="" Desc="" ReturnType="int" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="min" Desc="min" Type="int" />
+        <Param DisplayName="max" Desc="max" Type="int" />
+      </Method>
+      <Method Name="randomNumberFloat" DisplayName="" Desc="" ReturnType="float" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="min" Desc="min" Type="float" />
+        <Param DisplayName="max" Desc="max" Type="float" />
+      </Method>
+      <Method Name="getEnemyCount" DisplayName="" Desc="" ReturnType="int" Class="GameLevelCommon" Public="true" />
+      <Method Name="getNearestEnemy" DisplayName="" Desc="" ReturnType="behaviac::Agent*" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="force" Desc="force" Type="eGameForce" />
+      </Method>
+      <Method Name="getNearestAwardID" DisplayName="" Desc="" ReturnType="int" Class="GameLevelCommon" Public="true" />
+      <Method Name="isAwardExist" DisplayName="" Desc="" ReturnType="bool" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="id" Desc="id" Type="int" />
+      </Method>
+      <Method Name="getAwardPosition" DisplayName="" Desc="" ReturnType="UnityEngine::Vector3" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="id" Desc="id" Type="int" />
+      </Method>
+      <Method Name="getEnemyPosition" DisplayName="" Desc="" ReturnType="UnityEngine::Vector3" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="agent" Desc="agent" Type="behaviac::Agent*" />
+      </Method>
+      <Method Name="continueGame" DisplayName="" Desc="" ReturnType="void" Class="GameLevelCommon" Public="true" />
+      <Method Name="showCredit" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameLevelCommon" Public="true" />
+      <Method Name="stopGame" DisplayName="" Desc="" ReturnType="void" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="doesWin" Desc="doesWin" Type="bool" />
+      </Method>
+      <Method Name="spawnRandomActor" DisplayName="" Desc="" ReturnType="int" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="force" Desc="force" Type="eGameForce" />
+      </Method>
+      <Method Name="spawnGameActor" DisplayName="" Desc="" ReturnType="int" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="force" Desc="force" Type="eGameForce" />
+        <Param DisplayName="moveSpeed" Desc="moveSpeed" Type="float" />
+        <Param DisplayName="behaviorTree" Desc="behaviorTree" Type="string" />
+        <Param DisplayName="fireInterval" Desc="fireInterval" Type="int" />
+        <Param DisplayName="twoBulletInterval" Desc="twoBulletInterval" Type="int" />
+        <Param DisplayName="hp" Desc="hp" Type="int" />
+        <Param DisplayName="damageLevel" Desc="damageLevel" Type="int" />
+        <Param DisplayName="aimSpeed" Desc="aimSpeed" Type="float" />
+        <Param DisplayName="rotateSpeed" Desc="rotateSpeed" Type="float" />
+        <Param DisplayName="spawnIndex" Desc="spawnIndex" Type="int" />
+        <Param DisplayName="clr" Desc="clr" Type="UnityEngine::Color" />
+        <Param DisplayName="id" Desc="id" Type="int" />
+      </Method>
+      <Method Name="spawnAward" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="intType" Desc="intType" Type="int" />
+        <Param DisplayName="x" Desc="x" Type="int" />
+        <Param DisplayName="y" Desc="y" Type="int" />
+        <Param DisplayName="lifeTime" Desc="lifeTime" Type="float" />
+      </Method>
+      <Method Name="spawnEffect" DisplayName="" Desc="" ReturnType="UnityEngine::Transform*" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="fileName" Desc="fileName" Type="string" />
+        <Param DisplayName="parent" Desc="parent" Type="UnityEngine::Transform*" />
+        <Param DisplayName="tr" Desc="tr" Type="UnityEngine::Vector3" />
+        <Param DisplayName="sc" Desc="sc" Type="float" />
+      </Method>
+      <Method Name="isActorAlive" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="GameLevelCommon" Public="true">
+        <Param DisplayName="id" Desc="id" Type="int" />
+      </Method>
+      <Method Name="getIntArrayElement" DisplayName="" Desc="" ReturnType="int" Class="GameLevelCommon" Static="true" Public="true">
+        <Param DisplayName="data" Desc="data" Type="vector&lt;int&gt;" />
+        <Param DisplayName="index" Desc="index" Type="int" />
+      </Method>
+      <Method Name="getStringArrayElement" DisplayName="" Desc="" ReturnType="string" Class="GameLevelCommon" Static="true" Public="true">
+        <Param DisplayName="data" Desc="data" Type="vector&lt;string&gt;" />
+        <Param DisplayName="index" Desc="index" Type="int" />
+      </Method>
+      <Method Name="getColorArrayElement" DisplayName="" Desc="" ReturnType="UnityEngine::Color" Class="GameLevelCommon" Static="true" Public="true">
+        <Param DisplayName="data" Desc="data" Type="vector&lt;UnityEngine::Color&gt;" />
+        <Param DisplayName="index" Desc="index" Type="int" />
+      </Method>
+      <Method Name="getGameForceArrayElement" DisplayName="" Desc="" ReturnType="eGameForce" Class="GameLevelCommon" Static="true" Public="true">
+        <Param DisplayName="data" Desc="data" Type="vector&lt;eGameForce&gt;" />
+        <Param DisplayName="index" Desc="index" Type="int" />
+      </Method>
+    </agent>
+    <agent classfullname="Player" base="GameActor" DisplayName="Player" Desc="Player -&gt; GameActor" IsRefType="true">
+      <Member Name="hp" DisplayName="" Desc="" Type="int" Class="Player" Public="true" />
+      <Member Name="damageLevel" DisplayName="" Desc="" Type="int" Class="Player" Public="true" />
+      <Member Name="Index" DisplayName="" Desc="" Type="int" Class="Player" Public="true" />
+      <Method Name="detectNearestEnemyInView" DisplayName="" Desc="" ReturnType="float" Class="Player" Public="true" />
+      <Method Name="findNearestEnemy" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="Player" Public="true" />
+      <Method Name="canDestroyBrick" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="Player" Public="true">
+        <Param DisplayName="step" Desc="step" Type="int" />
+      </Method>
+      <Method Name="detectEnemy" DisplayName="" Desc="" ReturnType="int" Class="Player" Public="true">
+        <Param DisplayName="dir" Desc="dir" Type="eMapDirection" />
+      </Method>
+      <Method Name="aimToAngle" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="Player" Public="true">
+        <Param DisplayName="angle" Desc="angle" Type="float" />
+      </Method>
+      <Method Name="aimToTarget" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="Player" Public="true">
+        <Param DisplayName="position" Desc="position" Type="UnityEngine::Vector3" />
+      </Method>
+      <Method Name="fire" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="Player" Public="true" />
+      <Method Name="predicateFirePoint" DisplayName="" Desc="" ReturnType="UnityEngine::Vector3" Class="Player" Public="true">
+        <Param DisplayName="target" Desc="target" Type="behaviac::Agent*" />
+      </Method>
+      <Method Name="locationTendencyToTarget" DisplayName="" Desc="" ReturnType="eMapDirection" Class="Player" Public="true">
+        <Param DisplayName="position" Desc="position" Type="UnityEngine::Vector3" />
+      </Method>
+      <Method Name="getTarget" DisplayName="" Desc="" ReturnType="void" Class="Player" Public="true">
+        <Param DisplayName="target" Desc="target" Type="UnityEngine::Vector3" IsRef="true" />
+      </Method>
+      <Method Name="moveto" DisplayName="" Desc="" ReturnType="behaviac::EBTStatus" Class="Player">
+        <Param DisplayName="targetPos" Desc="targetPos" Type="UnityEngine::Vector3" />
+      </Method>
+      <Method Name="getInfo" DisplayName="" Desc="" ReturnType="void" Class="Player" Public="true">
+        <Param DisplayName="w" Desc="w" Type="float" IsRef="true" />
+        <Param DisplayName="index" Desc="index" Type="int" IsRef="true" />
+      </Method>
+      <Method Name="printf" DisplayName="" Desc="" ReturnType="void" Class="Player" Public="true">
+        <Param DisplayName="w" Desc="w" Type="float" />
+        <Param DisplayName="index" Desc="index" Type="int" />
+      </Method>
+    </agent>
+  </agents>
+  <instances>
+    <instance name="GameLevel" class="GameLevelCommon" DisplayName="GameLevel" Desc="GameLevel" />
+  </instances>
+</metas>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<meta>
+  <types />
+  <agents>
+    <agent type="Player" base="GameActor" disp="Player" desc="Player -&gt; GameActor">
+      <properties>
+        <property name="Status" type="XMLPluginBehaviac.behaviac_EBTStatus" classname="Player" defaultvalue="BT_INVALID" static="false" public="true" readonly="false" disp="Status" desc="Status" />
+      </properties>
+    </agent>
+  </agents>
+</meta>

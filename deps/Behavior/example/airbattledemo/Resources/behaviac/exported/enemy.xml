@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: enemy.xml-->
+<behavior name="enemy" agenttype="Enemy" version="4">
+  <node class="Sequence" id="0">
+    <node class="Assignment" id="1">
+      <property Opl="int Self.Enemy::enemyType" />
+      <property Opr="Self.Enemy::getEnemyType()" />
+    </node>
+    <node class="Assignment" id="8">
+      <property Opl="float Self.Enemy::initSpeed" />
+      <property Opr="float Self.Enemy::m_init_speed[int Self.Enemy::enemyType]" />
+    </node>
+    <node class="Action" id="2">
+      <property Method="Self.Enemy::setSpeed(float Self.Enemy::initSpeed)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="DecoratorLoop" id="3">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Sequence" id="4">
+        <attachment class="Precondition" id="9" flag="precondition">
+          <property BinaryOperator="And" />
+          <property Operator="Equal" />
+          <property Opl="Self.Enemy::isAlive()" />
+          <property Opr2="const bool true" />
+          <property Phase="Update" />
+        </attachment>
+        <node class="Assignment" id="5">
+          <property Opl="float Self.Enemy::randomSpeed" />
+          <property Opr="Self.Enemy::getRandomSpeedByInitSpeed(float Self.Enemy::initSpeed)" />
+        </node>
+        <node class="Action" id="7">
+          <property Method="Self.Enemy::setSpeed(float Self.Enemy::randomSpeed)" />
+          <property ResultOption="BT_SUCCESS" />
+        </node>
+        <node class="WaitFrames" id="6">
+          <property Frames="const int 30" />
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

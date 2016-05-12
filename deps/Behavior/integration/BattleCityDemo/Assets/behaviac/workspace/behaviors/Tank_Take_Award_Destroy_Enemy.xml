@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="Player" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <Parameters>
+      <Parameter Name="parT_enemyPosition" Type="XMLPluginBehaviac.UnityEngine_Vector3" DefaultValue="{x=0;y=0;z=0;}" DisplayName="parT_enemyPosition" Desc="Player::parT_enemyPosition" Display="true" />
+      <Parameter Name="parT_nearestEnemy" Type="XMLPluginBehaviac.behaviac_Agent" DefaultValue="null" DisplayName="parT_nearestEnemy" Desc="Player::parT_nearestEnemy" Display="true" />
+      <Parameter Name="parT_PathFindLevel" Type="System.Int32" DefaultValue="0" DisplayName="parT_PathFindLevel" Desc="Player::parT_PathFindLevel" Display="true" />
+      <Parameter Name="parT_NavTargetPosition" Type="XMLPluginBehaviac.UnityEngine_Vector3" DefaultValue="{x=0;y=0;z=0;}" DisplayName="parT_NavTargetPosition" Desc="Player::parT_NavTargetPosition" Display="true" />
+      <Parameter Name="parT_AwardID" Type="System.Int32" DefaultValue="0" DisplayName="parT_AwardID" Desc="Player::parT_AwardID" Display="true" />
+    </Parameters>
+    <DescriptorRefs value="0:" />
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.DecoratorAlwaysRunning" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="10" PrefabName="" PrefabNodeId="-1">
+        <Comment Background="NoColor" Text="" />
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.Selector" Enable="true" HasOwnPrefabData="false" Id="11" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="" />
+            <Connector Identifier="GenericChildren">
+              <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="true" Id="17" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="2">
+                <Comment Background="Gray" Text="Prefab[Prefab_攻击最近的敌人]" />
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Assignment" HasOwnPrefabData="false" Id="18" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="5">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Condition" HasOwnPrefabData="false" Id="19" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="9">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Assignment" HasOwnPrefabData="false" Id="20" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="7">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.IfElse" Enable="true" HasOwnPrefabData="true" Id="13" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="13">
+                    <Comment Background="NoColor" Text="" />
+                    <Connector Identifier="_condition">
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="true" Id="14" Operator="Greater" Opl="int Self.Player::damageLevel" Opr="const int 1" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="14">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                    <Connector Identifier="_if">
+                      <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="true" Id="15" Opl="int Self.Player::parT_PathFindLevel" Opr="static int GameLevel.GameLevelCommon::soilSteelWalkLevel" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="15">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                    <Connector Identifier="_else">
+                      <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="true" Id="16" Opl="int Self.Player::parT_PathFindLevel" Opr="static int GameLevel.GameLevelCommon::soilWalkLevel" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="16">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="8" Method="Self.GameActor::findPath(UnityEngine::Vector3 Self.Player::parT_enemyPosition,int Self.Player::parT_PathFindLevel)" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="8" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" HasOwnPrefabData="false" Id="29" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="6">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="true" Id="27" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="12">
+                <Comment Background="DarkGray" Text="Prefab[Prefab_寻找最近奖励]" />
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Assignment" HasOwnPrefabData="false" Id="28" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="1">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Condition" HasOwnPrefabData="false" Id="34" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="34">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Assignment" HasOwnPrefabData="false" Id="37" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="37">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.IfElse" Enable="true" HasOwnPrefabData="true" Id="23" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="23">
+                    <Comment Background="NoColor" Text="" />
+                    <Connector Identifier="_condition">
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="true" Id="24" Operator="Greater" Opl="int Self.Player::damageLevel" Opr="const int 1" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="24">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                    <Connector Identifier="_if">
+                      <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="true" Id="25" Opl="int Self.Player::parT_PathFindLevel" Opr="static int GameLevel.GameLevelCommon::soilSteelWalkLevel" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="25">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                    <Connector Identifier="_else">
+                      <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="true" Id="26" Opl="int Self.Player::parT_PathFindLevel" Opr="static int GameLevel.GameLevelCommon::soilWalkLevel" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="26">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="21" Method="Self.GameActor::findPath(UnityEngine::Vector3 Self.Player::parT_NavTargetPosition,int Self.Player::parT_PathFindLevel)" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="21" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" HasOwnPrefabData="false" Id="30" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="5">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Sequence" HasOwnPrefabData="false" Id="2" PrefabName="../Prefabs/Prefab_摧毁砖块" PrefabNodeId="0">
+                <Comment Background="Gray" Text="Prefab[Prefab_摧毁砖块]" />
+              </Node>
+            </Connector>
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>

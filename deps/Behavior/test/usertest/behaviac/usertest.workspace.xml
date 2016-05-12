@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<workspace name="bttest" xmlmetafolder="." folder="behaviors" export="exported">
+  <xmlmeta>usertest.xml</xmlmeta>
+  <export>
+    <cs>
+      <isexported>False</isexported>
+      <exportunifiedfile>True</exportunifiedfile>
+    </cs>
+    <bson>
+      <isexported>False</isexported>
+    </bson>
+  </export>
+</workspace>

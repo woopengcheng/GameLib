@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: base\boring.xml-->
+<behavior name="base/boring" agenttype="framework::GameObject" version="4">
+  <node class="Action" id="1">
+    <property Method="Self.framework::GameObject::GoStraight(10)" />
+    <property ResultOption="BT_RUNNING" />
+  </node>
+</behavior>

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="Player" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <Parameters>
+      <Parameter Name="parT_NavTargetPosition" Type="XMLPluginBehaviac.UnityEngine_Vector3" DefaultValue="{x=0;y=0;z=0;}" DisplayName="parT_NavTargetPosition" Desc="Player::parT_NavTargetPosition" Display="true" />
+      <Parameter Name="parIn_Self" Type="XMLPluginBehaviac.Player" DefaultValue="null" DisplayName="parIn_Self" Desc="Player::parIn_Self" Display="true" />
+      <Parameter Name="parT_RotateAngle" Type="System.Single" DefaultValue="0" DisplayName="parT_RotateAngle" Desc="Player::parT_RotateAngle" Display="true" />
+      <Parameter Name="parT_nearestEnemy" Type="XMLPluginBehaviac.behaviac_Agent" DefaultValue="null" DisplayName="parT_nearestEnemy" Desc="Player::parT_nearestEnemy" Display="true" />
+      <Parameter Name="parT_enemyPosition" Type="XMLPluginBehaviac.UnityEngine_Vector3" DefaultValue="{x=0;y=0;z=0;}" DisplayName="parT_enemyPosition" Desc="Player::parT_enemyPosition" Display="true" />
+      <Parameter Name="parT_TendencyDirection" Type="XMLPluginBehaviac.eMapDirection" DefaultValue="UNKNOWN" DisplayName="parT_TendencyDirection" Desc="Player::parT_TendencyDirection" Display="true" />
+      <Parameter Name="parT_CanReachToAward" Type="System.Boolean" DefaultValue="false" DisplayName="parT_CanReachToAward" Desc="Player::parT_CanReachToAward" Display="true" />
+      <Parameter Name="parT_AwardID" Type="System.Int32" DefaultValue="0" DisplayName="parT_AwardID" Desc="Player::parT_AwardID" Display="true" />
+      <Parameter Name="parT_EnemyAzimuth_0" Type="System.Single" DefaultValue="0" DisplayName="parT_EnemyAzimuth_0" Desc="Player::parT_EnemyAzimuth_0" Display="true" />
+      <Parameter Name="parT_SafeMoveDirection" Type="XMLPluginBehaviac.eMapDirection" DefaultValue="UNKNOWN" DisplayName="parT_SafeMoveDirection" Desc="Player::parT_SafeMoveDirection" Display="true" />
+      <Parameter Name="parT_RandomMoveDirection" Type="XMLPluginBehaviac.eMapDirection" DefaultValue="UNKNOWN" DisplayName="parT_RandomMoveDirection" Desc="Player::parT_RandomMoveDirection" Display="true" />
+      <Parameter Name="parT_NavFailed" Type="System.Boolean" DefaultValue="false" DisplayName="parT_NavFailed" Desc="Player::parT_NavFailed" Display="true" />
+      <Parameter Name="parT_EnemyAzimuth" Type="System.Single" DefaultValue="0" DisplayName="parT_EnemyAzimuth" Desc="Player::parT_EnemyAzimuth" Display="true" />
+    </Parameters>
+    <DescriptorRefs value="0:" />
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.DecoratorLoop" Count="const int -1" DecorateWhenChildEnds="true" Enable="true" HasOwnPrefabData="false" Id="2" PrefabName="" PrefabNodeId="-1">
+        <Comment Background="NoColor" Text="" />
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.Parallel" ChildFinishPolicy="CHILDFINISH_LOOP" Enable="true" ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" FailurePolicy="FAIL_ON_ONE" HasOwnPrefabData="false" Id="0" PrefabName="" PrefabNodeId="-1" SuccessPolicy="SUCCEED_ON_ALL">
+            <Comment Background="NoColor" Text="" />
+            <Connector Identifier="GenericChildren">
+              <Node Class="PluginBehaviac.Nodes.DecoratorAlwaysRunning" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="38" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="" />
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Selector" Enable="true" HasOwnPrefabData="false" Id="39" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                    <Connector Identifier="GenericChildren">
+                      <Node Class="PluginBehaviac.Nodes.DecoratorAlwaysFailure" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="25" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="26" Opl="bool Self.Player::parT_NavFailed" Opr="const bool true" PrefabName="" PrefabNodeId="-1">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                        </Connector>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Sequence" HasOwnPrefabData="false" Id="22" PrefabName="../Prefabs/Prefab_寻找最近奖励" PrefabNodeId="12">
+                        <Comment Background="Gray" Text="Prefab[Prefab_寻找最近奖励]" />
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Parallel" ChildFinishPolicy="CHILDFINISH_LOOP" Enable="true" ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" FailurePolicy="FAIL_ON_ONE" HasOwnPrefabData="false" Id="15" PrefabName="" PrefabNodeId="-1" SuccessPolicy="SUCCEED_ON_ONE">
+                        <Comment Background="NoColor" Text="" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.DecoratorNot" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="21" PrefabName="" PrefabNodeId="-1">
+                            <Comment Background="NoColor" Text="" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="8" PrefabName="" PrefabNodeId="-1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="19" PrefabName="" PrefabNodeId="-1" Time="const float 1000">
+                                    <Comment Background="NoColor" Text="" />
+                                  </Node>
+                                  <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="20" Opl="bool Self.Player::parT_NavFailed" Opr="const bool false" PrefabName="" PrefabNodeId="-1">
+                                    <Comment Background="NoColor" Text="" />
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="true" Id="3" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="2">
+                            <Comment Background="DarkGray" Text="Prefab[Prefab_攻击最近的敌人]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.Assignment" HasOwnPrefabData="false" Id="4" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="5">
+                                <Comment Background="NoColor" Text="" />
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.Assignment" HasOwnPrefabData="false" Id="7" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="7">
+                                <Comment Background="NoColor" Text="" />
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="33" Method="Self.GameActor::findPath(UnityEngine::Vector3 Self.Player::parT_enemyPosition,static int GameLevel.GameLevelCommon::actorWalkLevel)" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="33" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                                <Comment Background="NoColor" Text="" />
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.Action" HasOwnPrefabData="false" Id="13" PrefabName="../Prefabs/Prefab_攻击最近的敌人" PrefabNodeId="6">
+                                <Comment Background="NoColor" Text="" />
+                              </Node>
+                            </Connector>
+                          </Node>
+                        </Connector>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="23" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="6" Operator="Equal" Opl="bool Self.Player::parT_NavFailed" Opr="const bool true" PrefabName="" PrefabNodeId="-1">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Parallel" ChildFinishPolicy="CHILDFINISH_LOOP" Enable="true" ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" FailurePolicy="FAIL_ON_ONE" HasOwnPrefabData="true" Id="1" PrefabName="../Prefabs/Prefab_安全的随机移动" PrefabNodeId="11" SuccessPolicy="SUCCEED_ON_ONE">
+                            <Comment Background="Gray" Text="Prefab[Prefab_安全的随机移动]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.Sequence" HasOwnPrefabData="false" Id="12" PrefabName="../Prefabs/Prefab_安全的随机移动" PrefabNodeId="7">
+                                <Comment Background="DarkGray" Text="随机方向" />
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.Sequence" HasOwnPrefabData="false" Id="49" PrefabName="../Prefabs/Prefab_安全的随机移动" PrefabNodeId="19">
+                                <Comment Background="NoColor" Text="" />
+                              </Node>
+                            </Connector>
+                          </Node>
+                        </Connector>
+                      </Node>
+                    </Connector>
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.DecoratorAlwaysRunning" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="10" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="" />
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Sequence" HasOwnPrefabData="false" Id="28" PrefabName="../Prefabs/Prefab_检测并攻击敌人" PrefabNodeId="6">
+                    <Comment Background="DarkGray" Text="Prefab[Prefab_检测并攻击敌人]" />
+                  </Node>
+                </Connector>
+              </Node>
+            </Connector>
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>

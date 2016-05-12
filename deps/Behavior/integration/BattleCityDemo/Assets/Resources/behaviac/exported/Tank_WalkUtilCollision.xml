@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_WalkUtilCollision.xml-->
+<behavior name="Tank_WalkUtilCollision" agenttype="Player" version="4">
+  <pars>
+    <par name="parT_moveTarget" type="UnityEngine::Vector3" value="{x=0;y=0;z=0;}" />
+    <par name="parIn_Self" type="Player" value="null" />
+    <par name="parT_RotateAngle" type="float" value="0" />
+  </pars>
+  <node class="DecoratorLoop" id="0">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="Selector" id="4">
+      <node class="Action" id="1">
+        <property Method="Self.GameActor::moveForward()" />
+        <property ResultOption="BT_INVALID" />
+      </node>
+      <node class="Sequence" id="9">
+        <node class="Assignment" id="6">
+          <property Opl="float Self.Player::parT_RotateAngle" />
+          <property Opr="GameLevel.GameLevelCommon::getAvailabeMoveDirection(Player Self.Player::parIn_Self,UNKNOWN)" />
+        </node>
+        <node class="Sequence" id="2">
+          <node class="Condition" id="7">
+            <property Operator="GreaterEqual" />
+            <property Opl="float Self.Player::parT_RotateAngle" />
+            <property Opr="const float 0" />
+          </node>
+          <node class="Action" id="22">
+            <property Method="Self.GameActor::rotateToAngle(float Self.Player::parT_RotateAngle)" />
+            <property ResultOption="BT_INVALID" />
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<meta>
+  <types>
+    <enumtype Type="ETest" DisplayName="ETest" Desc="">
+      <enum NativeValue="EA" Value="EA" DisplayName="EA" Desc="" MemberValue="-1" />
+      <enum NativeValue="EB" Value="EB" DisplayName="EB" Desc="" MemberValue="-1" />
+      <enum NativeValue="EC" Value="EC" DisplayName="EC" Desc="" MemberValue="-1" />
+    </enumtype>
+    <struct Type="StructTest" DisplayName="StructTest" Desc="">
+      <Member Name="a" DisplayName="a" Desc="a" Type="System.Boolean" Class="StructTest" Public="true" />
+    </struct>
+  </types>
+  <agents />
+</meta>

@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="GameLevelCommon" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <Parameters>
+      <Parameter Name="parT_SpawnCountPerWave" Type="System.Int32" DefaultValue="0" DisplayName="parT_SpawnCountPerWave" Desc="GameLevelCommon::parT_SpawnCountPerWave" Display="true" />
+      <Parameter Name="parT_WaveCount" Type="System.Int32" DefaultValue="10" DisplayName="parT_WaveCount" Desc="GameLevelCommon::parT_WaveCount" Display="true" />
+      <Parameter Name="parT_AwardType" Type="System.Int32" DefaultValue="0" DisplayName="parT_AwardType" Desc="GameLevelCommon::parT_AwardType" Display="true" />
+      <Parameter Name="parT_AwardX" Type="System.Int32" DefaultValue="0" DisplayName="parT_AwardX" Desc="GameLevelCommon::parT_AwardX" Display="true" />
+      <Parameter Name="parT_AwardY" Type="System.Int32" DefaultValue="0" DisplayName="parT_AwardY" Desc="GameLevelCommon::parT_AwardY" Display="true" />
+      <Parameter Name="parT_EnemyCount" Type="System.Int32" DefaultValue="0" DisplayName="parT_EnemyCount" Desc="GameLevelCommon::parT_EnemyCount" Display="true" />
+      <Parameter Name="parT_GameStopped" Type="System.Boolean" DefaultValue="false" DisplayName="parT_GameStopped" Desc="GameLevelCommon::parT_GameStopped" Display="true" />
+    </Parameters>
+    <DescriptorRefs value="0:" />
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.DecoratorLoop" Count="const int -1" DecorateWhenChildEnds="true" Enable="true" HasOwnPrefabData="false" Id="1" PrefabName="" PrefabNodeId="-1">
+        <Comment Background="NoColor" Text="" />
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.Parallel" ChildFinishPolicy="CHILDFINISH_LOOP" Enable="true" ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" FailurePolicy="FAIL_ON_ALL" HasOwnPrefabData="false" Id="16" PrefabName="" PrefabNodeId="-1" SuccessPolicy="SUCCEED_ON_ALL">
+            <Comment Background="NoColor" Text="" />
+            <Connector Identifier="GenericChildren">
+              <Node Class="PluginBehaviac.Nodes.IfElse" Enable="true" HasOwnPrefabData="false" Id="17" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="BlueGray" Text="生成敌人" />
+                <Connector Identifier="_condition">
+                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="11" Operator="Greater" Opl="int Self.GameLevelCommon::parT_WaveCount" Opr="const int 0" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                </Connector>
+                <Connector Identifier="_if">
+                  <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="5" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="Gray" Text="WaveOfEnemy" />
+                    <Connector Identifier="GenericChildren">
+                      <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="14" PrefabName="" PrefabNodeId="-1" Time="const float 3000">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="15" Opl="int Self.GameLevelCommon::parT_SpawnCountPerWave" Opr="const int 2" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.DecoratorNot" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="12" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.DecoratorLoopUntil" Count="const int -1" DecorateWhenChildEnds="true" Enable="true" HasOwnPrefabData="false" Id="6" PrefabName="" PrefabNodeId="-1" Until="false">
+                            <Comment Background="NoColor" Text="" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="0" PrefabName="" PrefabNodeId="-1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="3" Operator="GreaterEqual" Opl="int Self.GameLevelCommon::parT_SpawnCountPerWave" Opr="const int 0" PrefabName="" PrefabNodeId="-1">
+                                    <Comment Background="NoColor" Text="" />
+                                  </Node>
+                                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="10" Method="Self.GameLevelCommon::spawnGameActor(BLUE_FORCE,8,&quot;Tank_Wander_RandomFire&quot;,2000,1000,1,1,180,360,int Self.GameLevelCommon::parT_SpawnCountPerWave,{a=1;b=1;g=0;r=0;},-1)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                    <Comment Background="NoColor" Text="" />
+                                  </Node>
+                                  <Node Class="PluginBehaviac.Nodes.Compute" Enable="true" HasOwnPrefabData="false" Id="8" Operator="Sub" Opl="int Self.GameLevelCommon::parT_SpawnCountPerWave" Opr1="int Self.GameLevelCommon::parT_SpawnCountPerWave" Opr2="const int 1" PrefabName="" PrefabNodeId="-1">
+                                    <Comment Background="NoColor" Text="" />
+                                  </Node>
+                                  <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="9" PrefabName="" PrefabNodeId="-1" Time="const float 1000">
+                                    <Comment Background="NoColor" Text="" />
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                        </Connector>
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="7" PrefabName="" PrefabNodeId="-1" Time="const float 2000">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                      <Node Class="PluginBehaviac.Nodes.Compute" Enable="true" HasOwnPrefabData="false" Id="2" Operator="Sub" Opl="int Self.GameLevelCommon::parT_WaveCount" Opr1="int Self.GameLevelCommon::parT_WaveCount" Opr2="const int 1" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                  </Node>
+                </Connector>
+                <Connector Identifier="_else">
+                  <Node Class="PluginBehaviac.Nodes.DecoratorAlwaysSuccess" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="4" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                    <Connector Identifier="GenericChildren">
+                      <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="24" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="DarkGray" Text="You Win!" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="28" Operator="Equal" Opl="bool Self.GameLevelCommon::parT_GameStopped" Opr="const bool false" PrefabName="" PrefabNodeId="-1">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="25" Opl="int Self.GameLevelCommon::parT_EnemyCount" Opr="Self.GameLevelCommon::getEnemyCount()" PrefabName="" PrefabNodeId="-1">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="26" Operator="Equal" Opl="int Self.GameLevelCommon::parT_EnemyCount" Opr="const int 0" PrefabName="" PrefabNodeId="-1">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="30" PrefabName="" PrefabNodeId="-1" Time="const float 3000">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="27" Method="Self.GameLevelCommon::stopGame(true)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="29" Opl="bool Self.GameLevelCommon::parT_GameStopped" Opr="const bool true" PrefabName="" PrefabNodeId="-1">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                        </Connector>
+                      </Node>
+                    </Connector>
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="13" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="Gray" Text="生成奖励" />
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="18" PrefabName="" PrefabNodeId="-1" Time="const float 1000">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="19" Opl="int Self.GameLevelCommon::parT_AwardType" Opr="const int 2" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="22" Opl="int Self.GameLevelCommon::parT_AwardX" Opr="Self.GameLevelCommon::randomNumberInt(5,20)" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="23" Opl="int Self.GameLevelCommon::parT_AwardY" Opr="Self.GameLevelCommon::randomNumberInt(5,20)" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="20" Method="Self.GameLevelCommon::spawnAward(int Self.GameLevelCommon::parT_AwardType,int Self.GameLevelCommon::parT_AwardX,int Self.GameLevelCommon::parT_AwardY,20)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                  <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="21" PrefabName="" PrefabNodeId="-1" Time="const float 2000">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.WaitforSignal" Enable="true" HasOwnPrefabData="false" Id="31" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="DarkGray" Text="Prefab[生成主角]" />
+                <Connector Identifier="_custom_condition">
+                  <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="32" Operator="Equal" Opl="bool Self.GameLevelCommon::isPlayerAlive" Opr="const bool false" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                  </Node>
+                </Connector>
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.DecoratorAlwaysSuccess" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="33" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                    <Connector Identifier="GenericChildren">
+                      <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="34" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.Wait" Enable="true" HasOwnPrefabData="false" Id="35" PrefabName="" PrefabNodeId="-1" Time="const float 1000">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="37" Method="Self.GameLevelCommon::spawnGameActor(RED_FORCE,8,&quot;Tank_Nav&quot;,1500,500,1,3,180,180,0,{a=1;b=0;g=0;r=1;},-1)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                        </Connector>
+                      </Node>
+                    </Connector>
+                  </Node>
+                </Connector>
+              </Node>
+            </Connector>
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>

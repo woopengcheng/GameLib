@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="Player" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <Parameters>
+      <Parameter Name="parIn_Self" Type="XMLPluginBehaviac.Player" DefaultValue="null" DisplayName="parIn_Self" Desc="Player::parIn_Self" Display="true" />
+      <Parameter Name="parT_RotateAngle" Type="System.Single" DefaultValue="0" DisplayName="parT_RotateAngle" Desc="Player::parT_RotateAngle" Display="true" />
+      <Parameter Name="parT_AimAngle" Type="System.Single" DefaultValue="0" DisplayName="parT_AimAngle" Desc="Player::parT_AimAngle" Display="true" />
+      <Parameter Name="parT_SafeMoveDirection" Type="XMLPluginBehaviac.eMapDirection" DefaultValue="UNKNOWN" DisplayName="parT_SafeMoveDirection" Desc="Player::parT_SafeMoveDirection" Display="true" />
+      <Parameter Name="parT_RandomMoveDirection" Type="XMLPluginBehaviac.eMapDirection" DefaultValue="UNKNOWN" DisplayName="parT_RandomMoveDirection" Desc="Player::parT_RandomMoveDirection" Display="true" />
+    </Parameters>
+    <DescriptorRefs value="0:" />
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.DecoratorLoop" Count="const int -1" DecorateWhenChildEnds="true" Enable="true" HasOwnPrefabData="false" Id="0" PrefabName="" PrefabNodeId="-1">
+        <Comment Background="NoColor" Text="" />
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.Parallel" ChildFinishPolicy="CHILDFINISH_LOOP" Enable="true" ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" FailurePolicy="FAIL_ON_ALL" HasOwnPrefabData="false" Id="1" PrefabName="" PrefabNodeId="-1" SuccessPolicy="SUCCEED_ON_ALL">
+            <Comment Background="NoColor" Text="" />
+            <Connector Identifier="GenericChildren">
+              <Node Class="PluginBehaviac.Nodes.DecoratorLoop" Count="const int -1" DecorateWhenChildEnds="true" Enable="true" HasOwnPrefabData="false" Id="9" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="" />
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.Parallel" HasOwnPrefabData="false" Id="11" PrefabName="../Prefabs/Prefab_安全的随机移动" PrefabNodeId="11">
+                    <Comment Background="Gray" Text="安全的随机移动" />
+                  </Node>
+                </Connector>
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.Sequence" HasOwnPrefabData="false" Id="22" PrefabName="../Prefabs/Prefab_随机开火" PrefabNodeId="1">
+                <Comment Background="DarkGray" Text="Prefab[Prefab_随机开火]" />
+              </Node>
+            </Connector>
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>

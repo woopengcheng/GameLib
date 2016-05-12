@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="Player" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <Parameters>
+      <Parameter Name="parT_enemyPosition" Type="XMLPluginBehaviac.UnityEngine_Vector3" DefaultValue="{x=0;y=0;z=0;}" DisplayName="parT_enemyPosition" Desc="Player::parT_enemyPosition" Display="true" />
+      <Parameter Name="parT_nearestEnemy" Type="XMLPluginBehaviac.behaviac_Agent" DefaultValue="null" DisplayName="parT_nearestEnemy" Desc="Player::parT_nearestEnemy" Display="true" />
+    </Parameters>
+    <DescriptorRefs value="0:" />
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="2" PrefabName="" PrefabNodeId="-1">
+        <Comment Background="Gray" Text="攻击最近的敌人" />
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="5" Opl="behaviac::Agent Self.Player::parT_nearestEnemy" Opr="GameLevel.GameLevelCommon::getNearestEnemy(eGameForce Self.GameActor::force)" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="" />
+          </Node>
+          <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="9" Operator="NotEqual" Opl="behaviac::Agent Self.Player::parT_nearestEnemy" Opr="const behaviac::Agent null" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="" />
+          </Node>
+          <Node Class="PluginBehaviac.Nodes.Assignment" Enable="true" HasOwnPrefabData="false" Id="7" Opl="UnityEngine::Vector3 Self.Player::parT_enemyPosition" Opr="GameLevel.GameLevelCommon::getEnemyPosition(behaviac::Agent Self.Player::parT_nearestEnemy)" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="" />
+          </Node>
+          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="8" Method="Self.GameActor::findPath(UnityEngine::Vector3 Self.Player::parT_enemyPosition,static int GameLevel.GameLevelCommon::soilSteelWalkLevel)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+            <Comment Background="NoColor" Text="" />
+          </Node>
+          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="6" Method="Self.GameActor::navigate()" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_INVALID">
+            <Comment Background="NoColor" Text="" />
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>

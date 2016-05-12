@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_Wander_RandomFire.xml-->
+<behavior name="Tank_Wander_RandomFire" agenttype="Player" version="4">
+  <pars>
+    <par name="parIn_Self" type="Player" value="null" />
+    <par name="parT_RotateAngle" type="float" value="0" />
+    <par name="parT_AimAngle" type="float" value="0" />
+  </pars>
+  <node class="DecoratorLoop" id="0">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="Parallel" id="1">
+      <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+      <property ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" />
+      <property FailurePolicy="FAIL_ON_ONE" />
+      <property SuccessPolicy="SUCCEED_ON_ALL" />
+      <node class="Sequence" id="4">
+        <node class="SelectorStochastic" id="2">
+          <node class="Assignment" id="8">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 180" />
+          </node>
+          <node class="Assignment" id="6">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 90" />
+          </node>
+          <node class="Assignment" id="7">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 0" />
+          </node>
+          <node class="Assignment" id="9">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 270" />
+          </node>
+        </node>
+        <node class="Action" id="3">
+          <property Method="Self.Player::aimToAngle(float Self.Player::parT_AimAngle)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Action" id="10">
+          <property Method="Self.Player::fire()" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+      </node>
+      <node class="SelectorProbability" id="5">
+        <node class="DecoratorWeight" id="11">
+          <property DecorateWhenChildEnds="false" />
+          <property Weight="const int 70" />
+          <node class="Action" id="12">
+            <property Method="Self.GameActor::moveForward()" />
+            <property ResultOption="BT_INVALID" />
+          </node>
+        </node>
+        <node class="DecoratorWeight" id="13">
+          <property DecorateWhenChildEnds="false" />
+          <property Weight="const int 30" />
+          <node class="Sequence" id="14">
+            <node class="Assignment" id="15">
+              <property Opl="float Self.Player::parT_RotateAngle" />
+              <property Opr="GameLevel.GameLevelCommon::getAvailabeMoveDirection(Player Self.Player::parIn_Self,UNKNOWN)" />
+            </node>
+            <node class="Sequence" id="16">
+              <node class="Condition" id="17">
+                <property Operator="GreaterEqual" />
+                <property Opl="float Self.Player::parT_RotateAngle" />
+                <property Opr="const float 0" />
+              </node>
+              <node class="Action" id="18">
+                <property Method="Self.GameActor::rotateToAngle(float Self.Player::parT_RotateAngle)" />
+                <property ResultOption="BT_INVALID" />
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

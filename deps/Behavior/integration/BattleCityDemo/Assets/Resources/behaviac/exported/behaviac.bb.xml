@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<agents version="1">
+  <agent type="GameActor" base="behaviac::Agent">
+    <properties>
+      <property name="currentOrientation" type="float" member="true" static="false" agent="GameActor" />
+      <property name="force" type="eGameForce" member="true" static="false" agent="GameActor" />
+      <property name="gameScore" type="int" member="true" static="false" agent="GameActor" />
+    </properties>
+  </agent>
+  <agent type="GameLevelCommon" base="behaviac::Agent">
+    <properties>
+      <property name="actorWalkLevel" type="int" member="true" static="true" agent="GameLevelCommon" />
+      <property name="allWalkLevel" type="int" member="true" static="true" agent="GameLevelCommon" />
+      <property name="bulletWalkLevel" type="int" member="true" static="true" agent="GameLevelCommon" />
+      <property name="defaultWalkLevel" type="int" member="true" static="true" agent="GameLevelCommon" />
+      <property name="isPlayerAlive" type="bool" member="true" static="false" agent="GameLevelCommon" />
+      <property name="soilSteelOceanWalkLevel" type="int" member="true" static="true" agent="GameLevelCommon" />
+      <property name="soilSteelWalkLevel" type="int" member="true" static="true" agent="GameLevelCommon" />
+      <property name="soilWalkLevel" type="int" member="true" static="true" agent="GameLevelCommon" />
+    </properties>
+  </agent>
+  <agent type="Player" base="GameActor">
+    <properties>
+      <property name="damageLevel" type="int" member="true" static="false" agent="Player" />
+      <property name="hp" type="int" member="true" static="false" agent="Player" />
+      <property name="Index" type="int" member="true" static="false" agent="Player" />
+      <property name="currentOrientation" type="float" member="true" static="false" agent="GameActor" />
+      <property name="force" type="eGameForce" member="true" static="false" agent="GameActor" />
+      <property name="gameScore" type="int" member="true" static="false" agent="GameActor" />
+      <property name="Status" type="behaviac::EBTStatus" member="false" static="false" defaultvalue="BT_INVALID" />
+    </properties>
+  </agent>
+</agents>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_SafeWander_RandomFire.xml-->
+<behavior name="Tank_SafeWander_RandomFire" agenttype="Player" version="4">
+  <pars>
+    <par name="parIn_Self" type="Player" value="null" />
+    <par name="parT_RotateAngle" type="float" value="0" />
+    <par name="parT_AimAngle" type="float" value="0" />
+    <par name="parT_SafeMoveDirection" type="eMapDirection" value="UNKNOWN" />
+    <par name="parT_RandomMoveDirection" type="eMapDirection" value="UNKNOWN" />
+  </pars>
+  <node class="DecoratorLoop" id="0">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="Parallel" id="1">
+      <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+      <property ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" />
+      <property FailurePolicy="FAIL_ON_ALL" />
+      <property SuccessPolicy="SUCCEED_ON_ALL" />
+      <node class="DecoratorLoop" id="9">
+        <property Count="const int -1" />
+        <property DecorateWhenChildEnds="true" />
+        <node class="Parallel" id="11">
+          <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+          <property ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" />
+          <property FailurePolicy="FAIL_ON_ALL" />
+          <property SuccessPolicy="SUCCEED_ON_ALL" />
+          <node class="Sequence" id="7">
+            <node class="SelectorStochastic" id="21">
+              <node class="Assignment" id="10">
+                <property Opl="eMapDirection Self.Player::parT_RandomMoveDirection" />
+                <property Opr="const eMapDirection TOP" />
+              </node>
+              <node class="Assignment" id="5">
+                <property Opl="eMapDirection Self.Player::parT_RandomMoveDirection" />
+                <property Opr="const eMapDirection RIGHT" />
+              </node>
+              <node class="Assignment" id="2">
+                <property Opl="eMapDirection Self.Player::parT_RandomMoveDirection" />
+                <property Opr="const eMapDirection BOTTOM" />
+              </node>
+              <node class="Assignment" id="3">
+                <property Opl="eMapDirection Self.Player::parT_RandomMoveDirection" />
+                <property Opr="const eMapDirection LEFT" />
+              </node>
+            </node>
+            <node class="Wait" id="4">
+              <property Time="const float 2000" />
+            </node>
+          </node>
+          <node class="Sequence" id="19">
+            <node class="Assignment" id="6">
+              <property Opl="eMapDirection Self.Player::parT_SafeMoveDirection" />
+              <property Opr="Self.GameActor::getBestMoveDirection(eMapDirection Self.Player::parT_RandomMoveDirection)" />
+            </node>
+            <node class="Action" id="8">
+              <property Method="Self.GameActor::moveToDirection(eMapDirection Self.Player::parT_SafeMoveDirection)" />
+              <property ResultOption="BT_INVALID" />
+            </node>
+          </node>
+        </node>
+      </node>
+      <node class="Sequence" id="22">
+        <node class="SelectorStochastic" id="12">
+          <node class="Assignment" id="13">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 180" />
+          </node>
+          <node class="Assignment" id="14">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 90" />
+          </node>
+          <node class="Assignment" id="15">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 0" />
+          </node>
+          <node class="Assignment" id="16">
+            <property Opl="float Self.Player::parT_AimAngle" />
+            <property Opr="const float 270" />
+          </node>
+        </node>
+        <node class="Action" id="17">
+          <property Method="Self.Player::aimToAngle(float Self.Player::parT_AimAngle)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Action" id="18">
+          <property Method="Self.Player::fire()" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

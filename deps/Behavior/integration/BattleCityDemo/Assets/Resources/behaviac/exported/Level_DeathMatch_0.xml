@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Level_DeathMatch_0.xml-->
+<behavior name="Level_DeathMatch_0" agenttype="GameLevelCommon" version="4">
+  <pars>
+    <par name="parT_SpawnCountPerWave" type="int" value="0" />
+    <par name="parT_WaveCount" type="int" value="10" />
+    <par name="parT_AwardType" type="int" value="0" />
+    <par name="parT_AwardX" type="int" value="0" />
+    <par name="parT_AwardY" type="int" value="0" />
+    <par name="parT_EnemyCount" type="int" value="0" />
+    <par name="parT_GameStopped" type="bool" value="false" />
+  </pars>
+  <node class="DecoratorLoop" id="1">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="Parallel" id="16">
+      <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+      <property ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" />
+      <property FailurePolicy="FAIL_ON_ALL" />
+      <property SuccessPolicy="SUCCEED_ON_ALL" />
+      <node class="IfElse" id="17">
+        <node class="Condition" id="11">
+          <property Operator="Greater" />
+          <property Opl="int Self.GameLevelCommon::parT_WaveCount" />
+          <property Opr="const int 0" />
+        </node>
+        <node class="Sequence" id="5">
+          <node class="Wait" id="14">
+            <property Time="const float 3000" />
+          </node>
+          <node class="Assignment" id="15">
+            <property Opl="int Self.GameLevelCommon::parT_SpawnCountPerWave" />
+            <property Opr="const int 2" />
+          </node>
+          <node class="DecoratorNot" id="12">
+            <property DecorateWhenChildEnds="false" />
+            <node class="DecoratorLoopUntil" id="6">
+              <property Count="const int -1" />
+              <property DecorateWhenChildEnds="true" />
+              <property Until="false" />
+              <node class="Sequence" id="0">
+                <node class="Condition" id="3">
+                  <property Operator="GreaterEqual" />
+                  <property Opl="int Self.GameLevelCommon::parT_SpawnCountPerWave" />
+                  <property Opr="const int 0" />
+                </node>
+                <node class="Action" id="10">
+                  <property Method="Self.GameLevelCommon::spawnGameActor(BLUE_FORCE,8,&quot;Tank_Wander_RandomFire&quot;,2000,1000,1,1,180,360,int Self.GameLevelCommon::parT_SpawnCountPerWave,{a=1;b=1;g=0;r=0;},-1)" />
+                  <property ResultOption="BT_SUCCESS" />
+                </node>
+                <node class="Compute" id="8">
+                  <property Operator="Sub" />
+                  <property Opl="int Self.GameLevelCommon::parT_SpawnCountPerWave" />
+                  <property Opr1="int Self.GameLevelCommon::parT_SpawnCountPerWave" />
+                  <property Opr2="const int 1" />
+                </node>
+                <node class="Wait" id="9">
+                  <property Time="const float 1000" />
+                </node>
+              </node>
+            </node>
+          </node>
+          <node class="Wait" id="7">
+            <property Time="const float 2000" />
+          </node>
+          <node class="Compute" id="2">
+            <property Operator="Sub" />
+            <property Opl="int Self.GameLevelCommon::parT_WaveCount" />
+            <property Opr1="int Self.GameLevelCommon::parT_WaveCount" />
+            <property Opr2="const int 1" />
+          </node>
+        </node>
+        <node class="DecoratorAlwaysSuccess" id="4">
+          <property DecorateWhenChildEnds="false" />
+          <node class="Sequence" id="24">
+            <node class="Condition" id="28">
+              <property Operator="Equal" />
+              <property Opl="bool Self.GameLevelCommon::parT_GameStopped" />
+              <property Opr="const bool false" />
+            </node>
+            <node class="Assignment" id="25">
+              <property Opl="int Self.GameLevelCommon::parT_EnemyCount" />
+              <property Opr="Self.GameLevelCommon::getEnemyCount()" />
+            </node>
+            <node class="Condition" id="26">
+              <property Operator="Equal" />
+              <property Opl="int Self.GameLevelCommon::parT_EnemyCount" />
+              <property Opr="const int 0" />
+            </node>
+            <node class="Wait" id="30">
+              <property Time="const float 3000" />
+            </node>
+            <node class="Action" id="27">
+              <property Method="Self.GameLevelCommon::stopGame(true)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Assignment" id="29">
+              <property Opl="bool Self.GameLevelCommon::parT_GameStopped" />
+              <property Opr="const bool true" />
+            </node>
+          </node>
+        </node>
+      </node>
+      <node class="Sequence" id="13">
+        <node class="Wait" id="18">
+          <property Time="const float 1000" />
+        </node>
+        <node class="Assignment" id="19">
+          <property Opl="int Self.GameLevelCommon::parT_AwardType" />
+          <property Opr="const int 2" />
+        </node>
+        <node class="Assignment" id="22">
+          <property Opl="int Self.GameLevelCommon::parT_AwardX" />
+          <property Opr="Self.GameLevelCommon::randomNumberInt(5,20)" />
+        </node>
+        <node class="Assignment" id="23">
+          <property Opl="int Self.GameLevelCommon::parT_AwardY" />
+          <property Opr="Self.GameLevelCommon::randomNumberInt(5,20)" />
+        </node>
+        <node class="Action" id="20">
+          <property Method="Self.GameLevelCommon::spawnAward(int Self.GameLevelCommon::parT_AwardType,int Self.GameLevelCommon::parT_AwardX,int Self.GameLevelCommon::parT_AwardY,20)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Wait" id="21">
+          <property Time="const float 2000" />
+        </node>
+      </node>
+      <node class="WaitforSignal" id="31">
+        <custom>
+          <node class="Condition" id="32">
+            <property Operator="Equal" />
+            <property Opl="bool Self.GameLevelCommon::isPlayerAlive" />
+            <property Opr="const bool false" />
+          </node>
+        </custom>
+        <node class="DecoratorAlwaysSuccess" id="33">
+          <property DecorateWhenChildEnds="false" />
+          <node class="Sequence" id="34">
+            <node class="Wait" id="35">
+              <property Time="const float 1000" />
+            </node>
+            <node class="Action" id="37">
+              <property Method="Self.GameLevelCommon::spawnGameActor(RED_FORCE,8,&quot;Tank_Nav&quot;,1500,500,1,3,180,180,0,{a=1;b=0;g=0;r=1;},-1)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

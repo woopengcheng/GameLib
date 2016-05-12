@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<meta>
+  <types>
+    <enumtype Type="ETest" DisplayName="ETest" Desc="">
+      <enum NativeValue="EA" Value="EA" DisplayName="EA" Desc="" MemberValue="-1" />
+      <enum NativeValue="EB" Value="EB" DisplayName="EB" Desc="" MemberValue="-1" />
+      <enum NativeValue="EC" Value="EC" DisplayName="EC" Desc="" MemberValue="-1" />
+    </enumtype>
+    <struct Type="StructTest" DisplayName="StructTest" Desc="">
+      <Member Name="a" DisplayName="a" Desc="a" Type="System.Boolean" Class="StructTest" Public="true" />
+    </struct>
+  </types>
+  <agents>
+    <agent type="Enemy" base="behaviac::Agent" disp="Enemy" desc="Enemy">
+      <properties>
+        <property name="enemyType" type="System.Int32" classname="Enemy" defaultvalue="0" static="false" public="true" readonly="false" disp="enemyType" desc="enemy's type" />
+        <property name="m_init_speed" type="System.Collections.Generic.List`1[[System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" classname="Enemy" defaultvalue="4:50|50|100|150" static="false" public="true" readonly="false" disp="m_init_speed" desc="init enemy plane speed" />
+        <property name="initSpeed" type="System.Single" classname="Enemy" defaultvalue="0" static="false" public="true" readonly="false" disp="initSpeed" desc="init enemy speed" />
+        <property name="randomSpeed" type="System.Single" classname="Enemy" defaultvalue="50" static="false" public="true" readonly="false" disp="randomSpeed" desc="randomSpeed" />
+      </properties>
+    </agent>
+    <agent type="NPC" base="behaviac::Agent" disp="NPC" desc="NPC">
+      <properties>
+        <property name="delayTime" type="System.Collections.Generic.List`1[[System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" classname="NPC" defaultvalue="5:20|15|10|5|2" static="false" public="true" readonly="false" disp="delayTime" desc="deley frame" />
+      </properties>
+    </agent>
+  </agents>
+</meta>

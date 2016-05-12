@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: projectile\projectile_test.xml-->
+<behavior name="projectile/projectile_test" agenttype="framework::Projectile" version="4">
+  <pars>
+    <par name="par_test_a" type="bool" value="false" />
+    <par name="par_test_b" type="int" value="0" />
+    <par name="par_test_c" type="float" value="0" />
+    <par name="par_test_d" type="uint" value="0" />
+  </pars>
+  <node class="Selector" id="1">
+    <node class="WaitforSignal" id="2">
+      <custom>
+        <node class="Condition" id="0">
+          <property Operator="Greater" />
+          <property Opl="uint framework::GameObject.framework::GameObject::HP" />
+          <property Opr="const uint 50" />
+        </node>
+      </custom>
+      <node class="Action" id="4">
+        <property Method="Self.framework::GameObject::GoStraight(5)" />
+        <property ResultOption="BT_SUCCESS" />
+      </node>
+    </node>
+    <node class="Action" id="5">
+      <property Method="Self.framework::GameObject::GoStraight(0)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="Query" id="6">
+      <property Domain="attack" />
+      <custom>
+        <node class="And" id="3">
+          <node class="Condition" id="7">
+            <property Operator="Equal" />
+            <property Opl="uint framework::GameObject.framework::GameObject::HP" />
+            <property Opr="const uint 0" />
+          </node>
+          <node class="Condition" id="8">
+            <property Operator="Equal" />
+            <property Opl="Self.framework::GameObject::playerIsAligned()" />
+            <property Opr="const bool false" />
+          </node>
+        </node>
+      </custom>
+    </node>
+    <node class="Assignment" id="9">
+      <property Opl="bool Self.framework::Projectile::par_test_a" />
+      <property Opr="const bool true" />
+    </node>
+    <node class="Sequence" id="10">
+      <node class="Condition" id="11">
+        <property Operator="Equal" />
+        <property Opl="bool Self.framework::Projectile::par_test_a" />
+        <property Opr="const bool false" />
+      </node>
+      <node class="Condition" id="12">
+        <property Operator="Equal" />
+        <property Opl="uint framework::GameObject.framework::GameObject::HP" />
+        <property Opr="const uint 0" />
+      </node>
+      <node class="Condition" id="13">
+        <property Operator="Equal" />
+        <property Opl="uint framework::WorldState.framework::WorldState::time" />
+        <property Opr="uint Self.framework::Projectile::par_test_d" />
+      </node>
+    </node>
+    <node class="DecoratorLoop" id="14">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Condition" id="15">
+        <property Operator="Equal" />
+        <property Opl="Self.framework::GameObject::alignedWithPlayer()" />
+        <property Opr="const bool false" />
+      </node>
+    </node>
+    <node class="DecoratorCountLimit" id="16">
+      <property Count="int Self.framework::Projectile::par_test_b" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Condition" id="17">
+        <property Operator="Equal" />
+        <property Opl="framework::WorldState.framework::WorldState::NextWave()" />
+        <property Opr="const bool true" />
+      </node>
+    </node>
+    <node class="DecoratorLoop" id="18">
+      <property Count="uint framework::WorldState.framework::WorldState::time" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Noop" id="19" />
+    </node>
+    <node class="Sequence" id="20">
+      <custom>
+        <node class="DecoratorNot" id="21">
+          <property DecorateWhenChildEnds="false" />
+          <node class="And" id="22">
+            <node class="Condition" id="25">
+              <property Operator="Equal" />
+              <property Opl="uint framework::GameObject.framework::GameObject::HP" />
+              <property Opr="const uint 0" />
+            </node>
+            <node class="Condition" id="26">
+              <property Operator="Equal" />
+              <property Opl="Self.framework::GameObject::distanceToPlayer()" />
+              <property Opr="const float 0" />
+            </node>
+          </node>
+        </node>
+      </custom>
+      <node class="Noop" id="23" />
+      <node class="Noop" id="24" />
+    </node>
+  </node>
+</behavior>

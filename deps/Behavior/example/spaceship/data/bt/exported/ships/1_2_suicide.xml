@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: ships\1_2_suicide.xml-->
+<behavior name="ships/1_2_suicide" agenttype="framework::Ship" version="4">
+  <node class="Parallel" id="1">
+    <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+    <property ExitPolicy="EXIT_NONE" />
+    <property FailurePolicy="FAIL_ON_ONE" />
+    <property SuccessPolicy="SUCCEED_ON_ALL" />
+    <node class="WaitforSignal" id="2">
+      <custom>
+        <node class="Condition" id="3">
+          <property Operator="LessEqual" />
+          <property Opl="uint Self.framework::GameObject::HP" />
+          <property Opr="uint framework::WorldState.framework::WorldState::HealthHP" />
+        </node>
+      </custom>
+      <node class="ReferencedBehavior" id="4">
+        <property ReferenceBehavior="const string &quot;base/homing&quot;" />
+      </node>
+    </node>
+    <node class="DecoratorLoop" id="0">
+      <property Count="const int -1" />
+      <property DecorateWhenChildEnds="true" />
+      <node class="Sequence" id="5">
+        <node class="Action" id="6">
+          <property Method="Self.framework::Ship::Fire()" />
+          <property ResultFunctor="Self.framework::Ship::checkresult(false)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Wait" id="7">
+          <property Time="const float 1000" />
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

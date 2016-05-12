@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: par_test\vector_test.xml-->
+<behavior name="par_test/vector_test" agenttype="TestNS::AgentArrayAccessTest" version="4">
+  <pars>
+    <par name="l_index" type="int" value="0" />
+    <par name="l_ListInts" type="vector&lt;int&gt;" value="5:100|200|300|400|500" />
+    <par name="l_Int" type="int" value="0" />
+  </pars>
+  <node class="Sequence" id="22">
+    <node class="Assignment" id="0">
+      <property Opl="int Self.TestNS::AgentArrayAccessTest::Int" />
+      <property Opr="int Self.TestNS::AgentArrayAccessTest::ListInts[0]" />
+    </node>
+    <node class="Assignment" id="1">
+      <property Opl="int Self.TestNS::AgentArrayAccessTest::c_Int" />
+      <property Opr="int Self.TestNS::AgentArrayAccessTest::c_ListInts[0]" />
+    </node>
+    <node class="Assignment" id="2">
+      <property Opl="int Self.TestNS::AgentArrayAccessTest::l_Int" />
+      <property Opr="int Self.TestNS::AgentArrayAccessTest::l_ListInts[0]" />
+    </node>
+    <node class="Assignment" id="4">
+      <property Opl="int Self.TestNS::AgentArrayAccessTest::l_index" />
+      <property Opr="const int 0" />
+    </node>
+    <node class="Compute" id="3">
+      <property Operator="Add" />
+      <property Opl="int Self.TestNS::AgentArrayAccessTest::ListInts[int Self.TestNS::AgentArrayAccessTest::l_index]" />
+      <property Opr1="int Self.TestNS::AgentArrayAccessTest::c_Int" />
+      <property Opr2="int Self.TestNS::AgentArrayAccessTest::l_Int" />
+    </node>
+    <node class="Assignment" id="5">
+      <property Opl="int Self.TestNS::AgentArrayAccessTest::c_Count" />
+      <property Opr="Self.behaviac::Agent::VectorLength(vector&lt;int&gt; Self.TestNS::AgentArrayAccessTest::l_ListInts)" />
+    </node>
+    <node class="Action" id="6">
+      <property Method="Self.behaviac::Agent::VectorAdd(vector&lt;int&gt; Self.TestNS::AgentArrayAccessTest::c_ListInts,int Self.TestNS::AgentArrayAccessTest::Int)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+    <node class="Action" id="7">
+      <property Method="Self.behaviac::Agent::VectorRemove(vector&lt;int&gt; Self.TestNS::AgentArrayAccessTest::c_ListInts,int Self.TestNS::AgentArrayAccessTest::c_Int)" />
+      <property ResultOption="BT_SUCCESS" />
+    </node>
+  </node>
+</behavior>

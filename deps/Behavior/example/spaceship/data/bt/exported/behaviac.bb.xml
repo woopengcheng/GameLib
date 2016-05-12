@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<agents version="1">
+  <agent type="framework::GameObject" base="behaviac::Agent">
+    <properties>
+      <property name="age" type="long" member="true" static="false" agent="framework::GameObject" />
+      <property name="HP" type="uint" member="true" static="false" agent="framework::GameObject" />
+    </properties>
+  </agent>
+  <agent type="framework::Projectile" base="framework::GameObject">
+    <properties>
+      <property name="age" type="long" member="true" static="false" agent="framework::GameObject" />
+      <property name="HP" type="uint" member="true" static="false" agent="framework::GameObject" />
+    </properties>
+  </agent>
+  <agent type="framework::Ship" base="framework::GameObject">
+    <properties>
+      <property name="age" type="long" member="true" static="false" agent="framework::GameObject" />
+      <property name="HP" type="uint" member="true" static="false" agent="framework::GameObject" />
+    </properties>
+  </agent>
+  <agent type="framework::WorldState" base="behaviac::Agent">
+    <properties>
+      <property name="HealthHP" type="uint" member="true" static="false" agent="framework::WorldState" />
+      <property name="SyncSignal" type="bool" member="true" static="false" agent="framework::WorldState" />
+      <property name="time" type="uint" member="true" static="false" agent="framework::WorldState" />
+    </properties>
+  </agent>
+</agents>

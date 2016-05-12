@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<workspace name="cocos_behaviac_workspace" xmlmetafolder="." folder="behaviors" export="exported">
+  <xmlmeta>data.xml</xmlmeta>
+  <export>
+    <cs>
+      <isexported>False</isexported>
+      <exportunifiedfile>True</exportunifiedfile>
+    </cs>
+  </export>
+</workspace>

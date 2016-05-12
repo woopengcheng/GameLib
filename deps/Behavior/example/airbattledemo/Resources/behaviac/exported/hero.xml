@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: hero.xml-->
+<behavior name="hero" agenttype="Hero" fsm="true" version="4">
+  <node class="FSM" id="-1">
+    <property initialid="1" />
+    <node class="State" id="1">
+      <property IsEndState="false" />
+      <property Method="Self.Hero::findAnNearestEnemy()" />
+      <attachment class="Transition" id="2" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" />
+        <property Opr2="const bool true" />
+        <property TargetFSMNodeId="3" />
+      </attachment>
+      <attachment class="Transition" id="13" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" />
+        <property Opr2="const bool false" />
+        <property TargetFSMNodeId="9" />
+      </attachment>
+    </node>
+    <node class="State" id="3">
+      <property IsEndState="false" />
+      <property Method="Self.Hero::EscapeEnemyCrash()" />
+      <attachment class="Transition" id="8" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" />
+        <property Opr2="const bool true" />
+        <property TargetFSMNodeId="3" />
+      </attachment>
+      <attachment class="Transition" id="5" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" />
+        <property Opr2="const bool false" />
+        <property TargetFSMNodeId="4" />
+      </attachment>
+    </node>
+    <node class="State" id="4">
+      <property IsEndState="false" />
+      <property Method="Self.Hero::hasEnemyInFrontCanAttack()" />
+      <attachment class="Transition" id="6" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="Self.Hero::hasEnemyInFrontCanAttack()" />
+        <property Opr2="const bool true" />
+        <property TargetFSMNodeId="9" />
+      </attachment>
+      <attachment class="Transition" id="7" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="Self.Hero::hasEnemyInFrontCanAttack()" />
+        <property Opr2="const bool false" />
+        <property TargetFSMNodeId="10" />
+      </attachment>
+    </node>
+    <node class="State" id="9">
+      <property IsEndState="false" />
+      <property Method="Self.Hero::findAnEnemyAndAttack()" />
+      <attachment class="Transition" id="11" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="bool Self.Hero::m_isAI" />
+        <property Opr2="const bool true" />
+        <property TargetFSMNodeId="10" />
+      </attachment>
+    </node>
+    <node class="State" id="10">
+      <property IsEndState="false" />
+      <property Method="Self.Hero::AdjustHeroPosition()" />
+      <attachment class="Transition" id="12" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="bool Self.Hero::m_isAI" />
+        <property Opr2="const bool true" />
+        <property TargetFSMNodeId="14" />
+      </attachment>
+    </node>
+    <node class="State" id="14">
+      <property IsEndState="false" />
+      <property Method="Self.Hero::wait20Frame()" />
+      <attachment class="Transition" id="15" flag="transition">
+        <property Operator="Equal" />
+        <property Opl="Self.Hero::wait20Frame()" />
+        <property Opr2="const bool true" />
+        <property TargetFSMNodeId="1" />
+      </attachment>
+    </node>
+  </node>
+</behavior>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="Hero" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <DescriptorRefs value="0:" />
+    <Attachment Class="PluginBehaviac.Events.StartCondition" Enable="true" Id="0" PrefabAttachmentId="-1" TargetFSMNodeId="1" />
+    <FSMNodes ScreenLocationX="0" ScreenLocationY="0">
+      <Node Class="PluginBehaviac.Nodes.State" Enable="true" HasOwnPrefabData="false" Id="1" IsEndState="false" Method="Self.Hero::findAnNearestEnemy()" Name="查找最近敌人状态" PrefabName="" PrefabNodeId="-1" ScreenLocationX="182.7422" ScreenLocationY="6.759279">
+        <Comment Background="NoColor" Text="" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="2" Operator="Equal" Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" Opr1="&quot;&quot;" Opr2="const bool true" PrefabAttachmentId="-1" TargetFSMNodeId="3" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="13" Operator="Equal" Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" Opr1="&quot;&quot;" Opr2="const bool false" PrefabAttachmentId="-1" TargetFSMNodeId="9" />
+      </Node>
+      <Node Class="PluginBehaviac.Nodes.State" Enable="true" HasOwnPrefabData="false" Id="3" IsEndState="false" Method="Self.Hero::EscapeEnemyCrash()" Name="躲避敌人碰撞状态" PrefabName="" PrefabNodeId="-1" ScreenLocationX="484.4811" ScreenLocationY="42.40985">
+        <Comment Background="NoColor" Text="" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="8" Operator="Equal" Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" Opr1="&quot;&quot;" Opr2="const bool true" PrefabAttachmentId="-1" TargetFSMNodeId="3" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="5" Operator="Equal" Opl="Self.Hero::isWillBeCrashOnNearestEnemy()" Opr1="&quot;&quot;" Opr2="const bool false" PrefabAttachmentId="-1" TargetFSMNodeId="4" />
+      </Node>
+      <Node Class="PluginBehaviac.Nodes.State" Enable="true" HasOwnPrefabData="false" Id="4" IsEndState="false" Method="Self.Hero::hasEnemyInFrontCanAttack()" Name="前方有敌人持续攻击状态" PrefabName="" PrefabNodeId="-1" ScreenLocationX="457.5172" ScreenLocationY="128.8212">
+        <Comment Background="NoColor" Text="" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="6" Operator="Equal" Opl="Self.Hero::hasEnemyInFrontCanAttack()" Opr1="&quot;&quot;" Opr2="const bool true" PrefabAttachmentId="-1" TargetFSMNodeId="9" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="7" Operator="Equal" Opl="Self.Hero::hasEnemyInFrontCanAttack()" Opr1="&quot;&quot;" Opr2="const bool false" PrefabAttachmentId="-1" TargetFSMNodeId="10" />
+      </Node>
+      <Node Class="PluginBehaviac.Nodes.State" Enable="true" HasOwnPrefabData="false" Id="9" IsEndState="false" Method="Self.Hero::findAnEnemyAndAttack()" Name="查找攻击状态" PrefabName="" PrefabNodeId="-1" ScreenLocationX="531.9382" ScreenLocationY="332.569">
+        <Comment Background="NoColor" Text="" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="11" Operator="Equal" Opl="bool Self.Hero::m_isAI" Opr1="&quot;&quot;" Opr2="const bool true" PrefabAttachmentId="-1" TargetFSMNodeId="10" />
+      </Node>
+      <Node Class="PluginBehaviac.Nodes.State" Enable="true" HasOwnPrefabData="false" Id="10" IsEndState="false" Method="Self.Hero::AdjustHeroPosition()" Name="调整飞机位置状态" PrefabName="" PrefabNodeId="-1" ScreenLocationX="689.9266" ScreenLocationY="127.8166">
+        <Comment Background="NoColor" Text="" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="12" Operator="Equal" Opl="bool Self.Hero::m_isAI" Opr1="&quot;&quot;" Opr2="const bool true" PrefabAttachmentId="-1" TargetFSMNodeId="14" />
+      </Node>
+      <Node Class="PluginBehaviac.Nodes.State" Enable="true" HasOwnPrefabData="false" Id="14" IsEndState="false" Method="Self.Hero::wait20Frame()" Name="等待20帧" PrefabName="" PrefabNodeId="-1" ScreenLocationX="917.5487" ScreenLocationY="48.25677">
+        <Comment Background="NoColor" Text="" />
+        <Attachment Class="PluginBehaviac.Events.TransitionCondition" Effectors="0:" Enable="true" Id="15" Operator="Equal" Opl="Self.Hero::wait20Frame()" Opr1="&quot;&quot;" Opr2="const bool true" PrefabAttachmentId="-1" TargetFSMNodeId="1" />
+      </Node>
+    </FSMNodes>
+  </Node>
+</Behavior>

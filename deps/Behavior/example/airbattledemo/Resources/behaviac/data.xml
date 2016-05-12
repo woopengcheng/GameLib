@@ -1,0 +1,65 @@
+<metas version="3.0" language="cpp">
+	<types>
+		<struct Type="IList" DisplayName="" Desc="" IsRefType="false" />
+		<struct Type="System::Object" DisplayName="" Desc="" IsRefType="false" />
+	</types>
+	<agents>
+		<agent classfullname="behaviac::Agent" inherited="true" DisplayName="" Desc="" IsRefType="true">
+			<Method Name="VectorLength" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="int">
+				<Param DisplayName="" Desc="" Type="const IList&amp;" />
+			</Method>
+			<Method Name="VectorAdd" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorRemove" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorContains" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="bool">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorClear" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+			</Method>
+		</agent>
+		<agent classfullname="Enemy" base="behaviac::Agent" DisplayName="" Desc="" IsRefType="true">
+			<Method Name="getSpeed" DisplayName="" Desc="" Class="Enemy" ReturnType="float" />
+			<Method Name="getEnemyType" DisplayName="" Desc="" Class="Enemy" ReturnType="int" />
+			<Method Name="isAlive" DisplayName="" Desc="" Class="Enemy" ReturnType="bool" />
+			<Method Name="setSpeed" DisplayName="" Desc="" Class="Enemy" ReturnType="void">
+				<Param DisplayName="speed" Desc="speed" Type="float" />
+			</Method>
+			<Method Name="getRandomSpeedByInitSpeed" DisplayName="" Desc="" Class="Enemy" ReturnType="float">
+				<Param DisplayName="iniSpeed" Desc="iniSpeed" Type="float" />
+			</Method>
+		</agent>
+		<agent classfullname="Hero" base="behaviac::Agent" DisplayName="" Desc="" IsRefType="true">
+			<Member Name="m_isAI" DisplayName="" Desc="" Type="bool" Class="Hero" />
+			<Method Name="findAnNearestEnemy" DisplayName="" Desc="" Class="Hero" ReturnType="void" />
+			<Method Name="isWillBeCrashOnNearestEnemy" DisplayName="" Desc="" Class="Hero" ReturnType="bool" />
+			<Method Name="EscapeEnemyCrash" DisplayName="" Desc="" Class="Hero" ReturnType="void" />
+			<Method Name="hasEnemyInFrontCanAttack" DisplayName="" Desc="" Class="Hero" ReturnType="bool" />
+			<Method Name="findAnEnemyAndAttack" DisplayName="" Desc="" Class="Hero" ReturnType="void" />
+			<Method Name="AdjustHeroPosition" DisplayName="" Desc="" Class="Hero" ReturnType="void" />
+			<Method Name="wait20Frame" DisplayName="" Desc="" Class="Hero" ReturnType="bool" />
+		</agent>
+		<agent classfullname="NPC" base="behaviac::Agent" DisplayName="" Desc="" IsRefType="true">
+			<Member Name="Level1Up_Score" DisplayName="" Desc="" Type="int" Class="NPC" />
+			<Member Name="Level2Up_Score" DisplayName="" Desc="" Type="int" Class="NPC" />
+			<Member Name="Level3Up_Score" DisplayName="" Desc="" Type="int" Class="NPC" />
+			<Member Name="Level4Up_Score" DisplayName="" Desc="" Type="int" Class="NPC" />
+			<Member Name="m_canBossRefresh" DisplayName="" Desc="" Type="bool" Class="NPC" />
+			<Member Name="m_level" DisplayName="" Desc="" Type="int" Class="NPC" />
+			<Method Name="getLevel" DisplayName="" Desc="" Class="NPC" ReturnType="int">
+				<Param DisplayName="score" Desc="score" Type="int" />
+			</Method>
+			<Method Name="setLeveUpScore" DisplayName="" Desc="" Class="NPC" ReturnType="void">
+				<Param DisplayName="level" Desc="level" Type="int" />
+				<Param DisplayName="score" Desc="score" Type="int" />
+			</Method>
+			<Method Name="spawnEnemy" DisplayName="" Desc="" Class="NPC" ReturnType="void" />
+		</agent>
+	</agents>
+</metas>

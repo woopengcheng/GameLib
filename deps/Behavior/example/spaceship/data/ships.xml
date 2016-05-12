@@ -1,0 +1,87 @@
+<metas version="3.0" language="cpp">
+	<types>
+		<enumtype Type="behaviac::EBTStatus" DisplayName="BT状态" Desc="BT状态">
+			<enum NativeValue="behaviac::BT_INVALID" Value="invalid" DisplayName="" Desc="" />
+			<enum NativeValue="behaviac::BT_SUCCESS" Value="success" DisplayName="" Desc="" />
+			<enum NativeValue="behaviac::BT_FAILURE" Value="failure" DisplayName="" Desc="" />
+			<enum NativeValue="behaviac::BT_RUNNING" Value="running" DisplayName="" Desc="" />
+		</enumtype>
+		<struct Type="IList" DisplayName="" Desc="" IsRefType="false" />
+		<struct Type="System::Object" DisplayName="" Desc="" IsRefType="false" />
+	</types>
+	<agents>
+		<agent classfullname="behaviac::Agent" inherited="true" DisplayName="" Desc="" IsRefType="true">
+			<Method Name="VectorLength" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="int">
+				<Param DisplayName="" Desc="" Type="const IList&amp;" />
+			</Method>
+			<Method Name="VectorAdd" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorRemove" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorContains" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="bool">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorClear" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+			</Method>
+		</agent>
+		<agent classfullname="framework::GameObject" base="behaviac::Agent" inherited="true" DisplayName="" Desc="" IsRefType="true">
+			<Member Name="HP" DisplayName="" Desc="" Type="uint" Class="framework::GameObject" />
+			<Member Name="age" DisplayName="" Desc="" Type="long" Class="framework::GameObject" />
+			<Method Name="GoStraight" DisplayName="" Desc="" Class="framework::GameObject" ReturnType="void">
+				<Param DisplayName="speed" Desc="speed" Type="int" />
+			</Method>
+			<Method Name="TurnTowardsTarget" DisplayName="" Desc="" Class="framework::GameObject" ReturnType="int">
+				<Param DisplayName="turnSpeed" Desc="turnSpeed" Type="float" />
+			</Method>
+			<Method Name="alignedWithPlayer" DisplayName="" Desc="" Class="framework::GameObject" ReturnType="bool" />
+			<Method Name="playerIsAligned" DisplayName="" Desc="" Class="framework::GameObject" ReturnType="bool" />
+			<Method Name="projectileNearby" DisplayName="" Desc="" Class="framework::GameObject" ReturnType="bool">
+				<Param DisplayName="radius" Desc="radius" Type="float" />
+			</Method>
+			<Method Name="distanceToPlayer" DisplayName="" Desc="" Class="framework::GameObject" ReturnType="float" />
+		</agent>
+		<agent classfullname="framework::Projectile" base="framework::GameObject" DisplayName="" Desc="" IsRefType="true" />
+		<agent classfullname="framework::Ship" base="framework::GameObject" DisplayName="" Desc="" IsRefType="true">
+			<Method Name="checkresult" DisplayName="" Desc="" Class="framework::Ship" ReturnType="behaviac::EBTStatus">
+				<Param DisplayName="" Desc="" Type="bool" />
+			</Method>
+			<Method Name="Fire" DisplayName="" Desc="" Class="framework::Ship" ReturnType="bool" />
+			<Method Name="GotoPoint" DisplayName="" Desc="" Class="framework::Ship" ReturnType="bool">
+				<Param DisplayName="x" Desc="x" Type="float" />
+				<Param DisplayName="y" Desc="y" Type="float" />
+				<Param DisplayName="speed" Desc="speed" Type="float" />
+			</Method>
+			<Method Name="GotoPointRelative" DisplayName="" Desc="" Class="framework::Ship" ReturnType="bool">
+				<Param DisplayName="x" Desc="x" Type="float" />
+				<Param DisplayName="y" Desc="y" Type="float" />
+				<Param DisplayName="time" Desc="time" Type="float" />
+			</Method>
+			<Method Name="DestroyAllNearbyProjectiles" DisplayName="" Desc="" Class="framework::Ship" ReturnType="void">
+				<Param DisplayName="radius" Desc="radius" Type="float" />
+			</Method>
+			<Method Name="getXPosition" DisplayName="" Desc="" Class="framework::Ship" ReturnType="float" />
+			<Method Name="getYPosition" DisplayName="" Desc="" Class="framework::Ship" ReturnType="float" />
+			<Method Name="GetConstFloatValue" DisplayName="" Desc="" Class="framework::Ship" ReturnType="float" />
+			<Method Name="GetConstDoubleValue" DisplayName="" Desc="" Class="framework::Ship" ReturnType="double" />
+		</agent>
+		<agent classfullname="framework::WorldState" base="behaviac::Agent" DisplayName="" Desc="" IsRefType="true">
+			<Member Name="time" DisplayName="" Desc="" Type="uint" Class="framework::WorldState" />
+			<Member Name="HealthHP" DisplayName="" Desc="" Type="uint" Class="framework::WorldState" />
+			<Member Name="SyncSignal" DisplayName="" Desc="" Type="bool" Class="framework::WorldState" />
+			<Method Name="NextWave" DisplayName="" Desc="" Class="framework::WorldState" ReturnType="bool" />
+			<Method Name="PlayerHP" DisplayName="" Desc="" Class="framework::WorldState" ReturnType="int" />
+			<Method Name="SpawnShip" DisplayName="" Desc="" Class="framework::WorldState" ReturnType="void">
+				<Param DisplayName="level" Desc="level" Type="int" />
+			</Method>
+		</agent>
+	</agents>
+	<instances>
+		<instance name="framework::WorldState" class="framework::WorldState" DisplayName="framework::WorldState" Desc="framework::WorldState" />
+	</instances>
+</metas>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<agents version="1">
+  <agent type="Enemy" base="behaviac::Agent">
+    <properties>
+      <property name="enemyType" type="int" member="false" static="false" defaultvalue="0" />
+      <property name="m_init_speed" type="vector&lt;float&gt;" member="false" static="false" defaultvalue="4:50|50|100|150" />
+      <property name="initSpeed" type="float" member="false" static="false" defaultvalue="0" />
+      <property name="randomSpeed" type="float" member="false" static="false" defaultvalue="50" />
+    </properties>
+  </agent>
+  <agent type="Hero" base="behaviac::Agent">
+    <properties>
+      <property name="m_isAI" type="bool" member="true" static="false" agent="Hero" />
+    </properties>
+  </agent>
+  <agent type="NPC" base="behaviac::Agent">
+    <properties>
+      <property name="Level1Up_Score" type="int" member="true" static="false" agent="NPC" />
+      <property name="Level2Up_Score" type="int" member="true" static="false" agent="NPC" />
+      <property name="Level3Up_Score" type="int" member="true" static="false" agent="NPC" />
+      <property name="Level4Up_Score" type="int" member="true" static="false" agent="NPC" />
+      <property name="m_canBossRefresh" type="bool" member="true" static="false" agent="NPC" />
+      <property name="m_level" type="int" member="true" static="false" agent="NPC" />
+      <property name="delayTime" type="vector&lt;int&gt;" member="false" static="false" defaultvalue="5:20|15|10|5|2" />
+    </properties>
+  </agent>
+</agents>

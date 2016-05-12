@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_Chase.xml-->
+<behavior name="Tank_Chase" agenttype="Player" version="4">
+  <pars>
+    <par name="parT_enemyPosition" type="UnityEngine::Vector3" value="{x=0;y=0;z=0;}" />
+    <par name="parT_nearestEnemy" type="behaviac::Agent" value="null" />
+  </pars>
+  <node class="DecoratorLoop" id="4">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="Parallel" id="9">
+      <property ChildFinishPolicy="CHILDFINISH_LOOP" />
+      <property ExitPolicy="EXIT_ABORT_RUNNINGSIBLINGS" />
+      <property FailurePolicy="FAIL_ON_ONE" />
+      <property SuccessPolicy="SUCCEED_ON_ALL" />
+      <node class="DecoratorNot" id="5">
+        <property DecorateWhenChildEnds="false" />
+        <node class="Wait" id="7">
+          <property Time="const float 1000" />
+        </node>
+      </node>
+      <node class="Sequence" id="8">
+        <node class="Assignment" id="6">
+          <property Opl="behaviac::Agent Self.Player::parT_nearestEnemy" />
+          <property Opr="GameLevel.GameLevelCommon::getNearestEnemy(eGameForce Self.GameActor::force)" />
+        </node>
+        <node class="Assignment" id="0">
+          <property Opl="UnityEngine::Vector3 Self.Player::parT_enemyPosition" />
+          <property Opr="GameLevel.GameLevelCommon::getEnemyPosition(behaviac::Agent Self.Player::parT_nearestEnemy)" />
+        </node>
+        <node class="Action" id="1">
+          <property Method="Self.GameActor::findPath(UnityEngine::Vector3 Self.Player::parT_enemyPosition,static int GameLevel.GameLevelCommon::actorWalkLevel)" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+        <node class="Action" id="2">
+          <property Method="Self.GameActor::navigate()" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

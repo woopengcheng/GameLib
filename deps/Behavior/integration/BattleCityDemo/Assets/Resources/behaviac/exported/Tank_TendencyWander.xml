@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: Tank_TendencyWander.xml-->
+<behavior name="Tank_TendencyWander" agenttype="Player" version="4">
+  <pars>
+    <par name="parIn_Self" type="Player" value="null" />
+    <par name="parT_RotateAngle" type="float" value="0" />
+    <par name="parT_nearestEnemy" type="behaviac::Agent" value="null" />
+    <par name="parT_enemyPosition" type="UnityEngine::Vector3" value="{x=0;y=0;z=0;}" />
+    <par name="parT_TendencyDirection" type="eMapDirection" value="UNKNOWN" />
+  </pars>
+  <node class="DecoratorLoop" id="16">
+    <property Count="const int -1" />
+    <property DecorateWhenChildEnds="true" />
+    <node class="SelectorProbability" id="17">
+      <node class="DecoratorWeight" id="2">
+        <property DecorateWhenChildEnds="false" />
+        <property Weight="const int 70" />
+        <node class="Action" id="6">
+          <property Method="Self.GameActor::moveForward()" />
+          <property ResultOption="BT_INVALID" />
+        </node>
+      </node>
+      <node class="DecoratorWeight" id="7">
+        <property DecorateWhenChildEnds="false" />
+        <property Weight="const int 30" />
+        <node class="Sequence" id="0">
+          <node class="Assignment" id="8">
+            <property Opl="eMapDirection Self.Player::parT_TendencyDirection" />
+            <property Opr="const eMapDirection UNKNOWN" />
+          </node>
+          <node class="DecoratorAlwaysSuccess" id="11">
+            <property DecorateWhenChildEnds="false" />
+            <node class="Sequence" id="14">
+              <node class="Assignment" id="15">
+                <property Opl="behaviac::Agent Self.Player::parT_nearestEnemy" />
+                <property Opr="GameLevel.GameLevelCommon::getNearestEnemy(eGameForce Self.GameActor::force)" />
+              </node>
+              <node class="Condition" id="13">
+                <property Operator="NotEqual" />
+                <property Opl="behaviac::Agent Self.Player::parT_nearestEnemy" />
+                <property Opr="const behaviac::Agent null" />
+              </node>
+              <node class="Assignment" id="5">
+                <property Opl="UnityEngine::Vector3 Self.Player::parT_enemyPosition" />
+                <property Opr="GameLevel.GameLevelCommon::getEnemyPosition(behaviac::Agent Self.Player::parT_nearestEnemy)" />
+              </node>
+              <node class="Assignment" id="12">
+                <property Opl="eMapDirection Self.Player::parT_TendencyDirection" />
+                <property Opr="Self.Player::locationTendencyToTarget(UnityEngine::Vector3 Self.Player::parT_enemyPosition)" />
+              </node>
+            </node>
+          </node>
+          <node class="Assignment" id="10">
+            <property Opl="float Self.Player::parT_RotateAngle" />
+            <property Opr="GameLevel.GameLevelCommon::getAvailabeMoveDirection(Player Self.Player::parIn_Self,eMapDirection Self.Player::parT_TendencyDirection)" />
+          </node>
+          <node class="Sequence" id="1">
+            <node class="Condition" id="9">
+              <property Operator="GreaterEqual" />
+              <property Opl="float Self.Player::parT_RotateAngle" />
+              <property Opr="const float 0" />
+            </node>
+            <node class="Action" id="3">
+              <property Method="Self.GameActor::rotateToAngle(float Self.Player::parT_RotateAngle)" />
+              <property ResultOption="BT_INVALID" />
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>
