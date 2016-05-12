@@ -425,7 +425,7 @@ namespace behaviac
     {
 #if BEHAVIAC_COMPILER_MSVC
         BEHAVIAC_ASSERT(t_packetBufferIndex != TLS_OUT_OF_INDEXES);
-        int bufferIndex = (int)TlsGetValue(t_packetBufferIndex);
+        int bufferIndex = (int)(int64_t)TlsGetValue(t_packetBufferIndex);
 #else
         BEHAVIAC_ASSERT(t_packetBufferIndex != (unsigned int) - 1);
         int bufferIndex = (int)t_packetBufferIndex;
@@ -516,7 +516,7 @@ namespace behaviac
     int ConnectorInterface::ReserveThreadPacketBuffer()
     {
 #if BEHAVIAC_COMPILER_MSVC
-        int bufferIndex = (int)TlsGetValue(t_packetBufferIndex);
+        int bufferIndex = (int)(int64_t)TlsGetValue(t_packetBufferIndex);
 #else
         int bufferIndex = t_packetBufferIndex;
 #endif
@@ -557,7 +557,7 @@ namespace behaviac
             if (retIndex > 0)
             {
 #if BEHAVIAC_COMPILER_MSVC
-                TlsSetValue(t_packetBufferIndex, (PVOID)retIndex);
+                TlsSetValue(t_packetBufferIndex, (PVOID)(int64_t)retIndex);
 #else
                 t_packetBufferIndex = retIndex;
 #endif

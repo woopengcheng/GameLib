@@ -3,4 +3,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartArguments>"E:\\WWWW\\behavac_ex_proj\\trunk\\integration\\BattleCityDemo\\Assets\\behaviac\\workspace\\BattleCity.workspace.xml\" /bt=Tank_Wander</StartArguments>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <StartArguments>"E:\\WWWW\\behavac_ex_proj\\trunk\\integration\\BattleCityDemo\\Assets\\behaviac\\workspace\\BattleCity.workspace.xml\" /bt=Tank_Wander</StartArguments>
+  </PropertyGroup>
 </Project>

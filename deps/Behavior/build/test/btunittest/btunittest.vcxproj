@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{8973776E-E042-3854-81B3-C71A9707B5C9}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>btunittest</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\bin\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">btunittest.dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">btunittest_msvc_debug</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\bin\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">btunittest.dir\Release\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">btunittest_msvc_release</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btunittest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_DEBUG;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btunittest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btunittest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\lib\libbehaviac_msvc_debug.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>../../../lib/btunittest_msvc_debug.lib</ImportLibrary>
+      <ProgramDataBaseFile>../../../bin/btunittest_msvc_debug.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btunittest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat></DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btunittest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btunittest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\lib\libbehaviac_msvc_release.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>../../../lib/btunittest_msvc_release.lib</ImportLibrary>
+      <ProgramDataBaseFile>../../../bin/btunittest_msvc_release.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="../../..\test\btunittest\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule ../../../test/btunittest/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -H../../.. -B../../../build --check-stamp-file ../../..\build\test\btunittest\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../test/btunittest/CMakeLists.txt;../../..\test\btunittest\CMakeLists.txt;../../..\test\btunittest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\build\test\btunittest\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule ../../../test/btunittest/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -H../../.. -B../../../build --check-stamp-file ../../..\build\test\btunittest\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../test/btunittest/CMakeLists.txt;../../..\test\btunittest\CMakeLists.txt;../../..\test\btunittest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\build\test\btunittest\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="../../..\test\btunittest\Agent\AgentArrayAccessTest.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\AgentNodeTest.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\CustomPropertyAgent.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\EmployeeParTestAgent.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\FSMAgentTest.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\HTNAgentHouse.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\HTNAgentHouseBase.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\HTNAgentTravel.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\ParTestAgent.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\ParTestAgentBase.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\ParTestRegNameAgent.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\PreconEffectorAgent.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\PreconEffectorTest.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\PropertyReadonlyAgent.h" />
+    <ClInclude Include="../../..\test\btunittest\Agent\UnitTestTypes.h" />
+    <ClInclude Include="../../..\test\btunittest\BehaviacWorkspace.h" />
+    <ClInclude Include="../../..\test\btunittest\behaviac_generated\behaviors\generated_behaviors.h" />
+    <ClInclude Include="../../..\test\btunittest\behaviac_generated\types\agentproperties.h" />
+    <ClInclude Include="../../..\test\btunittest\behaviac_generated\types\customizedtypes.h" />
+    <ClInclude Include="../../..\test\btunittest\behaviortest.h" />
+    <ClInclude Include="../../..\test\btunittest\btloadtestsuite.h" />
+    <ClInclude Include="../../..\test\btunittest\ext\extendreftype.h" />
+    <ClInclude Include="../../..\test\btunittest\ext\extendstruct.h" />
+    <ClInclude Include="../../..\test\btunittest\ext\range.h" />
+    <ClInclude Include="../../..\test\btunittest\ext\typehandlerext.h" />
+    <ClInclude Include="../../..\test\btunittest\test.h" />
+    <ClCompile Include="../../..\test\btunittest\Agent\AgentArrayAccessTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\AgentNodeTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\CustomPropertyAgent.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\EmployeeParTestAgent.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\FSMAgentTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\HTNAgentHouse.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\HTNAgentHouseBase.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\HTNAgentTravel.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\ParTestAgent.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\ParTestAgentBase.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\ParTestRegNameAgent.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\PreconEffectorAgent.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\PreconEffectorTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\PropertyReadonlyAgent.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Agent\UnitTestTypes.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\ArrayAccessTest\ArrayAccessTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\attachments\PreconEffectorUintTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\behaviacsystem.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\BehaviacWorkspace.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\behaviac_generated\types\customizedtypes.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\ext\extendreftype.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\FSMTest\fsmtestbase_0.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\FSMTest\fsmunittest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\HTNTest\htnhouseunittest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\HTNTest\htntravelunittest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\main.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Meta\testtraits.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Meta\testtype.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\NodeTest\DecorationNodeUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\NodeTest\EnterExitActionUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\NodeTest\EventUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\NodeTest\NodeUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\NodeTest\ParallelNodeUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\NodeTest\PredicateUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\NodeTest\QueryUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\btloadtest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\btmethodtest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\btunittest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\parallelnodetest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\probabilityselectortest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\reflectionunittest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\selectorlooptest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\selectorstochastictest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\Others\sequencestochastictest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\ParPropertyTest\ParPropertyUnitTest.cpp"  />
+    <ClCompile Include="../../..\test\btunittest\ParPropertyTest\PropertyReadonlyUnitTest.cpp"  />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../build/ZERO_CHECK.vcxproj">
+      <Project>54F33FD5-4013-3FF7-84F9-C1F855D95687</Project>
+    </ProjectReference>
+    <ProjectReference Include="../../../build/libbehaviac.vcxproj">
+      <Project>146F4A34-7290-30C1-8EC1-46064FF2A18C</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
