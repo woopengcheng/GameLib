@@ -290,7 +290,7 @@ namespace behaviac
 
         if (s_debugger && (EnableMask & ELOG_VCOUTPUT))
         {
-            OutputDebugString(temp);
+            OutputDebugStringA(temp);
         }
 
 #endif//

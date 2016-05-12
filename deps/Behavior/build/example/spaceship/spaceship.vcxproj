@@ -83,90 +83,7 @@
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
-    <PostBuildEvent>
-      <Message>								</Message>
-      <Command>setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libfreetype-6.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libjpeg-9.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libpng16-16.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libtiff-5.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libwebp-4.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/SDL2.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/SDL2_image.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/SDL2_ttf.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/zlib1.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-    </PostBuildEvent>
+    
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\lib\libbehaviac_msvc_debug.lib;legacy_stdio_definitions.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2main.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_image.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_ttf.lib</AdditionalDependencies>
@@ -213,90 +130,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
-    <PostBuildEvent>
-      <Message>								</Message>
-      <Command>setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libfreetype-6.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libjpeg-9.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libpng16-16.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libtiff-5.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/libwebp-4.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/SDL2.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/SDL2_image.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/SDL2_ttf.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd
-setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -E copy_if_different ../../../example/spaceship/SDL2/lib/x64/zlib1.dll ../../../bin
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-    </PostBuildEvent>
+   
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\lib\libbehaviac_msvc_release.lib;legacy_stdio_definitions.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2main.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_image.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_ttf.lib</AdditionalDependencies>
@@ -312,36 +146,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <CustomBuild Include="../../..\example\spaceship\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule ../../../example/spaceship/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -H../../.. -B../../../build --check-stamp-file ../../..\build\example\spaceship\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../example/spaceship/CMakeLists.txt;../../..\example\spaceship\CMakeLists.txt;../../..\example\spaceship\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\build\example\spaceship\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule ../../../example/spaceship/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -H../../.. -B../../../build --check-stamp-file ../../..\build\example\spaceship\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../example/spaceship/CMakeLists.txt;../../..\example\spaceship\CMakeLists.txt;../../..\example\spaceship\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\build\example\spaceship\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-    </CustomBuild>
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../../..\example\spaceship\framework\Definitions.h" />
     <ClInclude Include="../../..\example\spaceship\framework\GameLogic.h" />
