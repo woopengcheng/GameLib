@@ -38,13 +38,13 @@
   <PropertyGroup Label="UserMacros" />
     <PropertyGroup>
       <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\GitHub\GameLib\deps\Behavior\bin\</OutDir>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\bin\</OutDir>
       <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">btremotetest.dir\Debug\</IntDir>
       <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">btremotetest_msvc_debug</TargetName>
       <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
       <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
       <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\GameLib\deps\Behavior\bin\</OutDir>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\bin\</OutDir>
       <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">btremotetest.dir\Release\</IntDir>
       <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">btremotetest_msvc_release</TargetName>
       <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
@@ -54,7 +54,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>E:\GitHub\GameLib\deps\Behavior\inc;E:\GitHub\GameLib\deps\Behavior\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -73,10 +73,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\GitHub\GameLib\deps\Behavior\inc;E:\GitHub\GameLib\deps\Behavior\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\GitHub\GameLib\deps\Behavior\inc;E:\GitHub\GameLib\deps\Behavior\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -89,8 +89,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/GitHub/GameLib/deps/Behavior/lib/btremotetest_msvc_debug.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/GitHub/GameLib/deps/Behavior/bin/btremotetest_msvc_debug.pdb</ProgramDataBaseFile>
+      <ImportLibrary>../../../lib/btremotetest_msvc_debug.lib</ImportLibrary>
+      <ProgramDataBaseFile>../../../bin/btremotetest_msvc_debug.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <Version></Version>
     </Link>
@@ -101,7 +101,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>E:\GitHub\GameLib\deps\Behavior\inc;E:\GitHub\GameLib\deps\Behavior\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>SyncCThrow</ExceptionHandling>
@@ -119,10 +119,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\GitHub\GameLib\deps\Behavior\inc;E:\GitHub\GameLib\deps\Behavior\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\GitHub\GameLib\deps\Behavior\inc;E:\GitHub\GameLib\deps\Behavior\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../..\inc;../../..\test\btremotetest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -135,8 +135,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/GitHub/GameLib/deps/Behavior/lib/btremotetest_msvc_release.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/GitHub/GameLib/deps/Behavior/bin/btremotetest_msvc_release.pdb</ProgramDataBaseFile>
+      <ImportLibrary>../../../lib/btremotetest_msvc_release.lib</ImportLibrary>
+      <ProgramDataBaseFile>../../../bin/btremotetest_msvc_release.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <Version></Version>
     </Link>
@@ -145,10 +145,10 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\GitHub\GameLib\deps\Behavior\test\btremotetest\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/GitHub/GameLib/deps/Behavior/test/btremotetest/CMakeLists.txt</Message>
+    <CustomBuild Include="../../..\test\btremotetest\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule ../../../test/btremotetest/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/GameLib/deps/Behavior -BE:/GitHub/GameLib/deps/Behavior/build --check-stamp-file E:\GitHub\GameLib\deps\Behavior\build\test\btremotetest\CMakeFiles\generate.stamp
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -H../../.. -B../../../build --check-stamp-file ../../..\build\test\btremotetest\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -156,12 +156,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:/GitHub/GameLib/deps/Behavior/test/btremotetest/CMakeLists.txt;E:\GitHub\GameLib\deps\Behavior\test\btremotetest\CMakeLists.txt;E:\GitHub\GameLib\deps\Behavior\test\btremotetest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\GitHub\GameLib\deps\Behavior\build\test\btremotetest\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../../test/btremotetest/CMakeLists.txt;../../..\test\btremotetest\CMakeLists.txt;../../..\test\btremotetest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\build\test\btremotetest\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/GitHub/GameLib/deps/Behavior/test/btremotetest/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule ../../../test/btremotetest/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"D:\Program Files (x86)\CMake\bin\cmake.exe" -HE:/GitHub/GameLib/deps/Behavior -BE:/GitHub/GameLib/deps/Behavior/build --check-stamp-file E:\GitHub\GameLib\deps\Behavior\build\test\btremotetest\CMakeFiles\generate.stamp
+"D:\Program Files (x86)\CMake\bin\cmake.exe" -H../../.. -B../../../build --check-stamp-file ../../..\build\test\btremotetest\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -169,21 +169,21 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:/GitHub/GameLib/deps/Behavior/test/btremotetest/CMakeLists.txt;E:\GitHub\GameLib\deps\Behavior\test\btremotetest\CMakeLists.txt;E:\GitHub\GameLib\deps\Behavior\test\btremotetest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\GitHub\GameLib\deps\Behavior\build\test\btremotetest\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../../test/btremotetest/CMakeLists.txt;../../..\test\btremotetest\CMakeLists.txt;../../..\test\btremotetest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\build\test\btremotetest\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="E:\GitHub\GameLib\deps\Behavior\test\btremotetest\BTPlayer.h" />
-    <ClCompile Include="E:\GitHub\GameLib\deps\Behavior\test\btremotetest\BTPlayer.cpp"  />
-    <ClCompile Include="E:\GitHub\GameLib\deps\Behavior\test\btremotetest\remote_test.cpp"  />
+    <ClInclude Include="../../..\test\btremotetest\BTPlayer.h" />
+    <ClCompile Include="../../..\test\btremotetest\BTPlayer.cpp"  />
+    <ClCompile Include="../../..\test\btremotetest\remote_test.cpp"  />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="E:/GitHub/GameLib/deps/Behavior/build/ZERO_CHECK.vcxproj">
+    <ProjectReference Include="../../../build/ZERO_CHECK.vcxproj">
       <Project>54F33FD5-4013-3FF7-84F9-C1F855D95687</Project>
     </ProjectReference>
-    <ProjectReference Include="E:/GitHub/GameLib/deps/Behavior/build/libbehaviac.vcxproj">
+    <ProjectReference Include="../../../build/libbehaviac.vcxproj">
       <Project>146F4A34-7290-30C1-8EC1-46064FF2A18C</Project>
     </ProjectReference>
   </ItemGroup>
