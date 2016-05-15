@@ -27,3 +27,4 @@
 /deps/expat/win32/tmp/Debug_static/*.pdb
 *.pdb
 /bin/vs14.0/x64/Lib_Debug_x64/*.idb
+/deps/Behavior/lib
