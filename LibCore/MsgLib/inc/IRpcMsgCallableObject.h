@@ -14,7 +14,7 @@ namespace Msg
 		IRpcMsgCallableObject(Object id , RpcManager * pRpcManager)
 			: Rpc(pRpcManager , MAX_MSG_TIME_OUT , id)  
 		{ 
-			Assert(pRpcManager);
+			Assert_(pRpcManager);
 
 			pRpcManager->AddCallableObject(this);  
 		}   

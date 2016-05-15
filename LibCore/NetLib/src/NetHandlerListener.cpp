@@ -41,7 +41,7 @@ namespace Net
 
 	void NetHandlerListener::InitUDS()
 	{
-		Assert(m_pSession);
+		Assert_(m_pSession);
 		NetSocket socket = NetHelper::CreateSocket(AF_UNIX, SOCK_STREAM, 0);
 		NetHelper::SetDefaultSocket(socket, m_pSession->GetSendBufSize(), m_pSession->GetRecvBufSize());
 
@@ -50,7 +50,7 @@ namespace Net
 
 	void NetHandlerListener::InitCommon()
 	{
-		Assert(m_pSession);
+		Assert_(m_pSession);
 		NetSocket socket = NetHelper::CreateSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
 		int nValueTrue = 1;

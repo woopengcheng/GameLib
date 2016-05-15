@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<workspace name="Task" xmlmetafolder="." folder="behaviors" export="exported">
+  <xmlmeta>Task.workspace.xml</xmlmeta>
+  <xmlmeta>Task.xml</xmlmeta>
+  <export>
+    <bson>
+      <isexported>False</isexported>
+    </bson>
+    <cs>
+      <isexported>False</isexported>
+      <exportunifiedfile>True</exportunifiedfile>
+      <generatecustomizedtypes>True</generatecustomizedtypes>
+    </cs>
+    <cpp>
+      <isexported>False</isexported>
+      <exportunifiedfile>True</exportunifiedfile>
+      <generatecustomizedtypes>True</generatecustomizedtypes>
+    </cpp>
+    <xml>
+      <isexported>True</isexported>
+    </xml>
+  </export>
+</workspace>

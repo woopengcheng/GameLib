@@ -378,15 +378,15 @@ TEST(CStream , CStream)
 	std::string str((char *)t13.Begin());
 	EXPECT_EQ(str , std::string("14"));
 	EXPECT_EQ(t14 , p14);
-	Assert(t15 == p15);
- 	Assert(t16 == p16);
-	Assert(t17 == p17);
-	Assert(t18 == p18);
-	Assert(t19 == p19);
-	Assert(t20 == p20);
-	Assert(t21 == p21);
-	Assert(t22 == p22);
-	Assert(t23 == p23);
-	Assert(t24 == p24);
-	Assert(t25 == p25);
+	Assert_(t15 == p15);
+ 	Assert_(t16 == p16);
+	Assert_(t17 == p17);
+	Assert_(t18 == p18);
+	Assert_(t19 == p19);
+	Assert_(t20 == p20);
+	Assert_(t21 == p21);
+	Assert_(t22 == p22);
+	Assert_(t23 == p23);
+	Assert_(t24 == p24);
+	Assert_(t25 == p25);
 }  

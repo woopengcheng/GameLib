@@ -124,6 +124,9 @@
     <Filter Include="Test\LuaTest">
       <UniqueIdentifier>{8251b7d0-1848-45ff-a149-b9c7b229dd7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Task">
+      <UniqueIdentifier>{5eaa0b87-e276-42bd-952e-04a8e6204067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -716,6 +719,9 @@
     </ClInclude>
     <ClInclude Include="..\..\LibCore\Lua\ILua.h">
       <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibCore\Task\inc\BTTask.h">
+      <Filter>Task</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

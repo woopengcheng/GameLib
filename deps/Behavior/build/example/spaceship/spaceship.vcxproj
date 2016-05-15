@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -36,21 +36,21 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-    <PropertyGroup>
-      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\bin\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">spaceship.dir\Debug\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">spaceship_msvc_debug</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\bin\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">spaceship.dir\Release\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">spaceship_msvc_release</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
-    </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">spaceship.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">spaceship_msvc_debug</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">spaceship.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">spaceship_msvc_release</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
@@ -83,17 +83,17 @@
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
-    
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\lib\libbehaviac_msvc_debug.lib;legacy_stdio_definitions.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2main.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_image.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_ttf.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;libbehaviac_msvc_debug.lib;legacy_stdio_definitions.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2main.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_image.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_ttf.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\bin\vs$(VisualStudioVersion)\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>../../../lib/spaceship_msvc_debug.lib</ImportLibrary>
       <ProgramDataBaseFile>../../../bin/spaceship_msvc_debug.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -116,7 +116,8 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat></DebugInformationFormat>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -130,7 +131,6 @@
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
-   
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\lib\libbehaviac_msvc_release.lib;legacy_stdio_definitions.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2main.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_image.lib;..\..\..\example\spaceship\SDL2\lib\x64\SDL2_ttf.lib</AdditionalDependencies>
@@ -140,13 +140,15 @@
       <ImportLibrary>../../../lib/spaceship_msvc_release.lib</ImportLibrary>
       <ProgramDataBaseFile>../../../bin/spaceship_msvc_release.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="test.cpp" />
     <ClInclude Include="../../..\example\spaceship\framework\Definitions.h" />
     <ClInclude Include="../../..\example\spaceship\framework\GameLogic.h" />
     <ClInclude Include="../../..\example\spaceship\framework\GameObject.h" />
@@ -164,18 +166,18 @@
     <ClInclude Include="../../..\example\spaceship\behaviac_generated\behaviors\generated_behaviors.h" />
     <ClInclude Include="../../..\example\spaceship\behaviac_generated\types\agentproperties.h" />
     <ClInclude Include="../../..\example\spaceship\behaviac_generated\types\customizedtypes.h" />
-    <ClCompile Include="../../..\example\spaceship\main.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\GameLogic.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\GameObject.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\GFrameHandler.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\mtrand.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\point.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\Projectile.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\Renderer.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\Ship.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\stdafx.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\framework\WorldState.cpp"  />
-    <ClCompile Include="../../..\example\spaceship\behaviac_generated\types\customizedtypes.cpp"  />
+    <ClCompile Include="../../..\example\spaceship\main.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\GameLogic.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\GameObject.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\GFrameHandler.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\mtrand.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\point.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\Projectile.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\Renderer.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\Ship.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\stdafx.cpp" />
+    <ClCompile Include="../../..\example\spaceship\framework\WorldState.cpp" />
+    <ClCompile Include="../../..\example\spaceship\behaviac_generated\types\customizedtypes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../../build/ZERO_CHECK.vcxproj">

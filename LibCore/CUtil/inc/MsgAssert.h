@@ -13,7 +13,7 @@ extern inline int * ASSERT_FAIL(){return NULL; }
 
 #endif
  
-#define Assert(_Expression){ if(!(_Expression)){ std::cout << "Assert " << __FILE__ << ":" << __LINE__ << ", " << #_Expression; ASSERT; return ;} }
+#define Assert_(_Expression){ if(!(_Expression)){ std::cout << "Assert " << __FILE__ << ":" << __LINE__ << ", " << #_Expression; ASSERT; return ;} }
 #define Assert_Re0(_Expression){ if(!(_Expression)){ std::cout << "Assert " << __FILE__ << ":" << __LINE__ << ", " << #_Expression; ASSERT; return 0;} } 
 #define Assert_ReF(_Expression){ if(!(_Expression)){ std::cout << "Assert " << __FILE__ << ":" << __LINE__ << ", " << #_Expression; ASSERT; return CErrno::ERR_FAILURE;} }
 #define Assert_ReF1(_Expression){ if(!(_Expression)){ std::cout << "Assert " << __FILE__ << ":" << __LINE__ << ", " << #_Expression; ASSERT; return -1;} } 

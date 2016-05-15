@@ -54,7 +54,7 @@ namespace ThreadPool
 	template<typename Context>
 	void ThreadContext<Context>::Cleanup( void * pContext )
 	{
-		Assert(pContext);
+		Assert_(pContext);
 		SAFE_DELETE(pContext);	
 	}
 

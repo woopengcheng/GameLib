@@ -44,7 +44,7 @@ namespace Client
 
 	void DBClient::OnRegisterRpcs( void )
 	{
-		Assert(m_pRpcManager && Msg::RpcCheckParams::GetInstance());	
+		Assert_(m_pRpcManager && Msg::RpcCheckParams::GetInstance());	
 		static Client::GRpc g_pGRpc( Msg::DEFAULT_RPC_CALLABLE_ID , m_pRpcManager); 
 
 		//tool testMulitServerNode generate default deliver and return check param here

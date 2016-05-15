@@ -12,7 +12,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to bool:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(UINT8& var,mongo::BSONElement& be)
@@ -23,7 +23,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to UINT8:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(INT16& var,mongo::BSONElement& be)
@@ -34,7 +34,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to INT16:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(float& var,mongo::BSONElement& be)
@@ -45,7 +45,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to float:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(double& var,mongo::BSONElement& be)
@@ -56,7 +56,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to double:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(INT32& var,mongo::BSONElement& be)
@@ -67,7 +67,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to INT32:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(INT64& var,mongo::BSONElement& be)
@@ -78,7 +78,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to INT64:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(std::string& var,mongo::BSONElement& be)
@@ -97,7 +97,7 @@ namespace CUtil
 			return;
 		}
 		MsgAssert(false,__FUNCTION__ << " to string:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp(StringExBase& var,mongo::BSONElement& be)
@@ -108,7 +108,7 @@ namespace CUtil
 			return;
 		}
 		MsgAssert(false,__FUNCTION__ << " to fixed_string_base:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp( UINT32& var,mongo::BSONElement& be )
@@ -119,7 +119,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to UINT32:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp( UINT64& var,mongo::BSONElement& be )
@@ -130,7 +130,7 @@ namespace CUtil
 			return ;
 		}
 		MsgAssert(false,__FUNCTION__ << " to UINT64:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 
 	void BsonToCpp( Parameter & var,mongo::BSONElement& be )
@@ -148,6 +148,6 @@ namespace CUtil
 		}  
 
 		MsgAssert(false,__FUNCTION__ << " to Parameter:" << be.toString());
-		Assert(false && "BsonToCpp: invalid convert");
+		Assert_(false && "BsonToCpp: invalid convert");
 	}
 }

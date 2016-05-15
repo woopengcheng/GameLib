@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<agents version="1">
+  <agent type="Task::BTTask" base="behaviac::Agent">
+    <properties>
+      <property name="m_nCircleTaskCount" type="vector&lt;int&gt;" member="false" static="false" defaultvalue="2:10|20" />
+    </properties>
+    <methods>
+      <method name="root" agent="Task::BTTask" />
+      <method name="event_TaskCount" agent="Task::BTTask">
+        <parameter name="GetTaskCount" type="int" />
+      </method>
+    </methods>
+  </agent>
+</agents>

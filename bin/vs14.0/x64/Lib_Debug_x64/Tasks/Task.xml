@@ -1,0 +1,56 @@
+<metas version="3.0" language="cpp">
+	<types>
+		<struct Type="IList" DisplayName="" Desc="" IsRefType="false" />
+		<struct Type="System::Object" DisplayName="" Desc="" IsRefType="false" />
+	</types>
+	<agents>
+		<agent classfullname="behaviac::Agent" inherited="true" DisplayName="" Desc="" IsRefType="true">
+			<Method Name="VectorLength" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="int">
+				<Param DisplayName="" Desc="" Type="const IList&amp;" />
+			</Method>
+			<Method Name="VectorAdd" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorRemove" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorContains" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="bool">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+				<Param DisplayName="" Desc="" Type="const System::Object&amp;" />
+			</Method>
+			<Method Name="VectorClear" DisplayName="" Desc="" Class="behaviac::Agent" Static="true" ReturnType="void">
+				<Param DisplayName="" Desc="" Type="IList&amp;" />
+			</Method>
+		</agent>
+		<agent classfullname="Task::BTTask" base="behaviac::Agent" DisplayName="BTTask任务" Desc="用来配置任务和任务树" IsRefType="true">
+			<Method Name="SetName" DisplayName="任务名" Desc="设置任务名字" Class="Task::BTTask" ReturnType="void">
+				<Param DisplayName="任务名" Desc="输入任务名" Type="string" Default="" />
+			</Method>
+			<Method Name="GetCircleTaskCount" DisplayName="循环任务" Desc="获得循环任务的次数" Class="Task::BTTask" ReturnType="int">
+				<Param DisplayName="获得循环任务次数" Desc="输入循环任务类型ID" Type="int" Default="0" RangeMin="1.000000" RangeMax="1000.000000" />
+			</Method>
+			<Method Name="ClearCircleTaskCount" DisplayName="清空循环任务的次数" Desc="清空循环任务的次数" Class="Task::BTTask" ReturnType="void">
+				<Param DisplayName="清空循环任务的次数" Desc="输入循环任务类型ID" Type="int" Default="0" RangeMin="1.000000" RangeMax="1000.000000" />
+			</Method>
+			<Method Name="DecCircleTaskCount" DisplayName="减少循环任务的次数" Desc="减少循环任务的次数" Class="Task::BTTask" ReturnType="void">
+				<Param DisplayName="减少循环任务的次数" Desc="输入循环任务类型ID" Type="int" Default="0" RangeMin="1.000000" RangeMax="1000.000000" />
+				<Param DisplayName="" Desc="" Type="int" />
+			</Method>
+			<Method Name="RecordCircleTaskID" DisplayName="记录随机到的任务" Desc="记录随机到的任务ID" Class="Task::BTTask" ReturnType="void">
+				<Param DisplayName="记录随机到的任务" Desc="输入循环任务类型ID" Type="int" Default="0" RangeMin="1.000000" RangeMax="1000.000000" />
+				<Param DisplayName="" Desc="" Type="int" />
+			</Method>
+			<Method Name="NotifyClientCircleID" DisplayName="通知客户端随机到的任务" Desc="通知客户端随机到的任务" Class="Task::BTTask" ReturnType="void">
+				<Param DisplayName="通知客户端随机到的任务" Desc="输入循环任务类型ID" Type="int" Default="0" RangeMin="1.000000" RangeMax="1000.000000" />
+			</Method>
+			<Method Name="IsTaskFinished" DisplayName="任务是否完成" Desc="任务是否完成" Class="Task::BTTask" ReturnType="bool">
+				<Param DisplayName="任务ID" Desc="任务ID" Type="int" Default="0" RangeMin="1.000000" RangeMax="1000.000000" />
+			</Method>
+			<Method Name="UpdateCircleTaskCount" DisplayName="更新任务计次" Desc="更新任务计次" Class="Task::BTTask" ReturnType="void">
+				<Param DisplayName="任务ID" Desc="任务ID" Type="int&amp;" Default="0" RangeMin="1.000000" RangeMax="1000.000000" />
+			</Method>
+		</agent>
+	</agents>
+</metas>

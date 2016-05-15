@@ -569,7 +569,7 @@ namespace Msg
 
 	void RpcManager::InsertSendRpc(INT32 nSessionID , UINT64 ullRpcMsgID, Rpc * pRpc)
 	{ 
-		Assert(pRpc);
+		Assert_(pRpc);
 
 		MapRpcsT::iterator iter = m_mapSendRpcs.find(ullRpcMsgID);
 		if (iter == m_mapSendRpcs.end())
@@ -590,7 +590,7 @@ namespace Msg
 
 	void RpcManager::InsertSendRpc(INT32 nSessionID, RPCMsgCall * pMsg )
 	{
-		Assert(pMsg);
+		Assert_(pMsg);
 
 		Rpc * pRpc = new Rpc(this , pMsg->m_ullTimeout , DEFAULT_RPC_CALLABLE_ID , pMsg);
 		InsertSendRpc(nSessionID , pMsg->m_ullMsgID , pRpc);

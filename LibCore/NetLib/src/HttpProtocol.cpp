@@ -514,7 +514,7 @@ namespace Net
 
 	void HttpProtocolFast::Reserve( INT32 len )
 	{
-		Assert(m_nLen >= len);
+		Assert_(m_nLen >= len);
 
 		if(len > m_nLen)
 		{

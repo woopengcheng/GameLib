@@ -460,6 +460,7 @@
     <ClInclude Include="..\..\LibCore\NetLib\inc\Ping.h" />
     <ClInclude Include="..\..\LibCore\NetLib\inc\RakNetUDPManager.h" />
     <ClInclude Include="..\..\LibCore\NetLib\inc\ServerSession.h" />
+    <ClInclude Include="..\..\LibCore\Task\inc\BTTask.h" />
     <ClInclude Include="..\..\LibCore\Test\LuaTest\test.h" />
     <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadCommon.h" />
     <ClInclude Include="..\..\LibCore\ThreadPool\inc\ThreadContext.h" />

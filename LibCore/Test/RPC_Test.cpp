@@ -844,7 +844,7 @@ static std::vector<INT32> g_rpcDefaultParam_std__vector_INT32_;
 
 void FooRpcInterface::OnRegisterRpcs(void)
 {
-	Assert(m_pRpcManager && Msg::RpcCheckParams::GetInstance());
+	Assert_(m_pRpcManager && Msg::RpcCheckParams::GetInstance());
 	static GRpc g_pGRpc(Msg::DEFAULT_RPC_CALLABLE_ID, m_pRpcManager);
 
 	//tool testMulitServerNode generate default deliver and return check param here
@@ -875,7 +875,7 @@ void FooRpcInterface::OnRegisterRpcs(void)
 
 void BarRpcInterface::OnRegisterRpcs(void)
 {
-	Assert(m_pRpcManager && Msg::RpcCheckParams::GetInstance());
+	Assert_(m_pRpcManager && Msg::RpcCheckParams::GetInstance());
 	static GRpc g_pGRpc(Msg::DEFAULT_RPC_CALLABLE_ID, m_pRpcManager);
 
 	//tool testMulitServerNode generate default deliver and return check param here
@@ -896,7 +896,7 @@ void BarRpcInterface::OnRegisterRpcs(void)
 
 void ProxyRpcInterface::OnRegisterRpcs(void)
 {
-	Assert(m_pRpcManager && Msg::RpcCheckParams::GetInstance());
+	Assert_(m_pRpcManager && Msg::RpcCheckParams::GetInstance());
 	static GRpc g_pGRpc(Msg::DEFAULT_RPC_CALLABLE_ID, m_pRpcManager);
 
 	//tool testMulitServerNode generate default deliver and return check param here

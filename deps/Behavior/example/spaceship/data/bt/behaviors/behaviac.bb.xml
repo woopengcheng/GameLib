@@ -11,5 +11,14 @@
       <Member Name="a" DisplayName="a" Desc="a" Type="System.Boolean" Class="StructTest" Public="true" />
     </struct>
   </types>
-  <agents />
+  <agents>
+    <agent type="framework::Ship" base="framework::GameObject" disp="framework::Ship" desc="framework::Ship">
+      <methods>
+        <method name="testTask" returntype="System.Void" classname="framework::Ship" static="false" public="true" istask="true" disp="testTask" desc="testTask">
+          <parameter name="t1" type="System.Collections.Generic.List`1[[XMLPluginBehaviac.StructTest, XMLPluginBehaviac, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]" disp="t1" desc="" />
+          <parameter name="t2" type="System.Collections.Generic.List`1[[System.UInt32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" disp="t2" desc="" />
+        </method>
+      </methods>
+    </agent>
+  </agents>
 </meta>

@@ -443,7 +443,7 @@ namespace Msg
 
 	public: 
 		RPCMsgCall *			GetRpcMsgCall() { return  m_pRpcMsgCall; } 
-		void					SetRpcMsgCall(RPCMsgCall * pMsg) { Assert(pMsg); m_pRpcMsgCall = pMsg; }
+		void					SetRpcMsgCall(RPCMsgCall * pMsg) { Assert_(pMsg); m_pRpcMsgCall = pMsg; }
 		INT32					GetSessionID() const { return m_nSessionID; }
 		void					SetSessionID(INT32 val) { m_nSessionID = val; }
 

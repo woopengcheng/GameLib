@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: posttask.xml-->
+<behavior name="posttask" agenttype="Task::BTTask" version="4">
+  <pars>
+    <par name="_$local_task_param_$_0" type="int" value="0" />
+  </pars>
+  <node class="Task" id="0">
+    <property Prototype="Self.Task::BTTask::event_TaskCount(0)" />
+    <property IsHTN="false" />
+    <node class="Sequence" id="32">
+      <node class="Action" id="33">
+        <property Method="Self.Task::BTTask::UpdateCircleTaskCount(int Self.Task::BTTask::_$local_task_param_$_0)" />
+        <property ResultOption="BT_SUCCESS" />
+      </node>
+      <node class="DecoratorLoop" id="1">
+        <property Count="int Self.Task::BTTask::_$local_task_param_$_0" />
+        <property DecorateWhenChildEnds="true" />
+        <node class="IfElse" id="21">
+          <node class="Condition" id="22">
+            <property Operator="Equal" />
+            <property Opl="Self.Task::BTTask::IsTaskFinished(0)" />
+            <property Opr="const bool true" />
+          </node>
+          <node class="Sequence" id="23">
+            <node class="Action" id="30">
+              <property Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="25">
+              <property Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="24">
+              <property Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="29">
+              <property Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="28">
+              <property Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="27">
+              <property Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="26">
+              <property Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="31">
+              <property Method="Self.Task::BTTask::NotifyClientCircleID(0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+          </node>
+          <node class="Sequence" id="7">
+            <node class="Action" id="16">
+              <property Method="Self.Task::BTTask::ClearCircleTaskCount(0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="SelectorProbability" id="2">
+              <node class="DecoratorWeight" id="6">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 1" />
+                <node class="SelectorStochastic" id="13">
+                  <node class="Action" id="15">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="14">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="3">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 10" />
+                <node class="SelectorStochastic" id="4">
+                  <node class="Action" id="5">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="18">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="19">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 20" />
+                <node class="SelectorStochastic" id="79">
+                  <node class="Action" id="80">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="81">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node class="SelectorProbability" id="97">
+              <node class="DecoratorWeight" id="98">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 1" />
+                <node class="SelectorStochastic" id="99">
+                  <node class="Action" id="100">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="101">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="102">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 10" />
+                <node class="SelectorStochastic" id="103">
+                  <node class="Action" id="104">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="105">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="106">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 20" />
+                <node class="SelectorStochastic" id="107">
+                  <node class="Action" id="108">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="109">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node class="SelectorProbability" id="84">
+              <node class="DecoratorWeight" id="85">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 1" />
+                <node class="SelectorStochastic" id="86">
+                  <node class="Action" id="87">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="88">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="89">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 10" />
+                <node class="SelectorStochastic" id="90">
+                  <node class="Action" id="91">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="92">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="93">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 20" />
+                <node class="SelectorStochastic" id="94">
+                  <node class="Action" id="95">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="96">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node class="SelectorProbability" id="68">
+              <node class="DecoratorWeight" id="69">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 1" />
+                <node class="SelectorStochastic" id="70">
+                  <node class="Action" id="71">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="72">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="73">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 10" />
+                <node class="SelectorStochastic" id="74">
+                  <node class="Action" id="75">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="76">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="77">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 20" />
+                <node class="SelectorStochastic" id="78">
+                  <node class="Action" id="82">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="83">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node class="SelectorProbability" id="55">
+              <node class="DecoratorWeight" id="56">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 1" />
+                <node class="SelectorStochastic" id="57">
+                  <node class="Action" id="58">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="59">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="60">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 10" />
+                <node class="SelectorStochastic" id="61">
+                  <node class="Action" id="62">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="63">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="64">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 20" />
+                <node class="SelectorStochastic" id="65">
+                  <node class="Action" id="66">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="67">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node class="SelectorProbability" id="42">
+              <node class="DecoratorWeight" id="43">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 1" />
+                <node class="SelectorStochastic" id="44">
+                  <node class="Action" id="45">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="46">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="47">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 10" />
+                <node class="SelectorStochastic" id="48">
+                  <node class="Action" id="49">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="50">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="51">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 20" />
+                <node class="SelectorStochastic" id="52">
+                  <node class="Action" id="53">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="54">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node class="SelectorProbability" id="8">
+              <node class="DecoratorWeight" id="9">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 1" />
+                <node class="SelectorStochastic" id="10">
+                  <node class="Action" id="11">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="12">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="34">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 10" />
+                <node class="SelectorStochastic" id="35">
+                  <node class="Action" id="36">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="37">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+              <node class="DecoratorWeight" id="38">
+                <property DecorateWhenChildEnds="false" />
+                <property Weight="const int 20" />
+                <node class="SelectorStochastic" id="39">
+                  <node class="Action" id="40">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                  <node class="Action" id="41">
+                    <property Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" />
+                    <property ResultOption="BT_SUCCESS" />
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node class="Action" id="20">
+              <property Method="Self.Task::BTTask::DecCircleTaskCount(0,1)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+            <node class="Action" id="17">
+              <property Method="Self.Task::BTTask::NotifyClientCircleID(0)" />
+              <property ResultOption="BT_SUCCESS" />
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+</behavior>

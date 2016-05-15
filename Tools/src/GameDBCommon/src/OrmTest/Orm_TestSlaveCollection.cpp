@@ -75,7 +75,7 @@ namespace Orm
 		while(iter.more())
 		{
 			mongo::BSONElement be = iter.next();
-			Assert(be.isABSONObj());
+			Assert_(be.isABSONObj());
 
 			TestSlaveTable * pTestSlaveTable = CreateTestSlaveTable();
 			pTestSlaveTable->FromBson(be.Obj());
@@ -154,7 +154,7 @@ namespace Orm
 			return;
 		}
 		mongo::BSONObj obj(buf);
-		Assert(obj.objsize() == len);
+		Assert_(obj.objsize() == len);
 		mongo::BSONObjIterator  iter(obj); 
 		while(iter.more())
 		{
@@ -198,7 +198,7 @@ namespace Orm
 			return;
 		}
 		mongo::BSONObj obj(buf);
-		Assert(obj.objsize() == len);
+		Assert_(obj.objsize() == len);
 		{
 			std::string metaname = GameDB::OrmHelper::GetTableNameFromBson(obj);
 			INT64 hash = CUtil::BKDRHashSum(metaname.c_str());

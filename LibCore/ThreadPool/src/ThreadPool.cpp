@@ -15,7 +15,7 @@ namespace ThreadPool
 		case THREAD_SIG_QUIT:
 			{
 				ThreadContext<ThreadState> * pThreadContext = (ThreadContext<ThreadState> *)(pthread_getspecific(ThreadContext<ThreadState>::GetThreadKey()));
-				Assert(pThreadContext);
+				Assert_(pThreadContext);
 
 				pThreadContext->GetContext()->SetThreadState(THREAD_STATE_CLOSEING);
 			}break;

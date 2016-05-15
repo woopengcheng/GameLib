@@ -18,7 +18,7 @@ namespace Net
 		, m_pZmqMsg(NULL)
 		, m_pZmqSocket(NULL)
 	{
-		Assert(m_pSession);
+		Assert_(m_pSession);
 		switch (m_pSession->GetReactorType())
 		{
 			case REACTOR_TYPE_ZMQ:

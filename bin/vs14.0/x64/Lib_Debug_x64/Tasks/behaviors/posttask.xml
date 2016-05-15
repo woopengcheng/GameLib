@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Behavior Version="4">
+  <Node Class="Behaviac.Design.Nodes.Behavior" AgentType="Task::BTTask" Domains="" Enable="true" HasOwnPrefabData="false" Id="-1" PrefabName="" PrefabNodeId="-1">
+    <Comment Background="NoColor" Text="" />
+    <Parameters>
+      <Parameter Name="_$local_task_param_$_0" Type="System.Int32" DefaultValue="0" DisplayName="GetTaskCount" Desc="_$local_task_param_$_0" Display="false" />
+    </Parameters>
+    <DescriptorRefs value="0:" />
+    <Connector Identifier="GenericChildren">
+      <Node Class="PluginBehaviac.Nodes.Task" Enable="true" HasOwnPrefabData="false" Id="0" PrefabName="" PrefabNodeId="-1" Prototype="Self.Task::BTTask::event_TaskCount(0)">
+        <Comment Background="NoColor" Text="" />
+        <Connector Identifier="GenericChildren">
+          <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="32" PrefabName="" PrefabNodeId="-1">
+            <Comment Background="NoColor" Text="" />
+            <Connector Identifier="GenericChildren">
+              <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="33" Method="Self.Task::BTTask::UpdateCircleTaskCount(int Self.Task::BTTask::_$local_task_param_$_0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                <Comment Background="NoColor" Text="" />
+              </Node>
+              <Node Class="PluginBehaviac.Nodes.DecoratorLoop" Count="int Self.Task::BTTask::_$local_task_param_$_0" DecorateWhenChildEnds="true" Enable="true" HasOwnPrefabData="false" Id="1" PrefabName="" PrefabNodeId="-1">
+                <Comment Background="NoColor" Text="" />
+                <Connector Identifier="GenericChildren">
+                  <Node Class="PluginBehaviac.Nodes.IfElse" Enable="true" HasOwnPrefabData="false" Id="21" PrefabName="" PrefabNodeId="-1">
+                    <Comment Background="NoColor" Text="" />
+                    <Connector Identifier="_condition">
+                      <Node Class="PluginBehaviac.Nodes.Condition" Enable="true" HasOwnPrefabData="false" Id="22" Operator="Equal" Opl="Self.Task::BTTask::IsTaskFinished(0)" Opr="const bool true" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                      </Node>
+                    </Connector>
+                    <Connector Identifier="_if">
+                      <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="23" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="30" Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="25" Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="24" Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="29" Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="28" Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="27" Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="26" Method="Self.Task::BTTask::RecordCircleTaskID(0,0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="31" Method="Self.Task::BTTask::NotifyClientCircleID(0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                        </Connector>
+                      </Node>
+                    </Connector>
+                    <Connector Identifier="_else">
+                      <Node Class="PluginBehaviac.Nodes.Sequence" Enable="true" HasOwnPrefabData="false" Id="7" PrefabName="" PrefabNodeId="-1">
+                        <Comment Background="NoColor" Text="" />
+                        <Connector Identifier="GenericChildren">
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="16" Method="Self.Task::BTTask::ClearCircleTaskCount(0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.SelectorProbability" Enable="true" HasOwnPrefabData="false" Id="2" PrefabName="" PrefabNodeId="-1" RandomGenerator="&quot;&quot;">
+                            <Comment Background="Gray" Text="Prefab[概率选择一个任务]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="6" PrefabName="" PrefabNodeId="-1" Weight="const int 1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="13" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="15" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="14" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="3" PrefabName="" PrefabNodeId="-1" Weight="const int 10">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="4" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="5" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="18" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="19" PrefabName="" PrefabNodeId="-1" Weight="const int 20">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="79" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="80" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="81" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.SelectorProbability" Enable="true" HasOwnPrefabData="false" Id="97" PrefabName="" PrefabNodeId="-1" RandomGenerator="&quot;&quot;">
+                            <Comment Background="Gray" Text="Prefab[概率选择一个任务]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="98" PrefabName="" PrefabNodeId="-1" Weight="const int 1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="99" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="100" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="101" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="102" PrefabName="" PrefabNodeId="-1" Weight="const int 10">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="103" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="104" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="105" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="106" PrefabName="" PrefabNodeId="-1" Weight="const int 20">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="107" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="108" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="109" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.SelectorProbability" Enable="true" HasOwnPrefabData="false" Id="84" PrefabName="" PrefabNodeId="-1" RandomGenerator="&quot;&quot;">
+                            <Comment Background="Gray" Text="Prefab[概率选择一个任务]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="85" PrefabName="" PrefabNodeId="-1" Weight="const int 1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="86" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="87" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="88" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="89" PrefabName="" PrefabNodeId="-1" Weight="const int 10">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="90" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="91" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="92" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="93" PrefabName="" PrefabNodeId="-1" Weight="const int 20">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="94" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="95" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="96" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.SelectorProbability" Enable="true" HasOwnPrefabData="false" Id="68" PrefabName="" PrefabNodeId="-1" RandomGenerator="&quot;&quot;">
+                            <Comment Background="Gray" Text="Prefab[概率选择一个任务]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="69" PrefabName="" PrefabNodeId="-1" Weight="const int 1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="70" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="71" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="72" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="73" PrefabName="" PrefabNodeId="-1" Weight="const int 10">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="74" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="75" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="76" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="77" PrefabName="" PrefabNodeId="-1" Weight="const int 20">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="78" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="82" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="83" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.SelectorProbability" Enable="true" HasOwnPrefabData="false" Id="55" PrefabName="" PrefabNodeId="-1" RandomGenerator="&quot;&quot;">
+                            <Comment Background="Gray" Text="Prefab[概率选择一个任务]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="56" PrefabName="" PrefabNodeId="-1" Weight="const int 1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="57" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="58" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="59" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="60" PrefabName="" PrefabNodeId="-1" Weight="const int 10">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="61" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="62" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="63" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="64" PrefabName="" PrefabNodeId="-1" Weight="const int 20">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="65" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="66" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="67" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.SelectorProbability" Enable="true" HasOwnPrefabData="false" Id="42" PrefabName="" PrefabNodeId="-1" RandomGenerator="&quot;&quot;">
+                            <Comment Background="Gray" Text="Prefab[概率选择一个任务]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="43" PrefabName="" PrefabNodeId="-1" Weight="const int 1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="44" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="45" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="46" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="47" PrefabName="" PrefabNodeId="-1" Weight="const int 10">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="48" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="49" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="50" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="51" PrefabName="" PrefabNodeId="-1" Weight="const int 20">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="52" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="53" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="54" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.SelectorProbability" Enable="true" HasOwnPrefabData="false" Id="8" PrefabName="" PrefabNodeId="-1" RandomGenerator="&quot;&quot;">
+                            <Comment Background="Gray" Text="Prefab[概率选择一个任务]" />
+                            <Connector Identifier="GenericChildren">
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="9" PrefabName="" PrefabNodeId="-1" Weight="const int 1">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="10" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="11" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="12" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="34" PrefabName="" PrefabNodeId="-1" Weight="const int 10">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="35" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="36" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="37" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                              <Node Class="PluginBehaviac.Nodes.DecoratorWeight" DecorateWhenChildEnds="false" Enable="true" HasOwnPrefabData="false" Id="38" PrefabName="" PrefabNodeId="-1" Weight="const int 20">
+                                <Comment Background="NoColor" Text="" />
+                                <Connector Identifier="GenericChildren">
+                                  <Node Class="PluginBehaviac.Nodes.SelectorStochastic" Enable="true" HasOwnPrefabData="false" Id="39" PrefabName="../Prefabs/随机任务" PrefabNodeId="13" RandomGenerator="&quot;&quot;">
+                                    <Comment Background="Gray" Text="Prefab[随机任务]" />
+                                    <Connector Identifier="GenericChildren">
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="40" Method="Self.Task::BTTask::RecordCircleTaskID(0,3)" PrefabName="../Prefabs/随机任务" PrefabNodeId="15" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                      <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="true" Id="41" Method="Self.Task::BTTask::RecordCircleTaskID(0,2)" PrefabName="../Prefabs/随机任务" PrefabNodeId="14" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                                        <Comment Background="NoColor" Text="" />
+                                      </Node>
+                                    </Connector>
+                                  </Node>
+                                </Connector>
+                              </Node>
+                            </Connector>
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="20" Method="Self.Task::BTTask::DecCircleTaskCount(0,1)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                          <Node Class="PluginBehaviac.Nodes.Action" Enable="true" HasOwnPrefabData="false" Id="17" Method="Self.Task::BTTask::NotifyClientCircleID(0)" PrefabName="" PrefabNodeId="-1" ResultFunctor="&quot;&quot;" ResultOption="BT_SUCCESS">
+                            <Comment Background="NoColor" Text="" />
+                          </Node>
+                        </Connector>
+                      </Node>
+                    </Connector>
+                  </Node>
+                </Connector>
+              </Node>
+            </Connector>
+          </Node>
+        </Connector>
+      </Node>
+    </Connector>
+  </Node>
+</Behavior>
