@@ -54,6 +54,8 @@ bool InitTask(const char* pszTreeName)
 
 	g_btTask->btsetcurrent(pszTreeName);
 
+	g_btTask->SetActive(false);
+
 	return bRet;
 }
 
