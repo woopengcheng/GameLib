@@ -15,8 +15,14 @@
       </node>
       <node class="DecoratorLoop" id="1">
         <property Count="int Self.Task::BTTask::_$local_task_param_$_0" />
-        <property DecorateWhenChildEnds="true" />
+        <property DecorateWhenChildEnds="false" />
         <node class="IfElse" id="21">
+          <attachment class="Event" id="110" flag="event">
+            <property ReferenceFilename="marry" />
+            <property Task="Self.Task::BTTask::root()" />
+            <property TriggeredOnce="false" />
+            <property TriggerMode="Return" />
+          </attachment>
           <node class="Condition" id="22">
             <property Operator="Equal" />
             <property Opl="Self.Task::BTTask::IsTaskFinished(0)" />

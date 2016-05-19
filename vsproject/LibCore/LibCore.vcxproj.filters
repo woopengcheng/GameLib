@@ -723,6 +723,9 @@
     <ClInclude Include="..\..\LibCore\Task\inc\BTTask.h">
       <Filter>Task</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\LibCore\CUtil\inc\LRUCache.hpp">
+      <Filter>CUtil\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1105,6 +1108,9 @@
     </ClCompile>
     <ClCompile Include="..\..\LibCore\Test\LuaTest\test_string.cpp">
       <Filter>Test\LuaTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LibCore\Test\LRUCache_Test.cpp">
+      <Filter>Test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -129,6 +129,12 @@ static bool InitBehavic(behaviac::Workspace::EFileFormat ff,
 void UpdateLoop()
 {
 	behaviac::Workspace::GetInstance()->Update();
+	static INT32 nCount = 0;
+	if(nCount++ % 1000 == 0)
+	{
+// 		g_btTask->FireEvent("root");
+		g_btPostTask->FireEvent("root");
+	}
 // 	int frames = 0;
 // 	behaviac::EBTStatus status = behaviac::BT_RUNNING;
 // 	

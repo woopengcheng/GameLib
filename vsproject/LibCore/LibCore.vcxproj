@@ -317,6 +317,7 @@
     <ClInclude Include="..\..\LibCore\CUtil\inc\Iconv.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\intrusive_ptr.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\LinkedPtr.h" />
+    <ClInclude Include="..\..\LibCore\CUtil\inc\LRUCache.hpp" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\MinHeap.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\MsgAssert.h" />
     <ClInclude Include="..\..\LibCore\CUtil\inc\Node.h" />
@@ -572,6 +573,7 @@
     <ClCompile Include="..\..\LibCore\Test\CSVReader_Test.cpp" />
     <ClCompile Include="..\..\LibCore\Test\HttpProtocol_Test.cpp" />
     <ClCompile Include="..\..\LibCore\Test\LibCore_Test.cpp" />
+    <ClCompile Include="..\..\LibCore\Test\LRUCache_Test.cpp" />
     <ClCompile Include="..\..\LibCore\Test\LuaTest\auto_export_lua.cpp" />
     <ClCompile Include="..\..\LibCore\Test\LuaTest\test.cpp" />
     <ClCompile Include="..\..\LibCore\Test\LuaTest\test_class_member.cpp" />
