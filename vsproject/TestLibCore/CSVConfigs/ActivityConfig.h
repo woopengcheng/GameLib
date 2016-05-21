@@ -2,10 +2,10 @@
 /************************************
 FileName	:	ActivityConfig.h
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-10 12:12:16
+Date		:	2016-05-21 14:51:04
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config_ActivityConfig_define_h__
@@ -18,12 +18,14 @@ namespace Config
 	class ActivityConfig: public ActivityConfigBase
 	{
 	public:
-		virtual BOOL	OnLoad();
+		static ActivityConfig&	GetInstance(){ static ActivityConfig s_ActivityConfig; return s_ActivityConfig; }
+		
+	public:
+		virtual BOOL		OnLoad();
 		
 	private:
 
 	};
-	extern ActivityConfig * g_pActivityConfig;
 }
 
 #endif// end  __Config_ActivityConfig_define_h__

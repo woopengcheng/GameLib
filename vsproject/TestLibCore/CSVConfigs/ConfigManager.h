@@ -1,10 +1,10 @@
 ﻿/************************************
 FileName	:	ConfigManager.h
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-10 12:12:16
+Date		:	2016-05-21 14:51:04
 Description	:	ConfigManager文件声明
 ************************************/
 #ifndef __Config_ConfigManager_define_h__
@@ -26,6 +26,9 @@ namespace Config
 	public:
 		INT32		Init(std::string  strCsvPath);
 		INT32		Cleanup();
+		INT32		LoadFrom(std::string  strCsvPath);
+		INT32		RepairLoad(std::string  strCsvPath);
+		
 	private:
 		
 

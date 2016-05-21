@@ -976,6 +976,7 @@ def GenerateCPP():
 	
 def GenerateCPPFiles(bServer): 
 	GenerateConfigManagerHeader(bServer)
+	GenerateConfigDeclareHeader(bServer)
 	for sheet , item in g_xlsRecords.items():
 		GenerateConfigLoadHeader(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCheck] , item[g_rowCS])
 		GenerateConfigLoadCpp(bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCheck] , item[g_rowCS])
@@ -1074,6 +1075,11 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , che
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + "typedef std::vector<" + g_configPrefix + filename + "> CollectionConfigsT;\n\n")
 	fileWrite.write(oneTab + "public:\n")
+	fileWrite.write(twoTab + filename + "()\n")
+	fileWrite.write(threeTab + ": m_bLoaded(false)\n")
+	fileWrite.write(twoTab + "{}\n")
+	fileWrite.write(oneTab + "\n")
+	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + "bool				LoadFrom(const std::string& filename);\n\n")
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + g_configPrefix + filename + " &	Get(size_t row);\n\n")
@@ -1098,7 +1104,8 @@ def GenerateConfigLoadHeader(bServer , filename , types , datas , comments , che
 	fileWrite.write(oneTab + "\n")
 
 	fileWrite.write(oneTab + "private:\n")
-	fileWrite.write(twoTab + "CollectionConfigsT	m_vtConfigs;\n")	
+	fileWrite.write(twoTab + "CollectionConfigsT	m_vtConfigs;\n")
+	fileWrite.write(twoTab + "bool				m_bLoaded;\n")	
 	fileWrite.write(oneTab + "};\n") 
 
 	fileWrite.write("}\n\n" + "#endif// end" + "  __" + filename + "_define_h__\n") 
@@ -1124,6 +1131,11 @@ def GenerateConfigLoadCpp(bServer , filename , types , datas , comments , checks
 	fileWrite.write("{\n") 
 	fileWrite.write(oneTab + "bool " + loadFileName + "::LoadFrom(const std::string & filepath)\n") 
 	fileWrite.write(oneTab + "{\n") 
+	
+	fileWrite.write(twoTab + "if (m_bLoaded)\n") 
+	fileWrite.write(twoTab + "{\n") 
+	fileWrite.write(threeTab + "return true;\n") 
+	fileWrite.write(twoTab + "}\n") 
 	
 	fileWrite.write(twoTab + "CUtil::CSVReader csv;\n") 
 	fileWrite.write(twoTab + "if(csv.Load(filepath) != 0)\n") 
@@ -1249,7 +1261,7 @@ def GenerateLoadCppCheckConditionFunc(fileWrite , bServer , filename , index , t
 					#LogOutDebug("filename:", filename.upper() , " arg:" , arg) 
 					for index , rowName in enumerate(g_xlsRecords[filename][g_rowName]): # 这里如果是表中的名字,则需要加上conf.
 						if rowName.upper() == arg.upper():
-							LogOutDebug("rowName:", rowName.upper() , " arg:" , arg) 
+							#LogOutDebug("rowName:", rowName.upper() , " arg:" , arg) 
 							argName = "conf." + rowName + "" 
 							break
 								
@@ -1463,6 +1475,28 @@ def GenerateStructDateByType(childItem , bArray):
 		
 	return strVal
 
+def GenerateConfigDeclareHeader(bServer): 
+	if GetCPPFilePath(bServer) == "":
+		return
+	outputPath = GetCPPFilePath(bServer) + os.sep + "ConfigDeclare.h"
+	if os.path.exists(outputPath): 
+		os.remove(outputPath) 
+
+	fileWrite = open(outputPath , "a" , encoding='utf_8_sig') 
+
+	WriteFileDescription(fileWrite , "ConfigDeclare.h" , "ConfigDeclare")
+	fileWrite.write("#ifndef __" + g_xlsNamespace + "_ConfigDeclare" + "_define_h__\n")
+	fileWrite.write("#define __" + g_xlsNamespace + "_ConfigDeclare" +  "_define_h__\n")  
+	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
+	fileWrite.write("{\n\n") 
+			
+	for sheet , item in g_xlsRecords.items():
+		fileWrite.write(oneTab + "struct " + g_configPrefix + sheet + " ;\n")  
+
+	fileWrite.write("}\n\n" + "#endif// end" + "  __" + g_xlsNamespace + "_ConfigDeclare_define_h__\n") 
+	
+	fileWrite.close()	 	
+	
 def GenerateConfigBaseHeader(bServer , filename , types , datas , comments , css):
 	if GetCPPFilePath(bServer) == "":
 		return
@@ -1484,6 +1518,7 @@ def GenerateConfigBaseHeader(bServer , filename , types , datas , comments , css
 	fileWrite.write("#define __" + g_xlsNamespace + "_" + newFileName +  "_define_h__\n") 
 	fileWrite.write("#include \"" + loadConfig + ".h\"\n") 
 	fileWrite.write("#include \"../Condition.h\"\n") 
+	fileWrite.write("#include \"ConfigDeclare.h\"\n") 
 	fileWrite.write("#include \"CUtil/inc/CSVConfig.h\"\n\n") 
 
 
@@ -1518,13 +1553,13 @@ def GenerateConfigBaseHeader(bServer , filename , types , datas , comments , css
 	fileWrite.write(twoTab + "typedef std_unordered_map<" + GetType(types[0]) + " , " + dataConfig + "> MapConfigsT;\n\n")
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + "bool" + fourTab + "LoadFrom(const std::string& filepath);\n")
-	fileWrite.write(twoTab + dataConfig + " *" + oneTab + "Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id , std::string strFilePath = \"\");\n\n")
+	fileWrite.write(twoTab + "bool" + fourTab + "RepairLoad(const std::string& filepath);\n")
+	fileWrite.write(twoTab + dataConfig + oneTab + "*" + oneTab + "Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id , std::string strFilePath = \"\");\n\n")
 	GenerateConditionFunc(fileWrite , bServer , filename , types , datas , comments , css)
 	fileWrite.write(oneTab + "private:\n")
 	fileWrite.write(twoTab + "MapConfigsT			m_mapConfigs;\n\n")
 	
-	fileWrite.write(oneTab + "};\n") 			
-#	fileWrite.write(oneTab + "extern " + filename + " * " + g_globaleNamePrefix + filename + ";\n") 
+	fileWrite.write(oneTab + "};\n") 
 
 
 	fileWrite.write("}\n\n" + "#endif// end" + "  __" + g_xlsNamespace + "_" + filename + "_define_h__\n") 
@@ -1590,21 +1625,81 @@ def GenerateConfigBaseCpp(bServer , filename , types , datas , comments , css):
 
 	sameParaentName = collections.OrderedDict()
 	for index , item in enumerate(types):
-		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
 		if not CheckCSType(css[index] , bServer):
 			continue
-		item_type = GetType(item)
-		if item_type == g_configType:
+		itemType = GetType(item)
+		if itemType == g_structType:
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
+			childItems = item.split(',')
+
+			for indexChild , childItem in enumerate(childItems):
+				childItem = RemoveSpecialWord(childItem)
+				if GetType(childItem) == g_configType:
+					tmp = collections.OrderedDict()
+					MakeDicKeyUpper(g_xlsRecords , tmp)
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+
+					if parentName not in sameParaentName:
+						sameParaentName[parentName] = parentName
+						fileWrite.write("#include \"" + parentName + ".h\"\n")
+						
+		elif itemType == g_structArrayType:			
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
+			childItems = item.split(',')
+
+			for indexChild , childItem in enumerate(childItems):
+				childItem = RemoveSpecialWord(childItem)
+				if GetType(childItem) == g_configType:
+					tmp = collections.OrderedDict()
+					MakeDicKeyUpper(g_xlsRecords , tmp)
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+
+					if parentName not in sameParaentName:
+						sameParaentName[parentName] = parentName
+						fileWrite.write("#include \"" + parentName + ".h\"\n")
+						
+		elif itemType == g_configType:
 			tmp = collections.OrderedDict()
 			MakeDicKeyUpper(g_xlsRecords , tmp)
 			parentName = GetDicKeyByUpper(g_xlsRecords , item)
+					
 			if parentName not in sameParaentName:
 				sameParaentName[parentName] = parentName
-				fileWrite.write("#include \"" + parentName + ".h\"\n") 
+				fileWrite.write("#include \"" + parentName + ".h\"\n")
 	fileWrite.write("\n") 
-
+						
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n") 
+	
+	GenerateConfigBaseCppLoadFrom(fileWrite , bServer , filename , types , datas , comments , css , newFileName , loadConfig, dataConfig)
+	GenerateConfigBaseCppRepairLoad(fileWrite , bServer , filename , types , datas , comments , css , newFileName , loadConfig, dataConfig)
+	
+	fileWrite.write(oneTab + dataConfig + " * " + newFileName + "::Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id , std::string strFilePath/* = \"\"*/)\n")
+	fileWrite.write(oneTab + "{\n") 
+	#fileWrite.write(twoTab + "if (!m_bLoaded)\n") 
+	#fileWrite.write(twoTab + "{\n") 
+	#fileWrite.write(threeTab + "LoadFrom(strFilePath);\n") 
+	#fileWrite.write(twoTab + "}\n") 
+	fileWrite.write(twoTab + "MapConfigsT::iterator iter = m_mapConfigs.find(id);\n") 
+	fileWrite.write(twoTab + "if(iter == m_mapConfigs.end())\n") 
+	fileWrite.write(twoTab + "{\n") 
+#	fileWrite.write(threeTab + "gWarniStream( \"" + filename + "::Get" + filename + " NotFound \" << id);\n") 
+	fileWrite.write(threeTab + "return NULL;\n") 
+	fileWrite.write(twoTab + "}\n\n") 
+	fileWrite.write(twoTab + "return &iter->second;\n") 
+	fileWrite.write(oneTab + "}\n\n") 
+
+	GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , comments , css)
+
+	fileWrite.write("}\n\n") 
+	
+	fileWrite.close()
+
+def GenerateConfigBaseCppLoadFrom(fileWrite , bServer , filename , types , datas , comments , css , newFileName , loadConfig , dataConfig):
 	fileWrite.write(oneTab + "bool " + newFileName + "::LoadFrom(const std::string & filepath)\n") 
 	fileWrite.write(oneTab + "{\n") 
 	
@@ -1638,7 +1733,7 @@ def GenerateConfigBaseCpp(bServer , filename , types , datas , comments , css):
 					MakeDicKeyUpper(g_xlsRecords , tmp)
 					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
 
-					fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + ".insert(std::make_pair(config." + structName + "." + structDatas[indexChild] + " , " + g_globaleNamePrefix + parentName + "->Get" + parentName + "(config." + structName + "." + structDatas[indexChild] + " , filepath)));\n") 
+					fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + ".insert(std::make_pair(config." + structName + "." + structDatas[indexChild] + " , " + g_xlsNamespace + "::" + parentName + "::GetInstance().Get" + parentName + "(config." + structName + "." + structDatas[indexChild] + " , filepath)));\n") 
 				else:
 					fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + " = config." + structName + "." + structDatas[indexChild] + ";\n") 
 			fileWrite.write(threeTab + "}\n")
@@ -1662,7 +1757,7 @@ def GenerateConfigBaseCpp(bServer , filename , types , datas , comments , css):
 					MakeDicKeyUpper(g_xlsRecords , tmp)
 					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
 
-					fileWrite.write(fiveTab + "array." + structDatas[indexChild] + ".insert(std::make_pair(iter->" + structDatas[indexChild] + " , " + g_globaleNamePrefix + parentName + "->Get" + parentName + "(iter->" + structDatas[indexChild] + " , filepath)));\n") 
+					fileWrite.write(fiveTab + "array." + structDatas[indexChild] + ".insert(std::make_pair(iter->" + structDatas[indexChild] + " , "+ g_xlsNamespace + "::" + parentName + "::GetInstance().Get" + parentName + "(iter->" + structDatas[indexChild] + " , filepath)));\n") 
 				else:
 					fileWrite.write(fiveTab + "array." + structDatas[indexChild] + " = iter->" + structDatas[indexChild] + ";\n")
 			fileWrite.write(fiveTab + "data.vec" + structName + ".push_back(array);\n")
@@ -1673,7 +1768,7 @@ def GenerateConfigBaseCpp(bServer , filename , types , datas , comments , css):
 			MakeDicKeyUpper(g_xlsRecords , tmp)
 			parentName = GetDicKeyByUpper(g_xlsRecords , item)
 
-			fileWrite.write(threeTab + "data." + datas[index] + ".insert(std::make_pair(config." + datas[index] + " , " + g_globaleNamePrefix + parentName + "->Get" + parentName + "(config." + datas[index] + " , filepath)));\n") 
+			fileWrite.write(threeTab + "data." + datas[index] + ".insert(std::make_pair(config." + datas[index] + " , " + g_xlsNamespace + "::" + parentName + "::GetInstance().Get" + parentName + "(config." + datas[index] + " , filepath)));\n") 
 		else:
 			fileWrite.write(threeTab + "data." + datas[index] + " = config." + datas[index] + ";\n") 
 
@@ -1683,28 +1778,80 @@ def GenerateConfigBaseCpp(bServer , filename , types , datas , comments , css):
 	fileWrite.write(twoTab + "return true;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 			
-	fileWrite.write(oneTab + dataConfig + " * " + newFileName + "::Get" + filename + "(" + GetType(g_xlsRecords[filename][g_rowType][g_cellID]) + " id , std::string strFilePath/* = \"\"*/)\n")
-	fileWrite.write(oneTab + "{\n") 
-	fileWrite.write(twoTab + "if (!m_bLoaded)\n") 
-	fileWrite.write(twoTab + "{\n") 
-	fileWrite.write(threeTab + "LoadFrom(strFilePath);\n") 
-	fileWrite.write(twoTab + "}\n") 
-	fileWrite.write(twoTab + "MapConfigsT::iterator iter = m_mapConfigs.find(id);\n") 
-	fileWrite.write(twoTab + "if(iter == m_mapConfigs.end())\n") 
-	fileWrite.write(twoTab + "{\n") 
-	fileWrite.write(threeTab + "gWarniStream( \"" + filename + "::Get" + filename + " NotFound \" << id);\n") 
-	fileWrite.write(threeTab + "return NULL;\n") 
-	fileWrite.write(twoTab + "}\n\n") 
-	fileWrite.write(twoTab + "return &iter->second;\n") 
-	fileWrite.write(oneTab + "}\n\n") 
-
-	GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , comments , css)
-
-	#fileWrite.write(oneTab + filename + " * " + g_globaleNamePrefix + filename + " = NULL;\n") 
-	fileWrite.write("}\n\n") 
 	
-	fileWrite.close()
+def GenerateConfigBaseCppRepairLoad(fileWrite , bServer , filename , types , datas , comments , css, newFileName , loadConfig, dataConfig):
+	fileWrite.write(oneTab + "bool " + newFileName + "::RepairLoad(const std::string & filepath)\n") 
+	fileWrite.write(oneTab + "{\n") 
+	
+	fileWrite.write(twoTab + "MsgAssert_Re0(m_bLoaded , \"error " + filename + " .no load data.\")\n") 
+	
+	fileWrite.write(twoTab + "MapConfigsT::iterator iterConfig = m_mapConfigs.begin();\n\n") 	
+	fileWrite.write(twoTab + "for(; iterConfig != m_mapConfigs.end(); ++iterConfig)\n") 
+	fileWrite.write(twoTab + "{\n") 
+	fileWrite.write(threeTab + g_xlsNamespace + "::" + dataConfig + " & data = iterConfig->second;\n") 
+	
+	for index , item in enumerate(types):
+		if not CheckCSType(css[index] , bServer):
+			continue
+		itemType = GetType(item)
+		if itemType == g_structType:
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
+			childItems = item.split(',')
 
+			fileWrite.write(threeTab + "{\n") 
+			for indexChild , childItem in enumerate(childItems):
+				childItem = RemoveSpecialWord(childItem)
+				if GetType(childItem) == g_configType:
+					tmp = collections.OrderedDict()
+					MakeDicKeyUpper(g_xlsRecords , tmp)
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+
+					fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + ".begin()->second = " + g_xlsNamespace + "::" + parentName + "::GetInstance().Get" + parentName + "(data." + structName + "." + structDatas[indexChild] + ".begin()->first" + " , filepath);\n") 
+				#else:
+				#	fileWrite.write(fourTab + "data." + structName + "." + structDatas[indexChild] + " = config." + structName + "." + structDatas[indexChild] + ";\n") 
+			fileWrite.write(threeTab + "}\n")
+
+		elif itemType == g_structArrayType:			
+			npos = datas[index].find('[')
+			structName = datas[index][0 : npos]
+			structDatas = datas[index][npos + 1 : len(datas[index]) - 1].split(',')
+			childItems = item.split(',')
+
+			fileWrite.write(threeTab + "{\n") 
+			fileWrite.write(fourTab + "std::vector<" + dataConfig + "::" + g_configPrefix + structName + "> & vec" + structName + " = data.vec" + structName + ";\n") 
+			fileWrite.write(fourTab + "std::vector<" + dataConfig + "::" + g_configPrefix + structName + ">::iterator iter" + structName + " = vec" + structName + ".begin();\n") 
+			fileWrite.write(fourTab + "std::vector<" + dataConfig + "::" + g_configPrefix + structName + ">::iterator end" + structName + " = vec" + structName + ".end();\n") 
+			fileWrite.write(fourTab + "for (; iter" + structName + " != end" + structName + ";++iter" + structName + ")\n") 
+			fileWrite.write(fourTab + "{\n") 
+			fileWrite.write(fiveTab + g_configPrefix + filename + "::" + g_configPrefix + structName + " & array = *iter" + structName + ";\n")
+			for indexChild , childItem in enumerate(childItems):
+				childItem = RemoveSpecialWord(childItem)
+				if GetType(childItem) == g_configType:
+					tmp = collections.OrderedDict()
+					MakeDicKeyUpper(g_xlsRecords , tmp)
+					parentName = GetDicKeyByUpper(g_xlsRecords , childItem)
+
+					fileWrite.write(fiveTab + "array." + structDatas[indexChild] + ".begin()->second = " + g_xlsNamespace + "::" + parentName + "::GetInstance().Get" + parentName + "(array." + structDatas[indexChild] + ".begin()->first" + " , filepath);\n") 
+				#else:
+				#	fileWrite.write(fiveTab + "array." + structDatas[indexChild] + " = iter->" + structDatas[indexChild] + ";\n")
+			#fileWrite.write(fiveTab + "data.vec" + structName + ".push_back(array);\n")
+			fileWrite.write(fourTab + "}\n")
+			fileWrite.write(threeTab + "}\n")
+		elif itemType == g_configType:
+			tmp = collections.OrderedDict()
+			MakeDicKeyUpper(g_xlsRecords , tmp)
+			parentName = GetDicKeyByUpper(g_xlsRecords , item)
+					
+			fileWrite.write(threeTab + "data." + datas[index] + ".begin()->second = " + g_xlsNamespace + "::" + parentName + "::GetInstance().Get" + parentName + "(data." + datas[index] + ".begin()->first" + " , filepath);\n") 
+		#else:
+		#	fileWrite.write(threeTab + "data." + datas[index] + " = config." + datas[index] + ";\n") 
+
+	fileWrite.write(twoTab + "}\n\n") 
+	fileWrite.write(twoTab + "return true;\n") 
+	fileWrite.write(oneTab + "}\n\n") 
+			
 def GenerateConditionCppFunc(fileWrite , bServer , filename , types , datas , comments , css):	
 	eachExpressions = None
 	if bServer and filename in g_serverExpression:
@@ -1784,12 +1931,16 @@ def GenerateConfigHeader(bServer , filename , types , datas , comments , css):
 	fileWrite.write(oneTab + "{\n") 
 	
 	fileWrite.write(oneTab + "public:\n")
-	fileWrite.write(twoTab + "virtual BOOL	OnLoad();\n")
+	fileWrite.write(twoTab + "static " + filename + "&	GetInstance(){ static " + filename + " s_" + filename + "; return s_" + filename + "; }\n")
+	fileWrite.write(twoTab + "\n")
+	
+	fileWrite.write(oneTab + "public:\n")
+	fileWrite.write(twoTab + "virtual BOOL		OnLoad();\n")
 	fileWrite.write(twoTab + "\n")
 	fileWrite.write(oneTab + "private:\n\n")
 	
 	fileWrite.write(oneTab + "};\n") 			
-	fileWrite.write(oneTab + "extern " + filename + " * " + g_globaleNamePrefix + filename + ";\n") 
+#	fileWrite.write(oneTab + "extern " + filename + " * " + g_globaleNamePrefix + filename + ";\n") 
 
 
 	fileWrite.write("}\n\n" + "#endif// end" + "  __" + g_xlsNamespace + "_" + filename + "_define_h__\n") 
@@ -1834,7 +1985,7 @@ def GenerateConfigCpp(bServer , filename , types , datas , comments , css):
 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n") 
-	fileWrite.write(oneTab + filename + " * " + g_globaleNamePrefix + filename + " = NULL;\n\n") 
+#	fileWrite.write(oneTab + filename + " * " + g_globaleNamePrefix + filename + " = NULL;\n\n") 
 	fileWrite.write(oneTab + "//tools after data load success , call OnLoad;\n") 
 	fileWrite.write(oneTab + "BOOL " + filename + "::OnLoad()\n") 
 	fileWrite.write(oneTab + "{\n") 
@@ -1894,6 +2045,9 @@ def GenerateConfigManagerHeader(bServer):
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(twoTab + "INT32		Init(std::string  strCsvPath);\n")
 	fileWrite.write(twoTab + "INT32		Cleanup();\n")
+	fileWrite.write(twoTab + "INT32		LoadFrom(std::string  strCsvPath);\n")
+	fileWrite.write(twoTab + "INT32		RepairLoad(std::string  strCsvPath);\n")
+	fileWrite.write(twoTab + "\n")
 	fileWrite.write(oneTab + "private:\n")
 	fileWrite.write(twoTab + "\n\n")
 	fileWrite.write(oneTab + "};\n") 		
@@ -1924,20 +2078,22 @@ def GenerateConfigManagerCPP(bServer):
 	fileWrite.write("{\n") 
 	fileWrite.write(oneTab + "ConfigManager::ConfigManager()\n") 
 	fileWrite.write(oneTab + "{\n") 
-	for sheet , item in g_xlsRecords.items():
-		if sheet in g_xlsDeleteRecord:
-			fileWrite.write("// " + twoTab + g_globaleNamePrefix + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
-		else:
-			fileWrite.write(twoTab + g_globaleNamePrefix + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
+#	for sheet , item in g_xlsRecords.items():
+#		if sheet in g_xlsDeleteRecord:
+#			fileWrite.write("// " + twoTab + g_globaleNamePrefix + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
+#		else:
+#			fileWrite.write(twoTab + g_globaleNamePrefix + sheet + " = new " + g_xlsNamespace + "::" + sheet + ";\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 	
 	fileWrite.write(oneTab + "ConfigManager::~ConfigManager()\n") 
 	fileWrite.write(oneTab + "{\n") 
-	for sheet , item in g_xlsRecords.items():
-		if sheet in g_xlsDeleteRecord:
-			fileWrite.write("// " + twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
-		else:
-			fileWrite.write(twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
+#	for sheet , item in g_xlsRecords.items():
+#		if sheet in g_xlsDeleteRecord:
+#			pass
+#		#	fileWrite.write("// " + twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
+#		else:
+#		#	fileWrite.write(twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
+#			fileWrite.write(twoTab + g_xlsNamespace + "::" + sheet + "::GetInstance().Cleanup();\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 
 	fileWrite.write(oneTab + "ConfigManager & ConfigManager::GetInstance()\n") 
@@ -1953,19 +2109,55 @@ def GenerateConfigManagerCPP(bServer):
 	fileWrite.write(twoTab + "{\n") 
 	fileWrite.write(threeTab + "strCsvPath = strCsvPath + \"/\";\n") 
 	fileWrite.write(twoTab + "}\n\n") 
-	for sheet , item in g_xlsRecords.items():
-		if sheet in g_xlsDeleteRecord:
-			fileWrite.write("// " + twoTab + "MsgAssert_ReF1(" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + " , \"ConfigManager not Init\");\n") 
-			fileWrite.write("// " + twoTab + "" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + "->LoadFrom(strCsvPath);\n\n") 
-		else:
-			fileWrite.write(twoTab + "MsgAssert_ReF1(" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + " , \"ConfigManager not Init\")\n") 
-			fileWrite.write(twoTab + "" + g_xlsNamespace + "::" + g_globaleNamePrefix + sheet + "->LoadFrom(strCsvPath);\n\n") 
+	fileWrite.write(twoTab + "LoadFrom(strCsvPath);\n") 
+	fileWrite.write(twoTab + "RepairLoad(strCsvPath);\n") 
+	
+	fileWrite.write(oneTab + "\n") 
 	fileWrite.write(twoTab + "return 0;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 
+	fileWrite.write(oneTab + "INT32 ConfigManager::LoadFrom(std::string  strCsvPath)\n") 
+	fileWrite.write(oneTab + "{\n") 
+	fileWrite.write(twoTab + "MsgAssert_ReF1(strCsvPath.length(), \"ConfigManager::LoadFrom error.\");\n\n") 
+	fileWrite.write(twoTab + "if (strCsvPath[strCsvPath.length() - 1] != '/')\n") 
+	fileWrite.write(twoTab + "{\n") 
+	fileWrite.write(threeTab + "strCsvPath = strCsvPath + \"/\";\n") 
+	fileWrite.write(twoTab + "}\n\n") 
+	for sheet , item in g_xlsRecords.items():
+		if sheet in g_xlsDeleteRecord:
+			fileWrite.write("// " + twoTab + "" + g_xlsNamespace + "::" + sheet + "::GetInstance().LoadFrom(strCsvPath);\n") 
+		else:
+			fileWrite.write(twoTab + "" + g_xlsNamespace + "::" + sheet + "::GetInstance().LoadFrom(strCsvPath);\n") 
+	fileWrite.write(twoTab + "return 0;\n") 
+	fileWrite.write(oneTab + "}\n\n") 
+	
+	
+	fileWrite.write(oneTab + "INT32 ConfigManager::RepairLoad(std::string  strCsvPath)\n") 
+	fileWrite.write(oneTab + "{\n") 
+	fileWrite.write(twoTab + "MsgAssert_ReF1(strCsvPath.length(), \"ConfigManager::RepairLoad error.\");\n\n") 
+	fileWrite.write(twoTab + "if (strCsvPath[strCsvPath.length() - 1] != '/')\n") 
+	fileWrite.write(twoTab + "{\n") 
+	fileWrite.write(threeTab + "strCsvPath = strCsvPath + \"/\";\n") 
+	fileWrite.write(twoTab + "}\n\n") 
+	for sheet , item in g_xlsRecords.items():
+		if sheet in g_xlsDeleteRecord:
+			fileWrite.write("// " + twoTab + "" + g_xlsNamespace + "::" + sheet + "::GetInstance().RepairLoad(strCsvPath);\n") 
+		else:
+			fileWrite.write(twoTab + "" + g_xlsNamespace + "::" + sheet + "::GetInstance().RepairLoad(strCsvPath);\n") 
+	fileWrite.write(twoTab + "return 0;\n") 
+	fileWrite.write(oneTab + "}\n\n") 
+	
+	
 	fileWrite.write(oneTab + "INT32 ConfigManager::Cleanup()\n") 
 	fileWrite.write(oneTab + "{\n") 
-	fileWrite.write(twoTab + "return -1;\n") 
+#	for sheet , item in g_xlsRecords.items():
+#		if sheet in g_xlsDeleteRecord:
+#			pass
+#		#	fileWrite.write("// " + twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
+#		else:
+#		#	fileWrite.write(twoTab + "SAFE_DELETE(" + g_xlsNamespace + "::" +  g_globaleNamePrefix + sheet + ");\n") 
+#			fileWrite.write(twoTab + g_xlsNamespace + "::" + sheet + "::GetInstance().Cleanup();\n") 
+	fileWrite.write(twoTab + "return 0;\n") 
 	fileWrite.write(oneTab + "}\n\n") 
 
 	fileWrite.write("}\n\n") 

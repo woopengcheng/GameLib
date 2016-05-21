@@ -2,10 +2,10 @@
 /************************************
 FileName	:	ActivityConfigBase.cpp
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-10 12:12:16
+Date		:	2016-05-21 14:51:04
 Description	:	csv读取数据文件实现
 ************************************/
 #include "ActivityConfigBase.h"
@@ -47,11 +47,11 @@ namespace Config
 			{
 				data.testDateStruct.begin = config.testDateStruct.begin;
 				data.testDateStruct.end = config.testDateStruct.end;
-				data.testDateStruct.actionConfig.insert(std::make_pair(config.testDateStruct.actionConfig , g_pActionConfig->GetActionConfig(config.testDateStruct.actionConfig , filepath)));
+				data.testDateStruct.actionConfig.insert(std::make_pair(config.testDateStruct.actionConfig , Config::ActionConfig::GetInstance().GetActionConfig(config.testDateStruct.actionConfig , filepath)));
 			}
 			data.dateArray = config.dateArray;
-			data.testConfig.insert(std::make_pair(config.testConfig , g_pActionConfig->GetActionConfig(config.testConfig , filepath)));
-			data.testConfig2.insert(std::make_pair(config.testConfig2 , g_pActionConfig->GetActionConfig(config.testConfig2 , filepath)));
+			data.testConfig.insert(std::make_pair(config.testConfig , Config::ActionConfig::GetInstance().GetActionConfig(config.testConfig , filepath)));
+			data.testConfig2.insert(std::make_pair(config.testConfig2 , Config::ActionConfig::GetInstance().GetActionConfig(config.testConfig2 , filepath)));
 			data.dateCommon = config.dateCommon;
 			{
 				std::vector<SActivityConfigLoad::STestStructArray>::iterator iter = config.vecTestStructArray.begin();
@@ -64,7 +64,7 @@ namespace Config
 					array.test3 = iter->test3;
 					array.test4 = iter->test4;
 					array.test5 = iter->test5;
-					array.test6.insert(std::make_pair(iter->test6 , g_pActionConfig->GetActionConfig(iter->test6 , filepath)));
+					array.test6.insert(std::make_pair(iter->test6 , Config::ActionConfig::GetInstance().GetActionConfig(iter->test6 , filepath)));
 					data.vecTestStructArray.push_back(array);
 				}
 			}
@@ -74,7 +74,7 @@ namespace Config
 				data.TestStruct.test3 = config.TestStruct.test3;
 				data.TestStruct.test4 = config.TestStruct.test4;
 				data.TestStruct.test6 = config.TestStruct.test6;
-				data.TestStruct.test7.insert(std::make_pair(config.TestStruct.test7 , g_pActionConfig->GetActionConfig(config.TestStruct.test7 , filepath)));
+				data.TestStruct.test7.insert(std::make_pair(config.TestStruct.test7 , Config::ActionConfig::GetInstance().GetActionConfig(config.TestStruct.test7 , filepath)));
 			}
 			m_mapConfigs.insert(std::make_pair(data.ActivityId,data));
 		}
@@ -83,16 +83,42 @@ namespace Config
 		return true;
 	}
 
+	bool ActivityConfigBase::RepairLoad(const std::string & filepath)
+	{
+		MsgAssert_Re0(m_bLoaded , "error ActivityConfig .no load data.")
+		MapConfigsT::iterator iterConfig = m_mapConfigs.begin();
+
+		for(; iterConfig != m_mapConfigs.end(); ++iterConfig)
+		{
+			Config::SActivityConfig & data = iterConfig->second;
+			{
+				data.testDateStruct.actionConfig.begin()->second = Config::ActionConfig::GetInstance().GetActionConfig(data.testDateStruct.actionConfig.begin()->first , filepath);
+			}
+			data.testConfig.begin()->second = Config::ActionConfig::GetInstance().GetActionConfig(data.testConfig.begin()->first , filepath);
+			data.testConfig2.begin()->second = Config::ActionConfig::GetInstance().GetActionConfig(data.testConfig2.begin()->first , filepath);
+			{
+				std::vector<SActivityConfig::STestStructArray> & vecTestStructArray = data.vecTestStructArray;
+				std::vector<SActivityConfig::STestStructArray>::iterator iterTestStructArray = vecTestStructArray.begin();
+				std::vector<SActivityConfig::STestStructArray>::iterator endTestStructArray = vecTestStructArray.end();
+				for (; iterTestStructArray != endTestStructArray;++iterTestStructArray)
+				{
+					SActivityConfig::STestStructArray & array = *iterTestStructArray;
+					array.test6.begin()->second = Config::ActionConfig::GetInstance().GetActionConfig(array.test6.begin()->first , filepath);
+				}
+			}
+			{
+				data.TestStruct.test7.begin()->second = Config::ActionConfig::GetInstance().GetActionConfig(data.TestStruct.test7.begin()->first , filepath);
+			}
+		}
+
+		return true;
+	}
+
 	SActivityConfig * ActivityConfigBase::GetActivityConfig(std::string id , std::string strFilePath/* = ""*/)
 	{
-		if (!m_bLoaded)
-		{
-			LoadFrom(strFilePath);
-		}
 		MapConfigsT::iterator iter = m_mapConfigs.find(id);
 		if(iter == m_mapConfigs.end())
 		{
-			gWarniStream( "ActivityConfig::GetActivityConfig NotFound " << id);
 			return NULL;
 		}
 

@@ -2,16 +2,17 @@
 /************************************
 FileName	:	_ConditionConfigBase.h
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-10 12:12:16
+Date		:	2016-05-21 14:51:04
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config__ConditionConfigBase_define_h__
 #define __Config__ConditionConfigBase_define_h__
 #include "_ConditionConfigLoad.h"
 #include "../Condition.h"
+#include "ConfigDeclare.h"
 #include "CUtil/inc/CSVConfig.h"
 
 namespace Config
@@ -35,7 +36,8 @@ namespace Config
 
 	public:
 		bool				LoadFrom(const std::string& filepath);
-		S_ConditionConfig *	Get_ConditionConfig(INT32 id , std::string strFilePath = "");
+		bool				RepairLoad(const std::string& filepath);
+		S_ConditionConfig	*	Get_ConditionConfig(INT32 id , std::string strFilePath = "");
 
 	public:
 

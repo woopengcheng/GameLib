@@ -16,9 +16,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	Config::ConfigManager::GetInstance().Init("./csv_config");
 	std::cout << "port used=" << Net::NetHelper::IsSocketPortUsed(8002) << std::endl;;
 
-	gDebugStream(Config::g_pActionConfig->GetActionConfig(1)->TestStruct.test1);
-	gDebugStream(Config::g_pActivityConfig->GetActivityConfig("1")->testdate.GetDateStr());
-
+	gDebugStream(Config::ActionConfig::GetInstance().GetActionConfig(1)->TestStruct.test1);
+	gDebugStream(Config::ActionConfig::GetInstance().GetActionConfig(1)->TestStruct.test3.begin()->second->vecTestStructArray[0].test6.begin()->second->TestStruct.test6);
+	gDebugStream(Config::ActivityConfig::GetInstance().GetActivityConfig("1")->testdate.GetDateStr());
+	gDebugStream(Config::ActivityConfig::GetInstance().GetActivityConfig("1")->vecTestStructArray[0].test6.begin()->second->TestStruct.test6);
 
 	test_lua_main();
 	while (true)

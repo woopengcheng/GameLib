@@ -1,15 +1,16 @@
-﻿// attention dont't change this line:INT64 curve_id;std::vector<INT32> validStages;std::string wrapMode;std::vector<std::string> InterfaceIcon;double attr_mod_val;std::vector<double> start_x;INT64 col_1;bool isLocal;TestStructbool test1;INT64 test2;double test3;INT32 test4;std::string test6;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std::string test5;
+﻿// attention dont't change this line:INT64 curve_id;std::vector<INT32> validStages;std::string wrapMode;std::vector<std::string> InterfaceIcon;double attr_mod_val;std::vector<double> start_x;INT64 col_1;bool isLocal;TestStructbool test1;INT64 test2;std_unordered_map<std::string , SActivityConfig *> test3;INT32 test4;std::string test6;TestStructArraybool test1;INT64 test2;double test3;INT32 test4;std_unordered_map<std::string , SActivityConfig *> test5;
 /************************************
 FileName	:	ActionConfigBase.cpp
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-10 12:12:16
+Date		:	2016-05-21 14:51:04
 Description	:	csv读取数据文件实现
 ************************************/
 #include "ActionConfigBase.h"
 #include "LogLib/inc/Log.h"
+#include "ActivityConfig.h"
 
 namespace Config
 {
@@ -37,7 +38,7 @@ namespace Config
 			{
 				data.TestStruct.test1 = config.TestStruct.test1;
 				data.TestStruct.test2 = config.TestStruct.test2;
-				data.TestStruct.test3 = config.TestStruct.test3;
+				data.TestStruct.test3.insert(std::make_pair(config.TestStruct.test3 , Config::ActivityConfig::GetInstance().GetActivityConfig(config.TestStruct.test3 , filepath)));
 				data.TestStruct.test4 = config.TestStruct.test4;
 				data.TestStruct.test6 = config.TestStruct.test6;
 			}
@@ -51,7 +52,7 @@ namespace Config
 					array.test2 = iter->test2;
 					array.test3 = iter->test3;
 					array.test4 = iter->test4;
-					array.test5 = iter->test5;
+					array.test5.insert(std::make_pair(iter->test5 , Config::ActivityConfig::GetInstance().GetActivityConfig(iter->test5 , filepath)));
 					data.vecTestStructArray.push_back(array);
 				}
 			}
@@ -62,16 +63,37 @@ namespace Config
 		return true;
 	}
 
+	bool ActionConfigBase::RepairLoad(const std::string & filepath)
+	{
+		MsgAssert_Re0(m_bLoaded , "error ActionConfig .no load data.")
+		MapConfigsT::iterator iterConfig = m_mapConfigs.begin();
+
+		for(; iterConfig != m_mapConfigs.end(); ++iterConfig)
+		{
+			Config::SActionConfig & data = iterConfig->second;
+			{
+				data.TestStruct.test3.begin()->second = Config::ActivityConfig::GetInstance().GetActivityConfig(data.TestStruct.test3.begin()->first , filepath);
+			}
+			{
+				std::vector<SActionConfig::STestStructArray> & vecTestStructArray = data.vecTestStructArray;
+				std::vector<SActionConfig::STestStructArray>::iterator iterTestStructArray = vecTestStructArray.begin();
+				std::vector<SActionConfig::STestStructArray>::iterator endTestStructArray = vecTestStructArray.end();
+				for (; iterTestStructArray != endTestStructArray;++iterTestStructArray)
+				{
+					SActionConfig::STestStructArray & array = *iterTestStructArray;
+					array.test5.begin()->second = Config::ActivityConfig::GetInstance().GetActivityConfig(array.test5.begin()->first , filepath);
+				}
+			}
+		}
+
+		return true;
+	}
+
 	SActionConfig * ActionConfigBase::GetActionConfig(INT64 id , std::string strFilePath/* = ""*/)
 	{
-		if (!m_bLoaded)
-		{
-			LoadFrom(strFilePath);
-		}
 		MapConfigsT::iterator iter = m_mapConfigs.find(id);
 		if(iter == m_mapConfigs.end())
 		{
-			gWarniStream( "ActionConfig::GetActionConfig NotFound " << id);
 			return NULL;
 		}
 

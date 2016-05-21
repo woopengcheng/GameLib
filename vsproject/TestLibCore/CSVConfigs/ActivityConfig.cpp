@@ -2,10 +2,10 @@
 /************************************
 FileName	:	ActivityConfig.cpp
 Author		:	generate by tools
-HostName	:	devuser-PC
-IP			:	10.236.40.128
+HostName	:	DESKTOP-5AT4DK2
+IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-10 12:12:16
+Date		:	2016-05-21 14:51:04
 Description	:	csv读取数据文件实现
 ************************************/
 #include "ActivityConfig.h"
@@ -14,8 +14,6 @@ Description	:	csv读取数据文件实现
 
 namespace Config
 {
-	ActivityConfig * g_pActivityConfig = NULL;
-
 	//tools after data load success , call OnLoad;
 	BOOL ActivityConfig::OnLoad()
 	{
