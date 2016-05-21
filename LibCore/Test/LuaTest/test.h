@@ -29,7 +29,7 @@ export_lua int& get_gintref();
 
 export_lua int* get_gintptr();
 export_lua double get_gdouble();
-extern int test_lua_main();
+extern int test_lua_main(lua_State* L);
 
 
 export_lua class ff_base

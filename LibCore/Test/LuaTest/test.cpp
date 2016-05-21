@@ -69,11 +69,11 @@ std::map<std::string, std::function<bool()> > g_test_func_set;
 
 extern void export_to_lua_auto(lua_State* L);
 
-int test_lua_main()
+int test_lua_main(lua_State* L)
 {
-	lua_State* L = luaL_newstate();
-	luaL_openlibs(L);
-	lua_tinker::init(L);
+//	lua_State* L = luaL_newstate();
+// 	luaL_openlibs(L);
+// 	lua_tinker::init(L);
 	
 	export_to_lua_auto(L);
 	export_to_lua_manual(L);
@@ -175,7 +175,7 @@ int test_lua_main()
 	if(ff::s_ref != 2) //g_ff,g_ff_shared
 		nError++;
 
-	lua_close(L);
+//	lua_close(L);
 
 	if(g_func_lua != nullptr)
 		nError++;

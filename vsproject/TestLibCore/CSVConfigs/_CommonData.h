@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-21 14:51:04
+Date		:	2016-05-22 01:03:18
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config__CommonData_define_h__
@@ -19,6 +19,7 @@ namespace Config
 	{
 	public:
 		static _CommonData&	GetInstance(){ static _CommonData s__CommonData; return s__CommonData; }
+		static _CommonData*	GetInstancePtr(){ return &GetInstance(); }
 		
 	public:
 		virtual BOOL		OnLoad();

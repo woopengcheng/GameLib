@@ -808,7 +808,7 @@ namespace lua_tinker
 			template<typename _T>
 			static typename std::enable_if<is_associative_container<_T>::value, void>::type  _push(lua_State *L, const _T& ret)
 			{
-				stack_obj table_obj = stack_obj::new_table(L, 0, ret.size());
+				stack_obj table_obj = stack_obj::new_table(L, 0, (int)ret.size());
 				for (auto it = ret.begin(); it != ret.end(); it++)
 				{
 					push(L, it->first);
@@ -820,7 +820,7 @@ namespace lua_tinker
 			template<typename _T>
 			static typename std::enable_if<!is_associative_container<_T>::value, void>::type  _push(lua_State *L, const _T& ret)
 			{
-				stack_obj table_obj = stack_obj::new_table(L, ret.size(), 0);
+				stack_obj table_obj = stack_obj::new_table(L, (int)ret.size(), 0);
 				auto it = ret.begin();
 				for (int i = 1; it != ret.end(); it++, i++)
 				{
@@ -1844,7 +1844,7 @@ namespace lua_tinker
 				}
 				else
 				{
-					int nLen = parent_table.get_rawlen() + 1;
+					int nLen = (int)parent_table.get_rawlen() + 1;
 					push_meta(L, get_class_name<P>());
 					parent_table.rawseti(nLen); // set __multi_parent[n]=table
 					parent_table.remove();//pop __multi_parent table

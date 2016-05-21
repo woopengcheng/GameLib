@@ -5,7 +5,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-21 14:51:04
+Date		:	2016-05-22 01:03:18
 Description	:	csv读取文件
 ************************************/
 #ifndef __Config_ActionConfig_define_h__
@@ -19,6 +19,7 @@ namespace Config
 	{
 	public:
 		static ActionConfig&	GetInstance(){ static ActionConfig s_ActionConfig; return s_ActionConfig; }
+		static ActionConfig*	GetInstancePtr(){ return &GetInstance(); }
 		
 	public:
 		virtual BOOL		OnLoad();
