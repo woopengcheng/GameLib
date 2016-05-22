@@ -25,8 +25,8 @@ std::string test_lua_member_property(lua_State * L)
 		R"(function test_lua_member_property()
 					local pActivityConfig = Config.ActivityConfig.GetInstancePtr()
 					--return pActivityConfig.GetActivityConfig("1").vecTestStructArray[0].test6.begin()->second->TestStruct.test6
-					id = "1"
-					return pActivityConfig:GetActivityConfig("1").vecTestStructArray[1].test5
+					pActivityConfig:RunUse("1")
+					return pActivityConfig:GetActivityConfig("1").TestStruct.test3
 					--return "asdf"
 				end	
 			)";

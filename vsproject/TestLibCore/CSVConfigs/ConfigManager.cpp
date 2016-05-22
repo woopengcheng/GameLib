@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-22 01:03:18
+Date		:	2016-05-22 11:43:23
 Description	:	ConfigManager数据管理文件实现
 ************************************/
 #include "ConfigManager.h"
@@ -92,14 +92,16 @@ namespace Config
 		lua_tinker::class_def<CUtil::CSVConfig>(L, "IsLoaded", &CUtil::CSVConfig::IsLoaded);
 		
 		
+//ActionConfig export in here.
 		lua_tinker::class_add<Config::ActionConfigBase>(L, "Config::ActionConfigBase", true);
 		lua_tinker::class_add<Config::ActionConfig>(L, "Config::ActionConfig", true);
 		lua_tinker::scope_inner(L, "Config" , "ActionConfig" , "Config::ActionConfig");
 		lua_tinker::class_inh<Config::ActionConfig , Config::ActionConfigBase>(L);
 		lua_tinker::class_def_static<Config::ActionConfig>(L, "GetInstance", & Config::ActionConfig::GetInstance);
 		lua_tinker::class_def_static<Config::ActionConfig>(L, "GetInstancePtr", & Config::ActionConfig::GetInstancePtr);
-		lua_tinker::class_def<Config::ActionConfig>(L, "GetActionConfig", & Config::ActionConfig::GetActionConfig , std::string(""));
+		lua_tinker::class_def<Config::ActionConfigBase>(L, "GetActionConfig", & Config::ActionConfigBase::GetActionConfig , std::string(""));
 		
+		//Config::SActionConfig detail export in here.
 		lua_tinker::class_add<Config::SActionConfig>(L, "Config::SActionConfig", true);
 		lua_tinker::scope_inner(L, "Config" , "SActionConfig" , "Config::SActionConfig");
 		lua_tinker::class_mem<Config::SActionConfig>(L, "curve_id", &Config::SActionConfig::curve_id);
@@ -131,14 +133,16 @@ namespace Config
 		}
 		lua_tinker::class_mem<Config::SActionConfig>(L, "vecTestStructArray", &Config::SActionConfig::vecTestStructArray);
 		
+//ActivityConfig export in here.
 		lua_tinker::class_add<Config::ActivityConfigBase>(L, "Config::ActivityConfigBase", true);
 		lua_tinker::class_add<Config::ActivityConfig>(L, "Config::ActivityConfig", true);
 		lua_tinker::scope_inner(L, "Config" , "ActivityConfig" , "Config::ActivityConfig");
 		lua_tinker::class_inh<Config::ActivityConfig , Config::ActivityConfigBase>(L);
 		lua_tinker::class_def_static<Config::ActivityConfig>(L, "GetInstance", & Config::ActivityConfig::GetInstance);
 		lua_tinker::class_def_static<Config::ActivityConfig>(L, "GetInstancePtr", & Config::ActivityConfig::GetInstancePtr);
-		lua_tinker::class_def<Config::ActivityConfig>(L, "GetActivityConfig", & Config::ActivityConfig::GetActivityConfig , std::string(""));
+		lua_tinker::class_def<Config::ActivityConfigBase>(L, "GetActivityConfig", & Config::ActivityConfigBase::GetActivityConfig , std::string(""));
 		
+		//Config::SActivityConfig detail export in here.
 		lua_tinker::class_add<Config::SActivityConfig>(L, "Config::SActivityConfig", true);
 		lua_tinker::scope_inner(L, "Config" , "SActivityConfig" , "Config::SActivityConfig");
 		lua_tinker::class_mem<Config::SActivityConfig>(L, "ActivityId", &Config::SActivityConfig::ActivityId);
@@ -193,6 +197,7 @@ namespace Config
 		}
 		lua_tinker::class_mem<Config::SActivityConfig>(L, "TestStruct", &Config::SActivityConfig::TestStruct);
 		
+//_ConditionConfig export in here.
 //		lua_tinker::class_add<Config::_ConditionConfigBase>(L, "Config::_ConditionConfigBase", true);
 //		lua_tinker::class_add<Config::_ConditionConfig>(L, "Config::_ConditionConfig", true);
 //		lua_tinker::scope_inner(L, "Config" , "_ConditionConfig" , "Config::_ConditionConfig");
@@ -204,14 +209,16 @@ namespace Config
 //		lua_tinker::class_add<Config::S_ConditionConfig>(L, "Config::S_ConditionConfig", true);
 //		lua_tinker::scope_inner(L, "Config" , "S_ConditionConfig" , "Config::S_ConditionConfig");
 		
+//_CommonData export in here.
 		lua_tinker::class_add<Config::_CommonDataBase>(L, "Config::_CommonDataBase", true);
 		lua_tinker::class_add<Config::_CommonData>(L, "Config::_CommonData", true);
 		lua_tinker::scope_inner(L, "Config" , "_CommonData" , "Config::_CommonData");
 		lua_tinker::class_inh<Config::_CommonData , Config::_CommonDataBase>(L);
 		lua_tinker::class_def_static<Config::_CommonData>(L, "GetInstance", & Config::_CommonData::GetInstance);
 		lua_tinker::class_def_static<Config::_CommonData>(L, "GetInstancePtr", & Config::_CommonData::GetInstancePtr);
-		lua_tinker::class_def<Config::_CommonData>(L, "Get_CommonData", & Config::_CommonData::Get_CommonData , std::string(""));
+		lua_tinker::class_def<Config::_CommonDataBase>(L, "Get_CommonData", & Config::_CommonDataBase::Get_CommonData , std::string(""));
 		
+		//Config::S_CommonData detail export in here.
 		lua_tinker::class_add<Config::S_CommonData>(L, "Config::S_CommonData", true);
 		lua_tinker::scope_inner(L, "Config" , "S_CommonData" , "Config::S_CommonData");
 		lua_tinker::class_mem<Config::S_CommonData>(L, "id", &Config::S_CommonData::id);
@@ -222,9 +229,13 @@ namespace Config
 		lua_tinker::class_mem<Config::S_CommonData>(L, "doubleCommon", &Config::S_CommonData::doubleCommon);
 		lua_tinker::class_mem<Config::S_CommonData>(L, "stringCommon", &Config::S_CommonData::stringCommon);
 		lua_tinker::class_mem<Config::S_CommonData>(L, "dateCommon", &Config::S_CommonData::dateCommon);
+
+		lua_tinker::class_def<Config::ActivityConfigBase>(L, "RunUse", &Config::ActivityConfigBase::RunUse , NULL , NULL , NULL);
+		lua_tinker::class_def<Config::ActivityConfigBase>(L, "RunUse1", &Config::ActivityConfigBase::RunUse1 , NULL , NULL , NULL);
+
+
 		return 0;
 	}
-
 
 	INT32 ConfigManager::Cleanup()
 	{

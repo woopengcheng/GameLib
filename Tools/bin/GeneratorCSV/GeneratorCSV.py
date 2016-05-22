@@ -1021,7 +1021,7 @@ def GenerateStructData(bServer , fileWrite , types , datas , comments , css , bL
 					if bLoad:
 						childType = GetType(keyType)
 
-				fileWrite.write(threeTab + childType + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
+				fileWrite.write(threeTab + childType + GetTypeTab(childType) + structDatas[indexChild] + ";\n")
 			fileWrite.write(twoTab + "}" + structName + ";\n");
 		elif item_type == g_structArrayType:
 			npos = datas[index].find('[')
@@ -1042,7 +1042,7 @@ def GenerateStructData(bServer , fileWrite , types , datas , comments , css , bL
 					if bLoad:
 						childType = GetType(keyType)
 
-				fileWrite.write(threeTab + childType + GetTypeTab(childItem) + structDatas[indexChild] + ";\n")
+				fileWrite.write(threeTab + childType + GetTypeTab(childType) + structDatas[indexChild] + ";\n")
 			fileWrite.write(twoTab + "}" + ";\n");
 			fileWrite.write(twoTab + "std::vector<" + g_configPrefix + structName + ">" + twoTab + "vec" + structName + ";\n");
 		else:
@@ -2167,6 +2167,7 @@ def ExportClassToLua(bServer , fileWrite):
 		fileWrite.write(twoTab + "\n") 
 		for sheetIndex , sheet in g_xlsRecords.items():
 			fileWrite.write(twoTab + "\n") 
+			fileWrite.write("//" + sheetIndex + " export in here.\n") 
 			if sheetIndex in g_xlsDeleteRecord:
 				fileWrite.write("//" + twoTab + "lua_tinker::class_add<" + g_xlsNamespace + "::" + sheetIndex + g_configSuffix + ">(L, \"" + g_xlsNamespace + "::" + sheetIndex + g_configSuffix + "\", true);\n") 
 				fileWrite.write("//" + twoTab + "lua_tinker::class_add<" + g_xlsNamespace + "::" + sheetIndex + ">(L, \"" + g_xlsNamespace + "::" + sheetIndex + "\", true);\n") 
@@ -2187,9 +2188,10 @@ def ExportClassToLua(bServer , fileWrite):
 				fileWrite.write(twoTab + "lua_tinker::class_inh<" + g_xlsNamespace + "::" + sheetIndex + " , " + g_xlsNamespace + "::" + sheetIndex + g_configSuffix + ">(L);\n") 
 				fileWrite.write(twoTab + "lua_tinker::class_def_static<" + g_xlsNamespace + "::" + sheetIndex + ">(L, \"GetInstance\", & " + g_xlsNamespace + "::" + sheetIndex + "::GetInstance);\n") 
 				fileWrite.write(twoTab + "lua_tinker::class_def_static<" + g_xlsNamespace + "::" + sheetIndex + ">(L, \"GetInstancePtr\", & " + g_xlsNamespace + "::" + sheetIndex + "::GetInstancePtr);\n") 
-				fileWrite.write(twoTab + "lua_tinker::class_def<" + g_xlsNamespace + "::" + sheetIndex + ">(L, \"Get" + sheetIndex + "\", & " + g_xlsNamespace + "::" + sheetIndex + "::Get" + sheetIndex + " , std::string(\"\"));\n") 
+				fileWrite.write(twoTab + "lua_tinker::class_def<" + g_xlsNamespace + "::" + sheetIndex + g_configSuffix + ">(L, \"Get" + sheetIndex + "\", & " + g_xlsNamespace + "::" + sheetIndex  + g_configSuffix + "::Get" + sheetIndex + " , std::string(\"\"));\n") 
 				fileWrite.write(twoTab + "\n") 
 
+				fileWrite.write(twoTab + "//" + g_xlsNamespace + "::" + g_configPrefix + sheetIndex + " detail export in here.\n") 
 				fileWrite.write(twoTab + "lua_tinker::class_add<" + g_xlsNamespace + "::" + g_configPrefix + sheetIndex + ">(L, \"" + g_xlsNamespace + "::" + g_configPrefix + sheetIndex + "\", true);\n") 
 				fileWrite.write(twoTab + "lua_tinker::scope_inner(L, \"" + g_xlsNamespace + "\" , \"" + g_configPrefix + sheetIndex + "\" , \"" + g_xlsNamespace + "::" + g_configPrefix + sheetIndex + "\");\n") 
 				#fileWrite.write(twoTab + "\n") 
@@ -2225,23 +2227,40 @@ def ExportClassToLua(bServer , fileWrite):
 					else:
 						content =  g_xlsNamespace + "::" + g_configPrefix + sheetIndex
 						fileWrite.write(twoTab + "lua_tinker::class_mem<" + content +">(L, \"" + datas[index] + "\", &" + content + "::" + datas[index] + ");\n") 
-										
+		
+		for sheet , item in g_xlsRecords.items():
+			if sheet in g_xlsDeleteRecord:
+				pass
+				#fileWrite.write("// " + twoTab + "" + g_xlsNamespace + "::" + sheet + "::GetInstance().RepairLoad(strCsvPath);\n") 
+			else:		
+				GenerateConditionLuaFunc(fileWrite , bServer , sheet , item[g_rowType] , item[g_rowName] , item[g_rowComent] , item[g_rowCS])
+		
 		fileWrite.write(twoTab + "return 0;\n") 
 		fileWrite.write(oneTab + "}\n\n") 
-	 
-	for index , item in enumerate(types):
-		#LogOutDebug("bServer:" , bServer , " data:" , datas[index] , "css:" , css[index])
-		if not CheckCSType(css[index] , bServer):
-			continue
-		item_type = GetType(item)
-		if item_type == g_configType:
-			tmp = collections.OrderedDict()
-			MakeDicKeyUpper(g_xlsRecords , tmp)
-			parentName = GetDicKeyByUpper(g_xlsRecords , item)
-			if parentName not in sameParaentName:
-				sameParaentName[parentName] = parentName
-				fileWrite.write("#include \"" + parentName + ".h\"\n") 
-	fileWrite.write("\n") 
+	
+def GenerateConditionLuaFunc(fileWrite , bServer , filename , types , datas , comments , css):	
+	eachExpressions = None
+	if bServer and filename in g_serverExpression:
+		eachExpressions = g_serverExpression[filename]
+	elif not bServer and filename in g_clientExpression:
+		eachExpressions = g_clientExpression[filename]
+	if eachExpressions != None:	
+		for index , expressions in eachExpressions.items():
+			GenerateExpressionLuaFuncName(False , fileWrite , filename , index , expressions)
+		fileWrite.write("\n")
+
+def GenerateExpressionLuaFuncName(bCPP , fileWrite , filename , index , expressions):
+	newFileName = filename + g_configSuffix
+	objs = []
+	GetExpressionsObjects(expressions , objs)
+	content =  g_xlsNamespace + "::" + newFileName 
+	fileWrite.write(twoTab + "lua_tinker::class_def<" + content +">(L, \"" + index + "\", &" + content + "::" + index) 
+			
+	for objIndex , obj in enumerate(objs):
+		if len(obj.name) > 0:
+			fileWrite.write(" , NULL") 
+		
+	fileWrite.write(");\n")
 	
 ################################流程相关函数处理#####################################
 def RemoveNewLine(str):

@@ -4,7 +4,7 @@ Author		:	generate by tools
 HostName	:	DESKTOP-5AT4DK2
 IP			:	192.168.16.104
 Version		:	0.0.1
-Date		:	2016-05-22 01:03:18
+Date		:	2016-05-22 11:43:23
 Description	:	csv配置文件
 ************************************/
 #ifndef __ActivityConfigLoad_define_h__
@@ -39,7 +39,7 @@ namespace Config
 		{
 			Timer::Date					begin;
 			Timer::Date					end;
-			INT64	actionConfig;
+			INT64						actionConfig;
 		}testDateStruct;
 		std::vector<Timer::Date>			dateArray;	//根据某些condition执行某些action;目前不支持括号和或.全部用&&(与)和!(非)表示满足一个条件可以执行多个action.可以写在一行(支持多个),或者多行.需要保证一个condition和至少一个action.如果没有也没啥.Action:调用玩家的或者帮会等的函数接口.
 		INT64		testConfig;	//测试时间
@@ -54,7 +54,7 @@ namespace Config
 			double						test3;
 			INT32						test4;
 			std::string					test5;
-			INT64	test6;
+			INT64						test6;
 		};
 		std::vector<STestStructArray>		vecTestStructArray;
 
@@ -66,7 +66,7 @@ namespace Config
 			double						test3;
 			INT32						test4;
 			std::string					test6;
-			INT64	test7;
+			INT64						test7;
 		}TestStruct;
 	};
 
