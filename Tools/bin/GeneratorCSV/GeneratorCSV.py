@@ -974,14 +974,7 @@ def GenerateCSV():
 def GenerateCPP(): 
 	GenerateCPPFiles(True)
 	GenerateCPPFiles(False)
-	
-def ExportLua(): 
-	ExportLuaFiles(True)
-	ExportLuaFiles(False)
-	
-def ExportLuaFiles(bServer): 
-	ExportClassToLua(bServer)
-		
+				
 def GenerateCPPFiles(bServer): 
 	GenerateConfigManagerHeader(bServer)
 	GenerateConfigDeclareHeader(bServer)
@@ -2012,8 +2005,9 @@ def GenerateConfigManagerHeader(bServer):
 	WriteFileDescription(fileWrite , "ConfigManager.h" , "ConfigManager文件声明")
 	fileWrite.write("#ifndef __" + g_xlsNamespace + "_ConfigManager" + "_define_h__\n")
 	fileWrite.write("#define __" + g_xlsNamespace + "_ConfigManager" +  "_define_h__\n")
-	fileWrite.write("#include \"CUtil/inc/Common.h\"\n")  
-	fileWrite.write("#include \"Lua/lua_tinker.h\"\n\n") 
+	fileWrite.write("#include \"CUtil/inc/Common.h\"\n") 
+	if g_isExportLua:
+		fileWrite.write("#include \"Lua/lua_tinker.h\"\n\n") 
 	fileWrite.write("namespace " + g_xlsNamespace + "\n") 
 	fileWrite.write("{\n\n") 
 			
@@ -2030,7 +2024,8 @@ def GenerateConfigManagerHeader(bServer):
 	fileWrite.write(twoTab + "virtual INT32		Cleanup();\n")
 	fileWrite.write(twoTab + "virtual INT32		LoadFrom(std::string  strCsvPath);\n")
 	fileWrite.write(twoTab + "virtual INT32		RepairLoad(std::string  strCsvPath);\n")
-	fileWrite.write(twoTab + "virtual INT32		ExportClassToLua(lua_State* L);\n")
+	if g_isExportLua:
+		fileWrite.write(twoTab + "virtual INT32		ExportClassToLua(lua_State* L);\n")
 	fileWrite.write(twoTab + "\n")
 	fileWrite.write(oneTab + "public:\n")
 	fileWrite.write(oneTab + "private:\n")
