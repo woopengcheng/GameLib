@@ -276,10 +276,11 @@
     <ClInclude Include="DlgRobotCtrl.h" />
     <ClInclude Include="DlgShowRobot.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="RobotBtn.h" />
     <ClInclude Include="RobotCommon.h" />
     <ClInclude Include="RobotCtrl.h" />
     <ClInclude Include="RobotGroup.h" />
-    <ClInclude Include="RobotInfo.h" />
+    <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotManager.h" />
     <ClInclude Include="RobotServer.h" />
     <ClInclude Include="stdafx.h" />
@@ -287,10 +288,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DlgShowRobot.cpp" />
+    <ClCompile Include="RobotBtn.cpp" />
     <ClCompile Include="RobotCtrl.cpp" />
     <ClCompile Include="DlgRobotCtrl.cpp" />
     <ClCompile Include="RobotGroup.cpp" />
-    <ClCompile Include="RobotInfo.cpp" />
+    <ClCompile Include="Robot.cpp" />
     <ClCompile Include="RobotManager.cpp" />
     <ClCompile Include="RobotServer.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -11,7 +11,7 @@ public:
 	~RobotManager();
 
 public:
-	typedef std::map<INT32, INT32>					MapTabToRobotServer;		//5 建立Tab标签页到RobotServer的映射关系
+	typedef std::map<INT32, INT32>					MapTabToRobotServer;		//5 建立listCtrl标签页到RobotServer的映射关系
 	typedef std::map<INT32, INT32>					MapRobotServerToTab;
 	typedef std_unordered_map<INT32, RobotServer*>	MapRobotServers;
 

@@ -51,6 +51,10 @@ public:
 
 public:
 	CDlgShowRobot	&	GetDlgCurShowRobot() { return m_dlgCurShowRobot; }
+	INT32				GetCurRobotTabIndex() const { return m_nCurRobotTabIndex; }
+	void				SetCurRobotTabIndex(INT32 val) { m_nCurRobotTabIndex = val; }
+	INT32				GetCurListCtrlIndex() const { return m_nCurListCtrlIndex; }
+	void				SetCurListCtrlIndex(INT32 val) { m_nCurListCtrlIndex = val; }
 
 protected:
 	void				InitShowRobotDlg();

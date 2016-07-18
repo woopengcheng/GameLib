@@ -4,7 +4,10 @@
 const int cst_btn_pos_x_space		= 5;
 const int cst_btn_pos_y_space		= 7;
 const int cnTabYPosOffset			= 21;
-const int cst_btn_pos_x_length		= 30;
+const int cst_btn_pos_x_length = 30;
+const int cst_btn_pos_y_length = 21;
+const int cst_btn_id = 10000;
+const int MAX_ROBOT_BTN_NUM = 5000;
 
 //5 替换简单的Map某个Key排序后的右边的值.一般是由于某个Key被删除了,后面的会依次前移.第一要保证有序的map,第二不需要考虑释放的map
 template<typename MAP , typename Key>

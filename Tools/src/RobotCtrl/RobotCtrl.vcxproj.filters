@@ -45,10 +45,13 @@
     <ClInclude Include="RobotGroup.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="RobotInfo.h">
+    <ClInclude Include="RobotServer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="RobotServer.h">
+    <ClInclude Include="Robot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RobotBtn.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,10 +74,13 @@
     <ClCompile Include="RobotGroup.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="RobotInfo.cpp">
+    <ClCompile Include="RobotServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="RobotServer.cpp">
+    <ClCompile Include="Robot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RobotBtn.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

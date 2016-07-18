@@ -190,6 +190,8 @@ void CDlgRobotCtrl::OnSelchangeListCtrlServer()
 
 	m_nCurListCtrlIndex = m_listCtrlServer.GetCurSel();
 	UpdateCtrlServer(m_nCurListCtrlIndex);
+
+	m_dlgCurShowRobot.SetCurListCtrlIndex(m_nCurListCtrlIndex);
 }
 
 void CDlgRobotCtrl::InitShowRobotDlg()
@@ -243,11 +245,17 @@ void CDlgRobotCtrl::OnDeleteRobotServer(RobotServer * pRobot)
 
 void CDlgRobotCtrl::UpdateRobotTab(INT32 nIndex)
 {
-	RobotServer * pServer = RobotManager::GetInstance().OnUpdateCtrlServer(m_nCurListCtrlIndex);
+	RobotGroup * pServer = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex , m_nCurRobotTabIndex);
 	if (pServer)
 	{
-		pServer->DebugDisconnect();
+		int nIndex = 20;
+		while (nIndex--)
+		{
+			pServer->DebugConnect();
+		}
+		pServer->DebugConnect();
 	}
+
 //	RobotGroup * pRobotGroup = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex , nIndex);
 //	if (pRobotGroup)
 	{
@@ -290,7 +298,7 @@ void CDlgRobotCtrl::OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 		m_tabShowRobots.InsertItem(m_nCurRobotTabIndex, str);
 		m_tabShowRobots.SetCurSel(m_nCurRobotTabIndex);
 		m_dlgCurShowRobot.Invalidate(TRUE);
-		m_dlgCurShowRobot.SetCurRobotIndex(m_nCurRobotTabIndex);
+		m_dlgCurShowRobot.SetCurRobotTabIndex(m_nCurRobotTabIndex); 
 		 
 
 		//5 这里需要将窗口设置和tab标签一样大.但是又不能覆盖tab标签页.所以要做偏移
@@ -326,7 +334,7 @@ void CDlgRobotCtrl::OnDeleteRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 			{
 				m_nCurRobotTabIndex = -1;
 			}
-			m_dlgCurShowRobot.SetCurRobotIndex(m_nCurRobotTabIndex);
+			m_dlgCurShowRobot.SetCurRobotTabIndex(m_nCurRobotTabIndex);
 		}
 		m_tabShowRobots.DeleteItem(nIndex);
 
@@ -346,6 +354,8 @@ void CDlgRobotCtrl::OnSelchangingTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: 在此添加控件通知处理程序代码
 
 	m_nCurRobotTabIndex = m_tabShowRobots.GetCurSel();
+	m_dlgCurShowRobot.SetCurRobotTabIndex(m_nCurRobotTabIndex);
+
 	UpdateRobotTab(m_nCurRobotTabIndex);
 
 	*pResult = 0;
