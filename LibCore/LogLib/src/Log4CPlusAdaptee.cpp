@@ -65,12 +65,8 @@ namespace Log
 		} 
 
 		//5 2.创建接纳Layout的appender.这个是用来表示是用来什么方式进行存储.可以流式.sys服务.远程服务.文件等等.
-#ifdef _DEBUG
-		log4cplus::SharedAppenderPtr pAppender(new log4cplus::ConsoleAppender()); 
-		pAppender->setName(LOG4CPLUS_TEXT("log4cplus console appender"));
-#else
-		log4cplus::SharedAppenderPtr pAppender(new log4cplus::FileAppender(LOG4CPLUS_TEXT("log4cplus file appender")));
-#endif
+		log4cplus::SharedAppenderPtr pAppender(new log4cplus::ConsoleAppender());
+		pAppender->setName(LOG4CPLUS_TEXT("console"));
 		pAppender->setLayout(std::auto_ptr<log4cplus::Layout>(new log4cplus::PatternLayout(pattern)));
 
 		//5 3.创建Categteoy策略来装Appender.
@@ -80,6 +76,12 @@ namespace Log
 		objLogger.addAppender(pAppender);
 		objLogger.setLogLevel(log4cplus::ALL_LOG_LEVEL);
 
+#ifdef _DEBUG
+		log4cplus::SharedAppenderPtr pAppenderFile(new log4cplus::FileAppender(log4cplus::helpers::towstring(pName)));
+		pAppenderFile->setName(LOG4CPLUS_TEXT("file"));
+		pAppenderFile->setLayout(std::auto_ptr<log4cplus::Layout>(new log4cplus::PatternLayout(pattern)));
+		objLogger.addAppender(pAppenderFile);
+#endif
 		return CErrno::Success();
 	} 
 
