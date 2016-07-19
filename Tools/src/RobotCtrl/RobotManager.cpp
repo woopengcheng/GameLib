@@ -142,7 +142,7 @@ void RobotManager::DebugConnect()
 {
 	int nIndex = rand() % 123123;
 	CString str;
-	str.Format(L"%d", nIndex);
+	str.Format("%d", nIndex);
 	m_pRpcListener->OnConnected(this, nIndex, (const char*)(str.GetBuffer()), false);
 }
 

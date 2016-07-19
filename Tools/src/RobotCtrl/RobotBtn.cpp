@@ -10,7 +10,7 @@
 
 IMPLEMENT_DYNAMIC(CRobotBtn, CButton)
 
-CRobotBtn::CRobotBtn(Robot * pRobot)
+CRobotBtn::CRobotBtn(Robot * pRobot/* = NULL*/)
 	: m_pRobot(pRobot)
 	, m_btnColor(RGB(0,255,0))
 	, m_nRobotIndex(-1)
@@ -69,11 +69,11 @@ void CRobotBtn::OnPaint()
 	CString str;
 	if (m_pRobot)
 	{
-		str.Format(L"%s", m_pRobot->GetName());
+		str.Format("%s", m_pRobot->GetName());
 	}
 	else
 	{
-		str = L"None";
+		str = "None";
 	}
 	dc.TextOut(0,0, str);
 
@@ -104,7 +104,7 @@ void CRobotBtn::OnBnClicked()
 // 		MessageBox(str);
 
 		CString str;
-		str.Format(L"BaseMapID:  \nGameMapID: \n");
+		str.Format("BaseMapID:  \nGameMapID: \n");
 		MessageBox(str);
 //	} 
 

@@ -3,21 +3,23 @@
 #include "json/json.h"
 #include "MsgLib/inc/RpcInterface.h" 
 
+class RobotServer;
+
 class RobotGroup : Msg::RpcInterface
 {
 public:
-	RobotGroup(const std::string & val, INT32 nSessionID);
+	typedef std::map<INT32, INT32>					MapTabToRobot;		//5 建立showRobot界面上的按钮到Robot的映射关系
+	typedef std::map<INT32, INT32>					MapRobotToTab;
+	typedef std_unordered_map<INT32, Robot*>		MapRobots;
+
+public:
+	RobotGroup(const std::string & val, INT32 nSessionID , RobotServer * pRobotServer);
 	~RobotGroup();
 
 public:
 	virtual CErrno				Init(Json::Value & conf);
 	virtual CErrno				Cleanup(void);
 	virtual CErrno				Update(void);
-
-public:
-	typedef std::map<INT32, INT32>					MapTabToRobot;		//5 建立showRobot界面上的按钮到Robot的映射关系
-	typedef std::map<INT32, INT32>					MapRobotToTab;
-	typedef std_unordered_map<INT32, Robot*>		MapRobots;
 
 public:
 	CErrno						CreateRobot(INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect = false);
@@ -33,6 +35,7 @@ public:
 	INT32						GetRobotTabIndex() const { return m_nRobotTabIndex; }
 	void						SetRobotTabIndex(INT32 val) { m_nRobotTabIndex = val; }
 	INT32						GetCurRobotCount() const { return m_nCurRobotCount; }
+	const MapRobots		&		GetMapRobots() const { return m_mapRobots; }
 
 public:
 	void						DebugConnect();
@@ -46,6 +49,7 @@ protected:
 	MapRobots					m_mapRobots;
 	MapTabToRobot				m_mapTabToRobot;
 	MapRobotToTab				m_mapRobotToTab;
+	RobotServer			*		m_pRobotServer;
 };
 
 

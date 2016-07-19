@@ -8,7 +8,7 @@ class CRobotBtn : public CButton
 	DECLARE_DYNAMIC(CRobotBtn)
 
 public:
-	CRobotBtn(Robot * pRobot);
+	CRobotBtn(Robot * pRobot = NULL);
 	virtual ~CRobotBtn();
 
 protected:
@@ -28,10 +28,12 @@ public:
 	CRect						GetRectPos() const { return m_rectPos; }
 	void						SetRectPos(CRect val) { m_rectPos = val; }
 	void						SetBtnColor(COLORREF colorRef) { m_btnColor = colorRef; }
+	Robot				*		GetRobot() const { return m_pRobot; }
+	void						SetRobot(Robot * val) { m_pRobot = val; }
 
 protected:
 	CRect						m_rectPos;
-	INT32						m_nRobotIndex;
+	INT32						m_nRobotIndex;		//5 这里需要关联上Robot的Index
 	Robot				*		m_pRobot;
 	COLORREF					m_btnColor;
 

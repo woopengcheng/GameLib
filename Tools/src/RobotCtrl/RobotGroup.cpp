@@ -2,13 +2,14 @@
 #include "RobotGroup.h"
 #include "RobotCtrl.h"
 #include "DlgRobotCtrl.h"
+#include "RobotServer.h"
 
-
-RobotGroup::RobotGroup(const std::string & val, INT32 nSessionID)
+RobotGroup::RobotGroup(const std::string & val, INT32 nSessionID, RobotServer * pRobotServer)
 	: m_nCurRobotCount(0)
 	, m_nSessionID(nSessionID)
 	, m_strName(val)
 	, m_nRobotTabIndex(-1)
+	, m_pRobotServer(pRobotServer)
 {
 	m_pRpcListener = new RobotListener(this);
 }
@@ -40,7 +41,7 @@ CErrno RobotGroup::CreateRobot(INT32 nSessionID, const std::string & strNetNodeN
 		MapRobots::iterator iter = m_mapRobots.find(nSessionID);
 		if (iter == m_mapRobots.end())
 		{
-			Robot * pRobot = new Robot(strNetNodeName, nSessionID);
+			Robot * pRobot = new Robot(strNetNodeName, nSessionID , this);
 			pRobot->SetRobotIndex(m_nCurRobotCount);
 			m_mapRobots.insert(std::make_pair(nSessionID, pRobot));
 
@@ -65,7 +66,9 @@ void RobotGroup::OnCreateRobot(Robot * pRobot)
 	if (pRobot)
 	{
 		CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
-		if (pRobotDlg)
+		if (pRobotDlg && m_pRobotServer && 
+			pRobotDlg->GetCurListCtrlIndex() == m_pRobotServer->GetListCtrlIndex() &&
+			pRobotDlg->GetCurRobotTabIndex() == m_nRobotTabIndex)
 		{
 			pRobotDlg->GetDlgCurShowRobot().OnCreateRobot(this, pRobot);
 		}
@@ -109,7 +112,9 @@ void RobotGroup::OnDeleteRobot(Robot * pRobot)
 		}
 
 		CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
-		if (pRobotDlg)
+		if (pRobotDlg && m_pRobotServer &&
+			pRobotDlg->GetCurListCtrlIndex() == m_pRobotServer->GetListCtrlIndex() &&
+			pRobotDlg->GetCurRobotTabIndex() == m_nRobotTabIndex)
 		{
 			pRobotDlg->GetDlgCurShowRobot().OnDeleteRobot(this, pRobot);
 		}
@@ -122,9 +127,10 @@ void RobotGroup::OnDeleteRobot(Robot * pRobot)
 
 void RobotGroup::DebugConnect()
 {
-	int nIndex = rand() % 123;
+//	int nIndex = rand() % 123;
+	int nIndex = m_nCurRobotCount;
 	CString str;
-	str.Format(L"%d", nIndex);
+	str.Format("%d", nIndex);
 	m_pRpcListener->OnConnected(this, nIndex, (const char*)(str.GetBuffer()), false);
 }
 

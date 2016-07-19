@@ -47,7 +47,7 @@ CErrno RobotServer::CreateRobotGroup(INT32 nSessionID, const std::string & strNe
 		MapRobotGroups::iterator iter = m_mapRobotGroups.find(nSessionID);
 		if (iter == m_mapRobotGroups.end())
 		{
-			RobotGroup * pRobot = new RobotGroup(strNetNodeName, nSessionID);
+			RobotGroup * pRobot = new RobotGroup(strNetNodeName, nSessionID , this);
 			pRobot->SetRobotTabIndex(m_nCurRobotGroupCount);
 			m_mapRobotGroups.insert(std::make_pair(nSessionID, pRobot));
 
@@ -72,7 +72,7 @@ void RobotServer::OnCreateRobotGroup(RobotGroup * pRobot)
 	if (pRobot)
 	{
 		CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
-		if (pRobotDlg)
+		if (pRobotDlg && pRobotDlg->GetCurListCtrlIndex() == m_nListCtrlIndex)
 		{
 			pRobotDlg->OnCreateRobotGroup(this , pRobot);
 		}
@@ -109,7 +109,7 @@ void RobotServer::OnDeleteRobotGroup(RobotGroup * pRobot)
 		ResetRobotGroupIndex();
 
 		CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
-		if (pRobotDlg)
+		if (pRobotDlg && pRobotDlg->GetCurListCtrlIndex() == m_nListCtrlIndex)
 		{
 			pRobotDlg->OnDeleteRobotGroup(this , pRobot);
 		}
@@ -139,7 +139,7 @@ void RobotServer::DebugConnect()
 {
 	int nIndex = rand() % 123;
 	CString str;
-	str.Format(L"%d", nIndex);
+	str.Format("%d", nIndex);
 	m_pRpcListener->OnConnected(this, nIndex, (const char*)(str.GetBuffer()), false);
 }
 

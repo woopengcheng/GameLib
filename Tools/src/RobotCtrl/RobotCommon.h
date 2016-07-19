@@ -1,11 +1,11 @@
 #pragma once
 #include "CUtil/inc/Common.h"
 
-const int cst_btn_pos_x_space		= 5;
-const int cst_btn_pos_y_space		= 7;
+const int cnBtnXLengthSpace		= 5;
+const int cnBtnYLengthSpace		= 7;
 const int cnTabYPosOffset			= 21;
-const int cst_btn_pos_x_length = 30;
-const int cst_btn_pos_y_length = 21;
+const int cnBtnXLength = 30;
+const int cnBtnYLength = 21;
 const int cst_btn_id = 10000;
 const int MAX_ROBOT_BTN_NUM = 5000;
 

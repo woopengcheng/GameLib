@@ -188,10 +188,7 @@ void CDlgRobotCtrl::OnSelchangeListCtrlServer()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	m_nCurListCtrlIndex = m_listCtrlServer.GetCurSel();
-	UpdateCtrlServer(m_nCurListCtrlIndex);
-
-	m_dlgCurShowRobot.SetCurListCtrlIndex(m_nCurListCtrlIndex);
+	UpdateCtrlServer(m_listCtrlServer.GetCurSel());
 }
 
 void CDlgRobotCtrl::InitShowRobotDlg()
@@ -201,10 +198,12 @@ void CDlgRobotCtrl::InitShowRobotDlg()
 	m_dlgCurShowRobot.SetParent(pWnd);
 	m_dlgCurShowRobot.ShowWindow(SW_SHOW);
 
-	//5 这里需要将窗口设置和tab标签一样大.
+	//5 这里需要将窗口设置和tab标签一样大.但是第一次需要有tab的偏移是为了创建按钮使用.
 	CRect rect;
 	m_tabShowRobots.GetClientRect(rect);
+	rect.top += cnTabYPosOffset;
 	m_dlgCurShowRobot.MoveWindow(rect);
+	m_dlgCurShowRobot.InitDialog();
 }
 
 void CDlgRobotCtrl::OnCreateRobotServer(RobotServer * pRobot)
@@ -245,17 +244,31 @@ void CDlgRobotCtrl::OnDeleteRobotServer(RobotServer * pRobot)
 
 void CDlgRobotCtrl::UpdateRobotTab(INT32 nIndex)
 {
-	RobotGroup * pServer = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex , m_nCurRobotTabIndex);
-	if (pServer)
-	{
-		int nIndex = 20;
-		while (nIndex--)
-		{
-			pServer->DebugConnect();
-		}
-		pServer->DebugConnect();
-	}
+	m_nCurRobotTabIndex = nIndex;
 
+	if (nIndex != -1)
+	{
+		RobotGroup * pRobotGroup = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex, m_nCurRobotTabIndex);
+		if (pRobotGroup)
+		{
+			m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex, pRobotGroup);
+
+			int nIndex = 50;
+			while (nIndex--)
+			{
+				pRobotGroup->DebugConnect();
+			}
+			pRobotGroup->DebugConnect();
+		}
+		else
+		{
+			MsgAssert(0, "OnSelchangingTabShowRobot err.no this robotgroup index=" << m_nCurRobotTabIndex);
+		}
+	}
+	else
+	{
+		m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex, NULL);
+	}
 //	RobotGroup * pRobotGroup = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex , nIndex);
 //	if (pRobotGroup)
 	{
@@ -266,21 +279,39 @@ void CDlgRobotCtrl::UpdateRobotTab(INT32 nIndex)
 
 void CDlgRobotCtrl::UpdateCtrlServer(INT32 nIndex)
 {
-	RobotServer * pServer = RobotManager::GetInstance().OnUpdateCtrlServer(nIndex);
-	if (pServer)
+	INT32 nOldIndex = m_nCurListCtrlIndex;
+	if (nOldIndex != nIndex)		//5 只有有变化的时候才更新.
 	{
-		int nIndex = 2;
-		while (nIndex--)
+		INT32 nRobotGroupCount = 0;
+		RobotServer * pServer = RobotManager::GetInstance().OnUpdateCtrlServer(nIndex);
+		if (pServer)
 		{
-			pServer->DebugConnect();
+			int nIndex = 2;
+			while (nIndex--)
+			{
+				pServer->DebugConnect();
+			}
+
+			m_tabShowRobots.DeleteAllItems();
+			const RobotServer::MapRobotGroups & mapRobots = pServer->GetMapRobotGroups();
+			RobotServer::MapRobotGroups::const_iterator iter = mapRobots.begin();
+			for (; iter != mapRobots.end(); ++iter)
+			{
+				OnCreateRobotGroup(pServer, iter->second);
+			}
+			nRobotGroupCount = (INT32)mapRobots.size();
 		}
 
-		m_tabShowRobots.DeleteAllItems();
-		const RobotServer::MapRobotGroups & mapRobots = pServer->GetMapRobotGroups();
-		RobotServer::MapRobotGroups::const_iterator iter = mapRobots.begin();
-		for (;iter != mapRobots.end();++iter)
+		m_nCurListCtrlIndex = nIndex;
+		m_dlgCurShowRobot.SetCurListCtrlIndex(m_nCurListCtrlIndex);
+
+		if (nRobotGroupCount > 0)
 		{
-			OnCreateRobotGroup(pServer, iter->second);
+			UpdateRobotTab(0);
+		}
+		else
+		{
+			UpdateRobotTab(-1);
 		}
 	}
 }
@@ -294,12 +325,12 @@ void CDlgRobotCtrl::OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 		m_nCurRobotTabIndex = pRobotGroup->GetRobotTabIndex();
 
 		CString str;
-		str.Format(L"Robot %d", m_nCurRobotTabIndex);
+		str.Format("Robot %d", m_nCurRobotTabIndex);
 		m_tabShowRobots.InsertItem(m_nCurRobotTabIndex, str);
 		m_tabShowRobots.SetCurSel(m_nCurRobotTabIndex);
-		m_dlgCurShowRobot.Invalidate(TRUE);
-		m_dlgCurShowRobot.SetCurRobotTabIndex(m_nCurRobotTabIndex); 
-		 
+
+		//5 创建新的robotgroup.如果这个时候设置的话效率比较低.
+		// m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex , pRobotGroup);
 
 		//5 这里需要将窗口设置和tab标签一样大.但是又不能覆盖tab标签页.所以要做偏移
 		if (nRobotCount == 0)
@@ -329,12 +360,22 @@ void CDlgRobotCtrl::OnDeleteRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 			{
 				m_tabShowRobots.SetCurSel(0);
 				m_nCurRobotTabIndex = 0;
+
+				RobotGroup * pServer = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex, m_nCurRobotTabIndex);
+				if (pServer)
+				{
+					m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex, pServer); 
+				}
+				else
+				{
+					MsgAssert(0, "OnDeleteRobotGroup err.no this robotgroup index=" << m_nCurRobotTabIndex);
+				}
 			}
 			else
 			{
 				m_nCurRobotTabIndex = -1;
+				m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex, NULL);
 			}
-			m_dlgCurShowRobot.SetCurRobotTabIndex(m_nCurRobotTabIndex);
 		}
 		m_tabShowRobots.DeleteItem(nIndex);
 
@@ -353,10 +394,9 @@ void CDlgRobotCtrl::OnSelchangingTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	m_nCurRobotTabIndex = m_tabShowRobots.GetCurSel();
-	m_dlgCurShowRobot.SetCurRobotTabIndex(m_nCurRobotTabIndex);
-
-	UpdateRobotTab(m_nCurRobotTabIndex);
+	INT32 nIndex = m_tabShowRobots.GetCurSel();
+	
+	UpdateRobotTab(nIndex);
 
 	*pResult = 0;
 }
