@@ -198,7 +198,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NO_WARN_MBCS_MFC_DEPRECATION;LEVELDB_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_WINDOWS;DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)RobotCtrl;$(SolutionDir)../LibCore/;$(SolutionDir)../RobotCtrl/;$(SolutionDir)../LibCore/MongoBson;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/UnitTest++/;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/glog/src/windows;$(SolutionDir)../deps/log4cpp/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/;$(SolutionDir)../deps/gtest/googletest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)src/rpc;$(SolutionDir)RobotCtrl;$(SolutionDir)../LibCore/;$(SolutionDir)../RobotCtrl/;$(SolutionDir)../LibCore/MongoBson;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/UnitTest++/;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/glog/src/windows;$(SolutionDir)../deps/log4cpp/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/;$(SolutionDir)../deps/gtest/googletest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -273,28 +273,36 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DlgRobotCtrl.h" />
-    <ClInclude Include="DlgShowRobot.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="RobotBtn.h" />
-    <ClInclude Include="RobotCommon.h" />
-    <ClInclude Include="RobotCtrl.h" />
-    <ClInclude Include="RobotGroup.h" />
-    <ClInclude Include="Robot.h" />
-    <ClInclude Include="RobotManager.h" />
-    <ClInclude Include="RobotServer.h" />
+    <ClInclude Include="src\CRobot.h" />
+    <ClInclude Include="src\DlgRobotCtrl.h" />
+    <ClInclude Include="src\DlgShowRobot.h" />
+    <ClInclude Include="src\RobotBtn.h" />
+    <ClInclude Include="src\RobotCommon.h" />
+    <ClInclude Include="src\RobotCtrl.h" />
+    <ClInclude Include="src\RobotGroup.h" />
+    <ClInclude Include="src\RobotManager.h" />
+    <ClInclude Include="src\RobotServer.h" />
+    <ClInclude Include="src\rpc\GRpc.h" />
+    <ClInclude Include="src\rpc\MsgNameDefine.h" />
+    <ClInclude Include="src\rpc\RPCCallFuncs.h" />
+    <ClInclude Include="src\rpc\RpcDatas.h" />
+    <ClInclude Include="src\rpc\RPCDefines.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DlgShowRobot.cpp" />
-    <ClCompile Include="RobotBtn.cpp" />
-    <ClCompile Include="RobotCtrl.cpp" />
-    <ClCompile Include="DlgRobotCtrl.cpp" />
-    <ClCompile Include="RobotGroup.cpp" />
-    <ClCompile Include="Robot.cpp" />
-    <ClCompile Include="RobotManager.cpp" />
-    <ClCompile Include="RobotServer.cpp" />
+    <ClCompile Include="src\CRobot.cpp" />
+    <ClCompile Include="src\DlgRobotCtrl.cpp" />
+    <ClCompile Include="src\DlgShowRobot.cpp" />
+    <ClCompile Include="src\RobotBtn.cpp" />
+    <ClCompile Include="src\RobotCtrl.cpp" />
+    <ClCompile Include="src\RobotGroup.cpp" />
+    <ClCompile Include="src\RobotManager.cpp" />
+    <ClCompile Include="src\RobotServer.cpp" />
+    <ClCompile Include="src\rpc\CRobot_SyncRobotID_Client.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_SyncRobotGroupID_Client.cpp" />
+    <ClCompile Include="src\rpc\RobotServer_SyncRobotServerID_Client.cpp" />
+    <ClCompile Include="src\rpc\RpcRegister.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|Win32'">Create</PrecompiledHeader>

@@ -1,8 +1,8 @@
 /************************************
 FileName	:	RpcRegister.cpp
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.37.66
 Version		:	0.0.1
 Description	:	注册每个函数.以及检测网络传递的消息是否是正确的参数.
 ************************************/
@@ -32,16 +32,16 @@ namespace Server
 	static unsigned char g_rpcDefaultParam_unsigned_char = 0;
 	static std::string g_rpcDefaultParam_std__string = std::string();
 	static time_t g_rpcDefaultParam_time_t = 0;
-	static UINT8 g_rpcDefaultParam_UINT8 = 0;
 	static SINT8 g_rpcDefaultParam_SINT8 = 0;
-	static UINT16 g_rpcDefaultParam_UINT16 = 0;
+	static UINT8 g_rpcDefaultParam_UINT8 = 0;
 	static INT16 g_rpcDefaultParam_INT16 = 0;
+	static UINT16 g_rpcDefaultParam_UINT16 = 0;
 	static INT32 g_rpcDefaultParam_INT32 = 0;
 	static UINT32 g_rpcDefaultParam_UINT32 = 0;
-	static UINT64 g_rpcDefaultParam_UINT64 = 0;
 	static INT64 g_rpcDefaultParam_INT64 = 0;
-	static double g_rpcDefaultParam_double = 0.0f;
+	static UINT64 g_rpcDefaultParam_UINT64 = 0;
 	static float g_rpcDefaultParam_float = 0.0f;
+	static double g_rpcDefaultParam_double = 0.0f;
 	static std_string g_rpcDefaultParam_std_string = std::string();
 	static CUtilChunk g_rpcDefaultParam_CUtilChunk = CUtil::Chunk();
 	static TestRpcData g_rpcDefaultParam_TestRpcData = TestRpcData();

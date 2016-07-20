@@ -7,6 +7,7 @@ import collections
 import xml.dom.minidom
 import time,datetime
 import socket  
+import traceback
 
 from xml.dom import minidom , Node 
 
@@ -565,15 +566,15 @@ def GenerateRpc():
 	LogOutInfo("generate RpcDefine.h file finished.") 
 
 def GenerateMsgNameDefine(): 
-	sameNamespace = collections.OrderedDict()
+	sameOutputPath = collections.OrderedDict()
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
 		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "MsgNameDefine.h"     
 		
 		fileRpc = open(outputPath , "a")
-		if rpcServerName.namespace not in sameNamespace :
+		if outputPath not in sameOutputPath :
 			GenerateRPCParamDefineHeader(fileRpc , rpcServerName.namespace)
-			sameNamespace[rpcServerName.namespace] = 1
+			sameOutputPath[outputPath] = 1
 		
 			sameRecord = collections.OrderedDict()
 			for index , rpc in g_rpcMsgs.rpcs.rpcs.items():   
@@ -583,16 +584,16 @@ def GenerateMsgNameDefine():
 			
 		fileRpc.close()	
 
-	sameNamespace = collections.OrderedDict() 
+	sameOutputPath = collections.OrderedDict() 
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
 		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "MsgNameDefine.h"     
 		
-		if rpcServerName.namespace not in sameNamespace : 
+		if outputPath not in sameOutputPath : 
 			fileRpc = open(outputPath , "a")
 			fileRpc.write("}\n\n#endif\n\n")
 			fileRpc.close()	
-			sameNamespace[rpcServerName.namespace] = 1
+			sameOutputPath[outputPath] = 1
 
 def GenerateRPCParamDefineHeader(fileRpc , namespace):  
 	WriteFileDescription(fileRpc , "MsgNameDefine.h" , "用于定义消息的全局唯一名字")
@@ -607,18 +608,17 @@ def GenerateRPCParamDefine(rpc , fileRpc):
 	fileRpc.write(oneTab + "//tool " + rpc.name + " declare here\n")
 	fileRpc.write(oneTab + "RPC_DEFINE(" + rpc.name + ");\n\n")
 	
-def GenerateRPCDefines(): 
-
+def GenerateRPCDefines():  
 	rpcRecords = collections.OrderedDict()		
-	sameNamespace = collections.OrderedDict()   
+	sameOutputPath = collections.OrderedDict()   
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
 		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "RPCDefines.h"    
 		 
 		fileRpc = open(outputPath , "a")
-		if rpcServerName.namespace not in sameNamespace :
+		if outputPath not in sameOutputPath :
 			GenerateRPCDefinesHeader(fileRpc , rpcServerName.namespace)			
-			sameNamespace[rpcServerName.namespace] = 1  
+			sameOutputPath[outputPath] = 1  
 			
 			for recordIndex , rpcClasses in g_rpcRecords[rpcServerName.namespace].items():
 				GenerateRPCDefine(recordIndex , rpcClasses , fileRpc , rpcServerName.namespace)						
@@ -626,16 +626,16 @@ def GenerateRPCDefines():
 		fileRpc.write("\n\n")
 		fileRpc.close()	 
 			
-	sameNamespace = collections.OrderedDict() 
+	sameOutputPath = collections.OrderedDict() 
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
 		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "RPCDefines.h"     
 		
-		if rpcServerName.namespace not in sameNamespace : 
+		if outputPath not in sameOutputPath : 
 			fileRpc = open(outputPath , "a")
 			fileRpc.write("\n}\n\n#endif\n\n")
 			fileRpc.close()	
-			sameNamespace[rpcServerName.namespace] = 1
+			sameOutputPath[outputPath] = 1
 			
 def GenerateRPCDefinesHeader(fileRpc , namespace):
 	WriteFileDescription(fileRpc , "RPCDefines.h" , "RPC函数定义")
@@ -685,28 +685,27 @@ def GenerateObjectHaveCurFunc(fileRpc , className , rpcs):
 
 	
 def GenerateGlableRpc():
-	sameNamespace = collections.OrderedDict()
+	sameOutputPath = collections.OrderedDict()
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
-		outputPath = GetOutputPath(rpcServerName.namespace)  
+		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "GRpc.h"   
 					
 		fileRpc = open(outputPath , "a")
-		if rpcServerName.namespace not in sameNamespace :
+		if outputPath not in sameOutputPath :
 			GenerateGlableRpcHeaderNamespace(fileRpc , rpcServerName.namespace)
-			sameNamespace[rpcServerName.namespace] = 1
+			sameOutputPath[outputPath] = 1
 							
 		fileRpc.close()	
 
-	sameNamespace = collections.OrderedDict()
+	sameOutputPath = collections.OrderedDict()
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
-		outputPath = GetOutputPath(rpcServerName.namespace)  
+		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "GRpc.h"   
 		
-		if rpcServerName.namespace not in sameNamespace :
-			fileRpc = open(outputPath , "a")
-			
+		if outputPath not in sameOutputPath :
+			fileRpc = open(outputPath , "a")			
 			GenerateGlableRpcLastNamespace(fileRpc , rpcServerName.namespace)
-			sameNamespace[rpcServerName.namespace] = 1  
+			sameOutputPath[outputPath] = 1  
 			fileRpc.close()	
 		 
 #生成GlableRpc头部部分.
@@ -743,19 +742,19 @@ def GenerateGlableRpcLastNamespace(fileRpc , namespace):
 	
 def GenerateRpcRegister():   
 	#生成注册的头 
-	sameNamespace = collections.OrderedDict()   
+	sameOutputPath = collections.OrderedDict()   
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
 		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "RpcRegister.cpp"    
  
 		fileRpc = open(outputPath , "a")    
-		if rpcServerName.namespace not in sameNamespace :
-			GenerateRpcRegisterHeader(fileRpc , rpcServerName.namespace)
-			sameNamespace[rpcServerName.namespace] = 1  
+		if outputPath not in sameOutputPath :
+			GenerateRpcRegisterHeader(fileRpc , outputPath , rpcServerName.namespace)
+			sameOutputPath[outputPath] = 1  
 			
 		fileRpc.write(oneTab + "void " + rpcServerName.rpcInterface + "::OnRegisterRpcs( void )\n")
 		fileRpc.write(oneTab + "{\n")
-		fileRpc.write(twoTab + "Assert(m_pRpcManager && Msg::RpcCheckParams::GetInstance());	\n")
+		fileRpc.write(twoTab + "Assert_(m_pRpcManager && Msg::RpcCheckParams::GetInstance());	\n")
 		fileRpc.write(twoTab + "static " + rpcServerName.namespace + "::GRpc g_pGRpc( Msg::DEFAULT_RPC_CALLABLE_ID , m_pRpcManager); \n\n") 
 		
 		rpcRecords = collections.OrderedDict()
@@ -784,19 +783,16 @@ def GenerateRpcRegister():
 		
 		fileRpc.close() 
 		
-	sameNamespace = collections.OrderedDict()
+	sameOutputPath = collections.OrderedDict()
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
-		outputPath = GetOutputPath(rpcServerName.namespace)  
+		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "RpcRegister.cpp"    
 		
-		if rpcServerName.namespace not in sameNamespace :
-			fileRpc = open(outputPath , "a")
-			
-			GenerateDefineStaticFunc(fileRpc , rpcServerName.namespace)
-				
-			fileRpc.write("}//" + rpcServerName.namespace + "\n\n") 
-			
-			sameNamespace[rpcServerName.namespace] = 1 
+		if outputPath not in sameOutputPath :
+			fileRpc = open(outputPath , "a")			
+			GenerateDefineStaticFunc(fileRpc , outputPath , rpcServerName.namespace)				
+			fileRpc.write("}//" + rpcServerName.namespace + "\n\n") 			
+			sameOutputPath[outputPath] = 1 
 			fileRpc.close()	 
 
 def GenerateInitStaticFunc(fileRpc , namespace , rpcRecords):	  
@@ -804,25 +800,37 @@ def GenerateInitStaticFunc(fileRpc , namespace , rpcRecords):
 		if index != "GRpc":
 			fileRpc.write(twoTab + namespace + "::"+ index + "::" +"InitObjectFuncs();\n")
 		
-def GenerateDefineStaticFunc(fileRpc , namespace):	  
+def GenerateDefineStaticFunc(fileRpc , outputPath , namespace):	  
+	sameNames = collections.OrderedDict()
+	fileRpc.write(oneTab + "CollectionObjectFuncsT " + namespace + "::"+ "GRpc" + "::" +"s_setFuncs;\n")
+	sameNames["GRpc" ] = 1 
 	for index , rpcs in g_rpcRecords[namespace].items(): 
-		fileRpc.write(oneTab + "CollectionObjectFuncsT " + namespace + "::"+ index + "::" +"s_setFuncs;\n")
+		for index2 , rpc in rpcs.items():  
+			for index3 , target in rpc.targets.items():   
+				path = GetOutputPath(target.name)  
+				path = path + "RpcRegister.cpp"  
+				if outputPath == path and target.classes not in sameNames : 	
+					fileRpc.write(oneTab + "CollectionObjectFuncsT " + namespace + "::"+ target.classes + "::" +"s_setFuncs;\n")			
+					sameNames[target.classes] = 1 
 	
-def GenerateRpcRegisterHeader(fileRpc , rpcNamespace) :
+def GenerateRpcRegisterHeader(fileRpc , outputPath , rpcNamespace) :
 	WriteFileDescription(fileRpc , "RpcRegister.cpp" , "注册每个函数.以及检测网络传递的消息是否是正确的参数.") 
 	fileRpc.write("#include \"MsgLib/inc/RpcManager.h\"\n")
 	fileRpc.write("#include \"MsgLib/inc/RpcCheckParams.h\"\n") 
 	fileRpc.write("#include \"CUtil/inc/Chunk.h\"\n")  
 	fileRpc.write("#include \"MsgNameDefine.h\"\n")  
 	fileRpc.write("#include \"GRpc.h\"\n") 
-	GenerateRpcRegisterHeaderInclude(fileRpc , rpcNamespace)
+	GenerateRpcRegisterHeaderInclude(fileRpc , outputPath , rpcNamespace)
 
-	sameNamespace = collections.OrderedDict()
+	#相同路径下的不同servername,都需要包含对应的RPC处理的类.
+	sameServerName = collections.OrderedDict()
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():
-		if rpcServerName.namespace == rpcNamespace : 
-			sameNamespace[rpcServerName.serverName] = 1 
+		path = GetOutputPath(rpcServerName.serverName)  
+		path = path + "RpcRegister.cpp"   
+		if rpcServerName.namespace == rpcNamespace and path == outputPath: 
+			sameServerName[rpcServerName.serverName] = 1 
 			
-	for index , foo in sameNamespace.items():   
+	for index , foo in sameServerName.items():   
 		GenerateRpcRegisterServerHeader(g_rpcMsgs.rpcs.rpcs , fileRpc , index)
  
 	fileRpc.write("\n") 
@@ -841,9 +849,11 @@ def WriteDefaultParams(fileRpc):
 			fileRpc.write(oneTab + "static " + index + " " + defaultParam + ";\n")
 	fileRpc.write("\n")
 	
-def GenerateRpcRegisterHeaderInclude(fileRpc , rpcNamespace): 
-	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
-		if rpcNamespace == rpcServerName.namespace :
+def GenerateRpcRegisterHeaderInclude(fileRpc , outputPath , rpcNamespace): 
+	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():   
+		path = GetOutputPath(rpcServerName.serverName)  
+		path = path + "RpcRegister.cpp"   
+		if rpcNamespace == rpcServerName.namespace and outputPath == path:
 			fileRpc.write("#include \"" + rpcServerName.include + "\"\n")
 	
 def GenerateRpcRegisterServerHeader(rpcs , fileRpc , serverName):
@@ -1014,16 +1024,16 @@ def WriteDefineParams(fileRpc , params):
 		fileRpc.write(strParams) 
 		
 def GenerateRpcDatas():
-	sameNamespace = collections.OrderedDict() 
+	sameOutputPath = collections.OrderedDict() 
 	#生成所有的rpc
 	for index , serverName in g_rpcMsgs.rpcServerNames.items():    
 		outputPath = GetOutputPath(serverName.serverName)   
 		outputPath += "RpcDatas.h" 
 			 
 		fileRpc = open(outputPath , "a")
-		if serverName.namespace not in sameNamespace :
+		if outputPath not in sameOutputPath :
 			GenerateRpcDatasHeader(fileRpc , serverName)
-			sameNamespace[serverName.namespace] = 1 
+			sameOutputPath[outputPath] = 1 
 
 			for index , rpcData in g_rpcMsgs.rpcs.rpcDatas.items():   
 				fileRpc.write(oneTab + "class " + rpcData.name + ": public CUtil::Marshal\n") 
@@ -1058,16 +1068,16 @@ def GenerateRpcDatas():
 			fileRpc.write("}\n\n")	
 		fileRpc.close()
 
-	sameNamespace = collections.OrderedDict() 
+	sameOutputPath = collections.OrderedDict() 
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
 		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "RpcDatas.h"     
 		
-		if rpcServerName.namespace not in sameNamespace : 
+		if outputPath not in sameOutputPath : 
 			fileRpc = open(outputPath , "a")
 			fileRpc.write("#endif\n")				
 			fileRpc.close()
-			sameNamespace[rpcServerName.namespace] = 1
+			sameOutputPath[outputPath] = 1
 			
 def WriteDefineParamsWithDefault(fileRpc , params):
 	fileRpc.write(threeTab + ":")
@@ -1212,15 +1222,15 @@ def  GenerateRpcDatasHeader(fileRpc , serverName):
 	fileRpc.write("\n{\n")   
 	
 def GenerateRpcCallFuncs(): 
-	sameNamespace = collections.OrderedDict() 
+	sameOutputPath = collections.OrderedDict() 
 	for index , serverName in g_rpcMsgs.rpcServerNames.items(): 
 		outputPath = GetOutputPath(serverName.serverName)   
 		outputPath += "RPCCallFuncs.h" 
 			 
 		fileRpc = open(outputPath , "a")
-		if serverName.namespace not in sameNamespace :
-			GenerateRpcCallFuncsHeader(fileRpc , serverName)
-			sameNamespace[serverName.namespace] = 1 
+		if outputPath not in sameOutputPath :
+			GenerateRpcCallFuncsHeader(fileRpc , serverName , outputPath)
+			sameOutputPath[outputPath] = 1 
 		
 		for index , rpc in g_rpcMsgs.rpcs.rpcs.items(): 
 			sameTarget = collections.OrderedDict() 
@@ -1300,20 +1310,20 @@ def GenerateRpcCallFuncs():
 					
 		fileRpc.close()
 			
-	sameNamespace = collections.OrderedDict() 
+	sameOutputPath = collections.OrderedDict() 
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items():  
 		outputPath = GetOutputPath(rpcServerName.serverName)  
 		outputPath = outputPath + "RPCCallFuncs.h"     
 		
-		if rpcServerName.namespace not in sameNamespace : 
+		if outputPath not in sameOutputPath : 
 			fileRpc = open(outputPath , "a")
 			fileRpc.write("}\n\n")	
 			fileRpc.write("#endif\n")				
 			fileRpc.close()
-			sameNamespace[rpcServerName.namespace] = 1
+			sameOutputPath[outputPath] = 1
 			
 
-def  GenerateRpcCallFuncsHeader(fileRpc , serverName):
+def  GenerateRpcCallFuncsHeader(fileRpc , serverName , outputPath):
 	WriteFileDescription(fileRpc , "RpcCallFuncs.h" , "客户端调用的rpc.") 
 	fileRpc.write("#ifndef __msg_rpc_call_funcs_h__\n")
 	fileRpc.write("#define __msg_rpc_call_funcs_h__\n")
@@ -1322,8 +1332,10 @@ def  GenerateRpcCallFuncsHeader(fileRpc , serverName):
 	fileRpc.write("#include \"MsgLib/inc/RPCMsgCall.h\"\n")  
 	fileRpc.write("#include \"MsgNameDefine.h\"\n") 
 	fileRpc.write("#include \"RpcDatas.h\"\n") 
-	for index , serverNames in g_rpcMsgs.rpcServerNames.items(): 
-		if serverNames.namespace == serverName.namespace:
+	for index , serverNames in g_rpcMsgs.rpcServerNames.items():
+		path = GetOutputPath(serverNames.serverName)   
+		path += "RPCCallFuncs.h"  
+		if serverNames.namespace == serverName.namespace and path == outputPath:
 			fileRpc.write("#include \"" + serverNames.include + "\"\n") 
 	
 	fileRpc.write("\n") 
@@ -1368,6 +1380,7 @@ def LogOutError(*string):
 	
 	print(longStr)
 	GetColor("reset")
+	traceback.print_stack() 
 	sys.exit()
 	
 def InitColor():
@@ -1445,6 +1458,8 @@ def GetServerNamespaceByName(strName):
 	LogOutError("GetServerNamespaceByName error. serverName:" + strName) 
 	
 def GetOutputPath(name):
+#	LogOutDebug("GetOutputPath name = " , name)
+#	traceback.print_stack() 
 	for index , rpcServerName in g_rpcMsgs.rpcServerNames.items(): 
 		if rpcServerName.serverName == name:
 			if os.path.exists(rpcServerName.outputPath):  
@@ -1452,7 +1467,7 @@ def GetOutputPath(name):
 			else: 
 				return rpcServerName.outputPath
 
-	LogOutError("no path is serverNamelist") 
+	LogOutError("no path is serverNamelist name = " , name) 
 
 def IsPathExist(path):
 	if os.path.exists(path):
@@ -1756,7 +1771,7 @@ def handleArgs(argv):
 		Usage()
 		sys.exit(2) 
 	if len(argv) == 1: 
-		g_rpcXmlPath = "testRpc.xml"
+		g_rpcXmlPath = "Robot.xml"
 		return
 	elif len(argv) == 2:  
 		g_rpcXmlPath = argv[1]

@@ -13,6 +13,7 @@ namespace Msg
 		: m_pRpcManager(NULL)
 		, m_pRpcListener(NULL)
 		, m_bFirstUpdated(FALSE)
+		, m_pNetThread(NULL)
 	{
 	} 
 
@@ -150,7 +151,7 @@ namespace Msg
 	{ 
 		if (!m_bFirstUpdated)
 		{
-			Coroutine::CoInit();
+// 			Coroutine::CoInit();
 			m_bFirstUpdated = TRUE;
 		}
 

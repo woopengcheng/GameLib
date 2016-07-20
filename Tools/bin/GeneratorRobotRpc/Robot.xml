@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="Robot.xsl"?>
+<!--
+	使用方法:RPCMsgs包含了所有的RPC的消息.
+		DefaultParams和LongDefaultParams:
+			功能:
+				系统默认参数值.
+			填写方法:
+				如果需要增加新的类型.这个新类型必须包含默认参数.
+				默认参数需要在<DefaultParams />中声明类型和值.类型只能为1个单字.不能出现const char * 或者Chunk这种.一行可以填写多个
+				多个字节的默认参数通过LongDefaultParams方式填写.
+				Param中涉及到 [] 中括号的是用来表示 <> 尖括号,是因为xml支持不好<>
+		
+		SpecialDefaultParams:
+			功能:
+				系统默认参数值.针对一些模板类的非常特殊的参数.
+			填写方法:
+				type:
+					参数的类型.
+				suffix:
+					生成默认参数时,在type的后面加上后缀
+				prefix:
+					生成默认参数时,在type的最前面加上后缀				
+				specialType:
+					根据不同的规则生成不同的默认参数.
+					0代表的是标准库中的容器,默认是根据模板,加上后缀即可.
+					
+		Refers:
+			功能:
+				函数参数是否是通过引用来使用.默认非基本类型的都是引用,除非有unfer
+			填写方法:
+				默认参数中的值在这里填写了引用,会在生成的时候默认带有引用类型.基本类型不能使用引用.去掉引用,在param中填写unrefer属性.值随便写.推荐写"!&"
+				 
+		RpcServerName:指的是作为RPC服务器的功能.
+			功能:
+				指定当前使用RPC功能包含的服务器
+			使用方法:
+				serverName: 
+					指的是当前服务器的名字.主要作用为作为client发起端,server接收端,proxy代理转发端.
+				include: 
+					需要包含的继承自RPCInterface的class的头文件包含路径.即:当前服务器的路径.
+				namespace:
+					指的是当前RPC服务器所使用的命名空间
+				rpcInterface:
+					指的是当前RPC服务器继承自RPCInterface的接口.
+				outputPath: 
+					当前的RPC服务器输出的文件位置.注意末尾加/				
+		RPCS:
+			功能:
+				定义各个服务器使用的所有的RPC			
+			RpcData:
+				功能:
+					RPC的参数类型可以传递RpcData.相当于定义一个结构体,传递消息时,大家可以共用一份.
+				使用方法:
+					同param参数.
+			Rpc: 
+				功能:
+					定义一个RPC
+				name:
+					RPC名字
+				syncType:
+					0代表同步.1代表异步,
+				timeout:
+					当前RPC最大超时时间,默认为15秒
+				以下功能为可以使用,也可以不使用的功能.他和Targets是重复的功能,两个只需要填一个即可.
+					server:					
+						当前RPC远程调用的服务器的功能是作为server
+					serverClass:
+						当前RPC远程调用的服务器对象使用的类
+					serverInclude:
+						当前RPC远程调用的服务器对象所在的头文件.
+					proxy:					
+						当前RPC远程调用的代理服务器的功能是作为proxy
+					proxyClass:
+						当前RPC远程调用的代理服务器对象使用的类
+					proxyInclude:
+						当前RPC远程调用的代理服务器对象所在的头文件.
+					client:					
+						当前RPC远程调用的服务器的功能是作为client
+					clientClass:
+						当前RPC远程调用的服务器对象使用的类
+					clientInclude:
+						当前RPC远程调用的服务器对象所在的头文件.
+					支持的服务器类型,必须和上面登记的一样.
+						client="Client" proxy="Proxy" server="Server"
+			call和Return:
+				功能:
+					call为一个RPC的发起调用.或者超时时调用的函数.
+					return为RPC从服务器返回的多个值.代码中使用RPCReturnXX方式返回
+				使用方法:
+					type:变量类型.
+					name:变量名字.
+					default:变量默认值
+			Targets:
+				功能:
+					定义当前RPC在哪些服务器中使用.
+				使用方法:
+					Client:为发起端调用.这里需要和ServerName对应.
+					Proxy:为代理转发.这里需要和ServerName对应.
+					Server:为服务器使用,这里需要和ServerName对应.
+					
+	备注:
+		XML常用转义字符:
+			< 	&lt;	小于号 
+			> 	&gt;	大于号 
+			&	&amp;	逻辑与 
+			'	&apos;	单引号 
+			"	&quot;	双引号 
+	RPC生成对象:
+		targets中在同一个生成路径下.是不允许有多个Client端.即不同路径下可以多个.
+		targets中的server和proxy中的服务器名字只能2选1.即一个rpc管理器不能做server又做proxy.
+		targets中可以有多个proxy.多个server.
+		
+-->
+
+
+<RpcMsgs>	
+	<!--
+		以下为基本类型,在Parameter中含有的.也可以在代码中定义,不过需要的是只能为一个单词.当然也可以自定义rpcdata
+		默认值的定义的优先级非常高,千万不要将默认值放在其他地方定义,这里也是给出RPC支持的类型.
+	-->		
+	<DefaultParams int='0'/>
+	<DefaultParams short='0'/>
+	<DefaultParams long='0'/>
+	<DefaultParams char='char(0)'/>
+	<LongDefaultParams type="unsigned int"  default="0"/>
+	<LongDefaultParams type="unsigned short"  default="0"/>
+	<LongDefaultParams type="unsigned char" default="0"/> 
+	<LongDefaultParams type="std::string" default="std::string()"/> 
+	<LongDefaultParams type="time_t" default="0"/>
+	<SpecialDefaultParam type="std::vector" defaultSuffix="(0)" specialType="0"/>
+	<SpecialDefaultParam type="std::set" defaultSuffix="()" specialType="0"/>
+	<SpecialDefaultParam type="std::map" defaultSuffix="()" specialType="0"/>
+	<SpecialDefaultParam type="std::list" defaultSuffix="()" specialType="0"/>
+	<DefaultParams SINT8='0'  UINT8='0'/>
+	<DefaultParams INT16='0' UINT16='0'/>
+	<DefaultParams INT32='0' UINT32='0'/>
+	<DefaultParams INT64='0' UINT64='0'/> 
+	<DefaultParams double='0.0f' float='0.0f'/> 
+	<DefaultParams std_string='std::string()'/> 
+	<DefaultParams CUtilChunk='CUtil::Chunk()'/>
+	
+	<Refers>
+		<Refer name="std_string"/> 
+		<Refer name="CUtilChunk"/>
+	</Refers>
+	<!--
+		RobotCtrl:
+			RobotCtrl是RobotCtrl用来与远程的robotserver连接的,用于提示robotserver更新robot程序.或者创建,删除robot的进程
+			RobotCtrl 接收 RobotServer 作为对应的连接端
+			RobotServer:
+				robotserver是一个进程,用于更新robot程序.或者创建,删除robot的进程
+		RobotCtrlServer:
+			RobotCtrlServer 用于与每一个robotgroup的RPCManager进行通信.robot进程中包含robotgroup和robotset两个rpcmanager.
+			RobotCtrlServer 接收 RobotGroup 作为对应的连接端
+			RobotGroup:
+				RobotGroupClient用于管理当前进程中的所有Robot
+		RobotCtrlGroup:
+			RobotCtrlGroup 用于接收每一个robotset中的robot.
+			RobotCtrlGroup 接收 RobotManager 作为对应的连接端		
+	-->	
+	<RpcServerName serverName="RobotCtrl" include="RobotManager.h" namespace="Robot" rpcInterface="RobotManager" outputPath="../../../Tools/src/RobotCtrl/src/rpc/"/>
+	<RpcServerName serverName="RobotCtrlServer" include="RobotServer.h" namespace="Robot" rpcInterface="RobotServer" outputPath="../../../Tools/src/RobotCtrl/src/rpc/"/>
+	<RpcServerName serverName="RobotCtrlGroup" include="RobotGroup.h" namespace="Robot" rpcInterface="RobotGroup" outputPath="../../../Tools/src/RobotCtrl/src/rpc/"/>
+	<RpcServerName serverName="RobotServer" include="RobotServer.h" namespace="Robot" rpcInterface="RobotServer" outputPath="../../../Tools/src/RobotServer/src/rpc/"/>
+	<RpcServerName serverName="RobotGroup" include="RobotGroup.h" namespace="Robot" rpcInterface="RobotGroup" outputPath="../../../Tools/src/Robot/src/rpc/"/>
+	<RpcServerName serverName="RobotManager" include="RobotManager.h" namespace="Robot" rpcInterface="RobotManager" outputPath="../../../Tools/src/Robot/src/rpc/"/>
+	
+	<Rpcs>   
+		<Rpc name="SyncRobotServerID" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotCtrl" include="RobotServer.h" class="RobotServer"/> 
+				<Server name="RobotServer"  /> 
+			</Targets>
+
+			<Call > 
+			</Call>
+			
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
+		<Rpc name="SyncRobotGroupID" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotCtrlServer" include="RobotGroup.h" class="RobotGroup"/> 
+				<Server name="RobotGroup" include="RobotGroupHandler.h" class="RobotGroupHandler"  /> 
+			</Targets>
+
+
+			<Call > 
+			</Call>
+			
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
+		<Rpc name="SyncRobotID" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotCtrlGroup" include="CRobot.h" class="CRobot"/> 
+				<Server name="RobotManager" include="CRobot.h" class="CRobot" /> 
+			</Targets>
+
+			<Call > 
+			</Call>
+			
+
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
+	</Rpcs>
+	 
+</RpcMsgs>

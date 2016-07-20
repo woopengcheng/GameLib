@@ -1,8 +1,8 @@
 /************************************
 FileName	:	MsgNameDefine.h
 Author		:	generate by tools
-HostName	:	DESKTOP-5AT4DK2
-IP			:	192.168.16.104
+HostName	:	devuser-PC
+IP			:	10.236.37.66
 Version		:	0.0.1
 Description	:	用于定义消息的全局唯一名字
 ************************************/

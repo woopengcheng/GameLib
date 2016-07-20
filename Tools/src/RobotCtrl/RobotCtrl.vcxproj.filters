@@ -13,75 +13,105 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{fb715e2e-75d2-4e0a-b05c-49bbe8a9cf19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\rpc">
+      <UniqueIdentifier>{33a3652d-4148-49ab-a718-0888bff1879f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RobotCtrl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\CRobot.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="DlgShowRobot.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\DlgRobotCtrl.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="DlgRobotCtrl.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\DlgShowRobot.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="RobotCommon.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\RobotBtn.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="RobotManager.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\RobotCommon.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="RobotGroup.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\RobotCtrl.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="RobotServer.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\RobotGroup.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Robot.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\RobotManager.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="RobotBtn.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="src\RobotServer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\GRpc.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\MsgNameDefine.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RPCCallFuncs.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RpcDatas.h">
+      <Filter>src\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\RPCDefines.h">
+      <Filter>src\rpc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RobotCtrl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DlgShowRobot.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\CRobot.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="DlgRobotCtrl.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\DlgRobotCtrl.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="RobotManager.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\DlgShowRobot.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="RobotGroup.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\RobotBtn.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="RobotServer.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\RobotCtrl.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Robot.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\RobotGroup.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="RobotBtn.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\RobotManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RobotServer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\CRobot_SyncRobotID_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotGroup_SyncRobotGroupID_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotServer_SyncRobotServerID_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RpcRegister.cpp">
+      <Filter>src\rpc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
