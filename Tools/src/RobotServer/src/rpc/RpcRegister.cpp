@@ -26,18 +26,19 @@ namespace Robot
 	static unsigned char g_rpcDefaultParam_unsigned_char = 0;
 	static std::string g_rpcDefaultParam_std__string = std::string();
 	static time_t g_rpcDefaultParam_time_t = 0;
-	static UINT8 g_rpcDefaultParam_UINT8 = 0;
 	static SINT8 g_rpcDefaultParam_SINT8 = 0;
-	static INT16 g_rpcDefaultParam_INT16 = 0;
+	static UINT8 g_rpcDefaultParam_UINT8 = 0;
 	static UINT16 g_rpcDefaultParam_UINT16 = 0;
-	static UINT32 g_rpcDefaultParam_UINT32 = 0;
+	static INT16 g_rpcDefaultParam_INT16 = 0;
 	static INT32 g_rpcDefaultParam_INT32 = 0;
+	static UINT32 g_rpcDefaultParam_UINT32 = 0;
 	static UINT64 g_rpcDefaultParam_UINT64 = 0;
 	static INT64 g_rpcDefaultParam_INT64 = 0;
 	static double g_rpcDefaultParam_double = 0.0f;
 	static float g_rpcDefaultParam_float = 0.0f;
 	static std_string g_rpcDefaultParam_std_string = std::string();
 	static CUtilChunk g_rpcDefaultParam_CUtilChunk = CUtil::Chunk();
+	static std::vector<INT32> g_rpcDefaultParam_std__vector_INT32_;
 
 	void RobotServer::OnRegisterRpcs( void )
 	{
@@ -47,11 +48,31 @@ namespace Robot
 		//tool SyncRobotServerID generate default deliver and return check param here
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams );
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_INT32);
 			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SyncRobotServerID", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncRobotServerID", objReturnParams);
 			m_pRpcManager->RegisterFunc<GRpc >(Msg::g_szSyncRobotServerID_RpcServer , &GRpc::SyncRobotServerID_RpcServer); 
+		}
+
+		//tool HandleRobotGroup generate default deliver and return check param here
+		{
+			CUtil::Parameters objDeliverParams , objReturnParams;
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("HandleRobotGroup", objDeliverParams);
+			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("HandleRobotGroup", objReturnParams);
+			m_pRpcManager->RegisterFunc<GRpc >(Msg::g_szHandleRobotGroup_RpcServer , &GRpc::HandleRobotGroup_RpcServer); 
+		}
+
+		//tool UpdateRobotStart generate default deliver and return check param here
+		{
+			CUtil::Parameters objDeliverParams , objReturnParams;
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_CUtilChunk);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_CUtilChunk);
+			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("UpdateRobotStart", objDeliverParams);
+			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("UpdateRobotStart", objReturnParams);
+			m_pRpcManager->RegisterFunc<GRpc >(Msg::g_szUpdateRobotStart_RpcServer , &GRpc::UpdateRobotStart_RpcServer); 
 		}
 
 		//tool SyncRobotGroupID generate default deliver and return check param here
@@ -63,13 +84,40 @@ namespace Robot
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncRobotGroupID", objReturnParams);
 		}
 
-		//tool SyncRobotID generate default deliver and return check param here
+		//tool CreateRobots generate default deliver and return check param here
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams );
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32);
 			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
-			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SyncRobotID", objDeliverParams);
-			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncRobotID", objReturnParams);
+			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("CreateRobots", objDeliverParams);
+			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("CreateRobots", objReturnParams);
+		}
+
+		//tool CreateRobot generate default deliver and return check param here
+		{
+			CUtil::Parameters objDeliverParams , objReturnParams;
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std_string , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_INT32 , g_rpcDefaultParam_std_string);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("CreateRobot", objDeliverParams);
+			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("CreateRobot", objReturnParams);
+		}
+
+		//tool SendRobotCommand generate default deliver and return check param here
+		{
+			CUtil::Parameters objDeliverParams , objReturnParams;
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std__vector_INT32_ , g_rpcDefaultParam_std_string);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SendRobotCommand", objDeliverParams);
+			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SendRobotCommand", objReturnParams);
+		}
+
+		//tool UpdateRobotStatue generate default deliver and return check param here
+		{
+			CUtil::Parameters objDeliverParams , objReturnParams;
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_INT32);
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("UpdateRobotStatue", objDeliverParams);
+			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("UpdateRobotStatue", objReturnParams);
 		}
 
 	}

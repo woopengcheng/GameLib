@@ -8,7 +8,7 @@ Msg::ObjectMsgCall * Robot::RobotServer::SyncRobotServerID_RpcClient(INT32 nSess
 	ReturnNULL;
 }
 
-Msg::ObjectMsgCall * Robot::RobotServer::SyncRobotServerID_RpcTimeout(INT32 nSessionID, Msg::Object objSrc )
+Msg::ObjectMsgCall * Robot::RobotServer::SyncRobotServerID_RpcTimeout(INT32 nSessionID, Msg::Object objSrc , INT32 server_port/* = 0*/)
 {
 
 

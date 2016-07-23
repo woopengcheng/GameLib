@@ -29,6 +29,9 @@ namespace Net
 #define DEFAULT_SOCKET_BUFFER_SIZE		(40 * 1024)
 #define DEFAULT_CIRCLE_BUFFER_SIZE		(DEFAULT_SOCKET_BUFFER_SIZE * 10)
 
+#define RAND_MIN_PRIORITY				(10000)
+#define RAND_MAX_PRIORITY				(20000)
+
 #define DEFAULT_MSG_PING_ID				1
 #define DEFAULT_PING_TIME_OUT			5000
 
@@ -36,9 +39,9 @@ namespace Net
 #define INVALID_NET_SOCKET -1
 #endif
 
-const INT32 kMAX_EPOOL_WAIT_TIME_OUT = 25;
-const INT32 kSTART_RAND_UNUSED_PORT = 10000;
-const INT32 kEND_RAND_UNUSED_PORT = 20000;
+const INT32 kMAX_EPOOL_WAIT_TIME_OUT	= 25;
+const INT32 kSTART_RAND_UNUSED_PORT		= 10000;
+const INT32 kEND_RAND_UNUSED_PORT		= 40000;
 
 #define tbb_unordered_map tbb::concurrent_unordered_map 
 #define tbb_hash_map      tbb::concurrent_hash_map  

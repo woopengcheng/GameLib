@@ -2,6 +2,7 @@
 //
 #include "stdafx.h"
 #include "CUtil/inc/CUtil.h"
+#include "LogLib/inc/Log.h"
 #include "json/json.h"
 #include "Timer/inc/TimerHelp.h"
 #include "RobotGroup.h"
@@ -9,23 +10,30 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	if (argc < 2)
+	{
+		return 1;
+	}
+	system("pause");
+
 	CUtil::Init();
 
 	Json::Value root;
 	Json::JsonParase("Robot.conf", root);
 
+	INT32 nServerPort = CUtil::atoi(argv[1]);
+	root["robot_group"]["clients"][0]["port"] = nServerPort;
+	gDebugStream("server_port=" << root["clients"][0]["port"]);
+
 	Robot::RobotGroup::GetInstance().Init(root);
-	Robot::RobotManager::GetInstance().Init(root);
 
 	while (true)
 	{
 		Robot::RobotGroup::GetInstance().Update();
-		Robot::RobotManager::GetInstance().Update();
 		Timer::sleep(1);
 	}
 
 	Robot::RobotGroup::GetInstance().Cleanup();
-	Robot::RobotManager::GetInstance().Cleanup();
 
 	CUtil::Cleanup();
 	return 0;

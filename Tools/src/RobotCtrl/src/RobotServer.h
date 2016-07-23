@@ -9,7 +9,7 @@
 
 namespace Robot
 {
-	class RobotServer : Msg::RpcInterface, public Msg::IRpcMsgCallableObject
+	class RobotServer :public Msg::RpcInterface, public Msg::IRpcMsgCallableObject
 	{
 		RPC_DEFINE_RobotServer;
 	public:
@@ -34,17 +34,19 @@ namespace Robot
 		void						OnCreateRobotGroup(RobotGroup * pRobot);
 		CErrno						DeleteRobotGroup(INT32 nSessionID);
 		void						OnDeleteRobotGroup(RobotGroup * pRobot);
-		RobotGroup			*		OnUpdateRobotTab(INT32 nRobotTabIndex);
+		RobotGroup			*		GetRobotGroup(INT32 nRobotTabIndex);
 
 	public:
 		std::string					GetName() const { return m_strName; }
 		void						SetName(std::string val) { m_strName = val; }
-		INT32						GetSessionID() const { return m_nSessionID; }
-		void						SetSessionID(INT32 val) { m_nSessionID = val; }
+		INT32						GetRobotSessionID() const { return m_nRobotSessionID; }
+		void						SetRobotSessionID(INT32 val) { m_nRobotSessionID = val; }
 		INT32						GetListCtrlIndex() const { return m_nListCtrlIndex; }
 		void						SetListCtrlIndex(INT32 val) { m_nListCtrlIndex = val; }
 		INT32						GetCurRobotGroupCount() const { return m_nCurRobotGroupCount; }
 		const MapRobotGroups	&	GetMapRobotGroups() const { return m_mapRobotGroups; }
+		UINT32						GetServerPort() const { return m_nServerPort; }
+		void						SetServerPort(UINT32 val) { m_nServerPort = val; }
 
 	public:
 		void						DebugConnect();
@@ -54,9 +56,10 @@ namespace Robot
 		void						ResetRobotGroupIndex();
 
 	protected:
+		INT32						m_nServerPort;
 		Json::Value					m_objConf;
 		std::string					m_strName;
-		INT32						m_nSessionID;
+		INT32						m_nRobotSessionID;
 		INT32						m_nListCtrlIndex;		//5 这里需要关联界面上的listbox的index.删除用.
 		INT32						m_nCurRobotGroupCount;
 		MapRobotGroups				m_mapRobotGroups;

@@ -43,7 +43,14 @@ namespace Net
 			}
 
 			Json::Value netThead = conf.get("net_thread", Json::Value());
-			INT32 nPriority = netThead.get("priority", DEFAULT_THREAD_PRIORITY).asInt();
+			INT32 nPriority = netThead.get("priority", -1).asInt();
+			if (nPriority == -1)
+			{
+				while (ThreadPool::ThreadPoolInterface::GetInstance().HasPriorityThread(nPriority))
+				{
+					nPriority = CUtil::random(RAND_MIN_PRIORITY , RAND_MAX_PRIORITY);
+				}
+			}
 
 			SetThreadPriority(nPriority);
 			ThreadPool::ThreadPoolInterface::GetInstance().CreateThread(nPriority);

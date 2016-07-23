@@ -2,6 +2,7 @@
 #define __net_net_helper_h__ 
 #include "NetLib/inc/NetCommon.h" 
 #include "NetLib/inc/INetHandler.h"
+#include "json/json.h"
 
 struct in_addr;
 struct sockaddr_in;
@@ -59,6 +60,7 @@ namespace Net
 		static UINT8		GetPacketIdentifier(RakNet::Packet * pPacket);
 		static BOOL			IsSocketPortUsed(UINT32 unPort, NetSocket socket = -1);
 		static INT32		GetUnusedPort();
+		static INT32		CheckUnusedPort(Json::Value & value);
 
 #ifdef _WIN32
 		static INT32		WSARecv(INetHandler * pNetHandler);

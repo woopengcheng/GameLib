@@ -286,7 +286,7 @@ namespace Net
 				}
 				else
 				{
-					gErrorStream("sendbuff not empty");
+					gErrorStream("sendbuff full");
 					return -1;  
 				}
 			}

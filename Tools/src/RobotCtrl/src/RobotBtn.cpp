@@ -69,7 +69,7 @@ void CRobotBtn::OnPaint()
 	CString str;
 	if (m_pRobot)
 	{
-		str.Format("%s", m_pRobot->GetName());
+		str.Format("%s", m_pRobot->GetRobotInfo().strName.c_str());
 	}
 	else
 	{

@@ -6,6 +6,7 @@
 #include "afxcmn.h"
 #include "afxwin.h"
 #include "DlgShowRobot.h"
+#include "ListBoxEx.h"
 
 using namespace Robot;
 namespace Robot
@@ -32,7 +33,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 	
 // 实现
-protected:
+public:
 	// 生成的消息映射函数
 	virtual BOOL		OnInitDialog();
 	afx_msg void		OnSysCommand(UINT nID, LPARAM lParam);
@@ -43,12 +44,14 @@ protected:
 	afx_msg void		OnSelchangingTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void		OnBnClickedStop();
 	afx_msg void		OnBnClickedOk();
+	afx_msg void		OnClose();
+	afx_msg void		OnRBtnListServer();
 	DECLARE_MESSAGE_MAP()
 
 public:
 	void				UpdateRobotTab(INT32 nIndex);
 	void				UpdateCtrlServer(INT32 nIndex);
-	void				OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * pRobotGroup);
+	void				OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * pRobotGroup , BOOL bUpdate = FALSE);
 	void				OnDeleteRobotGroup(RobotServer * pRobotServer, RobotGroup * pRobotGroup);
 	void				OnCreateRobotServer(RobotServer * pRobot);
 	void				OnDeleteRobotServer(RobotServer * pRobot);
@@ -56,9 +59,7 @@ public:
 public:
 	CDlgShowRobot	&	GetDlgCurShowRobot() { return m_dlgCurShowRobot; }
 	INT32				GetCurRobotTabIndex() const { return m_nCurRobotTabIndex; }
-	void				SetCurRobotTabIndex(INT32 val) { m_nCurRobotTabIndex = val; }
 	INT32				GetCurListCtrlIndex() const { return m_nCurListCtrlIndex; }
-	void				SetCurListCtrlIndex(INT32 val) { m_nCurListCtrlIndex = val; }
 
 protected:
 	void				InitShowRobotDlg();
@@ -72,12 +73,12 @@ protected:
 	CStatic				m_txtOfflineRobotNum;
 	CStatic				m_txtShowRobotStatue;
 	CTabCtrl			m_tabShowRobots;
-	CListBox			m_listCtrlServer;			//5 所有与这台计算机连接的机器人的电脑
+	CListBoxEx			m_listCtrlServer;			//5 所有与这台计算机连接的机器人的电脑
 	CDlgShowRobot		m_dlgCurShowRobot;			//5 显示当前机器人状态的tab页
 
 	INT32				m_nCurRobotTabIndex;		//5 当前tab页显示机器人的tab index
 	INT32				m_nShowRobotCount;			//5 当前tab页的数量
 	INT32				m_nCurListCtrlIndex;		//5 当前list中选中的序号.
 public:
-	afx_msg void OnClose();
+	afx_msg void OnTcnSelchangeTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
 };

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RobotServer.h"
 #include "LogLib/inc/Log.h"
+#include "CUtil/inc/CUtil.h"
 
 namespace Robot
 {
@@ -8,6 +9,7 @@ namespace Robot
 	RobotServer::RobotServer()
 		: m_nServerSessionID(-1)
 		, m_llServerID(0)
+		, m_nRobotGroupConnectPort(0)
 	{
 		m_pRpcListener = new RobotServerListener(this);
 	}
@@ -32,6 +34,23 @@ namespace Robot
 	CErrno RobotServer::Update(void)
 	{
 		return Msg::RpcInterface::Update();
+	}
+
+	INT32 RobotServer::HandleRobotGroup(INT32 type /*= 0*/, INT32 param1 /*= 0*/, INT32 param2 /*= 0*/, INT32 param3 /*= 0*/, INT32 param4 /*= 0*/)
+	{
+		switch (type)
+		{
+		case 0:
+		{
+			std::string str = "start Robot.exe ";
+			str += CUtil::itoa(m_nRobotGroupConnectPort);
+			system(str.c_str());
+		}
+		break;
+		default:
+			break;
+		}
+		return 0;
 	}
 
 	CErrno RobotServerListener::OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)

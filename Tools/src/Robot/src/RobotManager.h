@@ -1,62 +1,40 @@
 #pragma once 
-#include "json/json.h"
-#include "MsgLib/inc/RpcInterface.h" 
-
+#include "CUtil/inc/Common.h"
+#include "MsgLib/inc/IRpcMsgCallableObject.h"
+#include "MsgNameDefine.h"  
+#include "RpcDefines.h" 
 
 namespace Robot
 {
+	class CRobot;
+	class RobotGroup;
 
-	class RobotManager : Msg::RpcInterface
+	class RobotManager
 	{
 	public:
-		typedef std::map<INT32, INT32>					MapTabToRobotGroup;		//5 建立Tab标签页到RobotServer的映射关系
-		typedef std::map<INT32, INT32>					MapRobotGroupToTab;
+		typedef std_unordered_map<INT32, CRobot*>		MapRobots;
 
 	public:
-		static RobotManager & GetInstance()
-		{
-			static RobotManager sRpcInterface;
-			return sRpcInterface;
-		}
-
-	public:
-		RobotManager();
+		RobotManager(Msg::RpcManager * pRpcManager);
 		~RobotManager();
 
 	public:
-		virtual CErrno				Init(Json::Value & conf) override;
-		virtual CErrno				Cleanup(void) override;
-		virtual CErrno				Update(void) override;
+		static RobotManager		&	GetInstance();
 
 	public:
-		virtual void				OnRegisterRpcs(void) override;
+		virtual CErrno				Init(void);
+		virtual CErrno				Cleanup(void);
+		virtual CErrno				Update(void);
 
 	public:
-		INT32						GetServerSessionID() const { return m_nServerSessionID; }
-		void						SetServerSessionID(INT32 nSessionID) { m_nServerSessionID = nSessionID; }
-		INT64						GetServerID() const { return m_llServerID; }
-		void						SetServerID(INT64 nID) { m_llServerID = nID; }
+		INT32						PreCreateRobots(INT32 nStartPos, INT32  nEndPos);	//5 最后一个不创建.
+		INT32						CreateRobots(INT32 nStartPos, INT32  nEndPos);
 
-	private:
-		INT32						m_nServerSessionID;
-		INT64						m_llServerID;
+	protected:
+		INT32						m_nStartPos;
+		INT32						m_nEndPos;
+		Msg::RpcManager		*		m_pRpcManager;
+		MapRobots					m_mapRobots;
 	};
 
-
-	class RobotManagerListener : public Msg::IRpcListener
-	{
-	public:
-		RobotManagerListener(RobotManager * pMaster)
-			: m_pManager(pMaster)
-		{
-
-		}
-
-	public:
-		virtual CErrno		OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect = false) override;
-		virtual CErrno		OnDisconnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, INT32 nPeerSessionID) override;
-
-	private:
-		RobotManager * m_pManager;
-	};
 }

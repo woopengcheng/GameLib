@@ -3,14 +3,17 @@
 #include "RobotCtrl.h"
 #include "DlgRobotCtrl.h"
 #include "LogLib/inc/Log.h"
+#include "NetLib/inc/NetHelper.h"
+#include "RPCCallFuncs.h"
 
 namespace Robot
 {
 	RobotServer::RobotServer(const std::string & val, INT32 nSessionID , Msg::Object id, Msg::RpcManager * pRpcManager)
 		: Msg::IRpcMsgCallableObject(id, pRpcManager)
-		, m_nCurRobotGroupCount(0)
-		, m_nSessionID(nSessionID)
+		, m_nCurRobotGroupCount(1)
+		, m_nRobotSessionID(nSessionID)
 		, m_strName(val)
+		, m_nServerPort(0)
 	{
 		m_pRpcListener = new RobotServerListener(this);
 	}
@@ -24,7 +27,9 @@ namespace Robot
 	CErrno RobotServer::Init(Json::Value & conf)
 	{
 		m_objConf = conf;
-		Json::Value objRobot = m_objConf.get("robot_ctrl_server", Json::Value());
+		Json::Value objRobot = m_objConf.get("robot_ctrl_server", Json::Value()); 
+
+		m_nServerPort = Net::NetHelper::CheckUnusedPort(objRobot);
 		return RpcInterface::Init(objRobot);
 	}
 
@@ -57,7 +62,7 @@ namespace Robot
 
 	CErrno RobotServer::CreateRobotGroup(INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)
 	{
-		if (!bReconnect)
+//		if (!bReconnect)
 		{
 			MapRobotGroups::iterator iter = m_mapRobotGroups.find(nSessionID);
 			if (iter == m_mapRobotGroups.end())
@@ -65,10 +70,12 @@ namespace Robot
 				RobotGroup * pRobot = new RobotGroup(strNetNodeName, nSessionID, this, m_nCurRobotGroupCount, this->GetRpcManager());
 				pRobot->SetRobotTabIndex(m_nCurRobotGroupCount);
 				pRobot->Init(m_objConf);
-				m_mapRobotGroups.insert(std::make_pair(nSessionID, pRobot));
+				rpc_SyncRobotGroupID(*this, nSessionID, 0, m_nCurRobotGroupCount);
 
+				m_mapRobotGroups.insert(std::make_pair(nSessionID, pRobot));
 				m_mapTabToRobotGroup.insert(std::make_pair(m_nCurRobotGroupCount, nSessionID));
 				m_mapRobotGroupToTab.insert(std::make_pair(nSessionID, m_nCurRobotGroupCount));
+
 
 				OnCreateRobotGroup(pRobot);
 
@@ -90,7 +97,7 @@ namespace Robot
 			CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
 			if (pRobotDlg && pRobotDlg->GetCurListCtrlIndex() == m_nListCtrlIndex)
 			{
-				pRobotDlg->OnCreateRobotGroup(this, pRobot);
+				pRobotDlg->OnCreateRobotGroup(this, pRobot , TRUE);
 			}
 		}
 
@@ -168,13 +175,20 @@ namespace Robot
 		}
 	}
 
-	RobotGroup			* RobotServer::OnUpdateRobotTab(INT32 nRobotTabIndex)
+	RobotGroup			* RobotServer::GetRobotGroup(INT32 nRobotTabIndex)
 	{
+		nRobotTabIndex += 1;
 		MapTabToRobotGroup::iterator iter = m_mapTabToRobotGroup.find(nRobotTabIndex);
-		MsgAssert_Re0(iter != m_mapTabToRobotGroup.end(), "OnUpdateCtrlServer MapTabToRobotGroup listctrl index not exist. index=" << nRobotTabIndex);
+		if (iter == m_mapTabToRobotGroup.end())
+		{
+			gErrorStream("GetRobotGroup MapTabToRobotGroup listctrl index not exist. index=" << nRobotTabIndex);
+		}
 
 		MapRobotGroups::iterator iter2 = m_mapRobotGroups.find(iter->second);
-		MsgAssert_Re0(iter2 != m_mapRobotGroups.end(), "OnUpdateCtrlServer MapRobotGroups listctrl index not exist. index=" << iter->second);
+		if (iter2 == m_mapRobotGroups.end())
+		{
+			gErrorStream("GetRobotGroup MapRobotGroups listctrl index not exist. index=" << iter->second);
+		}
 
 		return iter2->second;
 	}

@@ -35,13 +35,13 @@ namespace ThreadPool
 		virtual BOOL			AddTask(ThreadTask * pThreadTask);
 		virtual ThreadTask	*	FetchTask( UINT32 unThreadPriority); 
 		virtual UINT32			GetThreadsCount();
+		BOOL					HasPriorityThread(INT32 nPriority);
 		virtual CErrno			CreateThread(UINT32 unPriority , UINT32 unThreadCount = 1);
 		virtual CErrno			CreateThread(pthread_t & th , pthread_attr_t * attr ,thread_fun pFunc , void * pParam ); 
 		 
 	private:
 		static void			*	ThreadFunc(void * pParam); 
 		ThreadTask			*	FetchLowerBoundTask( UINT32 unThreadPriority); 
-		BOOL					HasPriorityThread(UINT32 unPriority);
 		BOOL					KillChildrenThread();
 		void					RegisterSig(int nSigno , FuncSigHandler  pSigHandler);
 

@@ -6,7 +6,7 @@
 namespace Robot
 {
 
-	class RobotGroup : Msg::RpcInterface
+	class RobotGroup : public Msg::RpcInterface
 	{
 	public:
 		typedef std::map<INT32, INT32>					MapTabToRobotGroup;		//5 建立Tab标签页到RobotServer的映射关系
@@ -32,13 +32,15 @@ namespace Robot
 		virtual void				OnRegisterRpcs(void) override;
 
 	public:
-		INT32						GetServerSessionID() const { return m_nServerSessionID; }
-		void						SetServerSessionID(INT32 nSessionID) { m_nServerSessionID = nSessionID; }
+		INT32						GetRobotSessionID() const { return m_nRobotSessionID; }
+		void						SetRobotSessionID(INT32 nSessionID) { m_nRobotSessionID = nSessionID; }
 		INT64						GetServerID() const { return m_llServerID; }
 		void						SetServerID(INT64 nID) { m_llServerID = nID; }
-
+		void						OnConnect(INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect = false);
+		void						OnDisonnect(INT32 nSessionID, INT32 nPeerSessionID);
+		
 	private:
-		INT32						m_nServerSessionID;
+		INT32						m_nRobotSessionID;
 		INT64						m_llServerID;
 	};
 

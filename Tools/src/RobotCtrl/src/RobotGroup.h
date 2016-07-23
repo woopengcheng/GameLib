@@ -10,7 +10,7 @@ namespace Robot
 {
 	class RobotServer;
 
-	class RobotGroup : Msg::RpcInterface, public Msg::IRpcMsgCallableObject
+	class RobotGroup : public Msg::IRpcMsgCallableObject
 	{
 		RPC_DEFINE_RobotGroup;
 	public:
@@ -25,13 +25,10 @@ namespace Robot
 	public:
 		virtual CErrno				Init(Json::Value & conf);
 		virtual CErrno				Cleanup(void);
-		virtual CErrno				Update(void);
+		virtual CErrno				Update(void); 
 
 	public:
-		virtual void				OnRegisterRpcs(void) override;
-
-	public:
-		CErrno						CreateRobot(INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect = false);
+		INT32						CreateRobot(const RobotInfo & info);
 		void						OnCreateRobot(CRobot * pRobot);
 		CErrno						DeleteRobot(INT32 nSessionID);
 		void						OnDeleteRobot(CRobot * pRobot);
@@ -39,21 +36,18 @@ namespace Robot
 	public:
 		std::string					GetName() const { return m_strName; }
 		void						SetName(std::string val) { m_strName = val; }
-		INT32						GetSessionID() const { return m_nSessionID; }
-		void						SetSessionID(INT32 val) { m_nSessionID = val; }
+		INT32						GetRobotSessionID() const { return m_nRobotSessionID; }
+		void						SetRobotSessionID(INT32 val) { m_nRobotSessionID = val; }
 		INT32						GetRobotTabIndex() const { return m_nRobotTabIndex; }
 		void						SetRobotTabIndex(INT32 val) { m_nRobotTabIndex = val; }
 		INT32						GetCurRobotCount() const { return m_nCurRobotCount; }
-		const MapRobots		&		GetMapRobots() const { return m_mapRobots; }
-
-	public:
-		void						DebugConnect();
-		void						DebugDisconnect();
+		const MapRobots		&		GetMapRobots() const { return m_mapRobots; } 
+		RobotServer			*		GetRobotServer() { return m_pRobotServer;  }
 
 	protected:
 		Json::Value					m_objConf;
 		std::string					m_strName;
-		INT32						m_nSessionID;
+		INT32						m_nRobotSessionID;
 		INT32						m_nRobotTabIndex;		//5 这里需要关联界面上的Tab的index.删除用.
 		INT32						m_nCurRobotCount;		//5 当前机器人的数量.
 		MapRobots					m_mapRobots;
@@ -63,20 +57,20 @@ namespace Robot
 	};
 
 
-	class RobotGroupListener : public Msg::IRpcListener
-	{
-	public:
-		RobotGroupListener(RobotGroup * pMaster)
-			: m_pManager(pMaster)
-		{
-
-		}
-
-	public:
-		virtual CErrno		OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect = false) override;
-		virtual CErrno		OnDisconnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, INT32 nPeerSessionID) override;
-
-	private:
-		RobotGroup * m_pManager;
-	};
+// 	class RobotGroupListener : public Msg::IRpcListener
+// 	{
+// 	public:
+// 		RobotGroupListener(RobotGroup * pMaster)
+// 			: m_pManager(pMaster)
+// 		{
+// 
+// 		}
+// 
+// 	public:
+// 		virtual CErrno		OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect = false) override;
+// 		virtual CErrno		OnDisconnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, INT32 nPeerSessionID) override;
+// 
+// 	private:
+// 		RobotGroup * m_pManager;
+// 	};
 }

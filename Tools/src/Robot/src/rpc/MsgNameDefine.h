@@ -15,11 +15,26 @@ namespace Msg
 	//tool SyncRobotServerID declare here
 	RPC_DEFINE(SyncRobotServerID);
 
+	//tool HandleRobotGroup declare here
+	RPC_DEFINE(HandleRobotGroup);
+
+	//tool UpdateRobotStart declare here
+	RPC_DEFINE(UpdateRobotStart);
+
 	//tool SyncRobotGroupID declare here
 	RPC_DEFINE(SyncRobotGroupID);
 
-	//tool SyncRobotID declare here
-	RPC_DEFINE(SyncRobotID);
+	//tool CreateRobots declare here
+	RPC_DEFINE(CreateRobots);
+
+	//tool CreateRobot declare here
+	RPC_DEFINE(CreateRobot);
+
+	//tool SendRobotCommand declare here
+	RPC_DEFINE(SendRobotCommand);
+
+	//tool UpdateRobotStatue declare here
+	RPC_DEFINE(UpdateRobotStatue);
 
 }
 

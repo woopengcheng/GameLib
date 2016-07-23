@@ -322,9 +322,14 @@ namespace ThreadPool
 		}
 	}
 
-	BOOL IThreadPool::HasPriorityThread( UINT32 unPriority )
+	BOOL IThreadPool::HasPriorityThread( INT32 nPriority )
 	{ 
-		MapThreadPriorityCountT::iterator iter = m_mapThreadPriorityCount.find(unPriority); 
+		if (nPriority == -1)
+		{
+			return FALSE;
+		}
+
+		MapThreadPriorityCountT::iterator iter = m_mapThreadPriorityCount.find(nPriority); 
 		if (iter == m_mapThreadPriorityCount.end())
 		{
 			return FALSE;

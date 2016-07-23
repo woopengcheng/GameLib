@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 #include "RobotCommon.h"
 #include "RobotManager.h"
+#include "RPCCallFuncs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -83,6 +84,8 @@ BEGIN_MESSAGE_MAP(CDlgRobotCtrl, CDialogEx)
 	ON_BN_CLICKED(ID_STOP, &CDlgRobotCtrl::OnBnClickedStop)
 	ON_BN_CLICKED(IDOK, &CDlgRobotCtrl::OnBnClickedOk)
 	ON_WM_CLOSE()
+	ON_COMMAND(ID_CREATE_ROBOT_GROUP, &CDlgRobotCtrl::OnRBtnListServer)
+	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_SHOW_ROBOT, &CDlgRobotCtrl::OnTcnSelchangeTabShowRobot)
 END_MESSAGE_MAP()
 
 
@@ -224,6 +227,7 @@ void CDlgRobotCtrl::OnCreateRobotServer(RobotServer * pRobot)
 		m_listCtrlServer.InsertString(nLastCount , CString(pRobot->GetName().c_str()));
 		m_listCtrlServer.SetCurSel(nLastCount);
 		m_nCurListCtrlIndex = nLastCount;
+		OnSelchangeListCtrlServer();
 
 		pRobot->SetListCtrlIndex(nLastCount);
 	}
@@ -257,17 +261,10 @@ void CDlgRobotCtrl::UpdateRobotTab(INT32 nIndex)
 
 	if (nIndex != -1)
 	{
-		RobotGroup * pRobotGroup = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex, m_nCurRobotTabIndex);
+		RobotGroup * pRobotGroup = RobotManager::GetInstance().GetRobotGroup(m_nCurListCtrlIndex, m_nCurRobotTabIndex);
 		if (pRobotGroup)
 		{
 			m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex, pRobotGroup);
-
-// 			int nIndex = 50;
-// 			while (nIndex--)
-// 			{
-// 				pRobotGroup->DebugConnect();
-// 			}
-// 			pRobotGroup->DebugConnect();
 		}
 		else
 		{
@@ -278,29 +275,18 @@ void CDlgRobotCtrl::UpdateRobotTab(INT32 nIndex)
 	{
 		m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex, NULL);
 	}
-//	RobotGroup * pRobotGroup = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex , nIndex);
-//	if (pRobotGroup)
-	{
-		//todo 清空ShowRobot的界面
-
-	}
 }
 
 void CDlgRobotCtrl::UpdateCtrlServer(INT32 nIndex)
 {
 	INT32 nOldIndex = m_nCurListCtrlIndex;
+	m_dlgCurShowRobot.SetCurListCtrlIndex(nIndex);
 	if (nOldIndex != nIndex)		//5 只有有变化的时候才更新.
 	{
 		INT32 nRobotGroupCount = 0;
-		RobotServer * pServer = RobotManager::GetInstance().OnUpdateCtrlServer(nIndex);
+		RobotServer * pServer = RobotManager::GetInstance().GetRobotServer(nIndex);
 		if (pServer)
 		{
-// 			int nIndex = 2;
-// 			while (nIndex--)
-// 			{
-// 				pServer->DebugConnect();
-// 			}
-
 			m_tabShowRobots.DeleteAllItems();
 			const RobotServer::MapRobotGroups & mapRobots = pServer->GetMapRobotGroups();
 			RobotServer::MapRobotGroups::const_iterator iter = mapRobots.begin();
@@ -310,10 +296,8 @@ void CDlgRobotCtrl::UpdateCtrlServer(INT32 nIndex)
 			}
 			nRobotGroupCount = (INT32)mapRobots.size();
 		}
-
 		m_nCurListCtrlIndex = nIndex;
-		m_dlgCurShowRobot.SetCurListCtrlIndex(m_nCurListCtrlIndex);
-
+		
 		if (nRobotGroupCount > 0)
 		{
 			UpdateRobotTab(0);
@@ -325,7 +309,7 @@ void CDlgRobotCtrl::UpdateCtrlServer(INT32 nIndex)
 	}
 }
 
-void CDlgRobotCtrl::OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * pRobotGroup)
+void CDlgRobotCtrl::OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * pRobotGroup, BOOL bUpdate/* = FALSE*/)
 {
 	if (pRobotGroup && pRobotServer)
 	{
@@ -337,9 +321,13 @@ void CDlgRobotCtrl::OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 		str.Format("Robot %d", m_nCurRobotTabIndex);
 		m_tabShowRobots.InsertItem(m_nCurRobotTabIndex, str);
 		m_tabShowRobots.SetCurSel(m_nCurRobotTabIndex);
+		UpdateWindow();
 
-		//5 创建新的robotgroup.如果这个时候设置的话效率比较低.
-		// m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex , pRobotGroup);
+		if (bUpdate)
+		{
+			//5 创建新的robotgroup.如果这个时候设置的话效率比较低.
+			m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex , pRobotGroup);
+		}
 
 		//5 这里需要将窗口设置和tab标签一样大.但是又不能覆盖tab标签页.所以要做偏移
 		if (nRobotCount == 0)
@@ -370,7 +358,7 @@ void CDlgRobotCtrl::OnDeleteRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 				m_tabShowRobots.SetCurSel(0);
 				m_nCurRobotTabIndex = 0;
 
-				RobotGroup * pServer = RobotManager::GetInstance().OnUpdateRobotTab(m_nCurListCtrlIndex, m_nCurRobotTabIndex);
+				RobotGroup * pServer = RobotManager::GetInstance().GetRobotGroup(m_nCurListCtrlIndex, m_nCurRobotTabIndex);
 				if (pServer)
 				{
 					m_dlgCurShowRobot.SetCurRobotTab(m_nCurRobotTabIndex, pServer); 
@@ -403,10 +391,18 @@ void CDlgRobotCtrl::OnSelchangingTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	INT32 nIndex = m_tabShowRobots.GetCurSel();
-	
-	UpdateRobotTab(nIndex);
 
+	*pResult = 0;
+}
+
+
+void CDlgRobotCtrl::OnTcnSelchangeTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	INT32 nIndex = m_tabShowRobots.GetCurSel();
+
+	UpdateRobotTab(nIndex);
 	*pResult = 0;
 }
 
@@ -433,4 +429,18 @@ void CDlgRobotCtrl::OnClose()
 
 	RobotManager::GetInstance().Cleanup();
 	CDialogEx::OnClose();
+}
+
+
+
+void CDlgRobotCtrl::OnRBtnListServer()
+{
+	// TODO: 在此添加命令处理程序代码
+	RobotServer * pServer = RobotManager::GetInstance().GetRobotServer(m_nCurListCtrlIndex);
+	if (pServer)
+	{
+		//5 启动RobotGroup
+		Robot::rpc_HandleRobotGroup(RobotManager::GetInstance(), pServer->GetRobotSessionID(), 0, pServer->GetObjectID(), 0, pServer->GetServerPort());
+	}
+
 }

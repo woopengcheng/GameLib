@@ -154,17 +154,12 @@
 			RobotCtrlServer 用于与每一个robotgroup的RPCManager进行通信.robot进程中包含robotgroup和robotset两个rpcmanager.
 			RobotCtrlServer 接收 RobotGroup 作为对应的连接端
 			RobotGroup:
-				RobotGroupClient用于管理当前进程中的所有Robot
-		RobotCtrlGroup:
-			RobotCtrlGroup 用于接收每一个robotset中的robot.
-			RobotCtrlGroup 接收 RobotManager 作为对应的连接端		
+				RobotGroupClient用于管理当前进程中的所有Robot 	
 	-->	
 	<RpcServerName serverName="RobotCtrl" include="RobotManager.h" namespace="Robot" rpcInterface="RobotManager" outputPath="../../../Tools/src/RobotCtrl/src/rpc/"/>
 	<RpcServerName serverName="RobotCtrlServer" include="RobotServer.h" namespace="Robot" rpcInterface="RobotServer" outputPath="../../../Tools/src/RobotCtrl/src/rpc/"/>
-	<RpcServerName serverName="RobotCtrlGroup" include="RobotGroup.h" namespace="Robot" rpcInterface="RobotGroup" outputPath="../../../Tools/src/RobotCtrl/src/rpc/"/>
 	<RpcServerName serverName="RobotServer" include="RobotServer.h" namespace="Robot" rpcInterface="RobotServer" outputPath="../../../Tools/src/RobotServer/src/rpc/"/>
-	<RpcServerName serverName="RobotGroup" include="RobotGroup.h" namespace="Robot" rpcInterface="RobotGroup" outputPath="../../../Tools/src/Robot/src/rpc/"/>
-	<RpcServerName serverName="RobotManager" include="RobotManager.h" namespace="Robot" rpcInterface="RobotManager" outputPath="../../../Tools/src/Robot/src/rpc/"/>
+	<RpcServerName serverName="RobotGroup" include="RobotGroup.h" namespace="Robot" rpcInterface="RobotGroup" outputPath="../../../Tools/src/Robot/src/rpc/"/> 
 	
 	<Rpcs>   
 		<Rpc name="SyncRobotServerID" syncType="1" timeout="10">
@@ -174,18 +169,50 @@
 			</Targets>
 
 			<Call > 
+				<Param name="server_port" type="INT32" /> 
 			</Call>
 			
 			<Return>  
 				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc> 
+		<Rpc name="HandleRobotGroup" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotCtrl" include="RobotServer.h" class="RobotServer"/> 
+				<Server name="RobotServer"  /> 
+			</Targets>
+
+			<Call > 
+				<Param name="type" type="INT32" /> 
+				<Param name="param1" type="INT32" /> 
+				<Param name="param2" type="INT32" /> 
+				<Param name="param3" type="INT32" /> 
+				<Param name="param4" type="INT32" /> 
+			</Call>
+			
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
+		<Rpc name="UpdateRobotStart" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotCtrl" include="RobotServer.h" class="RobotServer"/> 
+				<Server name="RobotServer"  /> 
+			</Targets>
+
+			<Call > 
+				<Param name="file_list" type="CUtilChunk" /> 
+			</Call>
+			
+			<Return>  
+				<Param name="file_list_re" type="CUtilChunk" /> 
 			</Return>
 		</Rpc>
 		<Rpc name="SyncRobotGroupID" syncType="1" timeout="10">
 			<Targets> 
 				<Client name="RobotCtrlServer" include="RobotGroup.h" class="RobotGroup"/> 
-				<Server name="RobotGroup" include="RobotGroupHandler.h" class="RobotGroupHandler"  /> 
-			</Targets>
-
+				<Server name="RobotGroup"/> 
+			</Targets> 
 
 			<Call > 
 			</Call>
@@ -194,16 +221,64 @@
 				<Param name="res" type="INT32" /> 
 			</Return>
 		</Rpc>
-		<Rpc name="SyncRobotID" syncType="1" timeout="10">
+		<Rpc name="CreateRobots" syncType="1" timeout="10">
 			<Targets> 
-				<Client name="RobotCtrlGroup" include="CRobot.h" class="CRobot"/> 
-				<Server name="RobotManager" include="CRobot.h" class="CRobot" /> 
-			</Targets>
+				<Client name="RobotCtrlServer" include="RobotGroup.h" class="RobotGroup"/> 
+				<Server name="RobotGroup" /> 
+			</Targets> 
 
 			<Call > 
+				<Param name="start_pos" type="INT32" /> 
+				<Param name="end_pos" type="INT32" /> 
 			</Call>
 			
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
+		<Rpc name="CreateRobot" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotGroup" include="CRobot.h" class="CRobot"/> 
+				<Server name="RobotCtrlServer" include="RobotGroup.h" class="RobotGroup"/> 
+			</Targets> 
 
+			<Call > 
+				<Param name="name" type="std_string" /> 
+				<Param name="prof" type="INT32" /> 
+				<Param name="level" type="INT32" /> 
+				<Param name="status" type="INT32" /> 
+				<Param name="note" type="std_string" /> 
+			</Call>
+			
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
+		<Rpc name="SendRobotCommand" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotCtrlServer" include="RobotGroup.h" class="RobotGroup"/> 
+				<Server name="RobotGroup" include="CRobot.h" class="CRobot"  /> 
+			</Targets> 
+
+			<Call > 
+				<Param name="map_robots" type="std::vector[INT32]" /> 
+				<Param name="command" type="std_string" /> 
+			</Call>
+			
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
+		<Rpc name="UpdateRobotStatue" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotGroup" include="CRobot.h" class="CRobot"/> 
+				<Server name="RobotCtrlServer" include="CRobot.h" class="CRobot"  /> 
+			</Targets> 
+
+			<Call > 
+				<Param name="status" type="INT32" /> 
+			</Call>
+			
 			<Return>  
 				<Param name="res" type="INT32" /> 
 			</Return>

@@ -39,7 +39,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	CUtil::Init();
 
 	Config::ConfigManager::GetInstance().Init("./csv_config");
-	std::cout << "port used=" << Net::NetHelper::IsSocketPortUsed(8002) << std::endl;;
+	std::cout << "port used=" << Net::NetHelper::IsSocketPortUsed(8001) << std::endl;;
 
 	gDebugStream(Config::ActionConfig::GetInstance().GetActionConfig(1)->TestStruct.test1);
 	gDebugStream(Config::ActionConfig::GetInstance().GetActionConfig(1)->TestStruct.test3.begin()->second->vecTestStructArray[0].test6.begin()->second->TestStruct.test6);

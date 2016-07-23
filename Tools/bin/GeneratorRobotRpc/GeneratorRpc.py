@@ -924,8 +924,8 @@ def GenerateRpcHandler(rpcs , serverName , old_namespace):
 				os.remove(outputPath)
 				
 			if IsPathExist(outputPath):
-				os.remove(outputPath) or rpc.name == "testParamsAndRpcDatas" 
-#				continue
+#				os.remove(outputPath) or rpc.name == "testParamsAndRpcDatas" 
+				continue
 				
 			fileRpc = open(outputPath , "a")
 			fileRpc.write("#include \"" + target.include + "\"\n\n") 
@@ -1246,15 +1246,18 @@ def GenerateRpcCallFuncs():
 					strExcludeDefaultParamsCount = len(rpc.call.params)
 					
 					#生成sessionName方式带有vec发送的RPC					
-					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n" + oneTab + "{\n")
-					fileRpc.write(twoTab + "GEN_RPC_CALL_" + str(strExcludeDefaultParamsCount) + "((&(" + serverName.namespace + "::" + serverName.rpcInterface + "::GetInstance())) , pSessionName , " + "Msg::g_sz" + rpc.name + "_RpcCall " + strSpecialExcludeDefaultParams + ", vecTargets , objSrc , pCallback , usPriority , objSyncType , " + str(rpc.timeout) + ");\n" + oneTab + "}\n\n")
+					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n" + oneTab + "{\n")
+					
+					fileRpc.write(twoTab + "Msg::RpcInterface * pInterface = &objInterface;\n")
+					
+					fileRpc.write(twoTab + "GEN_RPC_CALL_" + str(strExcludeDefaultParamsCount) + "(pInterface , pSessionName , " + "Msg::g_sz" + rpc.name + "_RpcCall " + strSpecialExcludeDefaultParams + ", vecTargets , objSrc , pCallback , usPriority , objSyncType , " + str(rpc.timeout) + ");\n" + oneTab + "}\n\n")
 					
 					#生成sessionName方式不带有vec发送的RPC
-					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
+					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
 					fileRpc.write(oneTab + "{\n")
 					
 					fileRpc.write(twoTab + "std::vector<Msg::Object> vecTargets;\n" + twoTab + "vecTargets.push_back(objTarget);\n" )
-					fileRpc.write(twoTab + "return rpc_" + rpc.name + "( pSessionName ,vecTargets , objSrc " + strExcludeDefaultParams + ", pCallback , usPriority , objSyncType);\n" )
+					fileRpc.write(twoTab + "return rpc_" + rpc.name + "(objInterface , pSessionName ,vecTargets , objSrc " + strExcludeDefaultParams + ", pCallback , usPriority , objSyncType);\n" )
 					fileRpc.write(oneTab + "}\n\n")		
 					
 #					#生成sessionName方式不带有vec且全局发送的RPC
@@ -1265,40 +1268,44 @@ def GenerateRpcCallFuncs():
 #					fileRpc.write(oneTab + "}\n\n")	
 					
 					#生成strNodeName方式带有vec发送的RPC
-					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
+					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
 					fileRpc.write(oneTab + "{\n")
 					
-					fileRpc.write(twoTab + "GEN_RPC_CALL_" + str(strExcludeDefaultParamsCount) + "((&(" + serverName.namespace + "::" + serverName.rpcInterface + "::GetInstance())) , pSessionName , " + "Msg::g_sz" + rpc.name + "_RpcCall " + strSpecialExcludeDefaultParams + ", vecTargets , objSrc , pCallback , usPriority , objSyncType , " + str(rpc.timeout) + ");\n")
+					fileRpc.write(twoTab + "Msg::RpcInterface * pInterface = &objInterface;\n")
+					
+					fileRpc.write(twoTab + "GEN_RPC_CALL_" + str(strExcludeDefaultParamsCount) + "(pInterface, pSessionName , " + "Msg::g_sz" + rpc.name + "_RpcCall " + strSpecialExcludeDefaultParams + ", vecTargets , objSrc , pCallback , usPriority , objSyncType , " + str(rpc.timeout) + ");\n")
 					fileRpc.write(oneTab + "}\n\n")	
 																	
 					#生成strNodeName方式不带有vec发送的RPC
-					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
+					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
 					fileRpc.write(oneTab + "{\n")
 					
 					fileRpc.write(twoTab + "std::vector<Msg::Object> vecTargets;\n" + twoTab + "vecTargets.push_back(objTarget);\n" )
-					fileRpc.write(twoTab + "return rpc_" + rpc.name + "( pSessionName ,vecTargets , objSrc " + strExcludeDefaultParams + ", pCallback , usPriority , objSyncType);\n" )
+					fileRpc.write(twoTab + "return rpc_" + rpc.name + "(objInterface , pSessionName ,vecTargets , objSrc " + strExcludeDefaultParams + ", pCallback , usPriority , objSyncType);\n" )
 					fileRpc.write(oneTab + "}\n\n")	
 							
 					#生成strNodeName方式不带有vec且全局发送的RPC
-					# fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(const std::string & pSessionName , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
+					# fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
 					# fileRpc.write(oneTab + "{\n")
 					#
-					# fileRpc.write(twoTab + "return rpc_" + rpc.name + "( pSessionName , 0 , objSrc " + strExcludeDefaultParams + ", pCallback , usPriority , objSyncType);\n" )
+					# fileRpc.write(twoTab + "return rpc_" + rpc.name + "(objInterface , pSessionName , 0 , objSrc " + strExcludeDefaultParams + ", pCallback , usPriority , objSyncType);\n" )
 					# fileRpc.write(oneTab + "}\n\n")	
 					
 					#生成sessionID方式带有vec发送的RPC
-					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
+					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
 					fileRpc.write(oneTab + "{\n")
 					
-					fileRpc.write(twoTab + "GEN_RPC_CALL_" + str(strExcludeDefaultParamsCount) + "((&(" + serverName.namespace + "::" + serverName.rpcInterface + "::GetInstance())) , nSessionID , " + "Msg::g_sz" + rpc.name + "_RpcCall " + strSpecialExcludeDefaultParams + ", vecTargets , objSrc , pCallback , usPriority , objSyncType , " + str(rpc.timeout) + ");\n")
+					fileRpc.write(twoTab + "Msg::RpcInterface * pInterface = &objInterface;\n")
+					
+					fileRpc.write(twoTab + "GEN_RPC_CALL_" + str(strExcludeDefaultParamsCount) + "(pInterface , nSessionID , " + "Msg::g_sz" + rpc.name + "_RpcCall " + strSpecialExcludeDefaultParams + ", vecTargets , objSrc , pCallback , usPriority , objSyncType , " + str(rpc.timeout) + ");\n")
 					fileRpc.write(oneTab + "}\n\n")	
 																	
 					#生成sessionID方式不带有vec发送的RPC
-					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
+					fileRpc.write(oneTab + "static INT32  rpc_" + rpc.name + "(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc " + strDefaultParams + " , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = " +syncType + ")\n")
 					fileRpc.write(oneTab + "{\n")
 					
 					fileRpc.write(twoTab + "std::vector<Msg::Object> vecTargets;\n" + twoTab + "vecTargets.push_back(objTarget);\n" )
-					fileRpc.write(twoTab + "return rpc_" + rpc.name + "( nSessionID ,vecTargets , objSrc " + strExcludeDefaultParams + " , pCallback , usPriority , objSyncType);\n" )	
+					fileRpc.write(twoTab + "return rpc_" + rpc.name + "(objInterface , nSessionID ,vecTargets , objSrc " + strExcludeDefaultParams + " , pCallback , usPriority , objSyncType);\n" )	
 					fileRpc.write(oneTab + "}\n\n")	
 										
 					#生成sessionID方式不带有vec且全局发送的RPC

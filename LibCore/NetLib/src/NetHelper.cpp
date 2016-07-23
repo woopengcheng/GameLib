@@ -182,7 +182,7 @@ namespace Net
 			CloseSocket(socket);
 		}
 
-		if (nResult == 0)
+		if (nResult == -1)
 		{
 			return TRUE;
 		}
@@ -200,7 +200,7 @@ namespace Net
 		while (--nCount)
 		{
 			nPort = CUtil::random(kSTART_RAND_UNUSED_PORT, kEND_RAND_UNUSED_PORT);
-	//		if (!IsSocketPortUsed(nPort , socket))
+			if (!IsSocketPortUsed(nPort , socket))
 			{
 				break;
 			}
@@ -208,6 +208,18 @@ namespace Net
 
 		CloseSocket(socket);
 		return nPort;
+	}
+
+	INT32 NetHelper::CheckUnusedPort(Json::Value & value)
+	{
+		INT32 usServerPort = value["server"]["listen_port"].asInt();
+		if (usServerPort == -1)
+		{
+			usServerPort = Net::NetHelper::GetUnusedPort();
+			value["server"]["listen_port"] = usServerPort;
+		}
+
+		return usServerPort;
 	}
 
 #endif

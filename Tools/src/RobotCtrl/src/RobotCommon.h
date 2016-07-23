@@ -1,13 +1,16 @@
 #pragma once
 #include "CUtil/inc/Common.h"
 
-const int cnBtnXLengthSpace		= 5;
-const int cnBtnYLengthSpace		= 7;
-const int cnTabYPosOffset			= 21;
-const int cnBtnXLength = 30;
-const int cnBtnYLength = 21;
-const int cst_btn_id = 10000;
-const int MAX_ROBOT_BTN_NUM = 2000;
+const INT32 cnBtnXLengthSpace		= 5;		//5 机器人按钮的X轴的空隙长度
+const INT32 cnBtnYLengthSpace		= 7;		//5 机器人按钮的X轴的空隙长度
+const INT32 cnTabYPosOffset			= 21;		//5 对话框的tab标签的高度偏移
+const INT32 cnBtnXLength			= 30;		//5 机器人的按钮X轴长度			
+const INT32 cnBtnYLength			= 21;		//5 机器人的按钮Y轴长度
+const INT32 cst_btn_id				= 10000;	//5 机器人的按钮ID从哪个数开始.
+const INT32 cnMaxRobotBtnNum		= 2000;		//5 初始创建机器人按钮的个数.
+const INT32 cnColumnWidth			= 60;		//5 显示机器人每一列的宽度
+const INT32 cnMinRobotDlgWidth		= cnColumnWidth * 7;	//5 对话框的最小宽度
+const INT32 cnRobotStartID			= 10000;	//5 机器人的序号从多少开始.
 
 //5 替换简单的Map某个Key排序后的右边的值.一般是由于某个Key被删除了,后面的会依次前移.第一要保证有序的map,第二不需要考虑释放的map
 template<typename MAP , typename Key>

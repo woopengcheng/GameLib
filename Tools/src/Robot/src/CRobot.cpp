@@ -5,6 +5,7 @@ namespace Robot
 {
 	CRobot::CRobot(Msg::Object id, Msg::RpcManager * pRpcManager)
 		: Msg::IRpcMsgCallableObject(id, pRpcManager) 
+		, m_nRobotIndex(0)
 	{
 	}
 

@@ -354,7 +354,9 @@
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\RobotServer.cpp" />
+    <ClCompile Include="src\rpc\RobotServer_GRpc_HandleRobotGroup_Server.cpp" />
     <ClCompile Include="src\rpc\RobotServer_GRpc_SyncRobotServerID_Server.cpp" />
+    <ClCompile Include="src\rpc\RobotServer_GRpc_UpdateRobotStart_Server.cpp" />
     <ClCompile Include="src\rpc\RpcRegister.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

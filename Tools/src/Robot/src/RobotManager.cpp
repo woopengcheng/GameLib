@@ -1,14 +1,19 @@
+#include "CRobot.h"
 #include "RobotManager.h"
-#include "LogLib/inc/Log.h"
+#include "RobotGroup.h"
+#include "MsgLib/inc/RpcManager.h"
+#include "RPCCallFuncs.h"
+
+
+const INT32 cnRobotManagerID = 0xFFFFFFF;
 
 namespace Robot
 {
-
-	RobotManager::RobotManager()
-		: m_nServerSessionID(-1)
-		, m_llServerID(0)
+	RobotManager::RobotManager( Msg::RpcManager * pRpcManager)
+		: m_pRpcManager(pRpcManager)
+		, m_nStartPos(0)
+		, m_nEndPos(0)
 	{
-		m_pRpcListener = new RobotManagerListener(this);
 	}
 
 
@@ -16,42 +21,80 @@ namespace Robot
 	{
 	}
 
-	CErrno RobotManager::Init(Json::Value & conf)
+	RobotManager & RobotManager::GetInstance()
 	{
-		Json::Value objRobot = conf.get("robot", Json::Value());
-		return RpcInterface::Init(conf);
+		static RobotManager instance(RobotGroup::GetInstance().GetRpcManager());
+		return instance; 
+	}
+
+	CErrno RobotManager::Init(void)
+	{
+		return CErrno::Success();
 	}
 
 	CErrno RobotManager::Cleanup(void)
 	{
-
-		return RpcInterface::Cleanup();
+		return CErrno::Success();
 	}
 
 	CErrno RobotManager::Update(void)
 	{
-		return Msg::RpcInterface::Update();
-	}
-
-	CErrno RobotManagerListener::OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)
-	{
-		if (m_pManager)
-		{
-			//		m_pManager->CreateRobotGroup(nSessionID, strNetNodeName, bReconnect);
-		}
-
-		gDebugStream("connected from sessionID=" << nSessionID);
 		return CErrno::Success();
 	}
 
-	CErrno RobotManagerListener::OnDisconnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, INT32 nPeerSessionID)
+	INT32 RobotManager::PreCreateRobots(INT32 nStartPos, INT32 nEndPos)
 	{
-		if (m_pManager)
+		if (nStartPos <= 0)
 		{
-			// 		m_pManager->DeleteRobotGroup(nSessionID);
+			nStartPos = 1;
 		}
+		INT32 nRes = 0;
+		if (nStartPos > nEndPos || nEndPos < m_nEndPos || nStartPos < 0 || nEndPos < 0)
+		{
+			return -1;
+		}
+		else
+		{
+			INT32 nRealStartPos = 0, nRealEndPos = 0;
+			if (nStartPos < m_nStartPos)		//5 这种情况是比创建的机器人的最小值还要小,那么则把最小值到上次最小值创建完成.
+			{
+				nRes = CreateRobots(nStartPos, m_nStartPos);
+				m_nStartPos = nStartPos;
+				nRealStartPos = m_nEndPos;
+			}
+			else
+			{
+				if (nStartPos > m_nEndPos)
+				{
+					nRealStartPos = nStartPos;
+				}
+				else
+				{
+					nRealStartPos = m_nEndPos;
+				}
+			}
 
-		gDebugStream("disconnected from sessionID=" << nPeerSessionID);
-		return CErrno::Success();
+			nRealEndPos = nEndPos;
+			nRes += CreateRobots(nRealStartPos, nRealEndPos);
+			m_nEndPos = nEndPos;
+		}
+		return nRes;
 	}
+
+	INT32 RobotManager::CreateRobots(INT32 nStartPos, INT32 nEndPos)
+	{
+		for (INT32 i = nStartPos;i < nEndPos;++i)
+		{
+			std::string strName = CUtil::itoa(i);
+			CRobot * pRobot = new CRobot(i, m_pRpcManager);
+			m_mapRobots.insert(std::make_pair(i, pRobot));
+
+			rpc_CreateRobot(RobotGroup::GetInstance(),
+				RobotGroup::GetInstance().GetRobotSessionID(),
+				RobotGroup::GetInstance().GetServerID(), i,
+				strName, i % 5, i % 100, CUtil::random() % 4, strName);
+		}
+		return nEndPos - nStartPos;
+	}
+
 }

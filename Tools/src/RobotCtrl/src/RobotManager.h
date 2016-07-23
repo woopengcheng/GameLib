@@ -6,7 +6,7 @@
 
 namespace Robot
 {
-	class RobotManager : Msg::RpcInterface
+	class RobotManager : public Msg::RpcInterface
 	{
 	public:
 		RobotManager();
@@ -33,8 +33,8 @@ namespace Robot
 		void						OnCreateRobotServer(RobotServer * pRobot);
 		CErrno						DeleteRobotServer(INT32 nSessionID);
 		void						OnDeleteRobotServer(RobotServer * pRobot);
-		RobotServer			*		OnUpdateCtrlServer(INT32 nIndex);
-		RobotGroup			*		OnUpdateRobotTab(INT32 nListCtrlIndex, INT32 nRobotTabIndex);
+		RobotServer			*		GetRobotServer(INT32 nIndex);
+		RobotGroup			*		GetRobotGroup(INT32 nListCtrlIndex, INT32 nRobotTabIndex);
 		INT32						GetCurRobotServerCount() const { return m_nCurRobotServerCount; }
 
 	public:

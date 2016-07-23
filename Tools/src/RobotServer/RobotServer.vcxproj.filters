@@ -65,5 +65,11 @@
     <ClCompile Include="src\rpc\RpcRegister.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
+    <ClCompile Include="src\rpc\RobotServer_GRpc_HandleRobotGroup_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotServer_GRpc_UpdateRobotStart_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

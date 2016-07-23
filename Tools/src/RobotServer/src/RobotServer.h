@@ -31,14 +31,20 @@ namespace Robot
 		virtual void				OnRegisterRpcs(void) override;
 
 	public:
+		INT32						HandleRobotGroup(INT32 type = 0, INT32 param1 = 0, INT32 param2 = 0, INT32 param3 = 0, INT32 param4 = 0);
+
+	public:
 		INT32						GetServerSessionID() const { return m_nServerSessionID; }
 		void						SetServerSessionID(INT32 nSessionID) { m_nServerSessionID = nSessionID; }
 		INT64						GetServerID() const { return m_llServerID; }
 		void						SetServerID(INT64 nID) { m_llServerID = nID; }
+		INT32						GetRobotGroupConnectPort() const { return m_nRobotGroupConnectPort; }
+		void						SetRobotGroupConnectPort(INT32 val) { m_nRobotGroupConnectPort = val; }
 
 	private:
 		INT32						m_nServerSessionID;
 		INT64						m_llServerID;
+		INT32						m_nRobotGroupConnectPort;	//5 这个是通知RobotGroup需要连接到RobotCtrl的服务器的端口.因为是随机的,那边不知道.
 	};
 
 

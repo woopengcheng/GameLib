@@ -5,10 +5,8 @@
 
 namespace Robot
 {
-	CRobot::CRobot(const std::string & val, INT32 nSessionID, RobotGroup * pRobotGroup , Msg::Object id, Msg::RpcManager * pRpcManager)
+	CRobot::CRobot(RobotGroup * pRobotGroup , Msg::Object id, Msg::RpcManager * pRpcManager)
 		: Msg::IRpcMsgCallableObject(id, pRpcManager)
-		, m_nSessionID(nSessionID)
-		, m_strName(val)
 		, m_nRobotIndex(-1)
 		, m_pRobotGroup(pRobotGroup)
 	{

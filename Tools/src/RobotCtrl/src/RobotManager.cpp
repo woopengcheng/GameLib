@@ -3,6 +3,7 @@
 #include "RobotCtrl.h"
 #include "DlgRobotCtrl.h"
 #include "LogLib/inc/Log.h"
+#include "RPCCallFuncs.h"
 
 namespace Robot
 {
@@ -71,6 +72,9 @@ namespace Robot
 				m_mapRobotServerToTab.insert(std::make_pair(nSessionID, m_nCurRobotServerCount));
 
 				OnCreateRobotServer(pRobot);
+
+				//5 同步服务器的Port给RobotServer服务器.因为是随机的.所以让robotserver告诉robotgroup连接到这个端口.
+				Robot::rpc_SyncRobotServerID(*this , nSessionID, 0, m_nCurRobotServerCount , pRobot->GetServerPort());
 
 				++m_nCurRobotServerCount;
 			}
@@ -170,23 +174,34 @@ namespace Robot
 		}
 	}
 
-	RobotServer * RobotManager::OnUpdateCtrlServer(INT32 nIndex)
+	RobotServer * RobotManager::GetRobotServer(INT32 nIndex)
 	{
 		MapTabToRobotServer::iterator iter = m_mapTabToRobotServer.find(nIndex);
-		MsgAssert_Re0(iter != m_mapTabToRobotServer.end(), "OnUpdateCtrlServer MapTabToRobotServer listctrl index not exist. index=" << nIndex);
+		if (iter == m_mapTabToRobotServer.end())
+		{
+			gWarniStream("GetRobotServer MapTabToRobotServer listctrl index not exist. index=" << nIndex);
+			return NULL;
+		}
 
 		MapRobotServers::iterator iter2 = m_mapRobotServers.find(iter->second);
-		MsgAssert_Re0(iter2 != m_mapRobotServers.end(), "OnUpdateCtrlServer MapRobotServers listctrl index not exist. index=" << iter->second);
-
+		if (iter2 == m_mapRobotServers.end())
+		{
+			gWarniStream("GetRobotServer MapRobotServers listctrl index not exist. index=" << iter->second);
+			return NULL;
+		}
 		return iter2->second;
 	}
 
-	RobotGroup			* RobotManager::OnUpdateRobotTab(INT32 nListCtrlIndex, INT32 nRobotTabIndex)
+	RobotGroup			* RobotManager::GetRobotGroup(INT32 nListCtrlIndex, INT32 nRobotTabIndex)
 	{
-		RobotServer * pRobot = OnUpdateCtrlServer(nListCtrlIndex);
-		MsgAssert_Re0(pRobot, "OnUpdateRobotTab listctrl index not exist.index = " << nListCtrlIndex);
+		RobotServer * pRobot = GetRobotServer(nListCtrlIndex);
+		if (!pRobot)
+		{
+			gWarniStream("GetRobotGroup listctrl index not exist.index = " << nListCtrlIndex);
+			return NULL;
+		}
 
-		return pRobot->OnUpdateRobotTab(nRobotTabIndex);
+		return pRobot->GetRobotGroup(nRobotTabIndex);
 
 	}
 

@@ -273,9 +273,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\CRobot.h" />
+    <ClInclude Include="src\DlgRobotCommand.h" />
     <ClInclude Include="src\DlgRobotCtrl.h" />
     <ClInclude Include="src\DlgShowRobot.h" />
+    <ClInclude Include="src\ListCtrlEx.h" />
     <ClInclude Include="src\RobotBtn.h" />
     <ClInclude Include="src\RobotCommon.h" />
     <ClInclude Include="src\RobotCtrl.h" />
@@ -291,17 +294,24 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DlgRobotCommand.cpp" />
     <ClCompile Include="src\CRobot.cpp" />
     <ClCompile Include="src\DlgRobotCtrl.cpp" />
     <ClCompile Include="src\DlgShowRobot.cpp" />
+    <ClCompile Include="src\ListCtrlEx.cpp" />
     <ClCompile Include="src\RobotBtn.cpp" />
     <ClCompile Include="src\RobotCtrl.cpp" />
     <ClCompile Include="src\RobotGroup.cpp" />
     <ClCompile Include="src\RobotManager.cpp" />
     <ClCompile Include="src\RobotServer.cpp" />
-    <ClCompile Include="src\rpc\CRobot_SyncRobotID_Client.cpp" />
+    <ClCompile Include="src\rpc\CRobot_UpdateRobotStatue_Server.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_CreateRobots_Client.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_CreateRobot_Server.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_SendRobotCommand_Client.cpp" />
     <ClCompile Include="src\rpc\RobotGroup_SyncRobotGroupID_Client.cpp" />
+    <ClCompile Include="src\rpc\RobotServer_HandleRobotGroup_Client.cpp" />
     <ClCompile Include="src\rpc\RobotServer_SyncRobotServerID_Client.cpp" />
+    <ClCompile Include="src\rpc\RobotServer_UpdateRobotStart_Client.cpp" />
     <ClCompile Include="src\rpc\RpcRegister.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

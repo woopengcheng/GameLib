@@ -8,7 +8,7 @@ Msg::ObjectMsgCall * Robot::RobotGroup::SyncRobotGroupID_RpcClient(INT32 nSessio
 	ReturnNULL;
 }
 
-Msg::ObjectMsgCall * Robot::RobotGroup::SyncRobotGroupID_RpcTimeout(INT32 nSessionID, Msg::Object objSrc )
+Msg::ObjectMsgCall * Robot::RobotGroup::SyncRobotGroupID_RpcTimeout(INT32 nSessionID, Msg::Object objSrc)
 {
 
 

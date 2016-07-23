@@ -72,6 +72,15 @@
     <ClInclude Include="src\rpc\RPCDefines.h">
       <Filter>src\rpc</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DlgRobotCommand.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ListCtrlEx.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -101,9 +110,6 @@
     <ClCompile Include="src\RobotServer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\rpc\CRobot_SyncRobotID_Client.cpp">
-      <Filter>src\rpc</Filter>
-    </ClCompile>
     <ClCompile Include="src\rpc\RobotGroup_SyncRobotGroupID_Client.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
@@ -111,6 +117,30 @@
       <Filter>src\rpc</Filter>
     </ClCompile>
     <ClCompile Include="src\rpc\RpcRegister.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotServer_HandleRobotGroup_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotServer_UpdateRobotStart_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgRobotCommand.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ListCtrlEx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotGroup_CreateRobots_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotGroup_SendRobotCommand_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\CRobot_UpdateRobotStatue_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotGroup_CreateRobot_Server.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
   </ItemGroup>

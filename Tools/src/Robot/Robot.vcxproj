@@ -94,7 +94,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -343,7 +343,6 @@
   <ItemGroup>
     <ClInclude Include="src\CRobot.h" />
     <ClInclude Include="src\RobotGroup.h" />
-    <ClInclude Include="src\RobotGroupHandler.h" />
     <ClInclude Include="src\RobotManager.h" />
     <ClInclude Include="src\rpc\GRpc.h" />
     <ClInclude Include="src\rpc\MsgNameDefine.h" />
@@ -357,10 +356,12 @@
     <ClCompile Include="src\CRobot.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\RobotGroup.cpp" />
-    <ClCompile Include="src\RobotGroupHandler.cpp" />
     <ClCompile Include="src\RobotManager.cpp" />
-    <ClCompile Include="src\rpc\CRobot_SyncRobotID_Server.cpp" />
-    <ClCompile Include="src\rpc\RobotGroupHandler_SyncRobotGroupID_Server.cpp" />
+    <ClCompile Include="src\rpc\CRobot_CreateRobot_Client.cpp" />
+    <ClCompile Include="src\rpc\CRobot_SendRobotCommand_Server.cpp" />
+    <ClCompile Include="src\rpc\CRobot_UpdateRobotStatue_Client.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_GRpc_CreateRobots_Server.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_GRpc_SyncRobotGroupID_Server.cpp" />
     <ClCompile Include="src\rpc\RpcRegister.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
