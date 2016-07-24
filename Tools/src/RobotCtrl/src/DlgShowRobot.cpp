@@ -8,6 +8,7 @@
 #include "RobotBtn.h"
 #include "DlgRobotCtrl.h"
 #include "RPCCallFuncs.h"
+#include "DlgRobotCommand.h"
 
 // CDlgShowRobot 对话框
 
@@ -34,6 +35,7 @@ ON_WM_SIZE()
 ON_COMMAND(ID_SEND_ROBOT_COMMAND, &CDlgShowRobot::OnSendRobotCommand)
 ON_NOTIFY(NM_RCLICK, IDC_LIST_SHOW_ROBOT, &CDlgShowRobot::OnNMRClickListShowRobot)
 ON_COMMAND(ID_CREATE_ROBOTS, &CDlgShowRobot::OnCreateRobots)
+ON_COMMAND(ID_CLOSE_GROUP, &CDlgShowRobot::OnCloseGroup)
 END_MESSAGE_MAP()
 
 CDlgShowRobot::CDlgShowRobot(CWnd* pParent /*=NULL*/)
@@ -46,6 +48,7 @@ CDlgShowRobot::CDlgShowRobot(CWnd* pParent /*=NULL*/)
 	, m_pCurRobotGroup(NULL)
 	, m_nCreateBtnIndex(0)
 	, m_nRobotCount(0)
+	, m_dlgRobotCommand(this)
 {
 
 }
@@ -58,6 +61,10 @@ CDlgShowRobot::~CDlgShowRobot()
 BOOL CDlgShowRobot::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	 
+// 	m_dlgRobotCommand.Create(IDD_DLG_ROBOT_COMMAND, this);//创建非模式对话框，显示图片
+// 	m_dlgRobotCommand.SetParent(this);
+// 	m_dlgRobotCommand.ShowWindow(SW_HIDE);
 
 	// TODO:  在此添加额外的初始化
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -241,8 +248,8 @@ BOOL CDlgShowRobot::InsertRobotList(RobotGroup * pRobotGroup, CRobot * pRobot)
 			m_listShowRobots.SetItemText(nItem, i, str.c_str());
 		}
 		pRobot->SetListCtrlIndex(nItem);
-
-		InsertRobot2ViewIndex(pRobot->GetRobotIndex() , nItem);
+		m_listShowRobots.SetItemData(nItem, (DWORD_PTR)pRobot);
+//		InsertRobot2ViewIndex(pRobot->GetPeerRobotID() , nItem);
 	}
 // 	else
 // 	{
@@ -327,10 +334,10 @@ void CDlgShowRobot::ShowRobotBtn(CRobot * pRobot)
 		if (pBtn)
 		{
 			pBtn->SetRobot(pRobot);
-			pBtn->SetRobotIndex(pRobot->GetRobotIndex());
+			pBtn->SetRobotIndex(pRobot->GetPeerRobotID());
 			pBtn->ShowWindow(TRUE);
 			pBtn->Invalidate(TRUE);
-			m_mapRobot2ViewIndex.insert(std::make_pair(pRobot->GetRobotIndex(), pBtn->GetRobotIndex()));
+			m_mapRobot2ViewIndex.insert(std::make_pair(pRobot->GetPeerRobotID(), pBtn->GetRobotIndex()));
 			++m_nBtnCount;
 		}
 	}
@@ -410,6 +417,72 @@ void CDlgShowRobot::OnRobotBtnClicked(UINT nBtnID)
 	MessageBox("点击成功.");
 }
 
+void CDlgShowRobot::OnNMRClickListShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+
+	POINT   pt;
+	GetCursorPos(&pt);
+
+	CMenu temp, *pSubMenu;
+	temp.LoadMenu(IDR_MENU_ROBOT_COMMAND);
+	pSubMenu = temp.GetSubMenu(0);
+	pSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, pt.x, pt.y, this);
+
+	*pResult = 0;
+}
+
+void CDlgShowRobot::OnSendRobotCommand()
+{
+	// TODO: 在此添加命令处理程序代码
+	
+	if (m_dlgRobotCommand.DoModal())
+	{
+
+	}
+
+}
+
+BOOL CDlgShowRobot::GetAllSelectedItems(std::vector<Msg::Object> & vecItems)
+{
+	INT32 nSize = m_listShowRobots.GetItemCount();
+	for (INT32 i = 0; i < nSize; ++i)
+	{
+		if (m_listShowRobots.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+		{
+			CRobot * pRobot = (CRobot*)(m_listShowRobots.GetItemData(i));
+			if (pRobot)
+			{
+				vecItems.push_back(pRobot->GetPeerRobotID());
+			}
+		}
+	}
+
+	return TRUE;
+}
+
+void CDlgShowRobot::OnCreateRobots()
+{
+	// TODO: 在此添加命令处理程序代码
+
+	if (m_pCurRobotGroup && m_pCurRobotGroup->GetRobotServer())
+	{
+		RobotServer * pRobotServer = m_pCurRobotGroup->GetRobotServer();
+		rpc_CreateRobots(*pRobotServer, m_pCurRobotGroup->GetRobotSessionID(), 0, m_pCurRobotGroup->GetObjectID(), 1, 300);
+	}
+}
+
+void CDlgShowRobot::OnCloseGroup()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (m_pCurRobotGroup && m_pCurRobotGroup->GetRobotServer())
+	{
+		RobotServer * pRobotServer = m_pCurRobotGroup->GetRobotServer();
+		rpc_CloseRobotGroup(*pRobotServer, m_pCurRobotGroup->GetRobotSessionID(), 0, m_pCurRobotGroup->GetObjectID());
+	}
+}
+
 BOOL CDlgShowRobot::InsertRobot2ViewIndex(INT32 nRobotIndex, INT32 nViewIndex , std::string  strName)
 {
 	MapRobot2ViewIndexT::iterator iter = m_mapRobot2ViewIndex.find(nRobotIndex);
@@ -439,6 +512,26 @@ void CDlgShowRobot::SetCurRobotTab(INT32 nIndex, RobotGroup * pRobot)
 	}
 }
 
+void CDlgShowRobot::OnDeleteRobot(RobotGroup * pRobotGroup, CRobot * pRobot)
+{
+
+}
+
+void CDlgShowRobot::OnCreateRobot(RobotGroup * pRobotGroup, CRobot * pRobot)
+{
+	CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
+	if (pRobotDlg)
+	{
+		if (m_nCurRobotTabIndex == pRobotDlg->GetCurRobotTabIndex() &&
+			m_nCurListCtrlIndex == pRobotDlg->GetCurListCtrlIndex() &&
+			m_pCurRobotGroup != NULL)
+		{
+			InsertRobotList(pRobotGroup , pRobot);
+			//ShowRobotBtn(pRobot);	//5 暂时不用显示按钮的方式,改为list
+		}
+	}
+}
+
 void CDlgShowRobot::CreateRobotBtns()
 {
 	for (INT32 i = 0; i < cnMaxRobotBtnNum; ++i)
@@ -458,26 +551,6 @@ BOOL CDlgShowRobot::ClearRobotBtns()
 	m_mapRobotBtns.clear();
 
 	return TRUE;
-}
-
-void CDlgShowRobot::OnDeleteRobot(RobotGroup * pRobotGroup, CRobot * pRobot)
-{
-
-}
-
-void CDlgShowRobot::OnCreateRobot(RobotGroup * pRobotGroup, CRobot * pRobot)
-{
-	CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
-	if (pRobotDlg)
-	{
-		if (m_nCurRobotTabIndex == pRobotDlg->GetCurRobotTabIndex() &&
-			m_nCurListCtrlIndex == pRobotDlg->GetCurListCtrlIndex() &&
-			m_pCurRobotGroup != NULL)
-		{
-			InsertRobotList(pRobotGroup , pRobot);
-			//ShowRobotBtn(pRobot);	//5 暂时不用显示按钮的方式,改为list
-		}
-	}
 }
 
 void CDlgShowRobot::CreateRobotBtn()
@@ -521,38 +594,3 @@ BOOL CDlgShowRobot::ShowRobotBtns(BOOL bShow/* = FALSE*/)
 	return TRUE;
 }
 
-void CDlgShowRobot::OnNMRClickListShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-	// TODO: 在此添加控件通知处理程序代码
-
-
-	POINT   pt;
-	GetCursorPos(&pt);
-
-	CMenu temp, *pSubMenu;
-	temp.LoadMenu(IDR_MENU_ROBOT_COMMAND);
-	pSubMenu = temp.GetSubMenu(0);
-	pSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, pt.x, pt.y, this);
-	
-
-
-	*pResult = 0;
-}
-
-void CDlgShowRobot::OnSendRobotCommand()
-{
-	// TODO: 在此添加命令处理程序代码
-}
-
-void CDlgShowRobot::OnCreateRobots()
-{
-	// TODO: 在此添加命令处理程序代码
-
-	if (m_pCurRobotGroup && m_pCurRobotGroup->GetRobotServer())
-	{
-		RobotServer * pRobotServer = m_pCurRobotGroup->GetRobotServer();
-		rpc_CreateRobots(*pRobotServer , m_pCurRobotGroup->GetRobotSessionID() , 0 , m_pCurRobotGroup->GetObjectID() , 1 , 300);
-	}
-
-}

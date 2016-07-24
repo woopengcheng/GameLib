@@ -28,7 +28,7 @@ namespace Robot
 		virtual CErrno				Update(void); 
 
 	public:
-		INT32						CreateRobot(const RobotInfo & info);
+		INT32						CreateRobot(const RobotInfo & info , Msg::Object objSrc);
 		void						OnCreateRobot(CRobot * pRobot);
 		CErrno						DeleteRobot(INT32 nSessionID);
 		void						OnDeleteRobot(CRobot * pRobot);

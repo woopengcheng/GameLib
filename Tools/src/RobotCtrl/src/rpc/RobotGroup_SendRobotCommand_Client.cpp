@@ -8,7 +8,7 @@ Msg::ObjectMsgCall * Robot::RobotGroup::SendRobotCommand_RpcClient(INT32 nSessio
 	ReturnNULL;
 }
 
-Msg::ObjectMsgCall * Robot::RobotGroup::SendRobotCommand_RpcTimeout(INT32 nSessionID, Msg::Object objSrc , std::vector<INT32> & map_robots/* = std::vector<INT32>(0)*/ , std_string & command/* = std::string()*/)
+Msg::ObjectMsgCall * Robot::RobotGroup::SendRobotCommand_RpcTimeout(INT32 nSessionID, Msg::Object objSrc , CUtil::Chunk & command/* = std::string()*/)
 {
 
 

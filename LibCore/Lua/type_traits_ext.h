@@ -228,8 +228,6 @@ template< class T > struct remove_r_reference { typedef T type; };
 
 template< class T > struct remove_r_reference<T&&> { typedef T type; };
 
-
-
 namespace stdext
 {
 	namespace detail {

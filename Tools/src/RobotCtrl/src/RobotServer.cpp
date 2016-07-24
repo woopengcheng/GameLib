@@ -182,15 +182,29 @@ namespace Robot
 		if (iter == m_mapTabToRobotGroup.end())
 		{
 			gErrorStream("GetRobotGroup MapTabToRobotGroup listctrl index not exist. index=" << nRobotTabIndex);
+			return NULL;
 		}
 
 		MapRobotGroups::iterator iter2 = m_mapRobotGroups.find(iter->second);
 		if (iter2 == m_mapRobotGroups.end())
 		{
 			gErrorStream("GetRobotGroup MapRobotGroups listctrl index not exist. index=" << iter->second);
+			return NULL;
 		}
 
 		return iter2->second;
+	}
+
+	void RobotServer::CloseAllRobotGroups()
+	{
+		MapRobotGroups::iterator iter = m_mapRobotGroups.begin();
+		for (; iter != m_mapRobotGroups.end(); ++iter)
+		{
+			if (iter->second)
+			{
+				rpc_CloseRobotGroup(*this, iter->second->GetRobotSessionID(), 0, iter->second->GetObjectID());
+			}
+		}
 	}
 
 	CErrno RobotServerListener::OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)

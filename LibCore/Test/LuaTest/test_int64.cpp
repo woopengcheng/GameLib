@@ -1,4 +1,4 @@
-#include "Lua/lua_tinker.h"
+#include "lua/lua_tinker.h"
 #include"test.h"
 
 extern std::map<std::string, std::function<bool()> > g_test_func_set;

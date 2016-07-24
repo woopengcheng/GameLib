@@ -24,6 +24,9 @@ namespace Msg
 	//tool SyncRobotGroupID declare here
 	RPC_DEFINE(SyncRobotGroupID);
 
+	//tool CloseRobotGroup declare here
+	RPC_DEFINE(CloseRobotGroup);
+
 	//tool CreateRobots declare here
 	RPC_DEFINE(CreateRobots);
 

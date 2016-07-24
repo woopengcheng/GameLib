@@ -22,13 +22,7 @@
 #include<map>
 #include<vector>
 
-extern "C"
-{
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-}
-//#include"lua.hpp"
+#include"lua.hpp"
 #include"type_traits_ext.h" 
 #include"lua_tinker_stackobj.h" 
 
@@ -86,7 +80,8 @@ namespace lua_tinker
 		virtual ~lua_value() {}
 		virtual void to_lua(lua_State *L) = 0;
 	};
-	struct table;
+	struct table_onstack;
+	struct table_ref;
 	struct args_type_overload_functor_base;
 
 	template<typename RVal = void>
@@ -390,6 +385,7 @@ namespace lua_tinker
 		struct ptr2user : UserDataWapper
 		{
 			ptr2user(T* t) : UserDataWapper(t) {}
+			ptr2user(const T* t) : UserDataWapper(t) {}
 
 		};
 
@@ -480,12 +476,18 @@ namespace lua_tinker
 		};
 
 		template<>
-		struct pop<table>
+		struct pop<table_ref>
 		{
 			static constexpr const int nresult = 1;
-			static table apply(lua_State *L);
+			static table_ref apply(lua_State *L);
 		};
 
+		template<>
+		struct pop<table_onstack>
+		{
+			static constexpr const int nresult = 1;
+			static table_onstack apply(lua_State *L);
+		};
 
 		// push value_list to lua stack //here need a T/T*/T& not a T&&
 		void push_args(lua_State *L);
@@ -564,6 +566,50 @@ namespace lua_tinker
 			else
 				return CLT_INT;
 		}
+		
+
+		template<typename _T>
+		static _T _lua2type(lua_State *L, int index)
+		{
+			if (!lua_isuserdata(L, index))
+			{
+				lua_pushfstring(L, "can't convert argument %d to class %s", index, get_class_name<_T>());
+				lua_error(L);
+			}
+
+
+			UserDataWapper* pWapper = user2type<UserDataWapper*>(L, index);
+
+#ifdef LUATINKER_USERDATA_CHECK_TYPEINFO
+			if (pWapper->m_type_idx != get_type_idx<base_type<_T>>())
+			{
+				//maybe derived to base
+				if (IsInherit(L, pWapper->m_type_idx, get_type_idx<base_type<_T>>()) == false)
+				{
+					lua_pushfstring(L, "can't convert argument %d to class %s", index, get_class_name<_T>());
+					lua_error(L);
+				}
+			}
+#endif
+#ifdef LUATINKER_USERDATA_CHECK_CONST
+			if( (std::is_reference<_T>::value || std::is_pointer<_T>::value) &&
+				pWapper->is_const() == true && std::is_const<std::remove_reference<std::remove_pointer<_T>::type>::type>::value == false)
+			{
+				lua_pushfstring(L, "can't convert argument %d from const class %s", index, get_class_name<_T>());
+				lua_error(L);
+			}
+#endif
+			return void2type<_T>(pWapper->m_p);
+
+		}
+
+		template<typename _T>
+		static void _type2lua(lua_State *L, _T&& val)
+		{
+			object2lua(L, std::forward<_T>(val));
+			push_meta(L, get_class_name<_T>());
+			lua_setmetatable(L, -2);
+		}
 
 		// lua stack help to read/push
 		template<typename T, typename Enable = void>
@@ -598,48 +644,12 @@ namespace lua_tinker
 				return _lua2type<_T>(L, index);
 			}
 
-			template<typename _T>
-			static _T _lua2type(lua_State *L, int index)
-			{
-				if (!lua_isuserdata(L, index))
-				{
-					lua_pushfstring(L, "can't convert argument %d to class %s", index, get_class_name<_T>());
-					lua_error(L);
-				}
-
-
-				UserDataWapper* pWapper = user2type<UserDataWapper*>(L, index);
-
-#ifdef LUATINKER_USERDATA_CHECK_TYPEINFO
-				if (pWapper->m_type_idx != get_type_idx<base_type<_T>>())
-				{
-					//maybe derived to base
-					if (IsInherit(L, pWapper->m_type_idx, get_type_idx<base_type<_T>>()) == false)
-					{
-						lua_pushfstring(L, "can't convert argument %d to class %s", index, get_class_name<T>());
-						lua_error(L);
-					}
-				}
-#endif
-#ifdef LUATINKER_USERDATA_CHECK_CONST
-				if (pWapper->is_const() == true && std::is_class<_T>::value == false)
-				{
-					lua_pushfstring(L, "can't convert argument %d from const class %s", index, get_class_name<T>());
-					lua_error(L);
-				}
-#endif
-				return void2type<T>(pWapper->m_p);
-
-			}
-
-
+			
 			//obj to lua
 			template<typename _T>
 			static void _push(lua_State *L, _T&& val)
 			{
-				object2lua(L, std::forward<_T>(val));
-				push_meta(L, get_class_name<_T>());
-				lua_setmetatable(L, -2);
+				_type2lua(L, std::forward<_T>(val));
 			}
 
 		};
@@ -716,11 +726,11 @@ namespace lua_tinker
 
 
 		template<>
-		struct _stack_help<table>
+		struct _stack_help<table_onstack>
 		{
 			static constexpr int cover_to_lua_type() { return CLT_TABLE; }
-			static table _read(lua_State *L, int index);
-			static void _push(lua_State *L, const table& ret);
+			static table_onstack _read(lua_State *L, int index);
+			static void _push(lua_State *L, const table_onstack& ret);
 		};
 
 		template<>
@@ -746,89 +756,133 @@ namespace lua_tinker
 			}
 		};
 
-		//stl container
+
+		//support map,multimap,unordered_map,unordered_multimap
+		template<typename _T>
+		static typename std::enable_if<is_associative_container<_T>::value, _T>::type _readfromtable(lua_State *L, int index)
+		{
+			stack_obj table_obj(L, index);
+			if (table_obj.is_table() == false)
+			{
+				lua_pushfstring(L, "convert k-v container from argument %d must be a table", index);
+				lua_error(L);
+			}
+
+			_T t;
+			table_iterator it(table_obj);
+			while (it.hasNext())
+			{
+				t.emplace(std::make_pair(read<typename _T::key_type>(L, it.key_idx()), read<typename _T::mapped_type>(L, it.value_idx())));
+				it.moveNext();
+			}
+
+			return t;
+		}
+
+		//support list,vector,deque
+		template<typename _T>
+		static typename std::enable_if<!is_associative_container<_T>::value && !has_key_type<_T>::value, _T>::type _readfromtable(lua_State *L, int index)
+		{
+			stack_obj table_obj(L, index);
+			if (table_obj.is_table() == false)
+			{
+				lua_pushfstring(L, "convert container from argument %d must be a table", index);
+				lua_error(L);
+			}
+
+
+			_T t;
+			table_iterator it(table_obj);
+			while (it.hasNext())
+			{
+				t.emplace_back(read<typename _T::value_type>(L, it.value_idx()));
+				it.moveNext();
+			}
+
+			return t;
+		}
+		//support set
+		template<typename _T>
+		static typename std::enable_if<!is_associative_container<_T>::value && has_key_type<_T>::value, _T>::type _readfromtable(lua_State *L, int index)
+		{
+			stack_obj table_obj(L, index);
+			if (table_obj.is_table() == false)
+			{
+				lua_pushfstring(L, "convert set from argument %d must be a table", index);
+				lua_error(L);
+			}
+
+
+			_T t;
+			table_iterator it(table_obj);
+			while (it.hasNext())
+			{
+				t.emplace(read<typename _T::value_type>(L, it.value_idx()));
+				it.moveNext();
+			}
+
+			return t;
+		}
+
+		//k,v container to lua
+		template<typename _T>
+		static typename std::enable_if<is_associative_container<_T>::value, void>::type  _pushtotable(lua_State *L, const _T& ret)
+		{
+			stack_obj table_obj = stack_obj::new_table(L, 0, ret.size());
+			for (auto it = ret.begin(); it != ret.end(); it++)
+			{
+				push(L, it->first);
+				push(L, it->second);
+				lua_settable(L, table_obj._stack_pos);
+			}
+		}
+		//t container to lua
+		template<typename _T>
+		static typename std::enable_if<!is_associative_container<_T>::value, void>::type  _pushtotable(lua_State *L, const _T& ret)
+		{
+			stack_obj table_obj = stack_obj::new_table(L, ret.size(), 0);
+			auto it = ret.begin();
+			for (int i = 1; it != ret.end(); it++, i++)
+			{
+				push(L, i);
+				push(L, *it);
+				lua_settable(L, table_obj._stack_pos);
+			}
+		}
+
+		//stl container T
 		template<typename T>
-		struct _stack_help<T, typename std::enable_if<is_container<base_type<T>>::value>::type>
+		struct _stack_help<T, typename std::enable_if<!std::is_reference<T>::value && !std::is_pointer<T>::value && is_container<base_type<T>>::value>::type>
 		{
 			static constexpr int cover_to_lua_type() { return CLT_TABLE; }
 
 			static T _read(lua_State *L, int index)
 			{
-				return _readfromtable<T>(L, index);
+				if (lua_istable(L, index))
+					return _readfromtable<T>(L, index);
+				else
+				{
+					return _lua2type<T>(L, index);
+				}
 			}
 
-			//support map,multimap,unordered_map,unordered_multimap
 			template<typename _T>
-			static typename std::enable_if<is_associative_container<_T>::value, _T>::type _readfromtable(lua_State *L, int index)
+			static void _push(lua_State *L, _T&& val)
 			{
-				stack_obj table_obj(L, index);
-				if (table_obj.is_table() == false)
-				{
-					lua_pushfstring(L, "convert k-v container from argument %d must be a table", index);
-					lua_error(L);
-				}
-
-				_T t;
-				table_iterator it(table_obj);
-				while (it.hasNext())
-				{
-					t.emplace(std::make_pair(read<typename T::key_type>(L, it.key_idx()), read<typename T::mapped_type>(L, it.value_idx())));
-					it.moveNext();
-				}
-
-				return t;
+				return _pushtotable(L, std::forward<_T>(val));
 			}
 
-			//support list,vector,deque
 			template<typename _T>
-			static typename std::enable_if<!is_associative_container<_T>::value, _T>::type _readfromtable(lua_State *L, int index)
+			static void _push(lua_State *L, const _T& val)
 			{
-				stack_obj table_obj(L, index);
-				if (table_obj.is_table() == false)
-				{
-					lua_pushfstring(L, "convert container from argument %d must be a table", index);
-					lua_error(L);
-				}
-				
-
-				_T t;
-				table_iterator it(table_obj);
-				while (it.hasNext())
-				{
-					t.emplace_back(read<typename T::value_type>(L, it.value_idx()));
-					it.moveNext();
-				}
-				
-				return t;
+				return _type2lua(L, val);
 			}
-
-
-
-			//k,v container to lua
 			template<typename _T>
-			static typename std::enable_if<is_associative_container<_T>::value, void>::type  _push(lua_State *L, const _T& ret)
+			static void _push(lua_State *L, _T& val)
 			{
-				stack_obj table_obj = stack_obj::new_table(L, 0, (int)ret.size());
-				for (auto it = ret.begin(); it != ret.end(); it++)
-				{
-					push(L, it->first);
-					push(L, it->second);
-					lua_settable(L, table_obj._stack_pos);
-				}
+				return _type2lua(L, val);
 			}
-			//t container to lua
-			template<typename _T>
-			static typename std::enable_if<!is_associative_container<_T>::value, void>::type  _push(lua_State *L, const _T& ret)
-			{
-				stack_obj table_obj = stack_obj::new_table(L, (int)ret.size(), 0);
-				auto it = ret.begin();
-				for (int i = 1; it != ret.end(); it++, i++)
-				{
-					push(L, i);
-					push(L, *it);
-					lua_settable(L, table_obj._stack_pos);
-				}
-			}
+
 		};
 
 		template<typename RVal, typename ...Args>
@@ -845,9 +899,10 @@ namespace lua_tinker
 					lua_error(L);
 				}
 				
+				//copy idx to top
+				lua_pushvalue(L, index);
+				//make ref
 				int lua_callback = luaL_ref(L, LUA_REGISTRYINDEX);
-				lua_pushnil(L);//we push a nil for pop
-
 				lua_function_ref<RVal> callback_ref(L, lua_callback);
 
 				return std::function<RVal(Args...)>(callback_ref);
@@ -882,8 +937,10 @@ namespace lua_tinker
 					lua_error(L);
 				}
 
+				//copy to top
+				lua_pushvalue(L, index);
+				//move top to ref
 				int lua_callback = luaL_ref(L, LUA_REGISTRYINDEX);
-				lua_pushnil(L);//we push a nil for pop
 
 				lua_function_ref<RVal> callback_ref(L, lua_callback);
 
@@ -972,10 +1029,32 @@ namespace lua_tinker
 				push_meta(L, get_class_name<std::shared_ptr<T>>());
 				lua_setmetatable(L, -2);
 			}
+
+			
 		};
 		template<typename T>
 		struct _stack_help<const std::shared_ptr<T>& > : public _stack_help<std::shared_ptr<T>>
 		{
+			static void _push(lua_State *L, const std::shared_ptr<T>& val)
+			{
+				if (val)
+				{
+					//if (val.use_count() == 1)	//last count,if we didn't hold it, it will lost
+					//{
+					//	new(lua_newuserdata(L, sizeof(sharedptr2user<T>))) sharedptr2user<T>(val);
+					//}
+					//else
+					{
+						new(lua_newuserdata(L, sizeof(weakptr2user<T>))) weakptr2user<T>(val);
+					}
+
+				}
+				else
+					lua_pushnil(L);
+
+				push_meta(L, get_class_name<std::shared_ptr<T>>());
+				lua_setmetatable(L, -2);
+			}
 		};
 
 		//read_weap
@@ -1125,8 +1204,8 @@ namespace lua_tinker
 		}
 
 		//upval to stack helper
-		void push_upval_to_stack(lua_State* L,int nArgsCount, int nArgsNeed);
-		void push_upval_to_stack(lua_State* L,int nArgsCount, int nArgsNeed, int nUpvalCount, int UpvalStart);
+		bool push_upval_to_stack(lua_State* L, int nArgsCount, int nArgsNeed, int default_upval_start = 2);
+		bool push_upval_to_stack(lua_State* L, int nArgsCount, int nArgsNeed, int nUpvalCount, int UpvalStart);
 		//functor
 		struct functor_base
 		{
@@ -1475,19 +1554,35 @@ namespace lua_tinker
 		{
 			TRY_LUA_TINKER_INVOKE()
 			{
-				detail::push_upval_to_stack(L, lua_gettop(L), sizeof...(Args), m_nDefaultParamCount, m_nDefaultParamsStart);
-				invoke(L);
+				detail::push_upval_to_stack(L, lua_gettop(L) - 1, sizeof...(Args), m_nDefaultParamCount, m_nDefaultParamsStart);
+				_invoke(L);
 				return 1;
 			}
 			CATCH_LUA_TINKER_INVOKE()
 			{
-				lua_pushfstring(L, "lua fail to invoke functor");
+				lua_pushfstring(L, "lua fail to invoke constructor");
 				lua_error(L);
 			}
 			return 0;
 		}
 
-		static int invoke(lua_State *L)
+		static int invoke(lua_State* L)
+		{
+			TRY_LUA_TINKER_INVOKE()
+			{
+				detail::push_upval_to_stack(L, lua_gettop(L) - 1, sizeof...(Args), 1);
+				_invoke(L);
+				return 1;
+			}
+			CATCH_LUA_TINKER_INVOKE()
+			{
+				lua_pushfstring(L, "lua fail to invoke constructor");
+				lua_error(L);
+			}
+			return 0;
+		}
+
+		static int _invoke(lua_State *L)
 		{
 			new(lua_newuserdata(L, sizeof(detail::val2user<T>))) detail::val2user<T>(L, detail::class_tag<Args...>());
 			detail::push_meta(L, detail::get_class_name<T>());
@@ -1545,9 +1640,6 @@ namespace lua_tinker
 			{
 				//remove error info
 				lua_pop(L, 1);
-				//remove error_callback func
-				lua_remove(L, errfunc);
-				return RVal();
 			}
 		}
 		else
@@ -1844,7 +1936,7 @@ namespace lua_tinker
 				}
 				else
 				{
-					int nLen = (int)parent_table.get_rawlen() + 1;
+					int nLen = parent_table.get_rawlen() + 1;
 					push_meta(L, get_class_name<P>());
 					parent_table.rawseti(nLen); // set __multi_parent[n]=table
 					parent_table.remove();//pop __multi_parent table
@@ -2183,13 +2275,13 @@ namespace lua_tinker
 	};
 
 	// Table Object Holder
-	struct table
+	struct table_onstack
 	{
-		table(lua_State* L);
-		table(lua_State* L, int index);
-		table(lua_State* L, const char* name);
-		table(const table& input);
-		~table();
+		table_onstack(lua_State* L);
+		table_onstack(lua_State* L, int index);
+		table_onstack(lua_State* L, const char* name);
+		table_onstack(const table_onstack& input);
+		~table_onstack();
 
 		template<typename T>
 		void set(const char* name, T&& object)
@@ -2209,12 +2301,18 @@ namespace lua_tinker
 			return m_obj->get<T>(num);
 		}
 
-		table_obj*      m_obj;
+		template<typename T>
+		T convertto()
+		{
+			return detail::_readfromtable<T>(m_obj->m_L, m_obj->m_index);
+		}
+
+		table_obj*      m_obj = nullptr;
 	};
 
 	namespace detail
 	{
-		struct lua_function_ref_base
+		struct lua_ref_base
 		{
 			lua_State* m_L = nullptr;
 			int m_regidx = 0;
@@ -2223,23 +2321,70 @@ namespace lua_tinker
 			void inc_ref();
 			void dec_ref();
 
-			bool validate() const;
+			bool empty() const { return m_L == nullptr; }
 			void destory();
+			void reset();
 
-			lua_function_ref_base() {}
-			lua_function_ref_base(lua_State* L, int regidx);
-			virtual ~lua_function_ref_base();
-			lua_function_ref_base(const lua_function_ref_base& rht);
-			lua_function_ref_base(lua_function_ref_base&& rht);
-			
+			lua_ref_base() {}
+			lua_ref_base(lua_State* L, int regidx);
+			virtual ~lua_ref_base();
+			lua_ref_base(const lua_ref_base& rht);
+			lua_ref_base(lua_ref_base&& rht);
+			lua_ref_base& operator=(const lua_ref_base& rht);
 		};
 	}
 	
+	struct table_ref : public detail::lua_ref_base
+	{
+		using lua_ref_base::lua_ref_base;
+				
+		static table_ref make_table_ref(table_onstack& ref_table)
+		{
+			if (ref_table.m_obj != nullptr && ref_table.m_obj->validate())
+			{
+				//copy table to top
+				lua_pushvalue(ref_table.m_obj->m_L, ref_table.m_obj->m_index);
+				//move top to registry
+				int reg_idx = luaL_ref(ref_table.m_obj->m_L, LUA_REGISTRYINDEX);
+				
+				return table_ref(ref_table.m_obj->m_L, reg_idx);
+			}
+			return table_ref();
+		}
+		static table_ref make_table_ref(lua_State* L, int index)
+		{
+			if (lua_istable(L,index) == true)
+			{
+				//copy table to top
+				lua_pushvalue(L, index);
+				//move top to registry
+				int reg_idx = luaL_ref(L, LUA_REGISTRYINDEX);
+
+				return table_ref(L, reg_idx);
+			}
+			return table_ref();
+		}
+		
+		table_onstack push_table_to_stack()
+		{
+			if (lua_rawgeti(m_L, LUA_REGISTRYINDEX, m_regidx) == LUA_TTABLE)
+			{
+				return table_onstack(m_L, -1);
+			}
+			else
+			{
+				print_error(m_L, "lua_tinker::table_ref attempt to visit(not a table)");
+				return table_onstack(m_L);
+			}
+			
+		}
+
+	};
 
 	template<typename RVal>
-	struct lua_function_ref : public detail::lua_function_ref_base
+	struct lua_function_ref : public detail::lua_ref_base
 	{
-		using lua_function_ref_base::lua_function_ref_base;
+		using lua_ref_base::lua_ref_base;
 
 		template<typename ...Args>
 		RVal operator()(Args&& ... args) const
@@ -2266,7 +2411,7 @@ namespace lua_tinker
 
 } // namespace lua_tinker
 
-typedef lua_tinker::table LuaTable;
+typedef lua_tinker::table_onstack LuaTable;
 
 
 //overload func 

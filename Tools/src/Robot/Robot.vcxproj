@@ -360,6 +360,7 @@
     <ClCompile Include="src\rpc\CRobot_CreateRobot_Client.cpp" />
     <ClCompile Include="src\rpc\CRobot_SendRobotCommand_Server.cpp" />
     <ClCompile Include="src\rpc\CRobot_UpdateRobotStatue_Client.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_GRpc_CloseRobotGroup_Server.cpp" />
     <ClCompile Include="src\rpc\RobotGroup_GRpc_CreateRobots_Server.cpp" />
     <ClCompile Include="src\rpc\RobotGroup_GRpc_SyncRobotGroupID_Server.cpp" />
     <ClCompile Include="src\rpc\RpcRegister.cpp" />

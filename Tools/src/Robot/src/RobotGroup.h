@@ -3,6 +3,8 @@
 #include "MsgLib/inc/RpcInterface.h" 
 
 
+extern INT32 g_nClosed;
+
 namespace Robot
 {
 

@@ -4,6 +4,7 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 #include <string>
+#include "DlgRobotCommand.h"
 
 // CDlgShowRobot 对话框
 
@@ -58,6 +59,10 @@ protected:
 	afx_msg void		OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void		OnSize(UINT nType, int cx, int cy);
+	afx_msg void		OnSendRobotCommand();
+	afx_msg void		OnNMRClickListShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void		OnCreateRobots();
+	afx_msg void		OnCloseGroup();
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -75,6 +80,7 @@ public:
 	INT32				GetCurRobotTabIndex() const { return m_nCurRobotTabIndex; }
 	INT32				GetCurListCtrlIndex() const { return m_nCurListCtrlIndex; }
 	void				SetCurListCtrlIndex(INT32 val) { m_nCurListCtrlIndex = val; }
+	BOOL				GetAllSelectedItems(std::vector<Msg::Object> & vecItems);
 
 protected:
 	BOOL				InsertRobotList(RobotGroup * pRobotGroup, CRobot * pRobot);
@@ -90,10 +96,11 @@ protected://5 此下面的针对按钮的功能,暂时去掉.
 	BOOL				ShowRobotBtns(BOOL bShow = FALSE);
 	BOOL				ShowRobotBtn(INT32 nIndex, BOOL bShow/* = FALSE*/);
 	void				OnRobotBtnClicked(UINT nBtnID);
-	BOOL				InsertRobot2ViewIndex(INT32 nRobotIndex , INT32 nViewIndex, std::string strName="");
+	BOOL				InsertRobot2ViewIndex(INT32 nRobotIndex, INT32 nViewIndex, std::string strName = "");
 
 protected:
 	CListCtrl			m_listShowRobots;
+	CDlgRobotCommand	m_dlgRobotCommand;
 
 	RobotGroup		*	m_pCurRobotGroup;
 	INT32				m_nCurRobotTabIndex;		//5 这里和主界面的tab的Index是对应的.
@@ -109,7 +116,4 @@ protected://5 此下面的针对按钮的,暂时去掉.
 	INT32				m_nBtnTopLeftY;				//5 这里需要计算按钮左上角的y位置
 	MapRobotBtnT		m_mapRobotBtns;
 public:
-	afx_msg void OnSendRobotCommand();
-	afx_msg void OnNMRClickListShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnCreateRobots();
 };

@@ -134,13 +134,16 @@
     <ClCompile Include="src\rpc\RobotGroup_CreateRobots_Client.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
-    <ClCompile Include="src\rpc\RobotGroup_SendRobotCommand_Client.cpp">
-      <Filter>src\rpc</Filter>
-    </ClCompile>
     <ClCompile Include="src\rpc\CRobot_UpdateRobotStatue_Server.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
     <ClCompile Include="src\rpc\RobotGroup_CreateRobot_Server.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotGroup_SendRobotCommand_Client.cpp">
+      <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\RobotGroup_CloseRobotGroup_Client.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
   </ItemGroup>

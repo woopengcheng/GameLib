@@ -24,8 +24,8 @@ protected:
 public: 
 
 public:
-	INT32						GetRobotIndex() const { return m_nRobotIndex; }
-	void						SetRobotIndex(INT32 val) { m_nRobotIndex = val; }
+	INT64						GetRobotIndex() const { return m_nRobotIndex; }
+	void						SetRobotIndex(INT64 val) { m_nRobotIndex = val; }
 	CRect						GetRectPos() const { return m_rectPos; }
 	void						SetRectPos(CRect val) { m_rectPos = val; }
 	void						SetBtnColor(COLORREF colorRef) { m_btnColor = colorRef; }
@@ -34,7 +34,7 @@ public:
 
 protected:
 	CRect						m_rectPos;
-	INT32						m_nRobotIndex;		//5 这里需要关联上Robot的Index
+	INT64						m_nRobotIndex;		//5 这里需要关联上Robot的Index
 	CRobot				*		m_pRobot;
 	COLORREF					m_btnColor;
 

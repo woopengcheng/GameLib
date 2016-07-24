@@ -8,6 +8,7 @@
 #include "RobotGroup.h"
 #include "RobotManager.h"
 
+INT32 g_nClosed = FALSE;
 int _tmain(int argc, _TCHAR* argv[])
 {
 	if (argc < 2)
@@ -21,13 +22,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	Json::Value root;
 	Json::JsonParase("Robot.conf", root);
 
-	INT32 nServerPort = CUtil::atoi(argv[1]);
+	INT32 nServerPort = (INT32)CUtil::atoi(argv[1]);
 	root["robot_group"]["clients"][0]["port"] = nServerPort;
 	gDebugStream("server_port=" << root["clients"][0]["port"]);
 
 	Robot::RobotGroup::GetInstance().Init(root);
 
-	while (true)
+	while (!g_nClosed)
 	{
 		Robot::RobotGroup::GetInstance().Update();
 		Timer::sleep(1);

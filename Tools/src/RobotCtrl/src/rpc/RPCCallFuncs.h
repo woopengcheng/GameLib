@@ -174,6 +174,45 @@ namespace Robot
 		return rpc_SyncRobotGroupID(objInterface , nSessionID ,vecTargets , objSrc  , pCallback , usPriority , objSyncType);
 	}
 
+	static INT32  rpc_CloseRobotGroup(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc  , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	{
+		Msg::RpcInterface * pInterface = &objInterface;
+		GEN_RPC_CALL_0(pInterface , pSessionName , Msg::g_szCloseRobotGroup_RpcCall , vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+	}
+
+	static INT32  rpc_CloseRobotGroup(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc  , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	{
+		std::vector<Msg::Object> vecTargets;
+		vecTargets.push_back(objTarget);
+		return rpc_CloseRobotGroup(objInterface , pSessionName ,vecTargets , objSrc , pCallback , usPriority , objSyncType);
+	}
+
+	static INT32  rpc_CloseRobotGroup(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc  , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	{
+		Msg::RpcInterface * pInterface = &objInterface;
+		GEN_RPC_CALL_0(pInterface, pSessionName , Msg::g_szCloseRobotGroup_RpcCall , vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+	}
+
+	static INT32  rpc_CloseRobotGroup(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc  , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	{
+		std::vector<Msg::Object> vecTargets;
+		vecTargets.push_back(objTarget);
+		return rpc_CloseRobotGroup(objInterface , pSessionName ,vecTargets , objSrc , pCallback , usPriority , objSyncType);
+	}
+
+	static INT32  rpc_CloseRobotGroup(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc  , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	{
+		Msg::RpcInterface * pInterface = &objInterface;
+		GEN_RPC_CALL_0(pInterface , nSessionID , Msg::g_szCloseRobotGroup_RpcCall , vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+	}
+
+	static INT32  rpc_CloseRobotGroup(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc  , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	{
+		std::vector<Msg::Object> vecTargets;
+		vecTargets.push_back(objTarget);
+		return rpc_CloseRobotGroup(objInterface , nSessionID ,vecTargets , objSrc  , pCallback , usPriority , objSyncType);
+	}
+
 	static INT32  rpc_CreateRobots(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , INT32 start_pos = 0 , INT32 end_pos = 0 , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
 	{
 		Msg::RpcInterface * pInterface = &objInterface;
@@ -213,43 +252,43 @@ namespace Robot
 		return rpc_CreateRobots(objInterface , nSessionID ,vecTargets , objSrc , start_pos , end_pos , pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std::vector<INT32> & map_robots = std::vector<INT32>(0) , std_string & command = std::string() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , CUtilChunk & command = CUtil::Chunk() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
 	{
 		Msg::RpcInterface * pInterface = &objInterface;
-		GEN_RPC_CALL_2(pInterface , pSessionName , Msg::g_szSendRobotCommand_RpcCall , map_robots , command, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+		GEN_RPC_CALL_1(pInterface , pSessionName , Msg::g_szSendRobotCommand_RpcCall , command, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
 	}
 
-	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc , std::vector<INT32> & map_robots = std::vector<INT32>(0) , std_string & command = std::string() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const char * pSessionName , Msg::Object objTarget, Msg::Object objSrc , CUtilChunk & command = CUtil::Chunk() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
 	{
 		std::vector<Msg::Object> vecTargets;
 		vecTargets.push_back(objTarget);
-		return rpc_SendRobotCommand(objInterface , pSessionName ,vecTargets , objSrc , map_robots , command, pCallback , usPriority , objSyncType);
+		return rpc_SendRobotCommand(objInterface , pSessionName ,vecTargets , objSrc , command, pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , std::vector<INT32> & map_robots = std::vector<INT32>(0) , std_string & command = std::string() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::VecObjects & vecTargets , Msg::Object objSrc , CUtilChunk & command = CUtil::Chunk() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
 	{
 		Msg::RpcInterface * pInterface = &objInterface;
-		GEN_RPC_CALL_2(pInterface, pSessionName , Msg::g_szSendRobotCommand_RpcCall , map_robots , command, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+		GEN_RPC_CALL_1(pInterface, pSessionName , Msg::g_szSendRobotCommand_RpcCall , command, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
 	}
 
-	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc , std::vector<INT32> & map_robots = std::vector<INT32>(0) , std_string & command = std::string() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , const std::string & pSessionName , Msg::Object objTarget, Msg::Object objSrc , CUtilChunk & command = CUtil::Chunk() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
 	{
 		std::vector<Msg::Object> vecTargets;
 		vecTargets.push_back(objTarget);
-		return rpc_SendRobotCommand(objInterface , pSessionName ,vecTargets , objSrc , map_robots , command, pCallback , usPriority , objSyncType);
+		return rpc_SendRobotCommand(objInterface , pSessionName ,vecTargets , objSrc , command, pCallback , usPriority , objSyncType);
 	}
 
-	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc , std::vector<INT32> & map_robots = std::vector<INT32>(0) , std_string & command = std::string() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::VecObjects & vecTargets , Msg::Object objSrc , CUtilChunk & command = CUtil::Chunk() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
 	{
 		Msg::RpcInterface * pInterface = &objInterface;
-		GEN_RPC_CALL_2(pInterface , nSessionID , Msg::g_szSendRobotCommand_RpcCall , map_robots , command, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
+		GEN_RPC_CALL_1(pInterface , nSessionID , Msg::g_szSendRobotCommand_RpcCall , command, vecTargets , objSrc , pCallback , usPriority , objSyncType , 10);
 	}
 
-	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc , std::vector<INT32> & map_robots = std::vector<INT32>(0) , std_string & command = std::string() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
+	static INT32  rpc_SendRobotCommand(Msg::RpcInterface & objInterface , INT32 nSessionID , Msg::Object objTarget, Msg::Object objSrc , CUtilChunk & command = CUtil::Chunk() , Msg::RpcCallbackPtr pCallback = NULL , UINT16 usPriority = 0 , Msg::EMSG_SYNC_TYPE objSyncType = Msg::SYNC_TYPE_ASYNC)
 	{
 		std::vector<Msg::Object> vecTargets;
 		vecTargets.push_back(objTarget);
-		return rpc_SendRobotCommand(objInterface , nSessionID ,vecTargets , objSrc , map_robots , command , pCallback , usPriority , objSyncType);
+		return rpc_SendRobotCommand(objInterface , nSessionID ,vecTargets , objSrc , command , pCallback , usPriority , objSyncType);
 	}
 
 }

@@ -60,16 +60,16 @@ namespace Robot
 		RobotInfo			&		GetRobotInfo() { return m_objRobotInfo; }
 		const RobotInfo		&		GetRobotInfo() const { return m_objRobotInfo; }
 		void						SetRobotInfo(const RobotInfo & val) { m_objRobotInfo = val; }
-		INT32						GetRobotIndex() const { return m_nRobotIndex; }
-		void						SetRobotIndex(INT32 val) { m_nRobotIndex = val; }
+		INT64						GetPeerRobotID() const { return m_llPeerRobotID; }
+		void						SetPeerRobotID(INT64 val) { m_llPeerRobotID = val; }
 		INT32						GetListCtrlIndex() const { return m_nListViewIndex; }
 		void						SetListCtrlIndex(INT32 val) { m_nListViewIndex = val; }
 		RobotGroup			*		GetRobotGroup() const { return m_pRobotGroup; }
 
 	protected:
 		RobotInfo					m_objRobotInfo;
-		INT32						m_nRobotIndex;		//5 这里需要关联RobotGroup上的index.
 		RobotGroup			*		m_pRobotGroup;
+		INT64						m_llPeerRobotID;	//5 这里需要关联RobotGroup上的index.
 		INT32						m_nListViewIndex;	//5 这里需要关联ListCtrl上的index.
 	};
 

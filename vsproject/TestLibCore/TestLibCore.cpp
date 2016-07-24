@@ -50,7 +50,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	luaL_openlibs(L);
 	lua_tinker::init(L);
 
-	test_lua_main(L);
+//	test_lua_main(L);
 	Config::ConfigManager::GetInstance().ExportClassToLua(L);
 
 // 	Config::SActivityConfig * result = test_lua_member_property(L);

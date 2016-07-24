@@ -13,11 +13,15 @@ void export_to_lua_auto(lua_State* L)
 	lua_tinker::def(L, "get_gff_ptr", &get_gff_ptr);
 	lua_tinker::def(L, "get_gint", &get_gint);
 	lua_tinker::def(L, "get_gintptr", &get_gintptr);
+	lua_tinker::def(L, "get_gintptr_const", &get_gintptr_const);
 	lua_tinker::def(L, "get_gintref", &get_gintref);
+	lua_tinker::def(L, "get_gintref_const", &get_gintref_const);
+	lua_tinker::def(L, "get_shared_int", &get_shared_int);
 	lua_tinker::def(L, "gint_add1", &gint_add1);
 	lua_tinker::def(L, "gint_add_intref", &gint_add_intref);
 	lua_tinker::def(L, "gint_addint", &gint_addint);
 	lua_tinker::def(L, "gint_addintptr", &gint_addintptr);
+	lua_tinker::def(L, "gint_addintptr_const", &gint_addintptr_const);
 	lua_tinker::def(L, "gint_addintref", &gint_addintref);
 	lua_tinker::def(L, "make_ff", &make_ff);
 	lua_tinker::def(L, "make_ff_nodef", &make_ff_nodef);
@@ -26,6 +30,7 @@ void export_to_lua_auto(lua_State* L)
 	lua_tinker::def(L, "make_ff_weak", &make_ff_weak);
 	lua_tinker::def(L, "push_hashmap", &push_hashmap);
 	lua_tinker::def(L, "push_map", &push_map);
+	lua_tinker::def(L, "push_map_ref", &push_map_ref);
 	lua_tinker::def(L, "push_set", &push_set);
 	lua_tinker::def(L, "push_string", &push_string);
 	lua_tinker::def(L, "push_string_ref", &push_string_ref);
@@ -46,6 +51,8 @@ void export_to_lua_auto(lua_State* L)
 		lua_tinker::make_functor_ptr((void(*)(const char *))(&test_overload_err)),
 		lua_tinker::make_functor_ptr((void(*)(const std::string &))(&test_overload_err))));
 	lua_tinker::def(L, "use_stored_lua_function", &use_stored_lua_function);
+	lua_tinker::def(L, "visit_shared_int", &visit_shared_int);
+	lua_tinker::def(L, "visit_shared_int_constref", &visit_shared_int_constref);
 	lua_tinker::def(L, "visot_ff", &visot_ff);
 	lua_tinker::def(L, "visot_ff_const_ref", &visot_ff_const_ref);
 	lua_tinker::def(L, "visot_ff_nodef", &visot_ff_nodef);
@@ -55,11 +62,8 @@ void export_to_lua_auto(lua_State* L)
 	lua_tinker::def(L, "visot_ff_shared", &visot_ff_shared);
 	lua_tinker::def(L, "visot_ff_weak", &visot_ff_weak);
 	lua_tinker::def(L, "visot_ffbase", &visot_ffbase);
-
-
 	lua_tinker::set(L, "g_c_double", g_c_double);
 	lua_tinker::set(L, "g_c_int", g_c_int);
-
 	lua_tinker::class_add<IntOpTest>(L, "IntOpTest", true);
 	lua_tinker::class_def<IntOpTest>(L, "__mul", &IntOpTest::operator*);
 	lua_tinker::class_def<IntOpTest>(L, "__add", &IntOpTest::operator+);
@@ -70,7 +74,6 @@ void export_to_lua_auto(lua_State* L)
 	lua_tinker::class_def<IntOpTest>(L, "__eq", &IntOpTest::operator==);
 	lua_tinker::class_con<IntOpTest>(L, lua_tinker::constructor<IntOpTest, int>::invoke);
 	lua_tinker::class_mem<IntOpTest>(L, "m_n", &IntOpTest::m_n);
-
 	lua_tinker::namespace_add(L, "NS_TEST");
 	lua_tinker::namespace_def(L, "NS_TEST", "test_function_in_namespace", &NS_TEST::test_function_in_namespace);
 	lua_tinker::namespace_set(L, "NS_TEST", "ENUM_1", NS_TEST::ENUM_1);
@@ -91,6 +94,23 @@ void export_to_lua_auto(lua_State* L)
 	lua_tinker::scope_inner(L, "NS_TEST::NS_INNER::Test", "Iterator", "NS_TEST::NS_INNER::Test::Iterator");
 	lua_tinker::scope_inner(L, "NS_TEST::NS_INNER", "Test", "NS_TEST::NS_INNER::Test");
 	lua_tinker::scope_inner(L, "NS_TEST", "NS_INNER", "NS_TEST::NS_INNER");
+	lua_tinker::class_add<TestCon>(L, "TestCon", true);
+	lua_tinker::class_def<TestCon>(L, "ChangeDataMap", &TestCon::ChangeDataMap);
+	lua_tinker::class_def<TestCon>(L, "ChangeDataMapPtr", &TestCon::ChangeDataMapPtr);
+	lua_tinker::class_def<TestCon>(L, "ChangeDataMapRef", &TestCon::ChangeDataMapRef);
+	lua_tinker::class_def<TestCon>(L, "ChangeDataSet", &TestCon::ChangeDataSet);
+	lua_tinker::class_def<TestCon>(L, "ChangeDataSetRef", &TestCon::ChangeDataSetRef);
+	lua_tinker::class_def<TestCon>(L, "TestFuncObj", &TestCon::TestFuncObj);
+	lua_tinker::class_def<TestCon>(L, "getDataMap", &TestCon::getDataMap);
+	lua_tinker::class_def<TestCon>(L, "getDataMapPtr", &TestCon::getDataMapPtr);
+	lua_tinker::class_def<TestCon>(L, "getDataMapRef", &TestCon::getDataMapRef);
+	lua_tinker::class_def<TestCon>(L, "getDataSet", &TestCon::getDataSet);
+	lua_tinker::class_def<TestCon>(L, "getDataSetRef", &TestCon::getDataSetRef);
+	lua_tinker::class_def<TestCon>(L, "getStr", &TestCon::getStr);
+	lua_tinker::class_con<TestCon>(L, lua_tinker::constructor<TestCon, float, const char *, int>::invoke, -1.0f, "aa", 7);
+	lua_tinker::class_mem<TestCon>(L, "m_fVal", &TestCon::m_fVal);
+	lua_tinker::class_mem<TestCon>(L, "m_nVal", &TestCon::m_nVal);
+	lua_tinker::class_mem<TestCon>(L, "m_str", &TestCon::m_str);
 	lua_tinker::class_add<ff>(L, "ff", true);
 	lua_tinker::class_def<ff>(L, "add", &ff::add);
 	lua_tinker::class_def<ff>(L, "add_ffcref", &ff::add_ffcref);
@@ -134,7 +154,6 @@ void export_to_lua_auto(lua_State* L)
 	lua_tinker::class_inh<ff_other, ff_other_baseA>(L);
 	lua_tinker::class_inh<ff_other, ff_other_baseB>(L);
 	lua_tinker::class_inh<ff_other_baseB, ff_other_base>(L);
-
 
 
 }

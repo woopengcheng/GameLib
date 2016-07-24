@@ -7,7 +7,7 @@
 // please check Licence.txt file for licence and legal issues. 
 
 #include <iostream>
-#include "Lua/lua_tinker.h"
+#include "lua/lua_tinker.h"
 #include<string>
 #include<cstring>
 #include<algorithm>
@@ -488,12 +488,12 @@ void lua_tinker::detail::_stack_help<lua_tinker::lua_value*>::_push(lua_State *L
 }
 
 
-lua_tinker::table lua_tinker::detail::_stack_help<lua_tinker::table>::_read(lua_State *L, int index)
+lua_tinker::table_onstack lua_tinker::detail::_stack_help<lua_tinker::table_onstack>::_read(lua_State *L, int index)
 {
-	return lua_tinker::table(L, index);
+	return lua_tinker::table_onstack(L, index);
 }
 
-void lua_tinker::detail::_stack_help<lua_tinker::table>::_push(lua_State *L, const lua_tinker::table& ret)
+void lua_tinker::detail::_stack_help<lua_tinker::table_onstack>::_push(lua_State *L, const lua_tinker::table_onstack& ret)
 {
 	lua_pushvalue(L, ret.m_obj->m_index);
 }
@@ -520,11 +520,19 @@ void lua_tinker::detail::pop<void>::apply(lua_State *L)
 }
 
 
-lua_tinker::table lua_tinker::detail::pop<lua_tinker::table>::apply(lua_State *L)
+lua_tinker::table_ref lua_tinker::detail::pop<lua_tinker::table_ref>::apply(lua_State *L)
 {
 	stack_delay_pop  _dealy(L, nresult);
-	return lua_tinker::table(L, lua_gettop(L));
+	return lua_tinker::table_ref::make_table_ref(L, lua_gettop(L));
 }
+
+lua_tinker::table_onstack lua_tinker::detail::pop<lua_tinker::table_onstack>::apply(lua_State *L)
+{
+	//didn't need pop it
+	//stack_delay_pop  _dealy(L, nresult);
+	return table_onstack(L, lua_gettop(L));
+}
+
 
 /*---------------------------------------------------------------------------*/
 /* Tinker Class Helper                                                       */
@@ -712,32 +720,45 @@ bool lua_tinker::detail::CheckSameMetaTable(lua_State* L, int nIndex, const char
 }
 
 
-void lua_tinker::detail::push_upval_to_stack(lua_State* L, int nArgsCount, int nArgsNeed)
+bool lua_tinker::detail::push_upval_to_stack(lua_State* L, int nArgsCount, int nArgsNeed, int default_upval_start)
 {
 	if (nArgsCount < nArgsNeed)
 	{
 		//need use upval
 		int nNeedUpval = nArgsNeed - nArgsCount;
-		int nUpvalCount = read<int>(L, lua_upvalueindex(2));
+		int nUpvalCount = read<int>(L, lua_upvalueindex(default_upval_start));
+		if (nUpvalCount < 0)
+		{
+			return false;
+		}
 		for (int i = nUpvalCount - nNeedUpval; i < nUpvalCount; i++)
 		{
-			lua_pushvalue(L, lua_upvalueindex(3 + i));
+			lua_pushvalue(L, lua_upvalueindex(default_upval_start + 1 + i));
 		}
 	}
+
+	return true;
 }
 
 
-void lua_tinker::detail::push_upval_to_stack(lua_State* L, int nArgsCount, int nArgsNeed, int nUpvalCount, int UpvalStart)
+bool lua_tinker::detail::push_upval_to_stack(lua_State* L, int nArgsCount, int nArgsNeed, int nUpvalCount, int UpvalStart)
 {
 	if (nArgsCount < nArgsNeed)
 	{
 		//need use upval
 		int nNeedUpval = nArgsNeed - nArgsCount;
+		if (nUpvalCount < 0)
+		{
+			return false;
+		}
+		static const int default_upval_start = 2;
 		for (int i = nUpvalCount - nNeedUpval; i < nUpvalCount; i++)
 		{
-			lua_pushvalue(L, lua_upvalueindex(2 + UpvalStart + i));
+			lua_pushvalue(L, lua_upvalueindex(default_upval_start + UpvalStart + i));
 		}
 	}
+
+	return true;
 }
 
 void lua_tinker::detail::_set_signature_bit(unsigned long long& sig, size_t idx, unsigned char c)
@@ -826,7 +847,7 @@ bool lua_tinker::table_obj::validate()
 /*---------------------------------------------------------------------------*/
 /* Table Object Holder                                                       */
 /*---------------------------------------------------------------------------*/
-lua_tinker::table::table(lua_State* L)
+lua_tinker::table_onstack::table_onstack(lua_State* L)
 {
 	lua_newtable(L);
 
@@ -835,7 +856,7 @@ lua_tinker::table::table(lua_State* L)
 	m_obj->inc_ref();
 }
 
-lua_tinker::table::table(lua_State* L, const char* name)
+lua_tinker::table_onstack::table_onstack(lua_State* L, const char* name)
 {
 	if (lua_getglobal(L, name) != LUA_TTABLE)
 	{
@@ -851,7 +872,7 @@ lua_tinker::table::table(lua_State* L, const char* name)
 	m_obj->inc_ref();
 }
 
-lua_tinker::table::table(lua_State* L, int index)
+lua_tinker::table_onstack::table_onstack(lua_State* L, int index)
 {
 	if (index < 0)
 	{
@@ -863,14 +884,14 @@ lua_tinker::table::table(lua_State* L, int index)
 	m_obj->inc_ref();
 }
 
-lua_tinker::table::table(const table& input)
+lua_tinker::table_onstack::table_onstack(const table_onstack& input)
 {
 	m_obj = input.m_obj;
 
 	m_obj->inc_ref();
 }
 
-lua_tinker::table::~table()
+lua_tinker::table_onstack::~table_onstack()
 {
 	m_obj->dec_ref();
 }
@@ -878,54 +899,81 @@ lua_tinker::table::~table()
 /*---------------------------------------------------------------------------*/
 
 
-lua_tinker::detail::lua_function_ref_base::lua_function_ref_base(lua_State* L, int regidx)
-:m_L(L)
-,m_regidx(regidx)
-,m_pRef(new int(0))
+namespace lua_tinker
 {
-	inc_ref();
-}
-
-lua_tinker::detail::lua_function_ref_base::lua_function_ref_base(const lua_tinker::detail::lua_function_ref_base& rht)
-:m_L(rht.m_L)
-,m_regidx(rht.m_regidx)
-,m_pRef(rht.m_pRef)
-{
-	inc_ref();
-}
-
-lua_tinker::detail::lua_function_ref_base::lua_function_ref_base(lua_tinker::detail::lua_function_ref_base&& rht)
-:m_L(rht.m_L)
-,m_regidx(rht.m_regidx)
-,m_pRef(rht.m_pRef)
-{
-	rht.m_pRef = nullptr;
-}
-
-
-lua_tinker::detail::lua_function_ref_base::~lua_function_ref_base()
-{
-	//if find it, than unref, else maybe lua is closed
-	dec_ref();
-}
-
-void lua_tinker::detail::lua_function_ref_base::destory()
-{
-	luaL_unref(m_L, LUA_REGISTRYINDEX, m_regidx);
-	delete m_pRef;
-}
-
-void lua_tinker::detail::lua_function_ref_base::inc_ref()
-{
-	if(m_pRef)
-		++(*m_pRef);
-}
-
-void lua_tinker::detail::lua_function_ref_base::dec_ref()
-{
-	if (m_pRef)
+	namespace detail
 	{
-		if (--(*m_pRef) == 0)
-			destory();
+
+		lua_ref_base::lua_ref_base(lua_State* L, int regidx)
+			:m_L(L)
+			, m_regidx(regidx)
+			, m_pRef(new int(0))
+		{
+			inc_ref();
+		}
+
+		lua_ref_base::lua_ref_base(const lua_ref_base& rht)
+			:m_L(rht.m_L)
+			, m_regidx(rht.m_regidx)
+			, m_pRef(rht.m_pRef)
+		{
+			inc_ref();
+		}
+
+		lua_ref_base::lua_ref_base(lua_ref_base&& rht)
+			:m_L(rht.m_L)
+			, m_regidx(rht.m_regidx)
+			, m_pRef(rht.m_pRef)
+		{
+			rht.m_pRef = nullptr;
+		}
+
+		lua_ref_base& lua_ref_base::operator=(const lua_ref_base& rht)
+		{
+			if (this != &rht)
+			{
+				dec_ref();
+				m_L = rht.m_L;
+				m_regidx = rht.m_regidx;
+				m_pRef = rht.m_pRef;
+				inc_ref();
+			}
+			return *this;
+		}
+
+		lua_ref_base::~lua_ref_base()
+		{
+			//if find it, than unref, else maybe lua is closed
+			dec_ref();
+		}
+
+		void lua_ref_base::destory()
+		{
+			luaL_unref(m_L, LUA_REGISTRYINDEX, m_regidx);
+			delete m_pRef;
+		}
+
+		void lua_ref_base::reset()
+		{
+			dec_ref();
+			m_L = nullptr;
+			m_regidx = -1;
+			m_pRef = nullptr;
+		}
+
+		void lua_ref_base::inc_ref()
+		{
+			if (m_pRef)
+				++(*m_pRef);
+		}
+
+		void lua_ref_base::dec_ref()
+		{
+			if (m_pRef)
+			{
+				if (--(*m_pRef) == 0)
+					destory();
+			}
+		}
 	}
 }

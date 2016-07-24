@@ -1,4 +1,4 @@
-#include "Lua/lua_tinker.h"
+#include "lua/lua_tinker.h"
 #include"test.h"
 extern std::map<std::string, std::function<bool()> > g_test_func_set;
 
@@ -15,18 +15,6 @@ void test_get_gloabl(lua_State* L)
 
 	};
 
-	g_test_func_set["test_lua_getff"] = [L]()->bool
-	{
-		std::string luabuf =
-			R"(
-				g_pFFShared =  make_ff();
-				local raw_pff = g_pFFShared:_get_raw_ptr();
-				raw_pff.m_prop = 88;
-			)";
-		lua_tinker::dostring(L, luabuf.c_str());
-		return 88 == lua_tinker::get<std::shared_ptr<ff>>(L, "g_pFFShared")->getVal();
-
-	};
 
 	g_test_func_set["test_lua_gettable_1"] = [L]()->bool
 	{

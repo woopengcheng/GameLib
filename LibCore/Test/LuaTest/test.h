@@ -10,7 +10,6 @@
 #include<utility>
 #include<assert.h>
 #include<memory>
-#include "Lua/ILua.h"
 
 #define export_lua
 
@@ -20,17 +19,57 @@ export_lua extern double g_c_double;
 export_lua void gint_add1();
 export_lua void gint_addint(int n);
 export_lua void gint_addintptr(int* p);
+export_lua void gint_addintptr_const(const int* p);
 export_lua void gint_addintref(const int& ref);
 export_lua void gint_add_intref(int& ref, int n);
 export_lua void g_addint_double(int n1, double n2);
 
 export_lua int get_gint();
 export_lua int& get_gintref();
+export_lua const int& get_gintref_const();
 
 export_lua int* get_gintptr();
+export_lua const int* get_gintptr_const();
 export_lua double get_gdouble();
-extern int test_lua_main(lua_State* L);
 
+export_lua class TestCon
+{
+public:
+	export_lua TestCon(float _d = -1.0f, const char* str="aa", int _n=7)
+		:m_nVal(_n),m_fVal(_d),m_str(str)
+	{}
+
+	export_lua const char* getStr() const { return m_str.c_str(); }
+	export_lua int m_nVal;
+	export_lua float m_fVal;
+	export_lua std::string m_str;
+
+	export_lua int TestFuncObj(std::function<int(int)> func, int k)
+	{
+		return func(m_nVal);
+	}
+
+	typedef std::map<int, int> DataMap;
+	DataMap m_DataMap;
+	export_lua DataMap getDataMap() { return m_DataMap; }
+	export_lua const DataMap& getDataMapRef() { return m_DataMap; }
+	export_lua DataMap* getDataMapPtr() { return &m_DataMap; }
+	export_lua void ChangeDataMap(DataMap dataMap) { m_DataMap = dataMap; }
+	
+	export_lua void ChangeDataMapRef(const DataMap& dataMap) { m_DataMap = dataMap; }
+	//export_lua void ChangeDataMap_Ref(DataMap&& dataMap) { m_DataMap = dataMap; }
+	export_lua void ChangeDataMapPtr(DataMap* pDataMap) { m_DataMap = *pDataMap; }
+
+
+
+	typedef std::set<int> DataSet;
+	DataSet m_DataSet;
+	export_lua DataSet getDataSet() { return m_DataSet; }
+	export_lua void ChangeDataSet(DataSet dataSet) { m_DataSet = dataSet; }
+	export_lua DataSet& getDataSetRef() { return m_DataSet; }
+	export_lua void ChangeDataSetRef(const DataSet& dataSet) { m_DataSet = dataSet; }
+
+};
 
 export_lua class ff_base
 {
@@ -173,7 +212,7 @@ public:
 	export_lua static int s_ref;
 
 	export_lua static const int s_const_val = 1;
-	export_lua const int m_const_val = 1;
+	export_lua const int m_constt_val = 1;
 
 
 	export_lua enum
@@ -202,22 +241,15 @@ public:
 
 };
 
-class TestILua : public ILua
-{
-public:
-protected:
-private:
-};
-
 export_lua ff* get_gff_ptr();
 export_lua const ff& get_gff_cref();
-export_lua const std::unordered_map<int, int>& push_hashmap();
-export_lua const std::map<int, int>& push_map();
-export_lua const std::set<int> & push_set();
+export_lua std::unordered_map<int, int> push_hashmap();
+export_lua std::map<int, int> push_map();
+export_lua const std::map<int, int>& push_map_ref();
+export_lua std::set<int>  push_set();
+export_lua std::vector<int> push_vector();
 
 
-
-export_lua const std::vector<int>& push_vector();
 export_lua std::string push_string();
 export_lua std::string connect_string(std::string str1, const std::string& str2, const std::string& str3);
 export_lua const std::string& push_string_ref();
@@ -260,6 +292,9 @@ export_lua bool visot_ff_nodef(ff_nodef* pFF);
 export_lua std::shared_ptr<ff_nodef> make_ff_nodef_shared();
 export_lua bool visot_ff_nodef_shared(std::shared_ptr<ff_nodef> pFF);
 
+export_lua const std::shared_ptr<int>& get_shared_int();
+export_lua int visit_shared_int(std::shared_ptr<int> shared_int);
+export_lua int visit_shared_int_constref(const std::shared_ptr<int>& shared_int);
 
 export_lua unsigned long long addUL(unsigned long long a, unsigned long long b);
 export_lua long long Number2Interger(double v);

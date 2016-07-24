@@ -26,8 +26,8 @@ namespace Robot
 	static unsigned char g_rpcDefaultParam_unsigned_char = 0;
 	static std::string g_rpcDefaultParam_std__string = std::string();
 	static time_t g_rpcDefaultParam_time_t = 0;
-	static SINT8 g_rpcDefaultParam_SINT8 = 0;
 	static UINT8 g_rpcDefaultParam_UINT8 = 0;
+	static SINT8 g_rpcDefaultParam_SINT8 = 0;
 	static UINT16 g_rpcDefaultParam_UINT16 = 0;
 	static INT16 g_rpcDefaultParam_INT16 = 0;
 	static INT32 g_rpcDefaultParam_INT32 = 0;
@@ -38,7 +38,6 @@ namespace Robot
 	static float g_rpcDefaultParam_float = 0.0f;
 	static std_string g_rpcDefaultParam_std_string = std::string();
 	static CUtilChunk g_rpcDefaultParam_CUtilChunk = CUtil::Chunk();
-	static std::vector<INT32> g_rpcDefaultParam_std__vector_INT32_;
 
 	void RobotServer::OnRegisterRpcs( void )
 	{
@@ -84,6 +83,15 @@ namespace Robot
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SyncRobotGroupID", objReturnParams);
 		}
 
+		//tool CloseRobotGroup generate default deliver and return check param here
+		{
+			CUtil::Parameters objDeliverParams , objReturnParams;
+			CUtil::GenParamHelper::GenParams(objDeliverParams );
+			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
+			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("CloseRobotGroup", objDeliverParams);
+			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("CloseRobotGroup", objReturnParams);
+		}
+
 		//tool CreateRobots generate default deliver and return check param here
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
@@ -105,7 +113,7 @@ namespace Robot
 		//tool SendRobotCommand generate default deliver and return check param here
 		{
 			CUtil::Parameters objDeliverParams , objReturnParams;
-			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_std__vector_INT32_ , g_rpcDefaultParam_std_string);
+			CUtil::GenParamHelper::GenParams(objDeliverParams  , g_rpcDefaultParam_CUtilChunk);
 			CUtil::GenParamHelper::GenParams(objReturnParams  , g_rpcDefaultParam_INT32);
 			Msg::RpcCheckParams::GetInstance()->InsertDeliverParams("SendRobotCommand", objDeliverParams);
 			Msg::RpcCheckParams::GetInstance()->InsertReturnParams("SendRobotCommand", objReturnParams);

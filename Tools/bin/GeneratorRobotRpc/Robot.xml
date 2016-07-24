@@ -221,6 +221,19 @@
 				<Param name="res" type="INT32" /> 
 			</Return>
 		</Rpc>
+		<Rpc name="CloseRobotGroup" syncType="1" timeout="10">
+			<Targets> 
+				<Client name="RobotCtrlServer" include="RobotGroup.h" class="RobotGroup"/> 
+				<Server name="RobotGroup"/> 
+			</Targets> 
+
+			<Call > 
+			</Call>
+			
+			<Return>  
+				<Param name="res" type="INT32" /> 
+			</Return>
+		</Rpc>
 		<Rpc name="CreateRobots" syncType="1" timeout="10">
 			<Targets> 
 				<Client name="RobotCtrlServer" include="RobotGroup.h" class="RobotGroup"/> 
@@ -261,8 +274,7 @@
 			</Targets> 
 
 			<Call > 
-				<Param name="map_robots" type="std::vector[INT32]" /> 
-				<Param name="command" type="std_string" /> 
+				<Param name="command" type="CUtilChunk" /> 
 			</Call>
 			
 			<Return>  

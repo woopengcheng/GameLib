@@ -35,6 +35,7 @@ namespace Robot
 		CErrno						DeleteRobotGroup(INT32 nSessionID);
 		void						OnDeleteRobotGroup(RobotGroup * pRobot);
 		RobotGroup			*		GetRobotGroup(INT32 nRobotTabIndex);
+		void						CloseAllRobotGroups();
 
 	public:
 		std::string					GetName() const { return m_strName; }

@@ -46,10 +46,11 @@ namespace Robot
 		return CErrno::Success();
 	}
 
-	INT32  RobotGroup::CreateRobot(const RobotInfo & info)
+	INT32  RobotGroup::CreateRobot(const RobotInfo & info , Msg::Object objSrc)
 	{
 		CRobot * pRobot = new CRobot(this, m_nCurRobotCount, m_pRobotServer->GetRpcManager());
 		pRobot->SetRobotInfo(info);
+		pRobot->SetPeerRobotID(objSrc.m_llObjID);
 		m_mapRobots.insert(std::make_pair(m_nCurRobotCount, pRobot));
 		
 		OnCreateRobot(pRobot);
@@ -96,7 +97,7 @@ namespace Robot
 	{
 		if (pRobot)
 		{
-			INT32 nIndex = pRobot->GetRobotIndex();
+			INT64 nIndex = pRobot->GetPeerRobotID();
 
 			MapTabToRobot::iterator iter = m_mapTabToRobot.find(nIndex);
 			if (iter != m_mapTabToRobot.end())

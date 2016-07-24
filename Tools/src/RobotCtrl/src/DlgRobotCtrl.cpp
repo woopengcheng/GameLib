@@ -9,6 +9,7 @@
 #include "RobotCommon.h"
 #include "RobotManager.h"
 #include "RPCCallFuncs.h"
+#include "DlgRobotCommand.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -86,6 +87,7 @@ BEGIN_MESSAGE_MAP(CDlgRobotCtrl, CDialogEx)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_CREATE_ROBOT_GROUP, &CDlgRobotCtrl::OnRBtnListServer)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_SHOW_ROBOT, &CDlgRobotCtrl::OnTcnSelchangeTabShowRobot)
+	ON_COMMAND(ID_CLOSE_ALL, &CDlgRobotCtrl::OnCloseAll)
 END_MESSAGE_MAP()
 
 
@@ -410,6 +412,7 @@ void CDlgRobotCtrl::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
+	system("start robotserver.exe");
 //	RobotManager::GetInstance().DebugConnect();
 
 // 	CDialogEx::OnOK();
@@ -443,4 +446,17 @@ void CDlgRobotCtrl::OnRBtnListServer()
 		Robot::rpc_HandleRobotGroup(RobotManager::GetInstance(), pServer->GetRobotSessionID(), 0, pServer->GetObjectID(), 0, pServer->GetServerPort());
 	}
 
+}
+
+
+void CDlgRobotCtrl::OnCloseAll()
+{
+	// TODO: 在此添加命令处理程序代码
+
+	RobotServer * pServer = RobotManager::GetInstance().GetRobotServer(m_nCurListCtrlIndex);
+	if (pServer)
+	{
+		//5 启动RobotGroup
+		pServer->CloseAllRobotGroups();
+	}
 }

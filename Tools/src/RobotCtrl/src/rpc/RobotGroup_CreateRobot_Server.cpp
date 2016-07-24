@@ -11,7 +11,7 @@ Msg::ObjectMsgCall * Robot::RobotGroup::CreateRobot_RpcServer(INT32 nSessionID, 
 	info.nStatue = status;
 	info.strNote = note;
 
-	res = CreateRobot(info);
+	res = CreateRobot(info , objSrc);
 
 	std::cout << "RobotGroup::CreateRobot_RpcServer res=" << res  << std::endl;
 	Return(res);

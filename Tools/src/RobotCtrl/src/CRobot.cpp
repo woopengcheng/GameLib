@@ -7,7 +7,7 @@ namespace Robot
 {
 	CRobot::CRobot(RobotGroup * pRobotGroup , Msg::Object id, Msg::RpcManager * pRpcManager)
 		: Msg::IRpcMsgCallableObject(id, pRpcManager)
-		, m_nRobotIndex(-1)
+		, m_llPeerRobotID(-1)
 		, m_pRobotGroup(pRobotGroup)
 	{
 	}

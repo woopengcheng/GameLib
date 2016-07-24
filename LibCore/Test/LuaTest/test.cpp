@@ -1,4 +1,3 @@
-/*#define _CRT_SECURE_NO_WARNINGS*/
 #include<functional>
 #include<vector>
 #include<map>
@@ -8,7 +7,7 @@
 #include<iostream>
 #include<utility>
 #include<assert.h>
-#include "Lua/lua_tinker.h"
+#include "lua/lua_tinker.h"
 #include "test.h"
 
 
@@ -58,23 +57,30 @@ void export_to_lua_manual(lua_State* L)
 }
 
 extern std::function<int(int)> g_func_lua;
+extern lua_tinker::table_ref g_table_ref;
 
 void on_lua_close(lua_State* L)
 {
 	g_func_lua = nullptr;
+	g_table_ref.reset();
 	std::cout << "on_lua_close" << std::endl;
 }
 
 std::map<std::string, std::function<bool()> > g_test_func_set;
 
-extern void export_to_lua_auto(lua_State* L);
 
-int test_lua_main(lua_State* L)
+int main()
 {
-//	lua_State* L = luaL_newstate();
-// 	luaL_openlibs(L);
-// 	lua_tinker::init(L);
-	
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L);
+	lua_tinker::init(L);
+
+
+	extern void export_to_lua_auto(lua_State* L);
+
+
+
+
 	export_to_lua_auto(L);
 	export_to_lua_manual(L);
 
@@ -109,6 +115,7 @@ int test_lua_main(lua_State* L)
 	extern void test_inner_class(lua_State* L);
 	extern void test_int64(lua_State* L);
 	extern void test_luafunction_ref(lua_State* L);
+	extern void test_lua_table_ref(lua_State* L);
 	extern void test_member_func(lua_State* L);
 	extern void test_multireturn(lua_State* L);
 	extern void test_namespace(lua_State* L);
@@ -131,6 +138,7 @@ int test_lua_main(lua_State* L)
 	test_inner_class(L);
 	test_int64(L);
 	test_luafunction_ref(L);
+	test_lua_table_ref(L);
 	test_member_func(L);
 	test_multireturn(L);
 	test_namespace(L);
@@ -154,8 +162,6 @@ int test_lua_main(lua_State* L)
 			printf("unit test: %s error\n", v.first.c_str());
 			nError++;
 		}
-		std::cout << v.first << "test success." << std::endl;
-
 	}
 
 
@@ -175,7 +181,7 @@ int test_lua_main(lua_State* L)
 	if(ff::s_ref != 2) //g_ff,g_ff_shared
 		nError++;
 
-//	lua_close(L);
+	lua_close(L);
 
 	if(g_func_lua != nullptr)
 		nError++;

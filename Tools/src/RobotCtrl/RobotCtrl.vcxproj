@@ -305,6 +305,7 @@
     <ClCompile Include="src\RobotManager.cpp" />
     <ClCompile Include="src\RobotServer.cpp" />
     <ClCompile Include="src\rpc\CRobot_UpdateRobotStatue_Server.cpp" />
+    <ClCompile Include="src\rpc\RobotGroup_CloseRobotGroup_Client.cpp" />
     <ClCompile Include="src\rpc\RobotGroup_CreateRobots_Client.cpp" />
     <ClCompile Include="src\rpc\RobotGroup_CreateRobot_Server.cpp" />
     <ClCompile Include="src\rpc\RobotGroup_SendRobotCommand_Client.cpp" />

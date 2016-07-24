@@ -81,4 +81,5 @@ protected:
 	INT32				m_nCurListCtrlIndex;		//5 当前list中选中的序号.
 public:
 	afx_msg void OnTcnSelchangeTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnCloseAll();
 };
