@@ -65,7 +65,10 @@ void CDlgRobotCommand::OnBnClickedOk()
 				return;
 			}
 
-			CUtil::Parameter p[cnCommandParamCount];
+			CUtil::CStream cs;
+			INT32 nIndex = m_cobSelectCommand.GetCurSel();
+			INT32 nCommandType = m_mapRobotCommands[nIndex].type;
+			cs << nCommandType;
 			for (INT32 i = 0;i < m_nCurParamsCount;++i)
 			{
 				INT32 nIndex = m_mapRobotParamType[i];
@@ -75,81 +78,32 @@ void CDlgRobotCommand::OnBnClickedOk()
 				{
 
 				}break;
-				case ROBOT_TYPE_INT8:
-				{
-					CString str;
-					m_editCommandValue[i].GetWindowTextA(str);
-					INT8 value = (INT8)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value);
-				}break;
-				case ROBOT_TYPE_UINT8:
-				{
-					CString str;
-					m_editCommandValue[i].GetWindowTextA(str);
-					UINT8 value = (UINT8)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value); 
-				}break;
-				case ROBOT_TYPE_INT16:
-				{
-					CString str;
-					m_editCommandValue[i].GetWindowTextA(str);
-					INT16 value = (INT16)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value);
-				}break;
-				case ROBOT_TYPE_UINT16:
-				{
-					CString str;
-					m_editCommandValue[i].GetWindowTextA(str);
-					UINT16 value = (UINT16)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value);
-				}break;
-				case ROBOT_TYPE_INT32:
-				{
-					CString str;
-					m_editCommandValue[i].GetWindowTextA(str);
-					INT32 value = (INT32)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value);
-				}break;
-				case ROBOT_TYPE_UINT32:
-				{
-					CString str;
-					m_editCommandValue[i].GetWindowTextA(str);
-					UINT32 value = (UINT32)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value);
-				}break;
 				case ROBOT_TYPE_INT64:
 				{
 					CString str;
 					m_editCommandValue[i].GetWindowTextA(str);
 					INT64 value = (INT64)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value);
+					cs << value;
 				}break;
-				case ROBOT_TYPE_UINT64:
+				case ROBOT_TYPE_DOUBLE:
 				{
 					CString str;
 					m_editCommandValue[i].GetWindowTextA(str);
-					UINT64 value = (UINT64)(CUtil::atoi(str.GetBuffer()));
-					p[i].MakeParameter(value);
+					double value = (double)(CUtil::atof(str.GetBuffer()));
+					cs << value;
 				}break;
 				case ROBOT_TYPE_STRING:
 				{
 					CString str;
 					m_editCommandValue[i].GetWindowTextA(str);
 					std::string value = std::string(str.GetBuffer());
-					p[i].MakeParameter(value);
+					cs << value;
 				}break;
 				default:
 					break;
 				}
 			}
-
-			INT32 nIndex = m_cobSelectCommand.GetCurSel();
-			INT32 nCommandType = m_mapRobotCommands[nIndex].type;
-			CUtil::Parameters ps;
-			ps.GenParams(p[0], p[1], p[2], p[3], p[4], p[5]);
-			CUtil::CStream cs;
-			cs << nCommandType << ps;
-
+			
 			CUtilChunk & chunk = cs.GetData();
 			rpc_SendRobotCommand(*(pRobot->GetRobotServer()), pRobot->GetRobotSessionID(), vecItems, pRobot->GetObjectID() , chunk);
 		}
