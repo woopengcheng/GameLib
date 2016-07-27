@@ -44,7 +44,7 @@ namespace Robot
 		void						SetRobotSessionID(INT32 val) { m_nRobotSessionID = val; }
 		INT32						GetListCtrlIndex() const { return m_nListCtrlIndex; }
 		void						SetListCtrlIndex(INT32 val) { m_nListCtrlIndex = val; }
-		INT32						GetCurRobotGroupCount() const { return m_nCurRobotGroupCount; }
+		INT32						GetCurRobotGroupCount() const { return m_nCurRobotGroupCount - 1; }
 		const MapRobotGroups	&	GetMapRobotGroups() const { return m_mapRobotGroups; }
 		UINT32						GetServerPort() const { return m_nServerPort; }
 		void						SetServerPort(UINT32 val) { m_nServerPort = val; }

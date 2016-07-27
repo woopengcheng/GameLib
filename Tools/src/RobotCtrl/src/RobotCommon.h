@@ -12,6 +12,18 @@ const INT32 cnColumnWidth			= 60;		//5 显示机器人每一列的宽度
 const INT32 cnMinRobotDlgWidth		= cnColumnWidth * 7;	//5 对话框的最小宽度
 const INT32 cnRobotStartID			= 10000;	//5 机器人的序号从多少开始.
 
+enum EListColType
+{
+	LIST_START = 0,
+	LIST_NAME = 0,
+	LIST_PROF,
+	LIST_LEVEL,
+	LIST_STATUE,
+	LIST_NOTE,
+
+	LIST_NUM
+};
+
 //5 替换简单的Map某个Key排序后的右边的值.一般是由于某个Key被删除了,后面的会依次前移.第一要保证有序的map,第二不需要考虑释放的map
 template<typename MAP , typename Key>
 void		ReplaceSimpleMapRightKey(MAP &map1, MAP &map2 , Key key)

@@ -25,17 +25,6 @@ public:
 	typedef std_unordered_map<INT32, INT32>			MapRobot2ViewIndexT;	//5 这里对应上了,就可以通过Btn找到RobotIndex了.
 
 public:
-	enum EListColType
-	{
-		LIST_START = 0,
-		LIST_NAME = 0,
-		LIST_PROF,
-		LIST_LEVEL,
-		LIST_STATUE,
-		LIST_NOTE,
-
-		LIST_NUM
-	};
 	const std::string cAStrListName[LIST_NUM] =
 	{
 		"名字",
@@ -56,13 +45,13 @@ public:
 protected:
 	virtual void		DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	virtual BOOL		OnInitDialog();
-	afx_msg void		OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void		OnSize(UINT nType, int cx, int cy);
 	afx_msg void		OnSendRobotCommand();
 	afx_msg void		OnNMRClickListShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void		OnCreateRobots();
 	afx_msg void		OnCloseGroup();
+	afx_msg void		OnHdnItemclickListShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -72,7 +61,6 @@ public:
 
 public:
 	void				OnCreateRobot(RobotGroup * pRobotGroup, CRobot * pRobot);
-	void				OnDeleteRobot(RobotGroup * pRobotGroup, CRobot * pRobot);
 
 public:
 	RobotGroup	*		GetCurRobotGroup() const { return m_pCurRobotGroup; }
@@ -85,18 +73,7 @@ public:
 protected:
 	BOOL				InsertRobotList(RobotGroup * pRobotGroup, CRobot * pRobot);
 	void				InitListCtrl();
-
-protected://5 此下面的针对按钮的功能,暂时去掉.
-	void				ShowRobotBtn(CRobot * pRobot);
-	BOOL				ClearRobotBtns();
-	void				SetScrollBarRange();
-	void				ChangeDlgSize();
-	void				CreateRobotBtn();
-	void				CreateRobotBtns();
-	BOOL				ShowRobotBtns(BOOL bShow = FALSE);
-	BOOL				ShowRobotBtn(INT32 nIndex, BOOL bShow/* = FALSE*/);
-	void				OnRobotBtnClicked(UINT nBtnID);
-	BOOL				InsertRobot2ViewIndex(INT32 nRobotIndex, INT32 nViewIndex, std::string strName = "");
+	void				ChangeDlgSize(); 
 
 protected:
 	CListCtrl			m_listShowRobots;
@@ -105,15 +82,7 @@ protected:
 	RobotGroup		*	m_pCurRobotGroup;
 	INT32				m_nCurRobotTabIndex;		//5 这里和主界面的tab的Index是对应的.
 	INT32				m_nCurListCtrlIndex;		//5 当前RobotCtrl中的list控件选中的序号.
-	MapRobot2ViewIndexT	m_mapRobot2ViewIndex;		//5 建立机器人Index对应的ViewIndex.
 	INT32				m_nRobotCount;				//5 这个记录的是当前RobotGroup中应该有的Btn数量.
+	BOOL				m_bSortUp;
 
-protected://5 此下面的针对按钮的,暂时去掉.
-	CStatic				m_txtRobotPlatform;			// 显示按钮需要这么个平台.
-	INT32				m_nBtnCount;				//5 这个记录的是当前RobotGroup中应该有的Btn数量.
-	INT32				m_nCreateBtnIndex;			//5 这个用来第一次创建Btn的时候用于生成Index的.只在第一次有用..
-	INT32				m_nBtnTopLeftX;				//5 这里需要计算按钮左上角的x位置
-	INT32				m_nBtnTopLeftY;				//5 这里需要计算按钮左上角的y位置
-	MapRobotBtnT		m_mapRobotBtns;
-public:
 };

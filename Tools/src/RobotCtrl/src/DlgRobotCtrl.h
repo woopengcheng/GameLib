@@ -41,11 +41,12 @@ public:
 	afx_msg HCURSOR		OnQueryDragIcon();
 	afx_msg void		OnTimer(UINT_PTR nIDEvent);
 	afx_msg void		OnSelchangeListCtrlServer();
-	afx_msg void		OnSelchangingTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void		OnBnClickedStop();
 	afx_msg void		OnBnClickedOk();
 	afx_msg void		OnClose();
 	afx_msg void		OnRBtnListServer();
+	afx_msg void		OnTcnSelchangeTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void		OnCloseAll();
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -80,6 +81,4 @@ protected:
 	INT32				m_nShowRobotCount;			//5 当前tab页的数量
 	INT32				m_nCurListCtrlIndex;		//5 当前list中选中的序号.
 public:
-	afx_msg void OnTcnSelchangeTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnCloseAll();
 };

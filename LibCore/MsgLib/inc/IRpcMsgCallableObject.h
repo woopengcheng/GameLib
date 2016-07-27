@@ -12,14 +12,25 @@ namespace Msg
 	{
 	public: 
 		IRpcMsgCallableObject(Object id , RpcManager * pRpcManager)
-			: Rpc(pRpcManager , MAX_MSG_TIME_OUT , id)  
+			: Rpc(pRpcManager, MAX_MSG_TIME_OUT, id)
+			, m_pOriRpcManager(pRpcManager)
 		{ 
 			Assert_(pRpcManager);
 
 			pRpcManager->AddCallableObject(this);  
-		}   
+		}
+		~IRpcMsgCallableObject()
+		{
+			if (m_pOriRpcManager)
+			{
+				m_pOriRpcManager->DelCallableObject(this);
+			}
+		}
 
 		virtual BOOL IsHasFunc(const std::string & strFun){ return FALSE; }
+
+	private:
+		RpcManager * m_pOriRpcManager;		//5 记录最原始增加Object的RPCManager.用于释放.
 	};
 
 }

@@ -6,6 +6,118 @@
 
 namespace Robot
 {
+	//5 默认按照等级排序
+	template<EListColType type = LIST_LEVEL , BOOL bUp = TRUE>
+	class CRobotSortCmp
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			if (bUp)
+			{
+				return pRobot1->GetRobotInfo().nLevel < pRobot2->GetRobotInfo().nLevel;
+			}
+			else
+			{
+				return pRobot2->GetRobotInfo().nLevel < pRobot1->GetRobotInfo().nLevel;
+			}
+		}
+	};
+
+	template<>
+	class CRobotSortCmp<LIST_NAME, TRUE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot1->GetRobotInfo().strName < pRobot2->GetRobotInfo().strName;
+		}
+	};
+	template<>
+	class CRobotSortCmp<LIST_NAME, FALSE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot2->GetRobotInfo().strName < pRobot1->GetRobotInfo().strName;
+		}
+	};
+
+	template<>
+	class CRobotSortCmp<LIST_LEVEL, TRUE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot1->GetRobotInfo().nLevel < pRobot2->GetRobotInfo().nLevel;
+		}
+	};
+	template<>
+	class CRobotSortCmp<LIST_LEVEL, FALSE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot2->GetRobotInfo().nLevel < pRobot1->GetRobotInfo().nLevel;
+		}
+	};
+
+	template<>
+	class CRobotSortCmp<LIST_NOTE, TRUE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot1->GetRobotInfo().strName < pRobot2->GetRobotInfo().strName;
+		}
+	};
+	template<>
+	class CRobotSortCmp<LIST_NOTE, FALSE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot2->GetRobotInfo().strNote < pRobot1->GetRobotInfo().strNote;
+		}
+	};
+	template<>
+	class CRobotSortCmp<LIST_STATUE, TRUE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot1->GetRobotInfo().nStatue < pRobot2->GetRobotInfo().nStatue;
+		}
+	};
+	template<>
+	class CRobotSortCmp<LIST_STATUE, FALSE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot2->GetRobotInfo().nStatue < pRobot1->GetRobotInfo().nStatue;
+		}
+	};
+	template<>
+	class CRobotSortCmp<LIST_PROF, TRUE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot1->GetRobotInfo().nProf < pRobot2->GetRobotInfo().nProf;
+		}
+	};
+	template<>
+	class CRobotSortCmp<LIST_PROF, FALSE>
+	{
+	public:
+		bool	operator()(const CRobot * pRobot1, const CRobot * pRobot2)
+		{
+			return pRobot2->GetRobotInfo().nProf < pRobot1->GetRobotInfo().nProf;
+		}
+	};
+
+
 	RobotGroup::RobotGroup(const std::string & val, INT32 nSessionID, RobotServer * pRobotServer , Msg::Object id, Msg::RpcManager * pRpcManager)
 		: Msg::IRpcMsgCallableObject(id, pRpcManager)
 		, m_nCurRobotCount(cnRobotStartID)
@@ -13,6 +125,7 @@ namespace Robot
 		, m_strName(val)
 		, m_nRobotTabIndex(-1)
 		, m_pRobotServer(pRobotServer)
+		, m_objCurSortType(LIST_LEVEL)
 	{
 		if (m_pRobotServer)
 		{
@@ -32,11 +145,11 @@ namespace Robot
 
 	CErrno RobotGroup::Cleanup(void)
 	{
-		MapRobots::iterator iter = m_mapRobots.begin();
-		for (; iter != m_mapRobots.end();++iter)
+		VecRobots::iterator iter = m_vecRobots.begin();
+		for (; iter != m_vecRobots.end();++iter)
 		{
-			iter->second->Cleanup();
-			delete iter->second;
+			(*iter)->Cleanup();
+			delete *iter;
 		}
 		return CErrno::Success();
 	}
@@ -51,11 +164,13 @@ namespace Robot
 		CRobot * pRobot = new CRobot(this, m_nCurRobotCount, m_pRobotServer->GetRpcManager());
 		pRobot->SetRobotInfo(info);
 		pRobot->SetPeerRobotID(objSrc.m_llObjID);
-		m_mapRobots.insert(std::make_pair(m_nCurRobotCount, pRobot));
+		m_vecRobots.push_back(pRobot);
+		//ResortRobots(m_objCurSortType);
 		
 		OnCreateRobot(pRobot);
 
 		++m_nCurRobotCount;
+
 
 		return m_nCurRobotCount - 1;
 	}
@@ -67,100 +182,79 @@ namespace Robot
 			CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
 			if (pRobotDlg && m_pRobotServer &&
 				pRobotDlg->GetCurListCtrlIndex() == m_pRobotServer->GetListCtrlIndex() &&
-				pRobotDlg->GetCurRobotTabIndex() == m_nRobotTabIndex)
+				pRobotDlg->GetCurRobotTabIndex() == m_nRobotTabIndex - 1)
 			{
 				pRobotDlg->GetDlgCurShowRobot().OnCreateRobot(this, pRobot);
 			}
 		}
 	}
 
-	CErrno RobotGroup::DeleteRobot(INT32 nSessionID)
+	BOOL RobotGroup::ResortRobots(EListColType type, BOOL bUp/* = TRUE*/)
 	{
-		MapRobots::iterator iter = m_mapRobots.find(nSessionID);
-		if (iter != m_mapRobots.end())
-		{
-			OnDeleteRobot(iter->second);
+		m_objCurSortType = type;
 
-			delete iter->second;
-			m_mapRobots.erase(iter);
-
-			--m_nCurRobotCount;
-		}
-		else
+		switch (type)
 		{
-			MsgAssert_ReF(0, "DeleteRobot err , it not exist. sessionID=" << nSessionID);
+		case LIST_NAME:
+		{
+			if (bUp)
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_NAME>());
+			}
+			else
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_NAME , FALSE>());
+			}
+		}break;
+		case LIST_PROF:
+		{
+			if (bUp)
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_PROF>());
+			}
+			else
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_PROF, FALSE>());
+			}
+		}break;
+		case LIST_LEVEL:
+		{
+			if (bUp)
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_LEVEL>());
+			}
+			else
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_LEVEL, FALSE>());
+			} 
+		}break;
+		case LIST_STATUE:
+		{
+			if (bUp)
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_STATUE>());
+			}
+			else
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_STATUE, FALSE>());
+			}
+		}break;
+		case LIST_NOTE:
+		{
+			if (bUp)
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_NOTE>());
+			}
+			else
+			{
+				std::sort(m_vecRobots.begin(), m_vecRobots.end(), CRobotSortCmp<LIST_NOTE, FALSE>());
+			}
+		}break;
+		default:
+			break;
 		}
-		return CErrno::Success();
+
+		return TRUE;
 	}
 
-	void RobotGroup::OnDeleteRobot(CRobot * pRobot)
-	{
-		if (pRobot)
-		{
-			INT64 nIndex = pRobot->GetPeerRobotID();
-
-			MapTabToRobot::iterator iter = m_mapTabToRobot.find(nIndex);
-			if (iter != m_mapTabToRobot.end())
-			{
-				m_mapTabToRobot.erase(iter);
-			}
-			MapRobotToTab::iterator iter2 = m_mapRobotToTab.find(nIndex);
-			if (iter2 != m_mapRobotToTab.end())
-			{
-				m_mapRobotToTab.erase(iter2);
-			}
-
-			CDlgRobotCtrl * pRobotDlg = dynamic_cast<CDlgRobotCtrl*>(theApp.m_pMainWnd);
-			if (pRobotDlg && m_pRobotServer &&
-				pRobotDlg->GetCurListCtrlIndex() == m_pRobotServer->GetListCtrlIndex() &&
-				pRobotDlg->GetCurRobotTabIndex() == m_nRobotTabIndex)
-			{
-				pRobotDlg->GetDlgCurShowRobot().OnDeleteRobot(this, pRobot);
-			}
-
-			pRobot->Cleanup();
-		}
-	}
-
-
-// 
-// 	void RobotGroup::DebugConnect()
-// 	{
-// 		//	int nIndex = rand() % 123;
-// 		int nIndex = m_nCurRobotCount;
-// 		CString str;
-// 		str.Format("%d", nIndex);
-// 		m_pRpcListener->OnConnected(this, nIndex, (const char*)(str.GetBuffer()), false);
-// 	}
-// 
-// 	void RobotGroup::DebugDisconnect()
-// 	{
-// 		INT32 nIndex = m_mapRobotToTab.begin() != m_mapRobotToTab.end() ? m_mapRobotToTab.begin()->first : 0;
-// 		if (nIndex != 0)
-// 		{
-// 			m_pRpcListener->OnDisconnected(this, nIndex, 0);
-// 		}
-// 	}
-// 
-// 	CErrno RobotGroupListener::OnConnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, const std::string & strNetNodeName, bool bReconnect/* = false*/)
-// 	{
-// 		if (m_pManager)
-// 		{
-// 			m_pManager->CreateRobot(nSessionID, strNetNodeName, bReconnect);
-// 		}
-// 
-// 		gDebugStream("connected from sessionID=" << nSessionID);
-// 		return CErrno::Success();
-// 	}
-// 
-// 	CErrno RobotGroupListener::OnDisconnected(Msg::RpcInterface * pRpcInterface, INT32 nSessionID, INT32 nPeerSessionID)
-// 	{
-// 		if (m_pManager)
-// 		{
-// 			m_pManager->DeleteRobot(nSessionID);
-// 		}
-// 
-// 		gDebugStream("disconnected from sessionID=" << nPeerSessionID);
-// 		return CErrno::Success();
-// 	}
 }

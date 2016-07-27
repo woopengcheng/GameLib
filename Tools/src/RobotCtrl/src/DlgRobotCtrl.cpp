@@ -81,7 +81,6 @@ BEGIN_MESSAGE_MAP(CDlgRobotCtrl, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_TIMER()
 	ON_LBN_SELCHANGE(IDC_LIST_CTRL_SERVER, &CDlgRobotCtrl::OnSelchangeListCtrlServer)
-	ON_NOTIFY(TCN_SELCHANGING, IDC_TAB_SHOW_ROBOT, &CDlgRobotCtrl::OnSelchangingTabShowRobot)
 	ON_BN_CLICKED(ID_STOP, &CDlgRobotCtrl::OnBnClickedStop)
 	ON_BN_CLICKED(IDOK, &CDlgRobotCtrl::OnBnClickedOk)
 	ON_WM_CLOSE()
@@ -315,9 +314,7 @@ void CDlgRobotCtrl::OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 {
 	if (pRobotGroup && pRobotServer)
 	{
-		INT32 nRobotCount = pRobotServer->GetCurRobotGroupCount();
-
-		m_nCurRobotTabIndex = pRobotGroup->GetRobotTabIndex();
+		m_nCurRobotTabIndex = pRobotGroup->GetRobotTabIndex() - 1;
 
 		CString str;
 		str.Format("Robot %d", m_nCurRobotTabIndex);
@@ -332,13 +329,10 @@ void CDlgRobotCtrl::OnCreateRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 		}
 
 		//5 这里需要将窗口设置和tab标签一样大.但是又不能覆盖tab标签页.所以要做偏移
-		if (nRobotCount == 0)
-		{
-			CRect rect;
-			m_tabShowRobots.GetClientRect(rect);
-			rect.top += cnTabYPosOffset;
-			m_dlgCurShowRobot.MoveWindow(rect);
-		}
+		CRect rect;
+		m_tabShowRobots.GetClientRect(rect);
+		rect.top += cnTabYPosOffset;
+		m_dlgCurShowRobot.MoveWindow(rect);
 	}
 } 
 
@@ -347,13 +341,14 @@ void CDlgRobotCtrl::OnDeleteRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 	if (pRobotGroup && pRobotServer)
 	{
 		INT32 nRobotCount = pRobotServer->GetCurRobotGroupCount();
-		INT32 nIndex = pRobotGroup->GetRobotTabIndex();
+		INT32 nIndex = pRobotGroup->GetRobotTabIndex() - 1;
 		if (m_tabShowRobots.GetItemCount() < nIndex)
 		{
 			return;
 		}
 
-		if (m_tabShowRobots.GetCurSel() == nIndex)		//5 如果删除了当前正在显示的页.那么则显示第一页.
+		INT32 nCurSel = m_tabShowRobots.GetCurSel();
+		if (nCurSel == nIndex || (nCurSel == -1 && m_tabShowRobots.GetItemCount() > 0))		//5 如果删除了当前正在显示的页.那么则显示第一页.
 		{
 			if (m_tabShowRobots.GetItemCount() - 1 > 0)
 			{
@@ -380,7 +375,7 @@ void CDlgRobotCtrl::OnDeleteRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 
 
 		//5 这里需要将窗口设置和tab标签一样大
-		if (nRobotCount <= 0)
+		if (nRobotCount < 1)
 		{
 			CRect rect;
 			m_tabShowRobots.GetClientRect(rect);
@@ -388,15 +383,6 @@ void CDlgRobotCtrl::OnDeleteRobotGroup(RobotServer * pRobotServer, RobotGroup * 
 		}
 	}
 }
-
-void CDlgRobotCtrl::OnSelchangingTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	// TODO: 在此添加控件通知处理程序代码
-
-
-	*pResult = 0;
-}
-
 
 void CDlgRobotCtrl::OnTcnSelchangeTabShowRobot(NMHDR *pNMHDR, LRESULT *pResult)
 {

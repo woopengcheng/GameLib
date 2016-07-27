@@ -130,7 +130,7 @@ void export_to_lua_auto(lua_State* L)
 	lua_tinker::class_con<ff>(L, lua_tinker::args_type_overload_constructor(
 		new lua_tinker::constructor<ff, double, unsigned char, int>(1 /*default_args_count*/, 1 /*default_args_start*/),
 		new lua_tinker::constructor<ff, int>(1 /*default_args_count*/, 2 /*default_args_start*/)), 1, 0);
-	lua_tinker::class_mem_readonly<ff>(L, "m_const_val", &ff::m_const_val);
+//	lua_tinker::class_mem_readonly<ff>(L, "m_const_val", &ff::m_const_val);
 	lua_tinker::class_mem<ff>(L, "m_val", &ff::m_val);
 	lua_tinker::class_mem_static_readonly<ff>(L, "s_const_val", &ff::s_const_val);
 	lua_tinker::class_mem_static<ff>(L, "s_ref", &ff::s_ref);
