@@ -7,6 +7,7 @@
 #include "DlgRobotCtrl.h"
 #include "CUtil/inc/CUtil.h"
 #include "RobotManager.h"
+#include "RobotCommand.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -74,6 +75,7 @@ BOOL CRobotCtrlApp::InitInstance()
 
 	//5 这里初始化整个网络库.
 	CUtil::Init();
+	RobotCommands::Init();
 	
 	CDlgRobotCtrl dlg;
 	m_pMainWnd = &dlg;

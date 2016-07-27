@@ -1,0 +1,6 @@
+package PB;
+
+message role_cfg {
+	optional int32 version	= 1 [default = 0];
+	optional bytes data		= 2;
+}

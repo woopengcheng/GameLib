@@ -3,6 +3,7 @@
 #include "RobotGroup.h"
 #include "MsgLib/inc/RpcManager.h"
 #include "RPCCallFuncs.h"
+#include "NetLib/inc/NetHandlerClient.h"
 
 
 const INT32 cnRobotManagerID = 0xFFFFFFF;
@@ -13,6 +14,7 @@ namespace Robot
 		: m_pRpcManager(pRpcManager)
 		, m_nStartPos(0)
 		, m_nEndPos(0)
+		, m_pNetReactor(NULL)
 	{
 	}
 
@@ -29,16 +31,35 @@ namespace Robot
 
 	CErrno RobotManager::Init(void)
 	{
+		if (!m_pNetReactor)
+		{
+ 			m_pNetReactor = new Net::NetReactorDefault;
+			//m_pNetReactor = new Net::NetReactorWES;
+			m_pNetReactor->Init();
+		}
+
 		return CErrno::Success();
 	}
 
 	CErrno RobotManager::Cleanup(void)
 	{
+		MapRobots::iterator iter = m_mapRobots.begin();
+		for (;iter != m_mapRobots.end();++iter)
+		{
+			iter->second->Cleanup();
+			delete iter->second;
+		}
+		m_mapRobots.clear();
+
+		SAFE_DELETE(m_pNetReactor);
+
 		return CErrno::Success();
 	}
 
 	CErrno RobotManager::Update(void)
 	{
+		m_pNetReactor->Update();
+
 		return CErrno::Success();
 	}
 
@@ -86,7 +107,9 @@ namespace Robot
 		for (INT32 i = nStartPos;i < nEndPos;++i)
 		{
 			std::string strName = CUtil::itoa(i);
-			CRobot * pRobot = new CRobot(i, m_pRpcManager);
+			CRobot * pRobot = new CRobot(i, m_pRpcManager , m_pNetReactor);
+			pRobot->Init();
+			m_pNetReactor->AddNetHandler(pRobot->GetNetHandler());
 			m_mapRobots.insert(std::make_pair(i, pRobot));
 
 			rpc_CreateRobot(RobotGroup::GetInstance(),
@@ -96,5 +119,6 @@ namespace Robot
 		}
 		return nEndPos - nStartPos;
 	}
+
 
 }

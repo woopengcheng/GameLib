@@ -81,6 +81,12 @@
     <ClInclude Include="src\ListCtrlEx.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\DlgCreateRobotGroup.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RobotCommon\RobotCommand.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -125,9 +131,6 @@
     <ClCompile Include="src\rpc\RobotServer_UpdateRobotStart_Client.cpp">
       <Filter>src\rpc</Filter>
     </ClCompile>
-    <ClCompile Include="DlgRobotCommand.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ListCtrlEx.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -145,6 +148,15 @@
     </ClCompile>
     <ClCompile Include="src\rpc\RobotGroup_CloseRobotGroup_Client.cpp">
       <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DlgCreateRobotGroup.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DlgRobotCommand.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RobotCommon\RobotCommand.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

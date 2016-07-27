@@ -1,4 +1,5 @@
 #include "CRobot.h"
+#include "RobotManager.h"
 
 Msg::ObjectMsgCall * Robot::CRobot::SendRobotCommand_RpcServer(INT32 nSessionID, Msg::Object objSrc , CUtil::Chunk & command/* = std::string()*/)
 {
@@ -8,6 +9,7 @@ Msg::ObjectMsgCall * Robot::CRobot::SendRobotCommand_RpcServer(INT32 nSessionID,
 	CUtil::CStream cs(command);
 	cs >> nCommandType;
 
+	HandleRobotCommand(nCommandType , cs);
 
 	std::cout << "CRobot::SendRobotCommand_RpcServer id="<< GetObjectID().m_llObjID << ":command=" << nCommandType  << std::endl;
 	Return(res);

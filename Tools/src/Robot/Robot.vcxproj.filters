@@ -19,6 +19,9 @@
     <Filter Include="src\rpc">
       <UniqueIdentifier>{1d8dab32-a929-4399-96ec-172785efec6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\msg">
+      <UniqueIdentifier>{fa8b59ed-c604-447a-9e13-18346f8f538c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -91,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="src\rpc\RobotGroup_GRpc_CloseRobotGroup_Server.cpp">
       <Filter>src\rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RobotCommon\RobotCommand.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

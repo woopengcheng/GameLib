@@ -1,0 +1,55 @@
+enum MyEnum
+{
+	RED = 1;
+	BLACK = 2;
+}
+
+message Child
+{
+	optional string name = 1;
+	optional int32 age = 2;
+	
+	enum InnerEnum
+	{
+		A = 1;
+		B = 2;
+	}
+}
+
+message Person
+{
+	optional int32 int32 = 101;
+	optional int64 int64 = 102;
+	optional uint32 uint32 = 103;
+	optional uint64 uint64 = 104;
+	optional sint32 sint32 = 105;
+	optional sint64 sint64 = 106;
+	optional fixed32 fixed32 = 107;
+	optional fixed64 fixed64 = 108;
+	optional sfixed32 sfixed32 = 109;
+	optional sfixed64 sfixed64 = 110;
+	optional bool bool = 111;
+	optional string string = 112;
+	optional bytes bytes = 113;
+	repeated int32 int32_arr = 114;
+	repeated string string_arr = 115;
+	optional Child optional_child = 116;
+	required Child required_child = 117;
+	repeated Child child_arr = 118;
+	optional MyEnum myenum = 119;
+	
+	enum InnerEnum
+	{
+		A = 1;
+		B = 2;
+	}
+
+	optional InnerEnum innerenum = 120;
+}
+
+message Family
+{
+	optional Person person = 1;
+	optional int32 int32 = 101;
+}
+

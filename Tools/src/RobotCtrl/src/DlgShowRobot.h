@@ -5,6 +5,7 @@
 #include "afxcmn.h"
 #include <string>
 #include "DlgRobotCommand.h"
+#include "DlgCreateRobotGroup.h"
 
 // CDlgShowRobot 对话框
 
@@ -78,6 +79,7 @@ protected:
 protected:
 	CListCtrl			m_listShowRobots;
 	CDlgRobotCommand	m_dlgRobotCommand;
+	CDlgCreateRobotGroup m_dlgCreateRobotGroup;
 
 	RobotGroup		*	m_pCurRobotGroup;
 	INT32				m_nCurRobotTabIndex;		//5 这里和主界面的tab的Index是对应的.

@@ -160,6 +160,7 @@ CDlgShowRobot::CDlgShowRobot(CWnd* pParent /*=NULL*/)
 	, m_pCurRobotGroup(NULL)
 	, m_nRobotCount(0)
 	, m_dlgRobotCommand(this)
+	, m_dlgCreateRobotGroup(this)
 	, m_bSortUp(TRUE)
 {
 
@@ -392,11 +393,11 @@ void CDlgShowRobot::OnCreateRobots()
 {
 	// TODO: 在此添加命令处理程序代码
 
-	if (m_pCurRobotGroup && m_pCurRobotGroup->GetRobotServer())
+	if (m_dlgCreateRobotGroup.DoModal())
 	{
-		RobotServer * pRobotServer = m_pCurRobotGroup->GetRobotServer();
-		rpc_CreateRobots(*pRobotServer, m_pCurRobotGroup->GetRobotSessionID(), 0, m_pCurRobotGroup->GetObjectID(), 1, 300);
+
 	}
+
 }
 
 void CDlgShowRobot::OnCloseGroup()

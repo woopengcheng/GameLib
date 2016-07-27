@@ -1,52 +1,9 @@
 #pragma once
 #include "afxwin.h"
 #include "RobotCommon.h"
-#include "Lua/ILua.h"
+#include "RobotCommand.h"
 
 // CDlgRobotCommand ¶Ô»°¿ò
-
-const INT32 cnCommandParamCount = 6;
-
-class CDlgShowRobot;
-
-enum RobotParamType
-{
-	ROBOT_TYPE_ERR = 0,
-	ROBOT_TYPE_INT64 = 1,
-	ROBOT_TYPE_DOUBLE = 2,
-	ROBOT_TYPE_STRING = 3
-
-};
-struct RobotParams
-{
-	INT32			type;
-	std::string		strDefault;
-	std::string		strNote;
-
-	RobotParams()
-		: type(ROBOT_TYPE_ERR)
-	{
-
-	}
-};
-
-typedef std_unordered_map<INT32, RobotParams>			MapRobotParamsT;
-struct RobotCommand
-{
-	INT32			type;
-	std::string		command;
-	MapRobotParamsT	mapRobotParams;
-	RobotCommand()
-		: type(0)
-	{
-		mapRobotParams.reserve(1024);
-	}
-public:
-	MapRobotParamsT & GetParams() { return mapRobotParams; }
-	void SetParams(INT32 nIndex , const RobotParams & val) { mapRobotParams.insert(std::make_pair(nIndex , val)); }
-};
-typedef std::map<INT32, RobotCommand>		MapRobotCommands;
-typedef std::map<INT32, std::string>		MapRobotTypesT;
 
 class CDlgRobotCommand : public CDialogEx
 {
@@ -87,7 +44,4 @@ protected:
 	MapRobotParamType		m_mapRobotParamType;
 	CDlgShowRobot		*	m_pDlgShowRobot;
 
-public:
-	static MapRobotTypesT	m_mapRobotTypes;
-	static MapRobotCommands m_mapRobotCommands;
 };

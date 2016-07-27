@@ -198,7 +198,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NO_WARN_MBCS_MFC_DEPRECATION;LEVELDB_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_WINDOWS;DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)src/rpc;$(SolutionDir)RobotCtrl;$(SolutionDir)../LibCore/;$(SolutionDir)../RobotCtrl/;$(SolutionDir)../LibCore/MongoBson;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/UnitTest++/;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/glog/src/windows;$(SolutionDir)../deps/log4cpp/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/;$(SolutionDir)../deps/gtest/googletest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)../RobotCommon;$(ProjectDir)src;$(ProjectDir)src/rpc;$(SolutionDir)RobotCtrl;$(SolutionDir)../LibCore/;$(SolutionDir)../RobotCtrl/;$(SolutionDir)../LibCore/MongoBson;$(SolutionDir)../deps/RocksDB;$(SolutionDir)../deps/RocksDB/db;$(SolutionDir)../deps/RocksDB/table;$(SolutionDir)../deps/RocksDB/port;$(SolutionDir)../deps/RocksDB/util;$(SolutionDir)../deps/RocksDB\include;$(SolutionDir)../deps/leveldb/db;$(SolutionDir)../deps/leveldb/util;$(SolutionDir)../deps/leveldb/port;$(SolutionDir)../deps/leveldb/include;$(SolutionDir)../deps/leveldb/table;$(SolutionDir)../deps/leveldb/;$(SolutionDir)../deps/boost;$(SolutionDir)../deps/expat/lib;$(SolutionDir)../deps/zeromq/include;$(SolutionDir)../deps/tbb/include;$(SolutionDir)../deps/UnitTest++/;$(SolutionDir)../deps/protobuf/src;$(SolutionDir)../deps/raknet/source;$(SolutionDir)../deps/pthread/include;$(SolutionDir)../deps/glog/src/windows;$(SolutionDir)../deps/log4cpp/include;$(SolutionDir)../deps/log4cplus/include;$(SolutionDir)../deps/Snappy;$(SolutionDir)../deps/lua/src;$(SolutionDir)../deps/jsoncpp/include;$(SolutionDir)../deps/libiconv/source/include;$(SolutionDir)../deps/openssl/openssl/include/;$(SolutionDir)../deps/gtest/googletest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -273,8 +273,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\RobotCommon\RobotCommand.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\CRobot.h" />
+    <ClInclude Include="src\DlgCreateRobotGroup.h" />
     <ClInclude Include="src\DlgRobotCommand.h" />
     <ClInclude Include="src\DlgRobotCtrl.h" />
     <ClInclude Include="src\DlgShowRobot.h" />
@@ -294,8 +296,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DlgRobotCommand.cpp" />
+    <ClCompile Include="..\RobotCommon\RobotCommand.cpp" />
     <ClCompile Include="src\CRobot.cpp" />
+    <ClCompile Include="src\DlgCreateRobotGroup.cpp" />
+    <ClCompile Include="src\DlgRobotCommand.cpp" />
     <ClCompile Include="src\DlgRobotCtrl.cpp" />
     <ClCompile Include="src\DlgShowRobot.cpp" />
     <ClCompile Include="src\ListCtrlEx.cpp" />

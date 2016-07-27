@@ -1,5 +1,6 @@
 #include "RobotGroup.h"
 #include "LogLib/inc/Log.h"
+#include "RobotManager.h"
 
 namespace Robot
 {
