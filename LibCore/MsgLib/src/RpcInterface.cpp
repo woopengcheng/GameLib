@@ -98,7 +98,7 @@ namespace Msg
 		if (!m_pNetThread)
 		{
 			m_pNetThread = new Net::NetThread;  //5 作为一个Task线程会自动释放.以及调用cleanup.
-			m_pNetThread->Init(conf);
+ 			m_pNetThread->Init(conf);
 		}
 
 		RegisterRpc();

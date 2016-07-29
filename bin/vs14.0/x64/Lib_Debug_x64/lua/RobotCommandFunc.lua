@@ -29,9 +29,15 @@ function getLocalPath()
 	real_path=real_path.."\\"
 	return real_path.sub(real_path,1,last_pos+step) 
 end
-SYS_PATH = getLocalPath()
-package.path=package.path..';'..SYS_PATH..'msg\\?.lua;'..SYS_PATH..'msg\\PB\\?.lua;'..SYS_PATH..'msg\\google\\?.lua;'..SYS_PATH.."?.lua"   --设置package的path 
+local obj=io.popen("cd")
+SYS_PATH = obj:read("*all"):sub(1,-2) .. "/lua"
+print(SYS_PATH)
+package.path=SYS_PATH..'/msg/?.lua;'..SYS_PATH..'/msg/protobuf/?.lua;'..SYS_PATH..'/msg/PB/?.lua;'..SYS_PATH..'/msg/google/protobuf/?.lua;'..SYS_PATH.."/?.lua;"..package.path..';'   --设置package的path 
+print(package.path)
 
+require "protobuf.protobuf"	--提前加载，因为用了 module
+
+local net_common = require "PB.net_common"
 
 function ProcessMsg(robot ,unMsgID, pBuffer, unLength)
 	print("unMsgID" .. unMsgID )
@@ -39,7 +45,7 @@ function ProcessMsg(robot ,unMsgID, pBuffer, unLength)
 	print("unLength" .. unLength)
 end
 
-function HandleRobotCommand(robot ,params)
+function HandleRobotCommand(robot ,command_type , params)
 	if type(params) ~= "table" then
 		print("err params not table." .. type(params))
 	else
@@ -52,4 +58,15 @@ function HandleRobotCommand(robot ,params)
 			
 		end
 	end	
+	
+	if command_type == 1 then
+	
+		local test_data = net_common.test_data
+		local msg = test_data()
+		msg.params = 10
+		msg.param2 = 101
+		buf = msg:SerializeToString()
+		size = msg:ByteSize()
+		robot:SendMsg(buf , size)
+	end
 end

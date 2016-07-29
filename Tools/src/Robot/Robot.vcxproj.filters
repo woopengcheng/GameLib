@@ -57,6 +57,15 @@
     <ClInclude Include="src\RobotManager.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\RobotCommon\msg\PB\net_common.pb.h">
+      <Filter>src\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RobotCommon\msg\PB\options.pb.h">
+      <Filter>src\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RobotCommon\msg\google\protobuf\descriptor.pb.h">
+      <Filter>src\msg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -97,6 +106,18 @@
     </ClCompile>
     <ClCompile Include="..\RobotCommon\RobotCommand.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RobotCommon\msg\PB\net_common.pb.cc">
+      <Filter>src\msg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RobotCommon\msg\PB\options.pb.cc">
+      <Filter>src\msg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RobotCommon\msg\google\protobuf\descriptor.pb.cc">
+      <Filter>src\msg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RobotCommon\pb.c">
+      <Filter>src\msg</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,0 +1,1179 @@
+
+package PB;
+//namespace
+//支持 SPEED(速度快，占用最大空间) CODE_SIZE LITE_RUNTIME(效率最高，且占用空间少，不支持反射)
+//option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
+option optimize_for = SPEED;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  数据库用数据结构 (一些内嵌式数据结构也写到这个吧)
+//
+//用来存盘的数据结构,必须在这个命名空间下
+//WARING::命名规则
+//所有能够自动获取的类型必须包含一个 "optional GPS_TYPE type   = 1[default = GUT xxx];" 
+//default用来标明这个msg的类型
+//必须不能重复一一对应，这样可以自动建立一个type <--> msg的对应表 ,
+
+enum GPS_TYPE {
+	GUT_UNDEFIED		= 0;		//未定义
+	GUT_TEST_DATA 		= 1;		//测试用数据结构
+	GUT_CORPS_STRUCT	= 2;		//军团数据结构	xxx_corps
+	GUT_CORPS_MEMBER	= 3;		//军团成员数据结构 xxx_corps_member
+	GUT_FACEBOOK		= 4;		//玩家的common社会关系	facebook里面的字段
+	GUT_PLAYER_MEMSSAGE	= 5;		//每个玩家都有的通用杂项数据 xxx_player
+	GUT_DB_TABLE		= 6;		//数据库存储key_id的数据
+	GUT_NATION		= 7;		//国家数据
+	GUT_NATION_WAR		= 8;		//国战数据
+	GUT_ROLE_PBINFO		= 9;		//角色用定义数据兼容扩展
+	GUT_HERO_PBINFOS	= 10;		//heros的数据信息
+	GUT_GREETING_DATA	= 11;		//祝福消息
+	GUT_PLAYER_MISC		= 12;		//玩家的Misc数据
+	GUT_CARD_DATA		= 13;		//卡牌数据
+	GUT_BLACK_SHOP_DATA	= 14;		//黑市数据
+	GUT_DUKE_DATA		= 15;		//官职数据
+	GUT_CLIMBTOWER_SHOP_DATA	= 16;		//闯天关神秘商店数据
+	GUT_ACCOUNT_DS_DATA	= 17;		//账号级别DS管理数据 -- UserInfo 不能保证所有RoleInfo数据未失效
+	GUT_ACCOUNT_GS_DATA	= 18;		//账号级别GS管理数据 -- Role上可以保证同一时间只有一个Role
+	GUT_MIDAS_USER_FAIL	= 19;		//米大师发送失败存盘
+	GUT_MIDAS_MULTI_FAIL	= 20;		//米大师相关信息
+	GUT_MIDAS_PIXIU		= 21;		//貔貅
+	GUT_SECURE_IDIP		= 22;
+	GUT_TOP_REWARD		= 23;		//开服排行榜奖励
+	GUT_DS_SAVE_PLAYER_DATA	= 24;		//ds存储更新的角色数据
+	GUT_STRATEGIES		= 25;		//锦囊妙计
+	GUT_WING_REFINE_SOUL	= 26;		//神羽精魄
+	GUT_PET_DATA		= 27;		//宠物数据
+	GUT_PET_LIST_DATA	= 28;		//宠物栏数据
+	GUT_ITEM_DATA		= 29;		//物品数据
+	GUT_ITEM_LIST_DATA	= 30;		//物品栏数据
+	GUT_ZONELIST		= 31;		//给和服专用的zonelist列表
+	GUT_RICHMAN_DATA	= 32;		//大富翁数据
+	GUT_ROAM_RECORD		= 33;		//跨服战绩
+}
+
+message a3d_pos {
+	required float x	= 1;
+	required float z	= 2;
+	optional float y	= 3;
+}
+
+message player_id_name
+{
+	optional int64	id	= 1;
+	optional bytes	name	= 2;
+}
+
+message general_list
+{
+	message item_data
+	{
+		optional int32 tid			= 1;
+		optional int32 star			= 2;
+		optional bool locked			= 3;
+	}
+	
+	repeated item_data item_list			= 1;
+}
+
+message simple_list {
+	required int64 key	= 1;
+	optional int64 value	= 2;
+	optional bytes name	= 3;
+}
+
+message test_data {
+	optional GPS_TYPE type		= 1 [default = GUT_TEST_DATA];
+	repeated int64 params		= 2;
+	optional int32 param2		= 3;
+	optional bytes info		= 4;	
+}
+
+message other_player_profile_from_gs {
+	optional uint32 achievement_grade	= 1;
+	optional uint32 achievement_count	= 2;
+}
+
+enum CORPS_POSITION {
+	CP_NORMAL	= 0;	//帮众
+	CP_MASTER	= 1;		//帮主
+	CP_VICE_MASTER	= 2;		//副帮主
+	CP_ZHANGLAO1	= 3;
+	CP_ZHANGLAO2	= 4;
+};
+
+message corp_chariot
+{
+	message chariot_info {		//单个战车数据
+		optional int64 exp		= 1;	//打造进度
+		optional player_id_name	driver	= 2;	//当前领取人
+		optional int32 rent_timestamp	= 3;	//领取时间
+		optional int32 level		= 4;	//战车等级
+		optional int32 tid		= 5;	//战车tid
+		optional bool  is_upgrade       = 7;    //是否正在打造/升级
+
+	};
+	optional int32 level		= 1;	//战车营等级
+	repeated chariot_info chariots	= 2;	//拥有的战车数量
+};
+
+message corp_repu
+{
+	required int64 key	= 1;
+	optional int64 value	= 2;
+	optional int64 time	= 3;	//update_time 用于定时清空
+};
+
+enum MIRROR_STATE
+{
+	MIRROR_S_CREATING	= 1;	//正在创建
+	MIRROR_S_OK		= 2;	//正常
+	MIRROR_S_CLOSING	= 3;	//关闭中
+	MIRROR_S_CLOSED		= 4;	//镜像
+};
+
+message ipt_mirror_info {
+	required uint32 mirrorid		= 1;
+	required MIRROR_STATE state		= 2;
+	optional uint32 create_time		= 3;
+}
+
+message zhaojiling_info {
+	required uint64 src			= 1;	//发起者
+	optional bytes src_name			= 2;
+	optional bytes reason			= 3;	//缘由
+	optional int32 delay_time		= 4;	//延迟显示时间 单位s
+	required int32 scene_tag		= 5;
+	required a3d_pos pos			= 6;
+	optional int32 random_radius		= 7;
+	optional int32 zhaojiling_id		= 8;	//召集物品id
+	optional int32 src_corp_position	= 9;	//召集人帮派职位
+	optional int32 src_nation_position	= 10;	//召集人国家职位
+	optional int32 mirror_id		= 11;
+	enum ZHAOJI_TYPE {
+		ZT_ITEM			= 0;	//召集令 zhaojiling_id 不为 0
+		ZT_NATION_WAR_START	= 1;	//国战开始召集
+		ZT_NATION_WAR_ROLE	= 2;	//国战期间手动召集 src_name不为空
+		ZT_SUCCOR		= 3;	//救援
+	};
+	optional ZHAOJI_TYPE type		= 12;	//召集类型
+	optional int32 param1			= 13;	//召集参数
+	optional int32 inst_tid			= 14;	//副本tid
+}
+
+message corps_member {
+	optional GPS_TYPE type 		= 1 [ default = GUT_CORPS_MEMBER ];
+	required int64 roleid		= 2;
+	required int32 pos		= 3 [ default = 0 ];	//CP_NORMAL
+	optional bytes name		= 4;
+	required int32 join_time	= 5;
+	required int32 level		= 6;
+	required int32 idphoto		= 7;
+
+	optional int64 contri		= 10;	//帮派建设 对应玩家身上的声望
+	optional int64 contri_cumulate	= 11;	//累积帮派建设
+	optional int32 leave_time	= 12;	//离开游戏时间 =0 在线
+	required int32 prof		= 13;
+	optional int32 online_time_today= 14;	//每次下线更新数值
+	repeated int32 boss_feed_reward = 15;	//圣兽喂养奖励,不在线时候保存
+	repeated int32 elixir		= 16;	//炼丹奖励
+	optional int64 fightcapacity	= 17;	//战斗力
+}
+
+message corps_apply_t {
+	required int64 roleid		= 1;
+	required bytes name		= 2;
+	required int64 apply_time	= 3;
+	optional int32 level		= 4;
+	optional int32 prof		= 5;
+}
+
+//GS需要被同步的帮派属性
+message corp_attribute
+{
+	message corp_skill_room {	//帮派练功房
+		repeated uint32 addon_level	= 1;	//对应的addon等级 1 - 5
+	};
+	repeated corp_skill_room skill_room 	= 1;			//练功房 size() = level 
+	optional uint32 shop_level		= 2 [ default = 0 ];	//商店等级 1-5
+	repeated corp_repu corp_repu		= 3;	//帮派声望
+	repeated simple_list boss_feed_toplist	= 4;	//圣兽喂养排行
+	optional corp_chariot chariot		= 5;	//战车营数据
+};
+
+message corps_struct {
+	optional GPS_TYPE type		= 1 [ default = GUT_CORPS_STRUCT ];
+	required int32 id		= 2;
+	optional bytes name		= 4;
+	required int32 create_time	= 5;
+	required int32 level		= 6;	// 1-5
+	required uint64 status		= 7;
+	optional bytes announce		= 8;	//公告
+	optional int64 announce_time	= 9 [ default = 0 ];	//最新公告时间
+	optional int64 contri		= 10 [ default = 0 ];	//帮派建设
+	optional int64 contri_cumulate	= 11 [ default = 0 ];	//累积帮派建设
+	optional int64 money		= 12 [ default = 0 ];	//帮派资金
+	repeated corps_apply_t apply	= 13;	//帮派申请
+	required int32 nation		= 14;	//所属于国家,只有属于此国家的玩家才能加入
+	optional int64 last_resume_time	= 15;	//上次扣除帮贡资金时间
+	optional corp_attribute attr	= 16;
+	optional float corp_power	= 17;	//帮派实力
+	optional bytes qqgroup_openid	= 18; //qq群的openid
+	optional bytes qqgroup_name	= 19; //qq群的名字
+	optional bytes qqgroup_joinkey	= 20; //qq群的joinke
+	optional int32 login_time	= 21;	//最近一次玩家登录时间
+}
+
+message facebook_str {
+	required int64 id 		= 1 [ default = 0 ];
+	optional int32 pos		= 2;	//职位
+	optional int64 param		= 3;	//上级,玩家个数等等
+	optional bytes name		= 4;	//名称1
+	optional bytes name2		= 5;	//名称2 用来组装类型
+	optional int32 leave_corps_time	= 6;	//如果id == 0 此值应该离开时间
+	optional int32 level		= 7;	//级别
+}
+
+message face_book {
+	optional GPS_TYPE type		= 1 [ default = GUT_FACEBOOK ];
+	optional facebook_str corps	= 2;
+}
+
+message idip_role_info {
+	optional int64	money			= 1;	//金币数量
+	optional int64	vip_exp			= 2;	//vip经验
+	optional int32	vip_level		= 3;	//vip等级
+	optional int64	role_exp		= 4;	//角色经验
+	optional int64	ride_exp		= 5;	//坐骑经验
+	optional int32	ride_level		= 6;	//坐骑等级
+	optional int32	pk_value		= 7;	//pk值
+	optional int32	online_time		= 8;	//累计在线时长
+	optional int32  friends_count		= 9;	//好友数量
+}
+
+message role_list_custom {
+	optional bool fashion			= 1;	//是否穿了时装
+	optional uint32 magic_weapon_tid	= 2;	//法器
+}
+
+message gs_role_mutable_data {
+	optional GPS_TYPE type			= 1 	[ default = GUT_ROLE_PBINFO ];
+	optional uint32 vip_level		= 2;	//vip等级,由GS更新
+	optional uint32 fightcapacity		= 3;	//战斗力
+	optional bytes show_property		= 4;	//玩家显示属性
+	optional other_player_profile_from_gs pro= 8;
+	optional idip_role_info	idip_info	= 9;	//idip相关数据
+	optional role_list_custom custom	= 10;
+}
+
+message nation_war_history {
+	required int32 finish_time	= 1;	//结束时间
+	required int32 nation_attack	= 2;	//进攻国
+	required int32 nation_defend	= 3;	//防守国
+	required int32 result		= 4;	//国战结果
+}
+
+message blessing_info {
+	optional bytes padding			= 1;
+	optional uint64 src			= 2;
+	optional bytes src_name			= 3;
+	optional uint64 dst			= 4;
+	optional bytes dst_name			= 5;
+	optional uint32 repu_id			= 6;
+	optional uint32 repu_count		= 7;
+	optional uint32 item_tid		= 8;
+	optional uint32 item_count		= 9;
+	optional uint32 txnid			= 10;		//server use
+	optional int32 result			= 11;		//server use
+}
+
+message card_info
+{
+	required int32 card_id	  = 1;
+	required int32 card_count = 2;
+}
+
+message greeting_info {			
+	enum GREETING_TYPE
+	{
+		GREETING_INVITE		= 1;	//祝福邀请
+		GREETING_GRANT		= 2;	//祝福
+		GREETING_THANKS		= 3;	//祝福答谢
+	}
+	optional GREETING_TYPE type	= 1;	//祝福类型
+	optional int32 info_seq		= 2	[ default = 0 ];	//序列号
+	optional int64 roleid		= 3;	
+	optional bytes name		= 4;
+	optional int32 param_1		= 5;
+	optional int32 param_2		= 6;
+	optional int32 param_3		= 7;
+	optional int32 greet_tid	= 8;
+}
+
+enum ask_help_info_type
+{
+	AT_ASK_HELP		= 0;
+};
+
+message ask_help_info {
+	required uint64 src			= 1;	//发起者
+	optional bytes src_name			= 2;
+	required int32 scene_tag		= 3;
+	optional int32 mirror_id		= 4;
+	required a3d_pos pos			= 5;
+	optional int32 end_timestamp		= 6;
+	optional ask_help_info_type info_type	= 7;
+	enum relation_type {
+		RT_STRANGER		= 0;	//陌生人
+		RT_CORP			= 1;	//帮派
+		RT_NATION		= 2;	//国家
+	}
+	optional relation_type relation		= 8;
+	optional sint32 certificate		= 9;
+	optional int32 src_nation		= 10;
+	optional int32 corp_id			= 11;
+}
+
+message roam_match_info{
+	optional int32 zoneid                           = 1;
+	optional int32 nationid                         = 2;
+	optional int32 league_id                        = 3;
+	optional int32 war_id                           = 4;
+	optional int32 camp_id                          = 5;
+}
+
+message db_roam_record_info {
+	optional int32 zoneid                   = 1;
+	optional int32 nation                   = 2;
+	optional int32 leagueid                 = 3;
+	optional int32 campid                  	= 4;
+}
+
+message db_roam_record_data {
+	optional int32 instid                   = 1;
+	optional int32 win_campid               = 2;
+	optional int32 timestamp                = 3;
+	repeated db_roam_record_info info       = 4;
+}
+
+message instance_extend_info {			//穿透给level_control的参数
+	optional int32 param1	= 1;
+	repeated int64 param2   = 2;
+}
+
+message corp_farmland {
+	optional int32 cur_planting_tid	= 3;	//当前种植的tid
+	optional int32 start_time	= 4;	//收获剩余时间
+	optional int32 harvest_time	= 5;	//计算后的收获时间
+	optional bool can_speed		= 6;	//是否可以加速
+}
+
+message enter_instance_config {
+	message client_config {
+		optional int32 mafia_id			= 1;
+		optional bytes name			= 2;
+		optional bytes password			= 3;
+		optional instance_extend_info info	= 4;
+	}
+
+	optional client_config client		= 1;
+
+	message server_config {
+		optional int32 param1	= 1;
+		optional int32 param2	= 2;
+		optional a3d_pos pos	= 3;	//cur world pos
+	}
+	optional server_config server		= 2;
+}
+
+message player_corps_attr_config {
+	optional int32 active_level		= 1 [ default = -1];	//激活的level
+	optional int32 active_index		= 2 [ default = -1];	//激活的index
+
+	message rent_chariot_info{
+		optional int32 chariot_hp		= 3;	//战车当恰剩余hp
+		optional int32 chariot_tid              = 4;    //战车tid
+		optional int32 chariot_level            = 5;    //战车level
+		optional int32 chariot_rent_timestamp   = 6;    //战车领取时间
+	}
+	optional rent_chariot_info chariot_info		= 4;	//战车领取信息	
+}
+
+message player_stune_config {				//玩家符文系统设置
+	optional int32 rune_level			= 1;	//神通等级
+	optional int32 rune_point			= 2;	//剩余可用神通点
+	message player_rune_prop_config		//每个技能的生长线
+	{
+		required int32 master_skill_id	= 1;	//主技能ID
+		repeated int32 rune_skill_level	= 2;	//index(0-7) 对应 1-8符文属性当前等级，未解锁等级为0, (第一个值无效)
+	};
+	repeated player_rune_prop_config rune_config	= 3;	//各个技能符文属性系统设置
+	message player_rune_config
+	{
+		required int32 master_skill_id	= 1;	//主技能ID
+		required int32 active_index	= 2;	//激活的符文技能Index 0 - 7
+	};
+	message config_set
+	{
+		required int32 set_index		= 1;	//技能套index
+		repeated player_rune_config configs	= 2;	//符文技能组合套
+	};
+	repeated config_set all_config_set		= 4;	//所有技能套
+	optional int32 cur_active_set			= 5;	//当前激活的符文技能套 (0 ~ all_config_set_size - 1)
+	optional int32 total_rune_point			= 6;	//累计神通点数，不用重复计算了
+}
+message black_shop_info
+{
+	message black_shop_goods_info
+	{
+		required int32 store_id		= 1;
+		required int32 goods_id		= 2;
+		required int32 is_selled	= 3;
+		required int32 goods_pos	= 4;
+	}
+	required int32 shop_id			= 1;
+	required int32 next_refresh_time	= 2;
+	repeated black_shop_goods_info goods	= 3;
+}
+
+message climbtower_magic_shop_info  	//这个是map的value
+{
+	message magic_shop_goods_info
+	{
+		required int32 store_id		= 1;
+		required int32 goods_id		= 2;
+		required int32 is_selled	= 3;
+		required int32 goods_pos	= 4;
+	}
+	required int32 shop_id			= 1;
+	required int32 level			= 2;//闯天关没有刷新时间
+	repeated magic_shop_goods_info goods	= 3;
+}
+
+message db_hero_trial_config {
+	optional int32 free_refresh_times	= 1;	//当前免费刷新次数
+	optional int32 pay_refresh_times	= 2;	//当前花费刷新次数
+	optional int32 cur_hero_tid		= 3;	//当前刷新出的英雄tid
+}
+
+message level_shopid
+{
+	required int32 level		= 1;
+	required int32 shop_id		= 2;
+}
+
+//单个计策配置
+message db_strategy_info {
+	optional int32 strategy_tid		= 1;	//对应tid
+	optional int32 level			= 2;	//当前等级
+	optional int32 chip_count		= 3;	//当前碎片数量
+	optional int32 star_level		= 4;	//练星等级
+	optional int32 blessing_num		= 5;	//祝福值
+}
+
+message db_strategy_vectors {
+	optional GPS_TYPE type			= 1 	[ default = GUT_STRATEGIES ];
+	repeated db_strategy_info strategies	= 2;
+}
+
+message db_surface_soul {
+	optional int32 soul_tid			= 1;	
+	optional int32 train_value		= 2;
+}
+
+message db_wing_refine_soul {
+	optional int32 surface_tid		= 1;	//幻化tid
+	optional int32 train_level		= 2;	//当前培养阶段值
+	repeated db_surface_soul souls		= 3;	//各个属性的培养阶段
+}
+
+message db_refine_surfaces {
+	optional GPS_TYPE type			= 1 	[ default = GUT_WING_REFINE_SOUL ];
+	repeated db_wing_refine_soul surfaces	= 2;
+}
+
+message db_equip_soul {
+	optional int32 property_tid = 1;
+	optional int32 exp = 2;
+	optional int32 level = 3;
+}
+
+message db_equip_fixed_data {
+	optional int32 rank			= 1;
+	repeated int32 mingwens			= 2;
+	repeated db_equip_soul souls		= 3;
+}
+
+message db_magic_weapon {
+	message property {
+		optional int32 property_tid = 1;
+		optional int32 exp_value = 2;		
+		optional int32 level = 3;
+		optional int32 end_time = 4;		
+		optional int32 multime = 5;		
+	}
+	
+	message refine_group {
+		message refine {
+			optional int32 train_level = 1;
+			optional int32 blessing_value = 2;
+		}
+		repeated refine refines = 1;
+	}
+
+	optional int32 magic_tid		= 1;
+	optional bool active			= 2;
+	repeated property properties		= 3;
+	repeated refine_group refine_groups	= 4;
+}
+
+message db_magic_weapons {
+	repeated db_magic_weapon weapons	= 1;
+	optional int32 summoned_weapon_tid	= 2;		
+}
+
+message db_general_soul {
+	
+	optional int32 general_tid		= 1;
+	optional int32 level			= 2;
+	optional int32 experience		= 3;
+	optional general_list inventory		= 4;
+	optional general_list soul_holes	= 5;
+}
+
+message db_general_souls {
+	repeated db_general_soul generals	= 1;
+}
+
+message wine_game_history
+{
+	optional int32	game_time		= 1;
+	optional int32	mine_status		= 2;
+	optional int32	peer_status		= 3;
+	optional int32  game_result     = 4;
+	optional player_id_name	peer_info	= 5;
+}
+
+message pixiu_service_buy_record {
+	optional bytes product_id		= 1;	//苹果或者其他的产品id
+	optional int32 counts			= 2;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+//  Client<->DS协议
+//
+//用来和客户端通讯的 DS协议
+//WARING::命名规则
+//所有能够自动获取的类型必须包含一个 "optional NET_PROTOCBUF_TYPE type          = 1 [default = NPT_xxx];" 
+//default用来标明这个msg的类型
+//必须不能重复一一对应，这样可以自动建立一个type <--> msg的对应表 ,
+
+enum NET_PROTOCBUF_TYPE {
+	NPT_TEST			= 1;
+	NPT_CORPS_APPOINT		= 2;	//帮派管理操作
+	NPT_RESPONSE			= 3;	//通用回复信息
+	NPT_APPLY_CORPS			= 4;	//申请加入帮派
+	NPT_CORPS_DATA			= 5;	//帮派数据
+	NPT_COMMON_SEARCH		= 6;	//通用数据搜索
+	NPT_ZHAOJILING			= 7;	//召集领消息
+	NPT_SYNC_MIRROR_INFO		= 8;	//镜像信息
+	NPT_SYNC_NATION_WAR_INFO	= 9;	//同步国战信息
+	NPT_NATION_WAR_OPERATE		= 10;	//国战便捷操作
+	NPT_GET_CORP_NAME		= 11;	//获取帮派名称
+	NPT_NATION_WAR_OPERATE_INFO	= 12;	//国战便捷查询
+	NPT_NATION_WAR_OPERATE_INFO_RE	= 13;	//国战便捷查询
+	NPT_TEAM_INVITE			= 14;	//组队邀请
+	NPT_TEAM_INFO			= 15;	//队伍信息
+	NPT_FRIEND_INVITE		= 16;	//好友邀请
+	NPT_GET_PLAYER_PROFILE		= 18;	//获取玩家的详细数据
+	NPT_GREETING_INFO_SYNC		= 19;	//同步祝福消息
+	NPT_GREETING_REPLY		= 20;	//回复祝福邀请
+	NPT_BLESSING_INFO		= 21;	//送花协议
+	NPT_NATIONWAR_EVENT		= 22;	//通知国战事件
+	NPT_NATION_SHUTUP		= 23;	//国家禁言操作
+	NPT_NATION_SHUTUP_INFO		= 24;	//国家禁言信息
+	NPT_NATION_SHUTUP_REPLY		= 25;	//国家禁言操作反馈
+	NPT_NATION_COMMANDER_APPOINT	= 26;	//指定指挥频道发言者
+	NPT_NATION_COMMANDER_NOTIFY	= 27;	//通知指挥频道发言者
+	NPT_NATION_WAR_HISTORY		= 28;	//最近国战记录
+	NPT_REQUEST_INFO		= 29;	//查询数据
+	NPT_ASK_HELP			= 30;	//求救
+	NPT_SEND_SERVER_MIDAS_INFO	= 31;	//发送服务器midas相关数据
+	NPT_SEND_CLIENT_MIDAS_INFO	= 32;	//发送客户端midas相关数据
+	NPT_SEND_TENCENT_SECURE_INFO	= 33;	//发送服务器安全sdk数据
+	NPT_OFFICER_GIFT_GET		= 34;	//发送领取官员福利
+	NPT_OFFICER_GIFT_NOTIFY		= 35;	//通知官员福利
+	NPT_SEND_MIDAS_BAD_TOKEN	= 36;	//通知客户端midastoken失效
+	NPT_TEAM_RECRUIT_OPERATE	= 37;	//队伍招募操作
+	NPT_TEAM_RECRUIT_OPERATE_REPLY	= 38;	//队伍招募操作回复
+	NPT_UPDATE_GRC_INFO		= 39;	//更新GRC服务器角色信息
+	NPT_GRC_GET_FRIEND_INFO		= 40;	//取得GRC好友列表
+	NPT_GRC_SEND_GIFT		= 41;	//发送GRC礼物
+	NPT_GRC_RCV_GIFT		= 42;	//接受GRC礼物
+	NPT_GRC_FRIEND_LIST		= 43;	//取得GRC好友列表
+	NPT_GRC_GIFT_LIST		= 44;	//取得GRC礼物列表
+	NPT_GRC_SEND_GIFT_RE		= 45;	//发送GRC礼物
+	NPT_GRC_RCV_GIFT_RE		= 46;	//接受GRC礼物
+	NPT_MIDAS_ACTIVITY_GET		= 47;	//获取midas活动信息
+	NPT_MIDAS_ACTIVITY_GET_RE	= 48;	//获取midas活动信息
+	NPT_WEAK_NATION_GIFT_NOTIFY	= 49;	//通知弱国奖励
+	NPT_WEAK_NATION_GIFT_GET	= 50;	//领取弱国奖励
+	NPT_SERVER_INFO_NOTIFY		= 51;	//服务器数据通知
+	NPT_GET_QQGROUP_OPENID		= 52;	//查询qq群 openid
+	NPT_RESP_QQGROUP_OPENID		= 53;	//查询qq群 openid
+	NPT_GRC_TURN_ON_OFF		= 54;	//开启或关闭grc礼物接收
+	NPT_GRC_TURN_ON_OFF_RE		= 55;	
+	NPT_DIE_ELITE_TID	        = 56;	//查询精英怪的存活情况
+	NPT_GET_DIE_ELITE_TID           = 57;   //客户端请求查询精英怪的存活情况
+	NPT_GRC_EXCEED_FRIEND_LIST	= 58;	//通知客户端副本挑战层级超过的好友列表
+	NPT_GET_HTTP_REQ		= 59;
+	NPT_GET_HTTP_RESP		= 60;
+	NPT_SEND_TLOG_INFO		= 61;
+	NPT_UNBIND_QQGROUP_REQ		= 63;	//解绑QQ群
+	NPT_UNBIND_QQGROUP_RESP		= 64;	//解绑QQ群 
+	NPT_RECHARGE_PLAT_VIP		= 65;	//QQ会员续费
+	NPT_QQGROUP_JOINKEY_REQ		= 66;	//查询qq群的joinkey
+	NPT_QQGROUP_JOINKEY_RESP	= 67;	//查询qq群的joinkey
+	NPT_TOP_REWARD			= 68;	//排行榜奖励
+	NPT_GRC_GET_SELF_PLAT_VIP_INFO	= 69;	//实时拉去自己的平台VIP信息
+	NPT_GREET_INVEST_INFO		= 70;	//祝福投资数据
+	NPT_GREET_INVEST_AWARD		= 71;	//祝福投资领奖
+	NPT_SEND_LEVEL_SORTED_INFO	= 72;	//已排序的副本信息
+	NPT_WINE_GAME_OPERATE		= 73;	//喝酒游戏操作
+	NPT_WINE_GAME_SYNC_DATA		= 74;	//同步喝酒游戏状态
+	NPT_WINE_GAME_HISTORY       	= 75;   //拉取喝酒历史记录
+	NPT_WINE_GAME_HISTORY_RE       	= 76;   //喝酒历史记录
+	NPT_REGION_WAR_OPERATE       	= 77;   //帮派战操作
+	NPT_REGION_WAR_GET_INFO_RE      = 78;   //帮派战数据
+	NPT_GM_SHUT_DOWN_SERVER      	= 79;   //友好关服
+	NPT_NOTIFY_REGIONWAR_DELTATIME	= 80;	//通知帮派战系统的时间差
+	NPT_NOTIFY_REGIONWAR_DAILYBONUS	= 81;	//通知帮派战是否有可领福利
+	NPT_GET_CORPS_INFO		= 82;	//客户端请求帮会信息
+	NPT_GET_REGION_CHEER_INFO	= 83;	//查区域助威数据
+	NPT_GET_REGION_CHEER_INFO_RE	= 84;	//查区域助威数据返回
+	NPT_REGION_WAR_OPERATE_RE       = 85;   //帮派战操作反馈
+	NPT_REGION_WAR_BEGIN_NOTIFY     = 86;   //帮派战开始通知客户端
+	NPT_NEST_COMMON_OPERATION	= 87;	//可嵌套通用操作类型,用于参数极少的操作
+	NPT_NATION_REPUTATION		= 88;   //国家声望
+	NPT_NATION_REPUTATION_RE	= 89;   //国家声望
+	NPT_NATION_LANTERN_INFO		= 90;   //孔明灯信息
+	NPT_NATION_LANTERN_INFO_RE	= 91;   //孔明灯信息
+	NPT_NATION_REPUTATION_CHANGE	= 92;   //国家声望变化
+	NPT_RECEIVE_NATION_GIFT		= 93;   //领取孔明灯奖励
+	NPT_NOTIFY_ZONE_LIST		= 94;   //跟客户端发送合服zoneid列表（跨服用）
+	NPT_NOTIFY_ROAM_MATCH_INFO	= 95;   //广播给客户端跨服匹配的信息
+	NPT_BATTLE_AUTO_MATCH		= 96;	//自动匹配竞技场
+	NPT_EXCHANGE_ACTIVITY		= 97;   //国家声望有关活动的信息拉取
+	NPT_EXCHANGE_ACTIVITY_RE	= 98;   //国家声望有关的活动拉取回复
+	NPT_EXCHANGE_AWARD		= 99;   //国家声望相关的活动领奖
+	NPT_BATTLE_MATCH_RESULT		= 100;  //自动匹配成功时发给客户端结果
+	NPT_BATTLE_MATCH_PREPARE	= 101;  //自动匹配成功时广播准备的情况
+	NPT_GET_BATTLE_MATCH_RANK	= 102;  //获取竞技场匹配排名
+	NPT_CHANGE_ZONE_RESPONSE	= 103;	//跨服回应
+	NPT_ROAM_ZHAOJI			= 104;	//跨服召集
+	NPT_ROAM_ZHAOJI_INFO		= 105;	//跨服召集信息权限（跨服副本指挥权限）
+	NPT_ROAM_INST_RESULT		= 106;	//查询跨服历史
+	NPT_REQ_BACKFLOW_DATA		= 107;	//请求回流活动数据
+	NPT_REQ_BACKFLOW_DATA_RE	= 108;	//答复请求回流活动数据
+	NPT_SHARE_BACKFLOW_CODE		= 109;	//回流活动分享邀请码
+	NPT_RECE_INVITE_AWARD		= 110;	//领取邀请奖励
+	NPT_RECE_INVITE_AWARD_RE	= 111;	//答复领取邀请奖励
+	NPT_RECE_CONVENE_AWARD		= 112;	//领取召集奖励
+	NPT_RECE_CONVENE_AWARD_RE	= 113;	//答复领取召集奖励
+	NPT_RECE_BACKFLOW_AWARD		= 114;	//领取回归奖励
+	NPT_RECE_BACKFLOW_AWARD_RE	= 115;	//答复领取回归奖励
+	NPT_RESET_DOUBLERECHAGE		= 116;//重置首冲
+	NPT_SHARE_BACKFLOW_CODE_RE      = 117;  //答复回流活动分享邀请码
+}
+
+message npt_test {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_TEST ];
+}
+
+message npt_response {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_RESPONSE ];
+	required int32 retcode			= 2;
+	optional int32 request_type		= 3;	//回应的协议类型
+	optional int32 param1			= 4;	//额外参数
+}
+
+message npt_corps_appoint {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_CORPS_APPOINT ];
+	required int64 dst			= 2;	//op的目标
+	enum CORPS_APPOINT_OP {
+		CORPS_ADD	= 1;	//添加,帮主主动邀请的,忽略客户端此操作，服务器内部处理
+		CORPS_DEL	= 2;	//删除
+		CORPS_APPOINT	= 3;	//任命职位
+		CORPS_DISMISS	= 4;	//解散帮派
+		CORPS_QUIT	= 5;	//离开
+		CORPS_ANNOUNCE	= 6;	//设置宣言
+		CORPS_UPGRADE	= 7;	//升级
+		CORPS_ABDICATE	= 8;	//传位
+		CORPS_ACTIVITY	= 9;	//开启活动
+		CORPS_INVITE	= 10;	//邀请
+		CORPS_REJECT	= 11;	//拒绝加入, 只用来标记
+		CORPS_AGREE	= 12;	//同意加入，用来标记
+		CORPS_GETDATA	= 13;	//获取帮派数据
+		CORPS_BRIEF	= 14;	//获取除成员数据
+		CORPS_CONTRI	= 15;	//捐献金钱
+		CORPS_UPGRADE_SKILL=16;	//升级练功房
+		CORPS_UPGRADE_SHOP= 17;	//升级商店
+		CORPS_UPGRADE_SKILL2=18;//升级练功房中的技能
+		CORPS_ATTR	= 19;	//同步帮派易变属性
+		CORPS_SUMMON	= 20;	//召唤boss
+		CORPS_FIRE	= 21;	//烤火
+		CORPS_CHARIOT	= 22;	//战车营升级
+		CORPS_UP_CHA	= 23;	//打造战车
+		CORPS_RECL_CHA	= 24;	//强制回收战车
+	}
+	required CORPS_APPOINT_OP op		= 3;
+	optional int32 pos			= 4;	//职位 客户端需要填充
+	optional bytes announce			= 5;	//宣言 客户端需要填充
+	optional bytes srcname			= 6;
+	optional bytes dstname			= 7;
+	optional int64 src			= 8;	//操作发起人, server
+	optional bytes corpsname		= 9;
+	optional corps_member member		= 10;	//加入成员时候用于广播
+	optional int64 contri_money		= 11;
+	optional int64 cur_money		= 12;
+	optional uint32 skill_level		= 13;	//升级练功房对应的等级 0-4
+	optional uint32 skill_index		= 14;	//升级练功房对应的技能 0-4
+	optional uint32 corps_id		= 15;
+	optional corp_attribute attr		= 16;	//CORPS_ATTR
+	optional int32 tid			= 17;	//对应tid 比如战车
+	optional int32 index			= 18;	//对应索引 比如战车
+	optional int64 money                    = 19;   //帮会资金
+}
+
+message npt_apply_corps {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_APPLY_CORPS ];
+	required int32 id			= 2;	//corps id
+	optional corps_apply_t apply	= 3;	//申请, 服务器发给客户端的时候填充
+}
+
+message npt_corps_data {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_CORPS_DATA ];
+	required corps_struct data		= 2;
+	repeated corps_member members		= 3;
+	optional int32 members_count		= 4;	//帮里多少人，如果members不全发的时候有用
+}
+
+message name_ruid {
+	required uint64 id	= 1;
+	optional bytes name	= 2;
+}
+
+message npt_common_search {
+	optional NET_PROTOCBUF_TYPE type        = 1     [ default = NPT_COMMON_SEARCH ];
+	required uint32 pos			= 3;
+	required uint32 len			= 4;
+	message search_corps_key {
+		required bool has_value	= 1 [default = false ];
+		optional int32 level	= 2;
+		optional int32 nation	= 3;
+		optional bytes	name	= 4;
+	};
+	optional search_corps_key corps_key	= 5;
+	optional int32 retcode			= 6;
+	optional int32 total_count		= 7;
+	repeated npt_corps_data corps		= 8;	//ret
+	message search_player_key {
+		required bytes name	= 1;	//必须至少含有姓名字符串
+		optional int32 nation	= 2;
+		optional bool is_online	= 3;
+	};
+	optional search_player_key player_key	= 9;
+	repeated name_ruid players		= 10;	//ret
+	optional int32 search_time		= 11;
+}
+
+message npt_zhaojiling {
+	optional NET_PROTOCBUF_TYPE type        = 1     [ default = NPT_ZHAOJILING ];
+	optional zhaojiling_info baseinfo	= 2;
+}
+
+message npt_sync_mirror_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_SYNC_MIRROR_INFO ];
+	repeated ipt_mirror_info infos		= 2;
+	enum MIRROR_STATE_MASK
+	{
+		MS_FORBIT_MIRROR_STATE	= 0x00000001;	//禁止镜像
+		MS_IN_NATION_WAR	= 0x00000002;	//国战中
+	}
+	optional uint32 state_mask		= 3;
+}
+
+
+message npt_sync_nation_war_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_SYNC_NATION_WAR_INFO ];
+	required uint32 war_end_time		= 2;
+	message nwar_npc_info {
+		required uint32 npc_tid	= 1;
+		required uint32 npc_nation = 2;
+		required uint32 npc_hp = 3;
+		required uint32 npc_born = 4;
+	}
+	repeated nwar_npc_info npc_info		= 3;
+	optional uint32 wangcheng_revive_faction= 4;
+}
+
+
+message npt_get_corp_name {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GET_CORP_NAME ];
+	required uint32 corp_id			= 2;
+	optional bytes	name			= 3;
+}
+
+message npt_nation_war_operate {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_WAR_OPERATE ];
+	required uint32 oper_type		= 2;
+	required uint32 oper_param1		= 3;
+}
+
+message npt_nation_war_operate_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_WAR_OPERATE_INFO ];
+	required uint32 war_id			= 2;
+}
+
+message npt_nation_war_operate_info_re {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_WAR_OPERATE_INFO_RE ];
+	required uint32 attack_zhaoji		= 2;
+	required uint32 defend_zhaoji		= 3;
+	required uint32 attack_yanshi		= 4;
+	required uint32 defend_jiaxue		= 5;
+	required uint32 attack_jihuo		= 6;
+	required uint32 defend_jihuo		= 7;
+	required uint32 quick_transfer		= 8;
+}
+
+message npt_team_invite {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_TEAM_INVITE ];
+	optional bytes	name			= 2;
+	optional int32 assign_rule		= 3;
+	optional int32 auto_admit		= 4;
+	optional int32 open_invite		= 5;
+	optional int32 level			= 6;
+	optional int32 profession		= 7;
+	optional int32 lineid			= 8;
+}
+
+message npt_friend_invite {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_FRIEND_INVITE ];
+	optional bytes name			= 2;
+	optional int32 level			= 3;
+	optional int32 profession		= 4;
+	optional int32 group			= 5;
+}
+
+message npt_team_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_TEAM_INFO ];
+	repeated int32 teamids			= 2;	//需要获取的队伍id列表 in 最多20个吧
+	message team_info {
+		required int32 teamid	= 1;
+		required int64 leader	= 2;
+		optional bytes name	= 3;
+		optional int32 level	= 4;
+		optional int32 capacity	= 5;	//战斗力
+		optional int32 prof	= 6;
+		required int32 members	= 7;
+	}
+	repeated team_info teams		= 3;	//队伍数据信息  out
+}
+
+message other_player_profile {
+	optional face_book pb_facebook		= 1;	//帮派数据
+	optional uint32 nation			= 2;	//国家
+	optional uint32 nation_pos		= 3;	//国家职位
+	optional uint32 duke_level		= 4;	//官职等级
+	optional bool fashion			= 5;	//时装是否显示
+	optional uint32 magic_weapon_tid	= 6;	//法器
+}
+
+message npt_get_player_profile {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GET_PLAYER_PROFILE ];
+	required int64 roleid			= 2;	// dst_roleid;
+	enum GET_PROFILE_MASK {			//如果只是获取部分信息，使用type减少协议大小
+		GET_ALL_PROFILE	= 0x0000;	//所有
+		GET_SNS		= 0x0001;	//sns
+		GET_EQUIP	= 0x0002;	// equip 
+		GET_PROPERTY	= 0x0004;	//protperty
+	}
+	optional uint32 get_profile_mask	= 3 [ default = 0 ];
+	optional bytes snsinfo			= 4;	// rpcalls.xml SnsInfo
+	optional gs_role_mutable_data property	= 5;	// 人物属性
+	optional bytes equipments		= 6;	// 装备数据 rpcalls.xml GRoleInventoryVector
+	optional other_player_profile others	= 7;	// 附加的其他玩家数据
+}
+
+message npt_blessing_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_BLESSING_INFO ];
+	optional blessing_info info		= 2;
+	optional bool tanksgiver		= 3;		//回复感谢
+}
+
+message npt_nationwar_event {
+	enum NNE_TYPE
+	{
+		NATION_WAR_KILL_COUNT		= 1;
+		NATION_WAR_JIHUO		= 2;
+		NATION_WAR_JIHUO_COOLDOWN 	= 3;
+	}
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATIONWAR_EVENT ];
+	optional NNE_TYPE event_type		= 2;	//事件类型
+	optional int32 event_param		= 3;	//事件参数
+}
+
+message npt_nation_shutup {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_SHUTUP ];
+	required int64 dst_roleid		= 2;	//指定禁言角色id
+}
+
+message npt_nation_shutup_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_SHUTUP_INFO ];
+	required int32 use_times		= 2;	//禁言操作使用次数
+	required int32 remain_times		= 3;	//禁言剩余时间
+}
+
+message npt_nation_commander_appoint {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_COMMANDER_APPOINT ];
+	required int64 dst_roleid		= 2;	//目标角色
+}
+
+message npt_nation_commander_notify {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_COMMANDER_NOTIFY ];
+	optional bytes dst_name			= 2;	//目标角色名
+}
+message npt_nation_war_history {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_WAR_HISTORY ];
+	repeated nation_war_history historys	= 2;	
+}
+message npt_request_info {
+	enum INFO_TYPE
+	{
+		NATION_WAR_HISTORY		= 1;
+	}
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_REQUEST_INFO ];
+	required INFO_TYPE request_type		= 2;
+}
+
+message npt_nation_shutup_reply {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_NATION_SHUTUP_REPLY ];
+	enum RESULT_TYPE
+	{
+		RESULT_SUCCEED			= 1;
+		RESULT_OFFLINE			= 2;
+		RESULT_ALREADY_SHUTUP		= 3;
+	}
+	required RESULT_TYPE result		= 2;	//操作结果
+	optional bytes dst_name			= 3;
+}
+
+message npt_greeting_info_sync {
+	enum SYNC_TYPE
+	{
+		SYNC_ALL	= 1;
+		SYNC_ADD	= 2;
+		SYNC_DEL	= 3;
+	}
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GREETING_INFO_SYNC ];
+	optional SYNC_TYPE sync_type		= 2;	// 消息类型
+	repeated greeting_info	greeting_list	= 3;	// 祝福列表
+}
+
+message npt_greeting_reply {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GREETING_REPLY ];
+	required int32	info_seq		= 2;
+	required int64	dst_roleid		= 3; 
+	required int32	reply_type		= 4; 	//0祝福 1答谢
+	required int32	reply_param		= 5;
+}
+
+message npt_ask_help {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_ASK_HELP ];
+	optional ask_help_info info		= 2;
+	optional int32 response_retcode		= 3;	//如果设置表名此协议为救援失败的错误码
+}
+
+message npt_send_server_midas_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_SEND_SERVER_MIDAS_INFO ];
+	required int64  roleid			= 2;
+	optional bytes	midas_openkey		= 3;
+	optional bytes	midas_paytoken		= 4;
+	optional bytes	midas_pf		= 5;
+	optional bytes	midas_pfkey		= 6;
+}
+
+message npt_send_tencent_secure_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_SEND_TENCENT_SECURE_INFO ];
+	optional bytes	secure_data		= 2;
+}
+
+message npt_send_client_midas_info {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_SEND_CLIENT_MIDAS_INFO ];
+	required int64  midas_total_amount	= 2;
+	required int64  midas_bind_amount	= 3;
+	required int64  midas_save_amt		= 4;
+	//required int32  midas_first_save	= 5;//在国内是没用
+}
+
+message npt_send_midas_bad_token {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_SEND_MIDAS_BAD_TOKEN ];
+	required int32 midas_op			= 2;
+	required int32 midas_retcode		= 3;
+}
+
+message npt_officer_gift_get {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_OFFICER_GIFT_GET ];
+	optional int32	gift_id			= 2;
+}
+
+message npt_officer_gift_notify {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_OFFICER_GIFT_NOTIFY ];
+	optional int32	gift_id			= 2;
+}
+
+message npt_weak_nation_gift_get {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_WEAK_NATION_GIFT_GET ];
+	optional int32	gift_id			= 2;
+}
+
+message npt_weak_nation_gift_notify {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_WEAK_NATION_GIFT_NOTIFY ];
+	optional int32	gift_id			= 2;
+}
+
+message npt_server_info_notify {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_SERVER_INFO_NOTIFY ];
+	optional int32	free_war_left		= 2;
+}
+
+message npt_team_recruit_operate {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_TEAM_RECRUIT_OPERATE ];
+	enum OPERATE_TYPE
+	{
+		CREATE		= 1;	//创建
+		LIST		= 2;	//搜索
+		PUBLISH 	= 3;	//发布
+		CANCEL 		= 4;	//取消
+		REQ_COOLDOWN 	= 5;	//查冷却
+		MODIFY 		= 6;	//修改
+		REQ_LEADER_POS	= 7;	//查队长位置
+		GATHER		= 8;	//集合
+	}
+	optional int32	operate_type		= 2;
+	optional int64	param1			= 3;
+	optional int64	param2			= 4;
+	optional int64	param3			= 5;
+}
+
+message recruit_info {
+	optional int32	min_level		= 1;
+	optional int32	inst_tid		= 2;
+	optional int32	team_number		= 3;
+	optional bytes 	leader_name		= 4;
+	optional int64	leader_id		= 5;
+}
+
+message npt_team_recruit_operate_reply {
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_TEAM_RECRUIT_OPERATE_REPLY ];
+	enum RESULT
+	{
+		SUCCEED				= 0;
+		MAX_SIZE			= 1;
+		MIN_LEVEL			= 2;
+		COOLDOWN			= 3;
+		TIME_OUT			= 4;
+		IN_INSTANCE			= 5;
+	}
+	optional int32	operate_type		= 2;
+	optional int32	operate_result		= 3;
+	optional int64	param1			= 4;
+	optional int64	param2			= 5;
+	optional int64	param3			= 6;
+	repeated recruit_info	recruit_list	= 7;	//招募列表
+	optional bytes  param4			= 8;
+	optional a3d_pos  param_pos		= 9;
+}
+
+message npt_update_grc_info{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_UPDATE_GRC_INFO];
+}
+
+message npt_grc_get_friend_info{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GRC_GET_FRIEND_INFO];
+	required int32	start			= 2;
+	required int32	offset			= 3;
+}
+
+message npt_grc_send_gift{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GRC_SEND_GIFT];
+	required int32	giftType		= 2;
+	required int64	giftCount		= 3;
+	required bytes	to			= 4;
+}
+
+message npt_grc_rcv_gift{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GRC_RCV_GIFT];
+	required int32	giftType		= 2;
+	required int64	giftCount		= 3;
+	required int64	timestamp               = 4;
+	required bytes	from			= 5;
+}
+
+message grc_friend_info{
+	required bytes openid			= 1;
+	required bytes nickname			= 2;
+	required bytes figure_url		= 3;
+	
+	required uint64 roleid			= 4;
+	required bytes rolename			= 5;
+	required int32 level			= 6;
+	required int32 gender			= 7;
+	required int32 profession		= 8;
+	required int32 nation			= 9;
+	required int64 fightingcapacity		= 10;
+	required bool sameserver		= 11;
+	required int32 vipinfo			= 12;
+}
+
+message npt_grc_friend_list{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GRC_FRIEND_LIST];
+	required int32 retcode			= 2;
+	required int32 total_friend_count	= 3;
+	repeated grc_friend_info friend		= 4;
+}
+
+message grc_gift_info{
+	required int32 gift_type		= 1; //礼物类型，如体力、友情值、鲜花
+	required bytes from			= 2; //赠送人
+	required bytes to			= 3; //接收人
+	required int64 count			= 4; //数量
+	required int32 flag			= 5; //是否已被领取 
+	required int64 timestamp		= 6;
+	required int32 serialid			= 7; //编号
+	optional bytes nickname			= 8; //发送者昵称
+}
+
+message grc_user_gift_info{
+	required int32 gift_type 		= 1;
+	repeated grc_gift_info giftsend		= 2; //当天已赠送的该类礼物
+	required int64 giftreceive_times	= 3; //当天已领取的该类礼物的次数
+	repeated grc_gift_info giftreceive	= 4; //所有还未被领取的该类礼物
+}
+
+message npt_grc_gift_list{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GRC_GIFT_LIST];
+	repeated grc_user_gift_info gift	= 2;
+}
+
+message npt_grc_send_gift_re{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GRC_SEND_GIFT_RE];
+	required bytes to			= 2;
+	required int32 retcode			= 3;
+}
+
+message npt_grc_rcv_gift_re{
+	optional NET_PROTOCBUF_TYPE type	= 1	[ default = NPT_GRC_RCV_GIFT_RE];
+	required bytes from			= 2;
+	required int32 retcode			= 3;
+}

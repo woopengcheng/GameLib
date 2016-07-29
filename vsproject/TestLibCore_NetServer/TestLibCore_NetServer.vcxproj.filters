@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="msg">
+      <UniqueIdentifier>{801678e3-5f59-45aa-aa77-522f8047503e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -37,6 +40,15 @@
     </ClCompile>
     <ClCompile Include="Server.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\src\RobotCommon\msg\PB\net_common.pb.cc">
+      <Filter>msg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\src\RobotCommon\msg\google\protobuf\descriptor.pb.cc">
+      <Filter>msg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\src\RobotCommon\msg\PB\options.pb.cc">
+      <Filter>msg</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

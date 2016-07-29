@@ -10,6 +10,11 @@
 #include "RobotCommand.h"
 #include "CRobot.h"
 
+extern "C"
+{
+	extern int luaopen_pb(lua_State *L);
+}
+
 INT32 g_nClosed = FALSE;
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -35,6 +40,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{ 
 		Robot::CRobot * pRobot = new Robot::CRobot(1, Robot::RobotGroup::GetInstance().GetRpcManager(), Robot::RobotManager::GetInstance().GetNetReactor());
 		pRobot->Init();
+		luaopen_pb(pRobot->GetLuaState());
 		double nCommandType = 20.f;
 		CUtil::CStream cs;
 		std::string str = "asdf";

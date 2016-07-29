@@ -33,9 +33,7 @@ namespace Robot
 		void						SetRobotIndex(INT32 val) { m_nRobotIndex = val; }
 		Net::NetHandlerClientPtr	GetNetHandler() { return m_pNetHandlerClient;  }
 		INT32						HandleRobotCommand(INT32 nCommandType, CUtil::CStream & cs);
-		INT32 	test(char t) { return 1; }
-		INT32  test (UINT8 t) { return 1; }
-		INT32  test (bool t) { return t; }
+		lua_State 				*	GetLuaState() const { return m_L; }
 
 	protected:
 		INT32						m_nRobotIndex;		//5 这里需要关联robotctrl上的index.	

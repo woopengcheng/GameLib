@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "NetLib/inc/NetThread.h"
+#include "PB/net_common.pb.h"
 
 INT32 Server::Init()
 {
@@ -46,6 +47,43 @@ INT32 Server::InitZMQ()
 	return TRUE;
 }
 
+class RobotServer : public Net::NetHandlerServer
+{
+public:
+	RobotServer(Net::INetReactor * pNetReactor, Net::ISession * pSession)
+		: Net::NetHandlerServer(pNetReactor , pSession)
+	{}
+protected:
+	virtual CErrno	HandleMsg(Net::ISession * pSession, UINT32 unMsgID, const char* pBuffer, UINT32 unLength) override
+	{
+		gDebugStream("handle msg.unMsgID" << unMsgID << ":unlength=" << unLength);
+
+		switch (unMsgID)
+		{
+		case 0:
+		{
+			PB::test_data msg;
+			msg.ParseFromArray(pBuffer, unLength);
+			
+			char pBuf[1024];
+			std::string str;
+			msg.SerializePartialToString(&str);
+			UINT64 ullSize = msg.ByteSize();
+			((Net::MsgHeader*)pBuf)->unMsgID = 0;
+			((Net::MsgHeader*)pBuf)->unMsgLength = unLength + sizeof(Net::MsgHeader);
+			memcpy(pBuf + sizeof(Net::MsgHeader), str.c_str(), ullSize);
+			SendMsg(pBuf, unLength + sizeof(Net::MsgHeader));
+		}
+		break;
+		}
+
+		return CErrno::Success();
+
+	}
+private:
+};
+DECLARE_BOOST_POINTERS(RobotServer);
+
 INT32 Server::InitRakNet()
 {
 	if (!m_pNetReactor)
@@ -55,7 +93,7 @@ INT32 Server::InitRakNet()
 	m_pNetReactor->Init();
 
 	Net::ServerSession * pServerSession = new Net::ServerSession("127.0.0.1", 5555, "", "", -1);
-	Net::NetHandlerServerPtr pNetHandlerListener(new Net::NetHandlerServer(m_pNetReactor, pServerSession));
+	RobotServerPtr pNetHandlerListener(new RobotServer(m_pNetReactor, pServerSession));
 	m_pNetReactor->AddNetHandler(pNetHandlerListener, Net::NET_FUNC_ACCEPT_DEFAULT);
 
 	return TRUE;

@@ -1,4 +1,5 @@
 #include "CRobot.h"
+#include "PB/net_common.pb.h"
 #include "RobotCommand.h"
 
 namespace Robot
@@ -166,7 +167,23 @@ namespace Robot
 					break;
 				}
 			}
-			lua_tinker::call<void>(m_L, "HandleRobotCommand" , this,params);
+			if (nCommandType == 0)
+			{
+				PB::test_data msg;
+
+				char pBuf[1024];
+				std::string str;
+				msg.set_param2(12);
+				msg.mutable_params()->Add(2);
+				msg.SerializePartialToString(&str);
+				UINT64 ullSize = msg.ByteSize();
+				((Net::MsgHeader*)pBuf)->unMsgID = 0;
+				((Net::MsgHeader*)pBuf)->unMsgLength = ullSize + sizeof(Net::MsgHeader);
+				memcpy(pBuf + sizeof(Net::MsgHeader), str.c_str(), ullSize);
+				SendMsg(pBuf, ullSize + sizeof(Net::MsgHeader));
+			}
+
+			lua_tinker::call<void>(m_L, "HandleRobotCommand" , this, nCommandType , params);
 		}
 		else
 		{
