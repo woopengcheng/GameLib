@@ -195,7 +195,7 @@
       <StringPooling>true</StringPooling>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <UseFullPaths>true</UseFullPaths>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;WIN32;OS_WIN;_MBCS;WIN64;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -271,10 +271,9 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ../util/build_version.cc</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">Generating ../util/build_version.cc</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">Generating ../util/build_version.cc</Message>
-     
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='DLL_Debug_x64|x64'">false</LinkObjects>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">false</LinkObjects>      
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Lib_Debug_x64|x64'">false</LinkObjects>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
