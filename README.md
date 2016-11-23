@@ -52,7 +52,7 @@ LibCore
     
 <a name="csv"/>
 #csv转化
-	可以将excel通过python转化为csv格式，用于程序读取，并生成对应读取的cpp文件，目前支持的格式包括int,int64,double,string,支持将这些数据的数组形式。未来将支持结构体类型。
+	可以将excel通过python转化为csv格式，用于程序读取，并生成对应读取的cpp文件，目前支持的格式包括int,int64,double,string,支持这些数据的数组形式。支持结构体类型,string,map,set,vector任意类型,可拓展。
 	
 <a name="files"/>
 #文件路径说明
