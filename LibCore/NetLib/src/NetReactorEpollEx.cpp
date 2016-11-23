@@ -145,7 +145,7 @@ namespace Net
 
 	BOOL NetReactorEpollEx::CreateEpollExTasks(INT32 nCount/* = kPerCreateEpollExCoTaskCount*/)
 	{
-		for (UINT32 i = 0; I < nCount; ++i) //5 这里预分配这IME多个协程.不够的时候在加.
+		for (UINT32 i = 0; i < nCount; ++i) //5 这里预分配这IME多个协程.不够的时候在加.
 		{
 			EpollexCoTask * pTask = new EpollexCoTask;
 			pTask->fd = kInvalidFD;
