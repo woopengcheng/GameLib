@@ -1,24 +1,24 @@
+
+
 LibCore
 =======
-```
-##<a name="index"/>目录
-* [Libcore简介](#Introduction )
-* [网络库](#netlib)
-* [数据库](#db)
-* [计时器](#timmer) 
-* [线程池](#threads)
-* [序列化](#marshal)
-* [参数化](#param)
-* [csv转化](#csv)
-* [文件路径说明](#files) 
 
-<a name="Introduction"/>
+#目录
+* [Libcore简介]
+* [网络库]
+* [数据库]
+* [计时器]
+* [线程池]
+* [序列化]
+* [参数化]
+* [csv转化]
+* [文件路径说明]
+
 #Libcore简介
     是一款跨平台的游戏服务器底层框架,包含基于reactor的网络库，易使用的rpc，基于时间轮或者最小堆实现的计时器，基于log4plus的日志系统,基于orm的数据库，底层采用leveldb或者rocksdb,以及其他编码转化，随机数，测试用例，常用函数,线程池等。
 
-<a name="netlib"/>
 #网络库：
-	采用reactor实现的高性能网络库，包含如下功能:
+    采用reactor实现的高性能网络库，包含如下功能:
 		epollex:
 			底层采用腾讯开源的libco协程对epoll进行hook,合理使用协程，避免cpu在epoll时处于iowait状态，浪费cpu使用。
 		zmq:
@@ -29,34 +29,29 @@ LibCore
 	http:
 		简单的Http解析以及包含数字签名.
 		
-<a name="db"/>
 #数据库
 	单线程版本基于leveldb实现，多线程compact基于rocksdb,默认为leveldb,因为是Key-Value数据库,所以数据格式采用了mongo库中mongobson，在游戏中可以很灵活增加数据，而不用担心版本问题.
 	在数据格式之上采用了redis的常用数据结构，例如:hash，zset,ztop等，也可自定义拓展一些数据结构。在这层数据结构之上搭建了一层orm，来使数据对象化。同时，数据库也支持主从，热备份。
     
-<a name="timmer"/>
 #计时器
 	计时器采用两种方式，时间轮和最小堆实现。
     
-<a name="threads"/>
 #线程池
 	根据每个线程的优先级选择对应优先级的task执行。
-    
-<a name="marshal"/>
+
 #序列化:
 	可以将任意数据格式或者容器转化为2进制数据。同时也可以将这些数据存入数据库。
-    
-<a name="param"/>
+
 #参数化
 	基于序列化可以将数据打包成一个参数类，有点类似auto不过是动态的。
     
-<a name="csv"/>
+
 #csv转化
 	可以将excel通过python转化为csv格式，用于程序读取，并生成对应读取的cpp文件，目前支持的格式包括int,int64,double,string,支持这些数据的数组形式。支持结构体类型,string,map,set,vector任意类型,可拓展。
 	
-<a name="files"/>
-#文件路径说明
 
+#文件路径说明
+```
 	/trunk/bin/						程序生成的二进制可执行文件以及程序执行相关的依赖库.
 	/trunk/build					程序生成跨平台的编译文件.采用premake5.
 	/trunk/configs/msg				使用protobuf时生成对应CPP文件的工具.
