@@ -5,7 +5,7 @@ LibCore
 * [Libcore简介](#Introduction )
 * [网络库](#netlib)
 * [数据库](#db)
-* [计时器](#timer) 
+* [计时器](#timmer) 
 * [线程池](#threads)
 * [序列化](#marshal)
 * [参数化](#param)
@@ -34,7 +34,7 @@ LibCore
 	单线程版本基于leveldb实现，多线程compact基于rocksdb,默认为leveldb,因为是Key-Value数据库,所以数据格式采用了mongo库中mongobson，在游戏中可以很灵活增加数据，而不用担心版本问题.
 	在数据格式之上采用了redis的常用数据结构，例如:hash，zset,ztop等，也可自定义拓展一些数据结构。在这层数据结构之上搭建了一层orm，来使数据对象化。同时，数据库也支持主从，热备份。
     
-<a name="db"/>
+<a name="timmer"/>
 #计时器
 	计时器采用两种方式，时间轮和最小堆实现。
     
