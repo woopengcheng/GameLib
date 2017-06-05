@@ -13,11 +13,8 @@ LibCore
 * [文件路径说明](#文件路径说明) 
 
 ### Libcore简介
-```
     是一款跨平台的游戏服务器底层框架,包含基于reactor的网络库，易使用的rpc，基于时间轮或者最小堆实现的计时器，基于log4plus的日志系统,基于orm的数据库，底层采用leveldb或者rocksdb,以及其他编码转化，随机数，测试用例，常用函数,线程池等。
-```
 
-<a name="netlib"/>
 ### 网络库：
 ```
     采用reactor实现的高性能网络库，包含如下功能:
@@ -35,8 +32,8 @@ LibCore
 
 ### 数据库
 ```
-	单线程版本基于leveldb实现，多线程compact基于rocksdb,默认为leveldb,因为是Key-Value数据库,所以数据格式采用了mongo库中mongobson，在游戏中可以很灵活增加数据，而不用担心版本问题.
-	在数据格式之上采用了redis的常用数据结构，例如:hash，zset,ztop等，也可自定义拓展一些数据结构。在这层数据结构之上搭建了一层orm，来使数据对象化。同时，数据库也支持主从，热备份。
+单线程版本基于leveldb实现，多线程compact基于rocksdb,默认为leveldb,因为是Key-Value数据库,所以数据格式采用了mongo库中mongobson，在游戏中可以很灵活增加数据，而不用担心版本问题.
+在数据格式之上采用了redis的常用数据结构，例如:hash，zset,ztop等，也可自定义拓展一些数据结构。在这层数据结构之上搭建了一层orm，来使数据对象化。同时，数据库也支持主从，热备份。
 ```
 
 
