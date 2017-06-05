@@ -1,6 +1,6 @@
 LibCore
 =======
-
+```
 ##<a name="index"/>目录
 * [Libcore简介](#Introduction )
 * [网络库](#netlib)
@@ -56,7 +56,7 @@ LibCore
 	
 <a name="files"/>
 #文件路径说明
-```
+
 	/trunk/bin/						程序生成的二进制可执行文件以及程序执行相关的依赖库.
 	/trunk/build					程序生成跨平台的编译文件.采用premake5.
 	/trunk/configs/msg				使用protobuf时生成对应CPP文件的工具.
